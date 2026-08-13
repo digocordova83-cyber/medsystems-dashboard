@@ -48,6 +48,8 @@ export default function Home() {
   const utils = trpc.useUtils();
   const status = trpc.rdstation.status.useQuery(undefined, { enabled: Boolean(user), refetchInterval: 20_000 });
   const callback = trpc.rdstation.callbackInfo.useQuery(undefined, { enabled: Boolean(user) });
+  const bitrix = trpc.bitrix24.medsystemsStatus.useQuery(undefined, { enabled: Boolean(user), refetchInterval: 60_000 });
+  const bitrixJuly = trpc.bitrix24.medsystemsJulyTotals.useQuery(undefined, { enabled: Boolean(user), refetchInterval: 60_000 });
   const medSegmentations = trpc.rdstation.listSegmentations.useQuery({ accountKey: "medsystems" }, { enabled: false });
   const beautySegmentations = trpc.rdstation.listSegmentations.useQuery({ accountKey: "beautysystems" }, { enabled: false });
   const [segmentations, setSegmentations] = useState<Partial<Record<AccountKey, string>>>({});
@@ -125,6 +127,11 @@ export default function Home() {
             <p className="mt-3 text-xs leading-5 text-muted-foreground">Cadastre esta mesma URL no App Publisher do RD Station para cada aplicativo. Depois de publicar o projeto, atualize a URL cadastrada para o domínio publicado.</p>
           </div>
           <div className="rounded-2xl border border-cyan-200/15 bg-cyan-300/8 p-5"><Sparkles className="h-5 w-5 text-cyan-200" /><p className="mt-3 text-sm font-semibold">Coleta controlada</p><p className="mt-1 text-xs leading-5 text-cyan-100/65">A lista de contatos é importada por páginas; eventos são processados em lotes curtos para respeitar os limites da API.</p></div>
+        </section>
+
+        <section className="surface-glass flex flex-col justify-between gap-4 rounded-2xl p-5 sm:flex-row sm:items-center">
+          <div className="flex items-start gap-3"><div className={`mt-1 h-2.5 w-2.5 rounded-full ${bitrix.data?.connected ? "bg-emerald-300 shadow-[0_0_12px_rgb(110,231,183)]" : "bg-orange-300"}`} /><div><p className="font-mono-ui text-[11px] uppercase tracking-[.16em] text-muted-foreground">Bitrix24 CRM · Medsystems</p><p className="mt-1 text-sm font-semibold">{bitrix.data?.connected ? "Conectado com sucesso" : "Conexão indisponível"}</p><p className="mt-1 text-xs text-muted-foreground">{bitrix.data?.connected ? `Portal: ${bitrix.data.portal}` : "Verifique o webhook de entrada configurado."}</p><p className="mt-2 text-xs text-emerald-100/80">Julho/2026: <strong>{bitrixJuly.data?.lead ?? 0}</strong> leads · <strong>{bitrixJuly.data?.contact ?? 0}</strong> contatos · <strong>{bitrixJuly.data?.deal ?? 0}</strong> negócios</p></div></div>
+          {bitrix.data?.connected ? <div className="flex gap-2">{bitrix.data.capabilities.map(capability => <Badge key={capability} variant="outline" className="border-emerald-200/20 text-emerald-100">{capability}</Badge>)}</div> : null}
         </section>
 
         <section id="sincronizacao" className="grid gap-5 xl:grid-cols-2">

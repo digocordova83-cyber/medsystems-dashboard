@@ -13,8 +13,8 @@
 - [x] Implementar coleta manual de contatos e conversões do período de julho de 2026, com persistência e deduplicação por conta.
 - [x] Implementar painel administrativo protegido, com autorização por conta, métricas de status, validade dos tokens e data da última sincronização.
 - [x] Criar interface refinada, responsiva e acessível para administrar Medsystems e BeautySystems.
-- [ ] Criar testes unitários para OAuth, isolamento das contas, renovação de token e regras de período de coleta.
-- [ ] Validar a interface em desktop e mobile, revisar o registro de tarefas e criar checkpoint para publicação.
+- [x] Criar testes unitários para OAuth, isolamento das contas, renovação de token e regras de período de coleta.
+- [x] Validar a interface em desktop e mobile, revisar o registro de tarefas e criar checkpoint para publicação.
 - [x] Configurar e validar uma autorização OAuth independente para a conta Medsystems, sem reutilizar tokens ou dados da BeautySystems.
 - [x] Configurar e validar uma autorização OAuth independente para a conta BeautySystems, sem reutilizar tokens ou dados da Medsystems.
 - [x] Exibir no painel a separação visual e operacional entre as sincronizações de Medsystems e BeautySystems.
@@ -22,7 +22,7 @@
 - [x] Validar as credenciais da Medsystems pela autorização OAuth real e pela troca bem-sucedida do código retornado no callback.
 - [x] Registrar e validar pelo fluxo OAuth real o Client ID e Client Secret da BeautySystems, sem reutilizar credenciais da Medsystems.
 - [x] Aplicar em cada conta o filtro de origem com Desconhecido, Mídia paga, Outros canais e Outras publicidades.
-- [ ] Implementar um mecanismo verificável para excluir exatamente as conversões cujo recurso usado seja Importação, usando uma segmentação ou fonte que exponha esse campo.
+- [ ] Implementar um mecanismo verificável para excluir exatamente as conversões cujo recurso usado seja Importação, usando uma segmentação ou fonte que exponha esse campo, por meio da importação de uma segmentação filtrada do RD Station.
 - [x] Limpar os contatos previamente importados a partir da segmentação ampla antes de carregar o recorte válido de julho de 2026.
 - [x] Calcular os leads de julho de 2026 por conta somente após aplicar as regras de origem permitida e recurso diferente de Importação.
 - [x] Consolidar e entregar separadamente primeira conversão em julho/2026 e última conversão em julho/2026 para Medsystems e BeautySystems.
@@ -31,3 +31,10 @@
 - [x] Concluir nesta sessão os lotes de API direta para as quatro visões de julho de 2026 escolhidas pelo usuário.
 - [x] Validar antes da entrega que todas as linhas consolidadas estejam entre 01/07/2026 e 31/07/2026.
 - [x] Documentar no painel e no relatório que a exclusão de Importação pela API direta é heurística e não reproduz integralmente o filtro do Dashboard do RD Station.
+- [x] Implementar e validar a conexão inicial segura do Bitrix24 Medsystems via webhook, separada do RD Station.
+- [x] Registrar e validar o webhook REST do Bitrix24 da Medsystems com permissões de CRM, sem expor a URL secreta.
+- [x] Implementar armazenamento próprio e sincronizações reais de dados do Bitrix24, com isolamento operacional além do status de conexão.
+- [x] Importar leads, contatos e negócios do Bitrix24 Medsystems restritos a julho de 2026, com totais validados por entidade.
+- [x] Usar exclusivamente DATE_CREATE entre 01/07/2026 e 31/07/2026 como critério de inclusão da coleta Bitrix24.
+- [x] Exibir no painel os totais dos registros Bitrix24 importados para julho de 2026 por entidade.
+- [x] Exibir no painel o status protegido da conexão Bitrix24 Medsystems e as permissões CRM validadas.

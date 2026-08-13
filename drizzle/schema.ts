@@ -4,6 +4,7 @@ const accountKeyValues = ["medsystems", "beautysystems"] as const;
 const integrationStatusValues = ["desconectada", "pronta", "sincronizando", "erro"] as const;
 const julyViewValues = ["primeira", "ultima"] as const;
 const julyLeadStatusValues = ["pendente", "qualificado", "rejeitado"] as const;
+const bitrixEntityTypeValues = ["lead", "contact", "deal"] as const;
 
 export const users = mysqlTable("users", {
   id: int("id").autoincrement().primaryKey(),
@@ -101,6 +102,37 @@ export const rdStationJulyLeadViews = mysqlTable("rdStationJulyLeadViews", {
   uniqueIndex("rd_july_lead_views_account_contact_type_unique").on(table.accountKey, table.contactUuid, table.viewType),
   index("rd_july_lead_views_account_type_status_index").on(table.accountKey, table.viewType, table.status),
 ]);
+
+export const bitrix24Entities = mysqlTable("bitrix24Entities", {
+  id: int("id").autoincrement().primaryKey(),
+  portal: varchar("portal", { length: 255 }).notNull(),
+  entityType: mysqlEnum("entityType", bitrixEntityTypeValues).notNull(),
+  bitrixId: int("bitrixId").notNull(),
+  title: varchar("title", { length: 512 }),
+  fullName: varchar("fullName", { length: 512 }),
+  email: varchar("email", { length: 320 }),
+  phone: varchar("phone", { length: 80 }),
+  stageOrStatus: varchar("stageOrStatus", { length: 160 }),
+  createdAtBitrix: timestamp("createdAtBitrix").notNull(),
+  updatedAtBitrix: timestamp("updatedAtBitrix"),
+  rawPayload: text("rawPayload").notNull(),
+  syncedAt: timestamp("syncedAt").defaultNow().notNull(),
+}, table => [
+  uniqueIndex("bitrix_entity_portal_type_id_unique").on(table.portal, table.entityType, table.bitrixId),
+  index("bitrix_entity_portal_type_created_index").on(table.portal, table.entityType, table.createdAtBitrix),
+]);
+
+export const bitrix24SyncRuns = mysqlTable("bitrix24SyncRuns", {
+  id: int("id").autoincrement().primaryKey(),
+  portal: varchar("portal", { length: 255 }).notNull(),
+  entityType: mysqlEnum("entityType", bitrixEntityTypeValues).notNull(),
+  periodStart: timestamp("periodStart").notNull(),
+  periodEnd: timestamp("periodEnd").notNull(),
+  importedCount: int("importedCount").default(0).notNull(),
+  completedAt: timestamp("completedAt"),
+  errorMessage: text("errorMessage"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
 
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;

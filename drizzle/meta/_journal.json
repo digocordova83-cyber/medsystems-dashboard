@@ -29,6 +29,13 @@
       "when": 1786625576298,
       "tag": "0003_boring_karnak",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1786644063577,
+      "tag": "0004_soft_epoch",
+      "breakpoints": true
     }
   ]
 }

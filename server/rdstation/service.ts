@@ -18,6 +18,7 @@ import {
 } from "../db";
 import { decryptSecret, encryptSecret, sha256 } from "./crypto";
 import { qualifiesDirectApiEvent } from "./filtering";
+import { buildOAuthState, tokenExpiryFromSeconds } from "./oauth";
 import { isInJuly2026, RD_ACCOUNT_META, type RdAccountKey } from "./types";
 
 const RD_API_BASE = "https://api.rd.services";
@@ -57,7 +58,7 @@ async function rdTokenRequest(path: string, body: Record<string, string>) {
 }
 
 async function persistTokens(accountKey: RdAccountKey, payload: TokenPayload) {
-  const expiresAt = new Date(Date.now() + Math.max(60, payload.expires_in - 60) * 1000);
+  const expiresAt = tokenExpiryFromSeconds(payload.expires_in);
   await saveTokensForAccount({
     accountKey,
     accessTokenCiphertext: encryptSecret(payload.access_token),
@@ -75,7 +76,7 @@ export function callbackUrl(origin: string) {
 export async function createAuthorizationUrl(accountKey: RdAccountKey, origin: string) {
   const { clientId } = credentialsFor(accountKey);
   const nonce = randomUUID().replaceAll("-", "");
-  const state = `${accountKey}.${nonce}`;
+  const state = buildOAuthState(accountKey, nonce);
   await saveOAuthState(accountKey, state);
   const params = new URLSearchParams({
     client_id: clientId,

@@ -5,6 +5,7 @@ import { adminProcedure, publicProcedure, router } from "./_core/trpc";
 import { systemRouter } from "./_core/systemRouter";
 import { callbackUrl, createAuthorizationUrl, fetchSegmentations, integrationStatus, syncNextContactPage, syncNextJulyConversionBatch, updateSegmentation } from "./rdstation/service";
 import { isRdAccountKey, RD_ACCOUNTS, type RdAccountKey } from "./rdstation/types";
+import { medsystemsBitrixJulyTotals, medsystemsBitrixStatus } from "./bitrix24/service";
 
 const accountInput = z.enum(RD_ACCOUNTS);
 
@@ -53,6 +54,10 @@ export const appRouter = router({
     syncNextEvents: adminProcedure.input(z.object({ accountKey: accountInput })).mutation(async ({ input }) => (
       syncNextJulyConversionBatch(input.accountKey as RdAccountKey)
     )),
+  }),
+  bitrix24: router({
+    medsystemsStatus: adminProcedure.query(() => medsystemsBitrixStatus()),
+    medsystemsJulyTotals: adminProcedure.query(() => medsystemsBitrixJulyTotals()),
   }),
 });
 

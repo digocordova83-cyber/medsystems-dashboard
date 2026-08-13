@@ -1,6 +1,8 @@
 import { and, asc, eq, gte, isNull, lt, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
+  bitrix24Entities,
+  bitrix24SyncRuns,
   type InsertUser,
   rdStationAccounts,
   rdStationContacts,
@@ -253,6 +255,71 @@ export async function upsertConversionEvents(accountKey: RdAccountKey, contactUu
 }
 
 export type JulyViewType = "primeira" | "ultima";
+export type BitrixEntityType = "lead" | "contact" | "deal";
+
+function firstMultiValue(value: unknown) {
+  if (!Array.isArray(value) || !value.length) return null;
+  const first = value[0];
+  if (first && typeof first === "object" && "VALUE" in first) return String((first as { VALUE: unknown }).VALUE ?? "") || null;
+  return String(first ?? "") || null;
+}
+
+function bitrixDate(value: unknown) {
+  const date = value ? new Date(String(value)) : null;
+  if (!date || Number.isNaN(date.valueOf())) throw new Error("O Bitrix24 retornou um registro sem DATE_CREATE válido.");
+  return date;
+}
+
+export async function upsertBitrixEntities(input: {
+  portal: string;
+  entityType: BitrixEntityType;
+  entities: Record<string, unknown>[];
+}) {
+  const db = await getDb();
+  if (!db || !input.entities.length) return 0;
+  const values = input.entities.map(entity => ({
+    portal: input.portal,
+    entityType: input.entityType,
+    bitrixId: Number(entity.ID),
+    title: entity.TITLE ? String(entity.TITLE) : null,
+    fullName: [entity.NAME, entity.LAST_NAME, entity.SECOND_NAME].filter(Boolean).map(String).join(" ") || null,
+    email: firstMultiValue(entity.EMAIL),
+    phone: firstMultiValue(entity.PHONE),
+    stageOrStatus: entity.STATUS_ID ? String(entity.STATUS_ID) : (entity.STAGE_ID ? String(entity.STAGE_ID) : null),
+    createdAtBitrix: bitrixDate(entity.DATE_CREATE),
+    updatedAtBitrix: entity.DATE_MODIFY ? bitrixDate(entity.DATE_MODIFY) : null,
+    rawPayload: JSON.stringify(entity),
+    syncedAt: new Date(),
+  })).filter(entity => Number.isInteger(entity.bitrixId) && entity.bitrixId > 0);
+  if (!values.length) return 0;
+  await db.insert(bitrix24Entities).values(values).onDuplicateKeyUpdate({ set: {
+    title: sql`values(title)`, fullName: sql`values(fullName)`, email: sql`values(email)`, phone: sql`values(phone)`,
+    stageOrStatus: sql`values(stageOrStatus)`, createdAtBitrix: sql`values(createdAtBitrix)`, updatedAtBitrix: sql`values(updatedAtBitrix)`, rawPayload: sql`values(rawPayload)`, syncedAt: new Date(),
+  } });
+  return values.length;
+}
+
+export async function startBitrixSyncRun(portal: string, entityType: BitrixEntityType, periodStart: Date, periodEnd: Date) {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  const result = await db.insert(bitrix24SyncRuns).values({ portal, entityType, periodStart, periodEnd });
+  return Number(result[0].insertId);
+}
+
+export async function finishBitrixSyncRun(id: number, importedCount: number, errorMessage?: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  await db.update(bitrix24SyncRuns).set({ importedCount, completedAt: new Date(), errorMessage: errorMessage ?? null }).where(eq(bitrix24SyncRuns.id, id));
+}
+
+export async function bitrixJulyTotals(portal: string, start: Date, end: Date) {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  const rows = await db.select({ entityType: bitrix24Entities.entityType, count: sql<number>`count(*)` }).from(bitrix24Entities)
+    .where(and(eq(bitrix24Entities.portal, portal), gte(bitrix24Entities.createdAtBitrix, start), lt(bitrix24Entities.createdAtBitrix, end)))
+    .groupBy(bitrix24Entities.entityType);
+  return Object.fromEntries(rows.map(row => [row.entityType, Number(row.count)])) as Partial<Record<BitrixEntityType, number>>;
+}
 
 export async function getPendingJulyViewCandidates(accountKey: RdAccountKey, viewType: JulyViewType, limit: number) {
   const db = await getDb();

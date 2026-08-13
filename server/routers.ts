@@ -1,28 +1,59 @@
+import { z } from "zod";
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
+import { adminProcedure, publicProcedure, router } from "./_core/trpc";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, router } from "./_core/trpc";
+import { callbackUrl, createAuthorizationUrl, fetchSegmentations, integrationStatus, syncNextContactPage, syncNextJulyConversionBatch, updateSegmentation } from "./rdstation/service";
+import { isRdAccountKey, RD_ACCOUNTS, type RdAccountKey } from "./rdstation/types";
+
+const accountInput = z.enum(RD_ACCOUNTS);
+
+function requestOrigin(req: { protocol?: string; header: (name: string) => string | undefined }) {
+  const browserOrigin = req.header("origin");
+  if (browserOrigin && /^https:\/\//.test(browserOrigin)) return browserOrigin.replace(/\/$/, "");
+  const referer = req.header("referer");
+  if (referer) {
+    try {
+      return new URL(referer).origin;
+    } catch {
+      // Fallback para os cabeçalhos do proxy quando o referer não estiver em formato de URL.
+    }
+  }
+  const protocol = req.header("x-forwarded-proto")?.split(",")[0] || req.protocol || "https";
+  const host = req.header("x-forwarded-host") || req.header("host");
+  if (!host) throw new Error("Não foi possível determinar a URL pública do callback.");
+  return `${protocol}://${host}`;
+}
 
 export const appRouter = router({
-    // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {
-      const cookieOptions = getSessionCookieOptions(ctx.req);
-      ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
-      return {
-        success: true,
-      } as const;
+      ctx.res.clearCookie(COOKIE_NAME, { ...getSessionCookieOptions(ctx.req), maxAge: -1 });
+      return { success: true } as const;
     }),
   }),
-
-  // TODO: add feature routers here, e.g.
-  // todo: router({
-  //   list: protectedProcedure.query(({ ctx }) =>
-  //     db.getUserTodos(ctx.user.id)
-  //   ),
-  // }),
+  rdstation: router({
+    status: adminProcedure.query(async () => ({ accounts: await integrationStatus() })),
+    callbackInfo: adminProcedure.query(({ ctx }) => ({ callbackUrl: callbackUrl(requestOrigin(ctx.req)) })),
+    startAuthorization: adminProcedure.input(z.object({ accountKey: accountInput })).mutation(async ({ input, ctx }) => {
+      return createAuthorizationUrl(input.accountKey as RdAccountKey, requestOrigin(ctx.req));
+    }),
+    updateSegmentation: adminProcedure.input(z.object({ accountKey: accountInput, segmentationId: z.string().max(128) })).mutation(async ({ input }) => {
+      await updateSegmentation(input.accountKey as RdAccountKey, input.segmentationId);
+      return { success: true };
+    }),
+    listSegmentations: adminProcedure.input(z.object({ accountKey: accountInput })).query(async ({ input }) => ({
+      segmentations: await fetchSegmentations(input.accountKey as RdAccountKey),
+    })),
+    syncContacts: adminProcedure.input(z.object({ accountKey: accountInput })).mutation(async ({ input }) => (
+      syncNextContactPage(input.accountKey as RdAccountKey)
+    )),
+    syncNextEvents: adminProcedure.input(z.object({ accountKey: accountInput })).mutation(async ({ input }) => (
+      syncNextJulyConversionBatch(input.accountKey as RdAccountKey)
+    )),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

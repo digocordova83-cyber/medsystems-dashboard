@@ -1,0 +1,33 @@
+# Project TODO
+
+- [x] Criar tabelas isoladas por conta para credenciais OAuth, estado de sincronização, contatos e eventos de conversão.
+- [x] Configurar segredos por conta para client ID, client secret e URL pública de callback do RD Station Marketing.
+- [x] Implementar endpoint público `GET /api/rdstation/callback` com validação de estado OAuth e associação segura à conta selecionada.
+- [x] Implementar troca do código OAuth por tokens e armazenamento criptografado dos tokens no banco de dados.
+- [x] Implementar renovação sob demanda do access token usando refresh token antes de chamadas à API do RD Station.
+- [x] Implementar cliente da API RD Station Marketing para contatos, eventos de conversão, paginação e tratamento de limites de requisição.
+- [x] Adicionar limite de tempo e retomada idempotente para páginas de contatos que respondam lentamente.
+- [x] Persistir o cursor de página e o total de contatos por conta para retomar importações volumosas sem reiniciar a coleta.
+- [x] Exibir no painel o progresso e a última página concluída para cada conta durante a importação de contatos.
+- [x] Exibir e paginar as segmentações disponíveis por conta para selecionar o recorte de julho de 2026 no painel.
+- [x] Implementar coleta manual de contatos e conversões do período de julho de 2026, com persistência e deduplicação por conta.
+- [x] Implementar painel administrativo protegido, com autorização por conta, métricas de status, validade dos tokens e data da última sincronização.
+- [x] Criar interface refinada, responsiva e acessível para administrar Medsystems e BeautySystems.
+- [ ] Criar testes unitários para OAuth, isolamento das contas, renovação de token e regras de período de coleta.
+- [ ] Validar a interface em desktop e mobile, revisar o registro de tarefas e criar checkpoint para publicação.
+- [x] Configurar e validar uma autorização OAuth independente para a conta Medsystems, sem reutilizar tokens ou dados da BeautySystems.
+- [x] Configurar e validar uma autorização OAuth independente para a conta BeautySystems, sem reutilizar tokens ou dados da Medsystems.
+- [x] Exibir no painel a separação visual e operacional entre as sincronizações de Medsystems e BeautySystems.
+- [x] Registrar e testar com segurança o Client ID e Client Secret OAuth recebidos para a Medsystems.
+- [x] Validar as credenciais da Medsystems pela autorização OAuth real e pela troca bem-sucedida do código retornado no callback.
+- [x] Registrar e validar pelo fluxo OAuth real o Client ID e Client Secret da BeautySystems, sem reutilizar credenciais da Medsystems.
+- [x] Aplicar em cada conta o filtro de origem com Desconhecido, Mídia paga, Outros canais e Outras publicidades.
+- [ ] Implementar um mecanismo verificável para excluir exatamente as conversões cujo recurso usado seja Importação, usando uma segmentação ou fonte que exponha esse campo.
+- [x] Limpar os contatos previamente importados a partir da segmentação ampla antes de carregar o recorte válido de julho de 2026.
+- [x] Calcular os leads de julho de 2026 por conta somente após aplicar as regras de origem permitida e recurso diferente de Importação.
+- [x] Consolidar e entregar separadamente primeira conversão em julho/2026 e última conversão em julho/2026 para Medsystems e BeautySystems.
+- [x] Coletar os eventos diretamente pela API para calcular as duas visões de julho sem depender de segmentações criadas no Dashboard.
+- [x] Aplicar a alternativa de API direta autorizada pelo usuário, registrando a origem decodificada e a exclusão técnica de Importação por identificador ou família de evento.
+- [x] Concluir nesta sessão os lotes de API direta para as quatro visões de julho de 2026 escolhidas pelo usuário.
+- [x] Validar antes da entrega que todas as linhas consolidadas estejam entre 01/07/2026 e 31/07/2026.
+- [x] Documentar no painel e no relatório que a exclusão de Importação pela API direta é heurística e não reproduz integralmente o filtro do Dashboard do RD Station.

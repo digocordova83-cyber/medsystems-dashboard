@@ -1,0 +1,162 @@
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { trpc } from "@/lib/trpc";
+import { ArrowDownRight, ArrowUpRight, BarChart3, ChevronRight, CircleAlert, DollarSign, Filter, Layers3, MousePointerClick, Target, TrendingUp } from "lucide-react";
+import { useMemo, useState } from "react";
+
+type Brand = "all" | "medsystems" | "beautysystems";
+type Channel = "all" | "google_ads" | "meta_ads";
+type Tab = "overview" | "google" | "meta" | "revenue" | "origin" | "losses";
+type RevenueView = "pipeline" | "origin" | "sales" | "lost" | "discard";
+type DealAnalytics = {
+  total: number;
+  open: number;
+  closed: number;
+  won: number;
+  lost: number;
+  totalValue: number;
+  wonValue: number;
+  lostValue: number;
+  wonRateOfClosed: number;
+  averageWonTicket: number;
+  sources: { label: string; count: number; value: number }[];
+  losses: { label: string; count: number; value: number; withObservation: number }[];
+};
+
+const TABS: { id: Tab; label: string }[] = [
+  { id: "overview", label: "Overview" },
+  { id: "google", label: "Google Ads" },
+  { id: "meta", label: "Meta Ads" },
+  { id: "revenue", label: "Revenue" },
+  { id: "origin", label: "Origem & Funil" },
+  { id: "losses", label: "Perdidos & Descartes" },
+];
+
+const BRAND_LABEL: Record<Brand, string> = { all: "Todas as marcas", medsystems: "Medsystems", beautysystems: "BeautySystems" };
+const PLATFORM_LABEL = { google_ads: "Google Ads", meta_ads: "Meta Ads" } as const;
+
+function brl(value: number) {
+  return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).format(value || 0);
+}
+
+function integer(value: number) {
+  return Math.round(value || 0).toLocaleString("pt-BR");
+}
+
+function ratio(numerator: number, denominator: number) {
+  return denominator > 0 ? numerator / denominator : 0;
+}
+
+export const dashboardMath = { ratio };
+
+function StatusPill({ available, children }: { available: boolean; children: React.ReactNode }) {
+  return <Badge variant="outline" className={available ? "border-emerald-300/20 bg-emerald-300/10 text-emerald-100" : "border-amber-200/20 bg-amber-200/10 text-amber-100"}>{children}</Badge>;
+}
+
+function KpiCard({ label, value, helper, icon: Icon, accent = "cyan" }: { label: string; value: string; helper: string; icon: typeof DollarSign; accent?: "cyan" | "green" | "orange" }) {
+  const colors = { cyan: "text-cyan-200 bg-cyan-200/10", green: "text-emerald-200 bg-emerald-200/10", orange: "text-orange-200 bg-orange-200/10" };
+  return <div className="rounded-2xl border border-white/10 bg-black/15 p-5"><div className="flex items-start justify-between gap-3"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">{label}</p><p className="mt-2 text-2xl font-bold tracking-tight">{value}</p></div><span className={`grid h-9 w-9 place-items-center rounded-xl ${colors[accent]}`}><Icon className="h-4 w-4" /></span></div><p className="mt-3 text-xs text-muted-foreground">{helper}</p></div>;
+}
+
+export function RevenueAnalytics() {
+  const [brand, setBrand] = useState<Brand>("all");
+  const [channel, setChannel] = useState<Channel>("all");
+  const [tab, setTab] = useState<Tab>("overview");
+  const [revenueView, setRevenueView] = useState<RevenueView>("pipeline");
+  const dashboard = trpc.analytics.dashboard.useQuery({ brand }, { refetchInterval: 60_000 });
+  const bitrixDeals = trpc.bitrix24.medsystemsJulyDealAnalytics.useQuery(undefined, { refetchInterval: 60_000 });
+
+  const model = useMemo(() => {
+    const data = dashboard.data;
+    if (!data) return null;
+    const platforms = data.platforms.filter(row => channel === "all" || row.platform === channel);
+    const spend = platforms.reduce((sum, row) => sum + row.spend, 0);
+    const impressions = platforms.reduce((sum, row) => sum + row.impressions, 0);
+    const clicks = platforms.reduce((sum, row) => sum + row.clicks, 0);
+    const platformLeads = platforms.reduce((sum, row) => sum + row.leads, 0);
+    const campaigns = data.campaigns.filter(row => channel === "all" || row.platform === channel);
+    const qualifiedLeads = Object.values(data.rdLeads).reduce((sum, value) => sum + value, 0);
+    const commercialRows = data.brandPlatforms.filter(row => row.brand === "medsystems" && (channel === "all" || row.platform === channel));
+    const commercialSpend = commercialRows.reduce((sum, row) => sum + row.spend, 0);
+    const commercialPlatformLeads = commercialRows.reduce((sum, row) => sum + row.leads, 0);
+    const commercialQualifiedLeads = Number(data.rdLeads.medsystems ?? 0);
+    return { platforms, spend, impressions, clicks, platformLeads, campaigns, qualifiedLeads, commercialSpend, commercialPlatformLeads, commercialQualifiedLeads };
+  }, [channel, dashboard.data]);
+
+  const commercialAvailable = brand !== "beautysystems" && Boolean(bitrixDeals.data);
+  const dealData: DealAnalytics | null = commercialAvailable ? ((bitrixDeals.data as DealAnalytics | undefined) ?? null) : null;
+  const maxCampaignSpend = Math.max(1, ...(model?.campaigns.map(item => item.spend) ?? [1]));
+
+  return <section className="overflow-hidden rounded-3xl border border-cyan-100/10 bg-[linear-gradient(135deg,rgba(12,35,55,.92),rgba(12,20,35,.88))] shadow-[0_30px_90px_rgba(0,0,0,.22)]">
+    <div className="border-b border-white/10 px-5 py-6 lg:px-7">
+      <div className="flex flex-col justify-between gap-6 xl:flex-row xl:items-end">
+        <div><div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_14px_rgb(103,232,249)]" /><p className="font-mono-ui text-[10px] uppercase tracking-[.2em] text-cyan-100/65">Mídia → Receita · dados auditáveis</p></div><h2 className="mt-3 text-2xl font-extrabold tracking-[-.04em] text-white sm:text-3xl">Performance de aquisição <span className="text-cyan-200">e receita</span></h2><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Métricas reais de Google Ads e Meta Ads em julho de 2026, conectadas às camadas de leads e negócios sem forçar atribuições não comprovadas.</p></div>
+        <div className="flex flex-wrap items-center gap-2"><StatusPill available>Julho 2026</StatusPill><StatusPill available={brand !== "beautysystems"}>Bitrix24 comercial {brand === "beautysystems" ? "indisponível" : "conectado"}</StatusPill></div>
+      </div>
+
+      <div className="mt-6 flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between"><div className="flex flex-wrap gap-2">{(["all", "medsystems", "beautysystems"] as Brand[]).map(option => <Button key={option} size="sm" variant={brand === option ? "default" : "outline"} className={brand === option ? "bg-cyan-200 text-slate-950 hover:bg-cyan-100" : "border-white/10 bg-black/10 text-muted-foreground hover:bg-white/10 hover:text-white"} onClick={() => setBrand(option)}>{BRAND_LABEL[option]}</Button>)}</div><div className="flex flex-wrap gap-2">{(["all", "google_ads", "meta_ads"] as Channel[]).map(option => <Button key={option} size="sm" variant={channel === option ? "secondary" : "outline"} className={channel === option ? "bg-white/10 text-white" : "border-white/10 bg-black/10 text-muted-foreground hover:bg-white/10 hover:text-white"} onClick={() => setChannel(option)}>{option === "all" ? "Todos os canais" : PLATFORM_LABEL[option]}</Button>)}</div></div>
+    </div>
+
+    <div className="overflow-x-auto border-b border-white/10 px-5 lg:px-7"><div className="flex min-w-max gap-1 py-3">{TABS.map(item => <button key={item.id} onClick={() => setTab(item.id)} className={`rounded-lg px-3 py-2 text-sm transition ${tab === item.id ? "bg-cyan-200/10 text-cyan-100" : "text-muted-foreground hover:bg-white/5 hover:text-white"}`}>{item.label}</button>)}</div></div>
+
+    {dashboard.isLoading ? <div className="grid min-h-80 place-items-center"><div className="text-center"><BarChart3 className="mx-auto h-6 w-6 animate-pulse text-cyan-200" /><p className="mt-3 text-sm text-muted-foreground">Carregando métricas de mídia…</p></div></div> : dashboard.isError ? <DataState title="Não foi possível carregar as métricas" detail={dashboard.error.message || "Tente atualizar a página. Os dados de origem não foram alterados."} /> : !model || model.platforms.length === 0 ? <DataState title="Não há mídia para este recorte" detail="Não foram encontrados registros de Google Ads ou Meta Ads para a marca e canal selecionados." /> : <div className="p-5 lg:p-7">
+      {tab === "overview" ? <Overview model={model} dealData={dealData} maxCampaignSpend={maxCampaignSpend} /> : null}
+      {tab === "google" || tab === "meta" ? <CampaignView title={tab === "google" ? "Google Ads" : "Meta Ads"} campaigns={model.campaigns.filter(item => item.platform === (tab === "google" ? "google_ads" : "meta_ads"))} maxSpend={maxCampaignSpend} /> : null}
+      {tab === "revenue" ? <RevenueViewPanel view={revenueView} setView={setRevenueView} dealData={dealData} model={model} /> : null}
+      {tab === "origin" ? <OriginFunnel model={model} dealData={dealData} /> : null}
+      {tab === "losses" ? <LossView dealData={dealData} /> : null}
+    </div>}
+  </section>;
+}
+
+function Overview({ model, dealData, maxCampaignSpend }: { model: { spend: number; impressions: number; clicks: number; platformLeads: number; qualifiedLeads: number; commercialSpend: number; commercialPlatformLeads: number; commercialQualifiedLeads: number; platforms: { platform: "google_ads" | "meta_ads"; spend: number; impressions: number; clicks: number; leads: number }[]; campaigns: { platform: "google_ads" | "meta_ads"; campaignId: string; campaignName: string; brand: "medsystems" | "beautysystems"; spend: number; impressions: number; clicks: number; leads: number }[] }; dealData: DealAnalytics | null; maxCampaignSpend: number }) {
+  const revenue = dealData?.wonValue ?? 0;
+  return <div className="space-y-6"><div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3"><KpiCard label="Investimento" value={brl(model.spend)} helper={`${integer(model.impressions)} impressões`} icon={DollarSign} /><KpiCard label="Leads de plataforma" value={integer(model.platformLeads)} helper={`CPL ${brl(ratio(model.spend, model.platformLeads))}`} icon={Target} /><KpiCard label="Leads qualificados RD" value={integer(model.qualifiedLeads)} helper="Sem atribuição forçada por campanha" icon={Filter} accent="green" /><KpiCard label="Negócios" value={dealData ? integer(dealData.total) : "—"} helper={dealData ? "Bitrix24 Medsystems" : "CRM BeautySystems pendente"} icon={Layers3} /><KpiCard label="Vendas" value={dealData ? integer(dealData.won) : "—"} helper={dealData ? `${dealData.wonRateOfClosed.toFixed(1)}% dos fechados` : "CRM BeautySystems pendente"} icon={TrendingUp} accent="green" /><KpiCard label="Receita ganha" value={dealData ? brl(revenue) : "—"} helper={dealData ? "Bitrix24 Medsystems; sem atribuição por canal" : "Bitrix24 BeautySystems pendente"} icon={DollarSign} accent="green" /></div>
+    <div className="grid gap-5 xl:grid-cols-[1.05fr_.95fr]"><div className="rounded-2xl border border-white/10 bg-black/15 p-5"><div className="flex items-center justify-between"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">Comparativo de canais</p><h3 className="mt-1 font-semibold">Google Ads × Meta Ads</h3></div><Badge variant="outline" className="border-white/10 text-muted-foreground">Julho/2026</Badge></div><div className="mt-5 space-y-4">{model.platforms.map(item => <div key={item.platform}><div className="mb-2 flex items-center justify-between text-sm"><span>{PLATFORM_LABEL[item.platform]}</span><span className="font-mono-ui text-cyan-100">{brl(item.spend)}</span></div><div className="h-2 overflow-hidden rounded-full bg-white/5"><div className={`h-full rounded-full ${item.platform === "google_ads" ? "bg-cyan-300" : "bg-violet-300"}`} style={{ width: `${Math.max(2, (item.spend / Math.max(...model.platforms.map(row => row.spend), 1)) * 100)}%` }} /></div><div className="mt-2 flex justify-between text-xs text-muted-foreground"><span>{integer(item.leads)} leads</span><span>{integer(item.clicks)} cliques · CPL {brl(ratio(item.spend, item.leads))}</span></div></div>)}</div></div>
+      <div className="rounded-2xl border border-white/10 bg-black/15 p-5"><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">Funil mensurável</p><h3 className="mt-1 font-semibold">Do investimento à receita</h3><div className="mt-5 grid grid-cols-2 gap-3"><FunnelStep label="Investimento Medsystems" value={dealData ? brl(model.commercialSpend) : brl(model.spend)} /><FunnelStep label="Leads Medsystems" value={dealData ? integer(model.commercialPlatformLeads) : integer(model.platformLeads)} /><FunnelStep label="Negócios" value={dealData ? integer(dealData.total) : "—"} /><FunnelStep label="Vendas" value={dealData ? integer(dealData.won) : "—"} /><FunnelStep label="Receita" value={dealData ? brl(dealData.wonValue) : "—"} /><FunnelStep label="ROAS atribuído" value="—" /></div><p className="mt-4 text-xs leading-5 text-muted-foreground">Negócios e receita refletem somente a Medsystems. ROAS só será exibido após o vínculo auditável entre mídia, lead, negócio e venda por UTM ou identificador.</p></div></div>
+    <CampaignTable campaigns={model.campaigns.slice(0, 8)} maxSpend={maxCampaignSpend} />
+  </div>;
+}
+
+function CampaignView({ title, campaigns, maxSpend }: { title: string; campaigns: { platform: "google_ads" | "meta_ads"; campaignId: string; campaignName: string; brand: "medsystems" | "beautysystems"; spend: number; impressions: number; clicks: number; leads: number }[]; maxSpend: number }) {
+  return <div className="space-y-5"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">Drill-down disponível</p><h3 className="mt-1 text-xl font-bold">{title} · Campanhas</h3><p className="mt-1 text-sm text-muted-foreground">Dados de julho de 2026 por marca e campanha. Conjunto e anúncio serão exibidos quando a granularidade estiver armazenada.</p></div><CampaignTable campaigns={campaigns} maxSpend={maxSpend} /></div>;
+}
+
+function RevenueViewPanel({ view, setView, dealData, model }: { view: RevenueView; setView: (view: RevenueView) => void; dealData: DealAnalytics | null; model: { spend: number; platformLeads: number; qualifiedLeads: number; commercialSpend: number; commercialPlatformLeads: number; commercialQualifiedLeads: number } }) {
+  const views: { id: RevenueView; label: string }[] = [{ id: "pipeline", label: "Pipeline" }, { id: "origin", label: "Origem" }, { id: "sales", label: "Vendas" }, { id: "lost", label: "Perdidos" }, { id: "discard", label: "Descartes" }];
+  return <div className="space-y-5"><div className="flex flex-col justify-between gap-4 md:flex-row md:items-center"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">Revenue</p><h3 className="mt-1 text-xl font-bold">Pipeline comercial da Medsystems</h3></div><div className="flex flex-wrap gap-1">{views.map(item => <Button key={item.id} size="sm" variant={item.id === view ? "secondary" : "outline"} className={item.id === view ? "bg-cyan-200/10 text-cyan-100" : "border-white/10 bg-black/10 text-muted-foreground"} onClick={() => setView(item.id)}>{item.label}</Button>)}</div></div>{!dealData ? <UnavailableCommercial /> : <>{view === "pipeline" ? <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5"><FunnelStep label="Leads mídia Medsystems" value={integer(model.commercialPlatformLeads)} /><FunnelStep label="Qualificados RD Medsystems" value={integer(model.commercialQualifiedLeads)} /><FunnelStep label="Negócios" value={integer(dealData.total)} /><FunnelStep label="Ganhos" value={integer(dealData.won)} /><FunnelStep label="Receita" value={brl(dealData.wonValue)} /></div> : null}{view === "origin" ? <Breakdown title="Negócios por origem" rows={dealData.sources.map(item => ({ label: item.label, primary: `${integer(item.count)} negócios`, secondary: brl(item.value) }))} /> : null}{view === "sales" ? <div className="grid gap-4 sm:grid-cols-3"><KpiCard label="Vendas" value={integer(dealData.won)} helper={`${dealData.wonRateOfClosed.toFixed(1)}% dos fechados`} icon={TrendingUp} accent="green" /><KpiCard label="Receita" value={brl(dealData.wonValue)} helper="Negócios ganhos em julho" icon={DollarSign} accent="green" /><KpiCard label="Custo por venda atribuído" value="—" helper="Matching UTM mídia → venda pendente" icon={MousePointerClick} /></div> : null}{view === "lost" ? <Breakdown title="Negócios perdidos por pipeline" rows={dealData.losses.map(item => ({ label: item.label, primary: `${integer(item.count)} perdas`, secondary: brl(item.value) }))} /> : null}{view === "discard" ? <div className="rounded-2xl border border-amber-200/15 bg-amber-100/5 p-5"><CircleAlert className="h-5 w-5 text-amber-200" /><h4 className="mt-3 font-semibold text-amber-50">Descartes aguardam campo estruturado</h4><p className="mt-2 max-w-2xl text-sm leading-6 text-amber-50/70">O Bitrix24 atual não disponibiliza um campo estruturado de descarte ou motivo de descarte nos negócios importados. O painel mantém essa lacuna explícita em vez de inferir motivos a partir de observações livres.</p></div> : null}</>}</div>;
+}
+
+function OriginFunnel({ model, dealData }: { model: { spend: number; platformLeads: number; qualifiedLeads: number; commercialSpend: number; commercialPlatformLeads: number; commercialQualifiedLeads: number }; dealData: DealAnalytics | null }) {
+  const mediaLeads = dealData ? model.commercialPlatformLeads : model.platformLeads;
+  const qualifiedLeads = dealData ? model.commercialQualifiedLeads : model.qualifiedLeads;
+  return <div className="grid gap-5 xl:grid-cols-[.9fr_1.1fr]"><div className="rounded-2xl border border-white/10 bg-black/15 p-5"><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">Funil de qualidade</p><div className="mt-5 space-y-3"><FunnelBar label={dealData ? "Leads de plataforma Medsystems" : "Leads de plataforma"} value={mediaLeads} max={mediaLeads} color="bg-cyan-300" /><FunnelBar label={dealData ? "Leads qualificados RD Medsystems" : "Leads qualificados RD"} value={qualifiedLeads} max={mediaLeads} color="bg-emerald-300" /><FunnelBar label="Negócios Bitrix" value={dealData?.total ?? 0} max={mediaLeads} color="bg-violet-300" /><FunnelBar label="Vendas ganhas" value={dealData?.won ?? 0} max={mediaLeads} color="bg-orange-300" /></div></div>{dealData ? <Breakdown title="Origem × valor de negócio" rows={dealData.sources.map(item => ({ label: item.label, primary: `${integer(item.count)} negócios`, secondary: brl(item.value) }))} /> : <UnavailableCommercial />}</div>;
+}
+
+function LossView({ dealData }: { dealData: DealAnalytics | null }) {
+  return <div className="grid gap-5 xl:grid-cols-[1.1fr_.9fr]">{dealData ? <Breakdown title="Perdidos por pipeline" rows={dealData.losses.map(item => ({ label: item.label, primary: `${integer(item.count)} negócios`, secondary: `${integer(item.withObservation)} com observação` }))} /> : <UnavailableCommercial />}<div className="rounded-2xl border border-orange-200/15 bg-orange-200/5 p-5"><ArrowDownRight className="h-5 w-5 text-orange-200" /><h3 className="mt-3 font-semibold">Motivos de perda e descarte</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">A origem é estruturada no Bitrix24, mas os motivos ainda são observações livres. Para fechar esta análise, recomendamos tornar “motivo de perda” e “motivo de descarte” campos obrigatórios e padronizados no CRM.</p></div></div>;
+}
+
+function CampaignTable({ campaigns, maxSpend }: { campaigns: { platform: "google_ads" | "meta_ads"; campaignId: string; campaignName: string; brand: "medsystems" | "beautysystems"; spend: number; impressions: number; clicks: number; leads: number }[]; maxSpend: number }) {
+  return <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/15"><div className="flex items-center justify-between border-b border-white/10 px-5 py-4"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">Campanhas</p><h3 className="mt-1 font-semibold">Eficiência por investimento</h3></div><Layers3 className="h-5 w-5 text-cyan-200" /></div><div className="overflow-x-auto"><table className="w-full min-w-[720px] text-left text-sm"><thead className="bg-white/[.03] text-[10px] uppercase tracking-[.12em] text-muted-foreground"><tr><th className="px-5 py-3 font-medium">Campanha</th><th className="px-4 py-3 font-medium">Canal</th><th className="px-4 py-3 font-medium">Investimento</th><th className="px-4 py-3 font-medium">Leads</th><th className="px-4 py-3 font-medium">CPL</th><th className="px-4 py-3 font-medium">Escala</th></tr></thead><tbody>{campaigns.map(item => <tr key={`${item.platform}-${item.campaignId}-${item.brand}`} className="border-t border-white/5"><td className="max-w-72 px-5 py-4"><p className="truncate font-medium text-foreground">{item.campaignName}</p><p className="mt-1 font-mono-ui text-[10px] text-muted-foreground">{item.brand}</p></td><td className="px-4 py-4"><Badge variant="outline" className="border-white/10 text-muted-foreground">{PLATFORM_LABEL[item.platform]}</Badge></td><td className="px-4 py-4 text-cyan-100">{brl(item.spend)}</td><td className="px-4 py-4">{integer(item.leads)}</td><td className="px-4 py-4">{brl(ratio(item.spend, item.leads))}</td><td className="px-4 py-4"><div className="h-1.5 w-24 overflow-hidden rounded-full bg-white/5"><div className="h-full rounded-full bg-cyan-300" style={{ width: `${Math.max(3, (item.spend / maxSpend) * 100)}%` }} /></div></td></tr>)}</tbody></table></div></div>;
+}
+
+function Breakdown({ title, rows }: { title: string; rows: { label: string; primary: string; secondary: string }[] }) {
+  return <div className="rounded-2xl border border-white/10 bg-black/15 p-5"><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">Análise de origem</p><h3 className="mt-1 font-semibold">{title}</h3><div className="mt-5 space-y-3">{rows.map(row => <div key={row.label} className="flex items-center justify-between gap-4 border-b border-white/5 pb-3 last:border-0 last:pb-0"><p className="text-sm text-foreground">{row.label}</p><div className="text-right"><p className="text-sm text-cyan-100">{row.primary}</p><p className="mt-1 text-xs text-muted-foreground">{row.secondary}</p></div></div>)}</div></div>;
+}
+
+function FunnelStep({ label, value }: { label: string; value: string }) {
+  return <div className="rounded-xl border border-white/10 bg-white/[.025] p-3"><p className="font-mono-ui text-[9px] uppercase tracking-[.11em] text-muted-foreground">{label}</p><p className="mt-1 text-lg font-bold">{value}</p></div>;
+}
+
+function FunnelBar({ label, value, max, color }: { label: string; value: number; max: number; color: string }) {
+  return <div><div className="flex items-center justify-between text-sm"><span>{label}</span><span className="font-mono-ui text-cyan-100">{integer(value)}</span></div><div className="mt-2 h-2 overflow-hidden rounded-full bg-white/5"><div className={`h-full rounded-full ${color}`} style={{ width: `${Math.max(value > 0 ? 2 : 0, Math.min(100, ratio(value, max) * 100))}%` }} /></div></div>;
+}
+
+function UnavailableCommercial() {
+  return <div className="rounded-2xl border border-amber-200/15 bg-amber-100/5 p-5"><CircleAlert className="h-5 w-5 text-amber-200" /><h3 className="mt-3 font-semibold text-amber-50">Camada comercial indisponível para esta marca</h3><p className="mt-2 text-sm leading-6 text-amber-50/70">A integração Bitrix24 está conectada somente à Medsystems. O painel mantém os dados de mídia da BeautySystems separados e não inventa negócios, receita ou ROAS comercial onde não há CRM conectado.</p></div>;
+}
+
+function DataState({ title, detail }: { title: string; detail: string }) {
+  return <div className="grid min-h-80 place-items-center px-5 text-center"><div className="max-w-md rounded-2xl border border-amber-200/15 bg-amber-100/5 p-6"><CircleAlert className="mx-auto h-5 w-5 text-amber-200" /><h3 className="mt-3 font-semibold text-amber-50">{title}</h3><p className="mt-2 text-sm leading-6 text-amber-50/70">{detail}</p></div></div>;
+}

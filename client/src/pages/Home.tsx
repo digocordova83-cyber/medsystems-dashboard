@@ -1,4 +1,5 @@
 import DashboardLayout from "@/components/DashboardLayout";
+import { RevenueAnalytics } from "@/components/RevenueAnalytics";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -129,6 +130,8 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-3 text-xs text-muted-foreground"><ShieldCheck className="h-4 w-4 text-emerald-300" /> Painel restrito · tokens criptografados</div>
         </header>
+
+        <RevenueAnalytics />
 
         <section className="grid gap-4 lg:grid-cols-3">
           <div className="surface-glass rounded-2xl p-5 lg:col-span-2">

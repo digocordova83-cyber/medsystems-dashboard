@@ -6,8 +6,10 @@ import { systemRouter } from "./_core/systemRouter";
 import { callbackUrl, createAuthorizationUrl, fetchSegmentations, integrationStatus, syncNextContactPage, syncNextJulyConversionBatch, updateSegmentation } from "./rdstation/service";
 import { isRdAccountKey, RD_ACCOUNTS, type RdAccountKey } from "./rdstation/types";
 import { medsystemsBitrixJulyDealAnalytics, medsystemsBitrixJulyTotals, medsystemsBitrixStatus } from "./bitrix24/service";
+import { mediaDashboardAnalytics } from "./db";
 
 const accountInput = z.enum(RD_ACCOUNTS);
+const analyticsBrandInput = z.enum(["all", "medsystems", "beautysystems"]);
 
 function requestOrigin(req: { protocol?: string; header: (name: string) => string | undefined }) {
   const browserOrigin = req.header("origin");
@@ -59,6 +61,9 @@ export const appRouter = router({
     medsystemsStatus: adminProcedure.query(() => medsystemsBitrixStatus()),
     medsystemsJulyTotals: adminProcedure.query(() => medsystemsBitrixJulyTotals()),
     medsystemsJulyDealAnalytics: adminProcedure.query(() => medsystemsBitrixJulyDealAnalytics()),
+  }),
+  analytics: router({
+    dashboard: adminProcedure.input(z.object({ brand: analyticsBrandInput })).query(({ input }) => mediaDashboardAnalytics(input.brand)),
   }),
 });
 

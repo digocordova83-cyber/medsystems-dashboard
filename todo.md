@@ -40,3 +40,11 @@
 - [x] Exibir no painel o status protegido da conexão Bitrix24 Medsystems e as permissões CRM validadas.
 - [x] Calcular negócios fechados, valores, descartes, motivos de descarte e origens para julho de 2026, registrando que o motivo não é estruturado no payload recebido.
 - [x] Exibir a visão analítica de negócios de julho no painel administrativo Bitrix24.
+- [x] Criar navegação analítica com Overview, Google Ads, Meta Ads, Negócios, Origem & Funil e Perdidos & Descartes.
+- [ ] Implementar filtros globais de marca, período, canal e status sem alterar os dados de origem.
+- [ ] Modelar a camada analítica normalizada para mídia, leads, negócios, vendas, receita, origens e UTMs.
+- [x] Persistir as métricas reais de julho de 2026 de Google Ads e Meta Ads retornadas pelo Windsor.ai em uma camada normalizada por marca, plataforma e campanha.
+- [x] Construir o overview executivo com investimento, leads, CPL, negócios, vendas e receita; exibir ROAS apenas após atribuição auditável por identificador ou UTM.
+- [x] Construir funil de qualidade, visão de origens e visão de perdidos/descartes com dados Bitrix24 disponíveis.
+- [ ] Integrar dados de Google Ads e Meta Ads por conta, campanha, conjunto e anúncio após a autorização das plataformas.
+- [ ] Implementar atribuição auditável entre mídia, lead, negócio e venda por identificadores ou UTMs, sem inferir relações não comprovadas.

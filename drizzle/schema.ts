@@ -1,10 +1,11 @@
-import { index, int, mysqlEnum, mysqlTable, text, timestamp, uniqueIndex, varchar } from "drizzle-orm/mysql-core";
+import { double, index, int, mysqlEnum, mysqlTable, text, timestamp, uniqueIndex, varchar } from "drizzle-orm/mysql-core";
 
 const accountKeyValues = ["medsystems", "beautysystems"] as const;
 const integrationStatusValues = ["desconectada", "pronta", "sincronizando", "erro"] as const;
 const julyViewValues = ["primeira", "ultima"] as const;
 const julyLeadStatusValues = ["pendente", "qualificado", "rejeitado"] as const;
 const bitrixEntityTypeValues = ["lead", "contact", "deal"] as const;
+const mediaPlatformValues = ["google_ads", "meta_ads"] as const;
 
 export const users = mysqlTable("users", {
   id: int("id").autoincrement().primaryKey(),
@@ -133,6 +134,29 @@ export const bitrix24SyncRuns = mysqlTable("bitrix24SyncRuns", {
   errorMessage: text("errorMessage"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
+
+export const mediaDailyPerformance = mysqlTable("mediaDailyPerformance", {
+  id: int("id").autoincrement().primaryKey(),
+  platform: mysqlEnum("platform", mediaPlatformValues).notNull(),
+  brand: mysqlEnum("brand", accountKeyValues).notNull(),
+  reportDate: timestamp("reportDate").notNull(),
+  accountId: varchar("accountId", { length: 64 }).notNull(),
+  accountName: varchar("accountName", { length: 255 }),
+  campaignId: varchar("campaignId", { length: 128 }).notNull(),
+  campaignName: varchar("campaignName", { length: 512 }),
+  spend: double("spend").default(0).notNull(),
+  impressions: int("impressions").default(0).notNull(),
+  reach: int("reach").default(0).notNull(),
+  clicks: int("clicks").default(0).notNull(),
+  platformLeads: double("platformLeads").default(0).notNull(),
+  platformConversions: double("platformConversions").default(0).notNull(),
+  rawPayload: text("rawPayload").notNull(),
+  syncedAt: timestamp("syncedAt").defaultNow().notNull(),
+}, table => [
+  uniqueIndex("media_daily_platform_account_date_campaign_unique").on(table.platform, table.accountId, table.reportDate, table.campaignId),
+  index("media_daily_brand_date_index").on(table.brand, table.reportDate),
+  index("media_daily_platform_date_index").on(table.platform, table.reportDate),
+]);
 
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;

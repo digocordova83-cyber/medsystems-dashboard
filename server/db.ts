@@ -1,8 +1,9 @@
-import { and, asc, eq, gte, isNull, lt, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gte, inArray, isNull, lt, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
   bitrix24Entities,
   bitrix24SyncRuns,
+  mediaDailyPerformance,
   type InsertUser,
   rdStationAccounts,
   rdStationContacts,
@@ -256,6 +257,7 @@ export async function upsertConversionEvents(accountKey: RdAccountKey, contactUu
 
 export type JulyViewType = "primeira" | "ultima";
 export type BitrixEntityType = "lead" | "contact" | "deal";
+export type AnalyticsBrand = "all" | "medsystems" | "beautysystems";
 
 function firstMultiValue(value: unknown) {
   if (!Array.isArray(value) || !value.length) return null;
@@ -395,6 +397,80 @@ export async function bitrixDealJulyAnalytics(portal: string, start: Date, end: 
     lostWithObservation,
     sources: toBreakdown(sources),
     losses: Array.from(losses, ([label, item]) => ({ label, ...item })).sort((a, b) => b.count - a.count),
+  };
+}
+
+function analyticsNumber(value: unknown) {
+  return Number(value ?? 0) || 0;
+}
+
+export async function mediaDashboardAnalytics(brand: AnalyticsBrand) {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  const start = new Date("2026-07-01T00:00:00-03:00");
+  const end = new Date("2026-08-01T00:00:00-03:00");
+  const brands = brand === "all" ? ["medsystems", "beautysystems"] as const : [brand] as const;
+  const mediaWhere = and(inArray(mediaDailyPerformance.brand, brands), gte(mediaDailyPerformance.reportDate, start), lt(mediaDailyPerformance.reportDate, end));
+
+  const [mediaTotal] = await db.select({
+    spend: sql<number>`sum(${mediaDailyPerformance.spend})`,
+    impressions: sql<number>`sum(${mediaDailyPerformance.impressions})`,
+    reach: sql<number>`sum(${mediaDailyPerformance.reach})`,
+    clicks: sql<number>`sum(${mediaDailyPerformance.clicks})`,
+    platformLeads: sql<number>`sum(${mediaDailyPerformance.platformLeads})`,
+  }).from(mediaDailyPerformance).where(mediaWhere);
+
+  const platforms = await db.select({
+    platform: mediaDailyPerformance.platform,
+    spend: sql<number>`sum(${mediaDailyPerformance.spend})`,
+    impressions: sql<number>`sum(${mediaDailyPerformance.impressions})`,
+    clicks: sql<number>`sum(${mediaDailyPerformance.clicks})`,
+    leads: sql<number>`sum(${mediaDailyPerformance.platformLeads})`,
+  }).from(mediaDailyPerformance).where(mediaWhere).groupBy(mediaDailyPerformance.platform);
+
+  const brandPlatforms = await db.select({
+    brand: mediaDailyPerformance.brand,
+    platform: mediaDailyPerformance.platform,
+    spend: sql<number>`sum(${mediaDailyPerformance.spend})`,
+    impressions: sql<number>`sum(${mediaDailyPerformance.impressions})`,
+    clicks: sql<number>`sum(${mediaDailyPerformance.clicks})`,
+    leads: sql<number>`sum(${mediaDailyPerformance.platformLeads})`,
+  }).from(mediaDailyPerformance).where(mediaWhere).groupBy(mediaDailyPerformance.brand, mediaDailyPerformance.platform);
+
+  const campaigns = await db.select({
+    platform: mediaDailyPerformance.platform,
+    brand: mediaDailyPerformance.brand,
+    campaignId: mediaDailyPerformance.campaignId,
+    campaignName: mediaDailyPerformance.campaignName,
+    spend: sql<number>`sum(${mediaDailyPerformance.spend})`,
+    impressions: sql<number>`sum(${mediaDailyPerformance.impressions})`,
+    clicks: sql<number>`sum(${mediaDailyPerformance.clicks})`,
+    leads: sql<number>`sum(${mediaDailyPerformance.platformLeads})`,
+  }).from(mediaDailyPerformance).where(mediaWhere).groupBy(
+    mediaDailyPerformance.platform,
+    mediaDailyPerformance.brand,
+    mediaDailyPerformance.campaignId,
+    mediaDailyPerformance.campaignName,
+  ).orderBy(desc(sql`sum(${mediaDailyPerformance.spend})`)).limit(20);
+
+  const rdQualified = await db.select({ accountKey: rdStationJulyLeadViews.accountKey, count: sql<number>`count(*)` })
+    .from(rdStationJulyLeadViews)
+    .where(and(inArray(rdStationJulyLeadViews.accountKey, brands), eq(rdStationJulyLeadViews.viewType, "primeira"), eq(rdStationJulyLeadViews.status, "qualificado")))
+    .groupBy(rdStationJulyLeadViews.accountKey);
+
+  return {
+    period: { start: "2026-07-01", end: "2026-07-31" },
+    media: {
+      spend: analyticsNumber(mediaTotal?.spend),
+      impressions: analyticsNumber(mediaTotal?.impressions),
+      reach: analyticsNumber(mediaTotal?.reach),
+      clicks: analyticsNumber(mediaTotal?.clicks),
+      platformLeads: analyticsNumber(mediaTotal?.platformLeads),
+    },
+    platforms: platforms.map(row => ({ platform: row.platform, spend: analyticsNumber(row.spend), impressions: analyticsNumber(row.impressions), clicks: analyticsNumber(row.clicks), leads: analyticsNumber(row.leads) })),
+    brandPlatforms: brandPlatforms.map(row => ({ brand: row.brand, platform: row.platform, spend: analyticsNumber(row.spend), impressions: analyticsNumber(row.impressions), clicks: analyticsNumber(row.clicks), leads: analyticsNumber(row.leads) })),
+    campaigns: campaigns.map(row => ({ platform: row.platform, brand: row.brand, campaignId: row.campaignId, campaignName: row.campaignName ?? "Sem nome", spend: analyticsNumber(row.spend), impressions: analyticsNumber(row.impressions), clicks: analyticsNumber(row.clicks), leads: analyticsNumber(row.leads) })),
+    rdLeads: Object.fromEntries(rdQualified.map(row => [row.accountKey, analyticsNumber(row.count)])),
   };
 }
 

@@ -43,6 +43,14 @@ function Metric({ label, value }: { label: string; value: number }) {
   );
 }
 
+function DealMetric({ label, value, detail }: { label: string; value: string; detail?: string }) {
+  return <div className="p-5 first:pl-6"><p className="font-mono-ui text-[10px] uppercase tracking-[.12em] text-muted-foreground">{label}</p><p className="mt-2 text-2xl font-bold tracking-tight">{value}</p>{detail ? <p className="mt-1 text-xs text-muted-foreground">{detail}</p> : null}</div>;
+}
+
+function formatBrl(value: number) {
+  return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).format(value);
+}
+
 export default function Home() {
   const { user, loading } = useAuth();
   const utils = trpc.useUtils();
@@ -50,6 +58,7 @@ export default function Home() {
   const callback = trpc.rdstation.callbackInfo.useQuery(undefined, { enabled: Boolean(user) });
   const bitrix = trpc.bitrix24.medsystemsStatus.useQuery(undefined, { enabled: Boolean(user), refetchInterval: 60_000 });
   const bitrixJuly = trpc.bitrix24.medsystemsJulyTotals.useQuery(undefined, { enabled: Boolean(user), refetchInterval: 60_000 });
+  const bitrixDeals = trpc.bitrix24.medsystemsJulyDealAnalytics.useQuery(undefined, { enabled: Boolean(user), refetchInterval: 60_000 });
   const medSegmentations = trpc.rdstation.listSegmentations.useQuery({ accountKey: "medsystems" }, { enabled: false });
   const beautySegmentations = trpc.rdstation.listSegmentations.useQuery({ accountKey: "beautysystems" }, { enabled: false });
   const [segmentations, setSegmentations] = useState<Partial<Record<AccountKey, string>>>({});
@@ -133,6 +142,13 @@ export default function Home() {
           <div className="flex items-start gap-3"><div className={`mt-1 h-2.5 w-2.5 rounded-full ${bitrix.data?.connected ? "bg-emerald-300 shadow-[0_0_12px_rgb(110,231,183)]" : "bg-orange-300"}`} /><div><p className="font-mono-ui text-[11px] uppercase tracking-[.16em] text-muted-foreground">Bitrix24 CRM · Medsystems</p><p className="mt-1 text-sm font-semibold">{bitrix.data?.connected ? "Conectado com sucesso" : "Conexão indisponível"}</p><p className="mt-1 text-xs text-muted-foreground">{bitrix.data?.connected ? `Portal: ${bitrix.data.portal}` : "Verifique o webhook de entrada configurado."}</p><p className="mt-2 text-xs text-emerald-100/80">Julho/2026: <strong>{bitrixJuly.data?.lead ?? 0}</strong> leads · <strong>{bitrixJuly.data?.contact ?? 0}</strong> contatos · <strong>{bitrixJuly.data?.deal ?? 0}</strong> negócios</p></div></div>
           {bitrix.data?.connected ? <div className="flex gap-2">{bitrix.data.capabilities.map(capability => <Badge key={capability} variant="outline" className="border-emerald-200/20 text-emerald-100">{capability}</Badge>)}</div> : null}
         </section>
+
+        {bitrixDeals.data ? <section className="surface-glass overflow-hidden rounded-3xl" id="negocios">
+          <div className="flex flex-col justify-between gap-3 border-b border-white/10 px-6 py-5 sm:flex-row sm:items-end"><div><p className="font-mono-ui text-[11px] uppercase tracking-[.16em] text-cyan-100/70">Bitrix24 · negócios criados em julho/2026</p><h2 className="mt-1 text-xl font-bold tracking-tight">Fechamentos, valores e descartes</h2></div><p className="text-xs text-muted-foreground">Valores em BRL · Critério: DATE_CREATE</p></div>
+          <div className="grid divide-x divide-white/10 border-b border-white/10 sm:grid-cols-4"><DealMetric label="Negócios criados" value={bitrixDeals.data.total.toLocaleString("pt-BR")} /><DealMetric label="Fechados" value={bitrixDeals.data.closed.toLocaleString("pt-BR")} detail={`${bitrixDeals.data.won} ganhos · ${bitrixDeals.data.lost} perdidos`} /><DealMetric label="Valor ganho" value={formatBrl(bitrixDeals.data.wonValue)} detail={`${bitrixDeals.data.wonRateOfClosed.toFixed(1)}% dos fechados`} /><DealMetric label="Ticket médio ganho" value={formatBrl(bitrixDeals.data.averageWonTicket)} detail={`${bitrixDeals.data.open} em aberto`} /></div>
+          <div className="grid gap-0 lg:grid-cols-2"><div className="p-6"><h3 className="text-sm font-semibold">Origens dos negócios</h3><div className="mt-4 space-y-3">{bitrixDeals.data.sources.slice(0, 6).map(source => <div key={source.label} className="flex items-center justify-between gap-4"><div className="min-w-0"><p className="truncate text-sm text-foreground">{source.label}</p><p className="text-xs text-muted-foreground">{source.count} negócios</p></div><p className="font-mono-ui text-xs text-cyan-100">{formatBrl(source.value)}</p></div>)}</div></div>
+          <div className="border-t border-white/10 p-6 lg:border-l lg:border-t-0"><h3 className="text-sm font-semibold">Descartes por pipeline</h3><div className="mt-4 space-y-3">{bitrixDeals.data.losses.map(loss => <div key={loss.label} className="flex items-center justify-between gap-4"><div><p className="text-sm text-foreground">{loss.label}</p><p className="text-xs text-muted-foreground">{loss.count} descartes · {loss.withObservation} com observação</p></div><p className="font-mono-ui text-xs text-orange-100">{formatBrl(loss.value)}</p></div>)}</div><p className="mt-5 rounded-xl border border-amber-200/15 bg-amber-100/5 p-3 text-xs leading-5 text-amber-50/70">O Bitrix24 disponibiliza a etapa “Negócio perdido”, mas não possui um campo estruturado de motivo de perda nos dados recebidos. As observações existem em texto livre e não são exibidas neste painel.</p></div></div>
+        </section> : null}
 
         <section id="sincronizacao" className="grid gap-5 xl:grid-cols-2">
           {status.isLoading ? <div className="surface-glass col-span-full grid min-h-72 place-items-center rounded-3xl"><Loader2 className="animate-spin text-primary" /></div> : status.data?.accounts.map(account => {

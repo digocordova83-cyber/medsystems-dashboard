@@ -1,4 +1,4 @@
-import { bitrixJulyTotals, finishBitrixSyncRun, startBitrixSyncRun, type BitrixEntityType, upsertBitrixEntities } from "../db";
+import { bitrixDealJulyAnalytics, bitrixJulyTotals, finishBitrixSyncRun, startBitrixSyncRun, type BitrixEntityType, upsertBitrixEntities } from "../db";
 
 const CRM_CAPABILITIES = ["Leads", "Contatos", "Negócios"] as const;
 const JULY_2026_START = new Date("2026-07-01T00:00:00-03:00");
@@ -11,7 +11,7 @@ const ENTITY_METHOD: Record<BitrixEntityType, string> = {
 const ENTITY_SELECT: Record<BitrixEntityType, string[]> = {
   lead: ["ID", "TITLE", "NAME", "LAST_NAME", "SECOND_NAME", "EMAIL", "PHONE", "STATUS_ID", "DATE_CREATE", "DATE_MODIFY"],
   contact: ["ID", "NAME", "LAST_NAME", "SECOND_NAME", "EMAIL", "PHONE", "DATE_CREATE", "DATE_MODIFY"],
-  deal: ["ID", "TITLE", "STAGE_ID", "DATE_CREATE", "DATE_MODIFY"],
+  deal: ["ID", "TITLE", "STAGE_ID", "STAGE_SEMANTIC_ID", "CLOSED", "CLOSEDATE", "OPPORTUNITY", "CURRENCY_ID", "SOURCE_ID", "SOURCE_DESCRIPTION", "ORIGINATOR_ID", "ORIGIN_ID", "UTM_SOURCE", "COMMENTS", "DATE_CREATE", "DATE_MODIFY"],
 };
 
 function webhookBaseUrl() {
@@ -81,4 +81,8 @@ export async function syncMedsystemsJulyEntity(entityType: BitrixEntityType) {
 
 export async function medsystemsBitrixJulyTotals() {
   return bitrixJulyTotals(new URL(webhookBaseUrl()).host, JULY_2026_START, JULY_2026_END);
+}
+
+export async function medsystemsBitrixJulyDealAnalytics() {
+  return bitrixDealJulyAnalytics(new URL(webhookBaseUrl()).host, JULY_2026_START, JULY_2026_END);
 }

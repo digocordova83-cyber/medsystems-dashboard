@@ -321,6 +321,83 @@ export async function bitrixJulyTotals(portal: string, start: Date, end: Date) {
   return Object.fromEntries(rows.map(row => [row.entityType, Number(row.count)])) as Partial<Record<BitrixEntityType, number>>;
 }
 
+const bitrixSourceLabels: Record<string, string> = {
+  CALL: "Chamada",
+  "68": "Social",
+  "69": "Tráfego orgânico",
+  "70": "Tráfego pago",
+  "71": "Outros",
+  "106": "Atendimento WF4",
+  UC_45K0VX: "Evento",
+};
+
+const lostStageLabels: Record<string, string> = {
+  "C42:LOSE": "Pipeline C42 — Negócio perdido",
+  "C44:LOSE": "Pipeline C44 — Negócio perdido",
+  "C57:LOSE": "Pipeline C57 — Negócio perdido",
+};
+
+export async function bitrixDealJulyAnalytics(portal: string, start: Date, end: Date) {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  const rows = await db.select({ stageOrStatus: bitrix24Entities.stageOrStatus, rawPayload: bitrix24Entities.rawPayload })
+    .from(bitrix24Entities)
+    .where(and(eq(bitrix24Entities.portal, portal), eq(bitrix24Entities.entityType, "deal"), gte(bitrix24Entities.createdAtBitrix, start), lt(bitrix24Entities.createdAtBitrix, end)));
+  const sources = new Map<string, { count: number; value: number }>();
+  const losses = new Map<string, { count: number; value: number; withObservation: number }>();
+  let won = 0;
+  let lost = 0;
+  let closed = 0;
+  let totalValue = 0;
+  let wonValue = 0;
+  let lostValue = 0;
+  let lostWithObservation = 0;
+
+  for (const row of rows) {
+    const payload = JSON.parse(row.rawPayload) as Record<string, unknown>;
+    const semantic = String(payload.STAGE_SEMANTIC_ID ?? "");
+    const sourceId = String(payload.SOURCE_ID ?? "");
+    const value = Number(payload.OPPORTUNITY ?? 0) || 0;
+    const hasObservation = Boolean(String(payload.COMMENTS ?? "").trim());
+    const sourceLabel = bitrixSourceLabels[sourceId] ?? (sourceId ? `Código ${sourceId}` : "Não informado");
+    const source = sources.get(sourceLabel) ?? { count: 0, value: 0 };
+    source.count += 1;
+    source.value += value;
+    sources.set(sourceLabel, source);
+    totalValue += value;
+    if (payload.CLOSED === "Y") closed += 1;
+    if (semantic === "S") { won += 1; wonValue += value; }
+    if (semantic === "F") {
+      lost += 1;
+      lostValue += value;
+      if (hasObservation) lostWithObservation += 1;
+      const lossLabel = lostStageLabels[row.stageOrStatus ?? ""] ?? `${row.stageOrStatus ?? "Sem etapa"} — Negócio perdido`;
+      const loss = losses.get(lossLabel) ?? { count: 0, value: 0, withObservation: 0 };
+      loss.count += 1;
+      loss.value += value;
+      if (hasObservation) loss.withObservation += 1;
+      losses.set(lossLabel, loss);
+    }
+  }
+
+  const toBreakdown = (entries: Map<string, { count: number; value: number }>) => Array.from(entries, ([label, item]) => ({ label, ...item })).sort((a, b) => b.count - a.count);
+  return {
+    total: rows.length,
+    open: rows.length - closed,
+    closed,
+    won,
+    lost,
+    totalValue,
+    wonValue,
+    lostValue,
+    wonRateOfClosed: closed ? (won / closed) * 100 : 0,
+    averageWonTicket: won ? wonValue / won : 0,
+    lostWithObservation,
+    sources: toBreakdown(sources),
+    losses: Array.from(losses, ([label, item]) => ({ label, ...item })).sort((a, b) => b.count - a.count),
+  };
+}
+
 export async function getPendingJulyViewCandidates(accountKey: RdAccountKey, viewType: JulyViewType, limit: number) {
   const db = await getDb();
   if (!db) throw new Error("Banco de dados indisponível.");

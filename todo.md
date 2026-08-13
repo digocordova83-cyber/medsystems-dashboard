@@ -38,3 +38,5 @@
 - [x] Usar exclusivamente DATE_CREATE entre 01/07/2026 e 31/07/2026 como critério de inclusão da coleta Bitrix24.
 - [x] Exibir no painel os totais dos registros Bitrix24 importados para julho de 2026 por entidade.
 - [x] Exibir no painel o status protegido da conexão Bitrix24 Medsystems e as permissões CRM validadas.
+- [x] Calcular negócios fechados, valores, descartes, motivos de descarte e origens para julho de 2026, registrando que o motivo não é estruturado no payload recebido.
+- [x] Exibir a visão analítica de negócios de julho no painel administrativo Bitrix24.

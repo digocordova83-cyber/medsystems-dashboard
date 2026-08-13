@@ -1,6 +1,7 @@
-import { and, asc, desc, eq, gte, inArray, isNull, lt, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gte, inArray, isNull, lt, notInArray, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
+  attributionAuditLinks,
   bitrix24Entities,
   bitrix24SyncRuns,
   mediaDailyPerformance,
@@ -259,6 +260,44 @@ export type JulyViewType = "primeira" | "ultima";
 export type BitrixEntityType = "lead" | "contact" | "deal";
 export type AnalyticsBrand = "all" | "medsystems" | "beautysystems";
 export type DealStatusFilter = "all" | "open" | "won" | "lost";
+export type AnalyticsPeriod = "2026-07";
+
+const BITRIX_BRAND_FIELD = "UF_CRM_1683207237";
+const BITRIX_BRAND_VALUES = { "1907": "medsystems", "3065": "beautysystems" } as const;
+const BITRIX_DISCARD_REASON_FIELD = "UF_CRM_1687285902";
+const BITRIX_DISCARD_REASON_VALUES: Record<string, string> = {
+  "7429": "Duplicado",
+  "2279": "Cliente Desistiu da Compra",
+  "2267": "Análise de Crédito Recusada",
+  "2281": "Substituição de Cadastro",
+  "3453": "Outros",
+  "11181": "Mudou a forma de pagamento",
+  "3439": "Sem recursos financeiros",
+  "2277": "Venda Cancelada",
+};
+const BITRIX_FINANCIAL_STATUS_FIELD = "UF_CRM_1769707203";
+const BITRIX_FINANCIAL_STATUS_VALUES: Record<string, string> = {
+  "20391": "Pendente",
+  "20393": "Aprovado Medsystems",
+  "20397": "Aprovado Parceiro",
+  "20395": "Recusada",
+  "20399": "Desistência",
+};
+
+export function bitrixDealBrand(payload: Record<string, unknown>): Exclude<AnalyticsBrand, "all"> | null {
+  const value = String(payload[BITRIX_BRAND_FIELD] ?? "").trim();
+  return BITRIX_BRAND_VALUES[value as keyof typeof BITRIX_BRAND_VALUES] ?? null;
+}
+
+export function bitrixDiscardReason(payload: Record<string, unknown>) {
+  const value = String(payload[BITRIX_DISCARD_REASON_FIELD] ?? "").trim();
+  return BITRIX_DISCARD_REASON_VALUES[value] ?? null;
+}
+
+export function bitrixFinancialStatus(payload: Record<string, unknown>) {
+  const value = String(payload[BITRIX_FINANCIAL_STATUS_FIELD] ?? "").trim();
+  return BITRIX_FINANCIAL_STATUS_VALUES[value] ?? null;
+}
 
 function firstMultiValue(value: unknown) {
   if (!Array.isArray(value) || !value.length) return null;
@@ -302,6 +341,29 @@ export async function upsertBitrixEntities(input: {
   return values.length;
 }
 
+export async function reconcileBitrixEntities(input: { portal: string; entityType: BitrixEntityType; periodStart: Date; periodEnd: Date; bitrixIds: number[] }) {
+  const db = await getDb();
+  if (!db || !input.bitrixIds.length) return 0;
+  const result = await db.delete(bitrix24Entities).where(and(
+    eq(bitrix24Entities.portal, input.portal),
+    eq(bitrix24Entities.entityType, input.entityType),
+    gte(bitrix24Entities.createdAtBitrix, input.periodStart),
+    lt(bitrix24Entities.createdAtBitrix, input.periodEnd),
+    notInArray(bitrix24Entities.bitrixId, input.bitrixIds),
+  ));
+  return Number(result[0].affectedRows ?? 0);
+}
+
+export async function reconcileAttributionAuditLinks(input: { brand: Exclude<AnalyticsBrand, "all">; bitrixDealIds: number[] }) {
+  const db = await getDb();
+  if (!db || !input.bitrixDealIds.length) return 0;
+  const result = await db.delete(attributionAuditLinks).where(and(
+    eq(attributionAuditLinks.brand, input.brand),
+    notInArray(attributionAuditLinks.bitrixDealId, input.bitrixDealIds),
+  ));
+  return Number(result[0].affectedRows ?? 0);
+}
+
 export async function startBitrixSyncRun(portal: string, entityType: BitrixEntityType, periodStart: Date, periodEnd: Date) {
   const db = await getDb();
   if (!db) throw new Error("Banco de dados indisponível.");
@@ -341,10 +403,31 @@ const lostStageLabels: Record<string, string> = {
 };
 
 export function utmChannelLabel(value: unknown) {
-  const source = String(value ?? "").trim().toLowerCase();
+  const source = cleanAuditString(value)?.toLowerCase() ?? "";
   if (source === "google" || source.includes("google")) return "Google Ads";
   if (source === "facebook" || source === "fb" || source === "meta" || source.includes("facebook") || source.includes("meta")) return "Meta Ads";
   return "Não identificado";
+}
+
+function cleanAuditString(value: unknown) {
+  const normalized = String(value ?? "").trim();
+  return normalized && !["null", "undefined"].includes(normalized.toLowerCase()) ? normalized : null;
+}
+
+export function rdEventAttribution(rawPayload: string) {
+  try {
+    const event = JSON.parse(rawPayload) as { payload?: Record<string, unknown> };
+    const payload = event.payload ?? {};
+    const landingPage = cleanAuditString(payload.cf_landing_page);
+    const params = landingPage ? new URL(landingPage).searchParams : null;
+    return {
+      utmSource: cleanAuditString(payload.cf_utm_source_real ?? payload.cf_utm_source ?? params?.get("utm_source")),
+      utmCampaign: cleanAuditString(payload.cf_utm_campaign_real ?? payload.cf_utm_campaign ?? params?.get("utm_campaign")),
+      mediaCampaignId: cleanAuditString(params?.get("utm_id")),
+    };
+  } catch {
+    return { utmSource: null, utmCampaign: null, mediaCampaignId: null };
+  }
 }
 
 export function dealStatusFromSemantic(value: unknown): Exclude<DealStatusFilter, "all"> {
@@ -352,7 +435,7 @@ export function dealStatusFromSemantic(value: unknown): Exclude<DealStatusFilter
   return semantic === "S" ? "won" : semantic === "F" ? "lost" : "open";
 }
 
-export async function bitrixDealJulyAnalytics(portal: string, start: Date, end: Date, statusFilter: DealStatusFilter = "all") {
+export async function bitrixDealJulyAnalytics(portal: string, start: Date, end: Date, statusFilter: DealStatusFilter = "all", brand: AnalyticsBrand = "all") {
   const db = await getDb();
   if (!db) throw new Error("Banco de dados indisponível.");
   const rows = await db.select({ stageOrStatus: bitrix24Entities.stageOrStatus, rawPayload: bitrix24Entities.rawPayload })
@@ -360,6 +443,8 @@ export async function bitrixDealJulyAnalytics(portal: string, start: Date, end: 
     .where(and(eq(bitrix24Entities.portal, portal), eq(bitrix24Entities.entityType, "deal"), gte(bitrix24Entities.createdAtBitrix, start), lt(bitrix24Entities.createdAtBitrix, end)));
   const sources = new Map<string, { count: number; value: number }>();
   const losses = new Map<string, { count: number; value: number; withObservation: number }>();
+  const discards = new Map<string, { count: number; value: number }>();
+  const financialStatuses = new Map<string, { count: number; value: number }>();
   const utmSources = new Map<string, { count: number; value: number }>();
   let won = 0;
   let lost = 0;
@@ -372,12 +457,28 @@ export async function bitrixDealJulyAnalytics(portal: string, start: Date, end: 
 
   for (const row of rows) {
     const payload = JSON.parse(row.rawPayload) as Record<string, unknown>;
+    const dealBrand = bitrixDealBrand(payload);
+    if (!dealBrand || (brand !== "all" && dealBrand !== brand)) continue;
     const semantic = String(payload.STAGE_SEMANTIC_ID ?? "");
     const dealStatus = dealStatusFromSemantic(semantic);
     if (statusFilter !== "all" && dealStatus !== statusFilter) continue;
     total += 1;
     const sourceId = String(payload.SOURCE_ID ?? "");
     const value = Number(payload.OPPORTUNITY ?? 0) || 0;
+    const discardReason = bitrixDiscardReason(payload);
+    if (discardReason) {
+      const discard = discards.get(discardReason) ?? { count: 0, value: 0 };
+      discard.count += 1;
+      discard.value += value;
+      discards.set(discardReason, discard);
+    }
+    const financialStatus = bitrixFinancialStatus(payload);
+    if (financialStatus) {
+      const status = financialStatuses.get(financialStatus) ?? { count: 0, value: 0 };
+      status.count += 1;
+      status.value += value;
+      financialStatuses.set(financialStatus, status);
+    }
     const hasObservation = Boolean(String(payload.COMMENTS ?? "").trim());
     const sourceLabel = bitrixSourceLabels[sourceId] ?? (sourceId ? `Código ${sourceId}` : "Não informado");
     const source = sources.get(sourceLabel) ?? { count: 0, value: 0 };
@@ -421,6 +522,8 @@ export async function bitrixDealJulyAnalytics(portal: string, start: Date, end: 
     sources: toBreakdown(sources),
     utmSources: toBreakdown(utmSources),
     losses: Array.from(losses, ([label, item]) => ({ label, ...item })).sort((a, b) => b.count - a.count),
+    discards: toBreakdown(discards),
+    financialStatuses: toBreakdown(financialStatuses),
   };
 }
 
@@ -428,11 +531,101 @@ function analyticsNumber(value: unknown) {
   return Number(value ?? 0) || 0;
 }
 
-export async function mediaDashboardAnalytics(brand: AnalyticsBrand) {
+export async function attributionAuditSummary(brand: AnalyticsBrand) {
   const db = await getDb();
   if (!db) throw new Error("Banco de dados indisponível.");
-  const start = new Date("2026-07-01T00:00:00-03:00");
-  const end = new Date("2026-08-01T00:00:00-03:00");
+  const brands = brand === "all" ? ["medsystems", "beautysystems"] as const : [brand] as const;
+  const rows = await db.select({
+    matchStatus: attributionAuditLinks.matchStatus,
+    matchMethod: attributionAuditLinks.matchMethod,
+    mediaPlatform: attributionAuditLinks.mediaPlatform,
+    count: sql<number>`count(*)`,
+    revenueValue: sql<number>`sum(${attributionAuditLinks.revenueValue})`,
+  }).from(attributionAuditLinks).where(inArray(attributionAuditLinks.brand, brands)).groupBy(
+    attributionAuditLinks.matchStatus,
+    attributionAuditLinks.matchMethod,
+    attributionAuditLinks.mediaPlatform,
+  );
+  return rows.map(row => ({
+    matchStatus: row.matchStatus,
+    matchMethod: row.matchMethod,
+    mediaPlatform: row.mediaPlatform,
+    count: analyticsNumber(row.count),
+    revenueValue: analyticsNumber(row.revenueValue),
+  }));
+}
+
+export async function refreshAttributionAuditFromBitrix(input: { brand: Exclude<AnalyticsBrand, "all">; portal: string; start: Date; end: Date }) {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  const rows = await db.select({ bitrixDealId: bitrix24Entities.bitrixId, rawPayload: bitrix24Entities.rawPayload })
+    .from(bitrix24Entities)
+    .where(and(eq(bitrix24Entities.portal, input.portal), eq(bitrix24Entities.entityType, "deal"), gte(bitrix24Entities.createdAtBitrix, input.start), lt(bitrix24Entities.createdAtBitrix, input.end)));
+  const brandedRows = rows.filter(row => bitrixDealBrand(JSON.parse(row.rawPayload) as Record<string, unknown>) === input.brand);
+  const [bitrixContacts, rdContacts, rdEvents, campaignRows] = await Promise.all([
+    db.select({ bitrixId: bitrix24Entities.bitrixId, email: bitrix24Entities.email }).from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, input.portal), eq(bitrix24Entities.entityType, "contact"))),
+    db.select({ contactUuid: rdStationContacts.contactUuid, email: rdStationContacts.email }).from(rdStationContacts).where(eq(rdStationContacts.accountKey, input.brand)),
+    db.select({ contactUuid: rdStationConversionEvents.contactUuid, eventUuid: rdStationConversionEvents.eventUuid, rawPayload: rdStationConversionEvents.rawPayload, eventCreatedAt: rdStationConversionEvents.eventCreatedAt }).from(rdStationConversionEvents).where(and(eq(rdStationConversionEvents.accountKey, input.brand), gte(rdStationConversionEvents.eventCreatedAt, input.start), lt(rdStationConversionEvents.eventCreatedAt, input.end))),
+    db.select({ platform: mediaDailyPerformance.platform, campaignId: mediaDailyPerformance.campaignId, campaignName: mediaDailyPerformance.campaignName }).from(mediaDailyPerformance).where(and(eq(mediaDailyPerformance.recordLevel, "campaign"), eq(mediaDailyPerformance.brand, input.brand), gte(mediaDailyPerformance.reportDate, input.start), lt(mediaDailyPerformance.reportDate, input.end))),
+  ]);
+  const normalize = (value: string | null | undefined) => String(value ?? "").trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const bitrixEmailByContactId = new Map(bitrixContacts.filter(row => row.email).map(row => [String(row.bitrixId), normalize(row.email)]));
+  const rdUuidByEmail = new Map<string, string | null>();
+  for (const contact of rdContacts) {
+    const email = normalize(contact.email);
+    if (!email) continue;
+    const existing = rdUuidByEmail.get(email);
+    rdUuidByEmail.set(email, existing && existing !== contact.contactUuid ? null : contact.contactUuid);
+  }
+  const eventsByContact = new Map<string, { eventUuid: string; rawPayload: string; eventCreatedAt: Date }[]>();
+  for (const event of rdEvents) eventsByContact.set(event.contactUuid, [...(eventsByContact.get(event.contactUuid) ?? []), event]);
+  const campaigns = Array.from(new Map(campaignRows.map(row => [`${row.platform}:${row.campaignId}`, row])).values());
+  const values = brandedRows.map(row => {
+    const payload = JSON.parse(row.rawPayload) as Record<string, unknown>;
+    const contactEmail = bitrixEmailByContactId.get(String(payload.CONTACT_ID ?? ""));
+    const rdContactUuid = contactEmail ? (rdUuidByEmail.get(contactEmail) ?? null) : null;
+    const bitrixUtmSource = cleanAuditString(payload.UTM_SOURCE);
+    const bitrixUtmCampaign = cleanAuditString(payload.UTM_CAMPAIGN);
+    const eventCandidates = (rdContactUuid ? eventsByContact.get(rdContactUuid) ?? [] : []).map(event => ({ ...event, ...rdEventAttribution(event.rawPayload) })).filter(event => event.utmSource);
+    const evidence = eventCandidates.find(event => {
+      const platform = utmChannelLabel(event.utmSource) === "Google Ads" ? "google_ads" : utmChannelLabel(event.utmSource) === "Meta Ads" ? "meta_ads" : null;
+      return Boolean(platform && (campaigns.some(candidate => candidate.platform === platform && candidate.campaignId === event.mediaCampaignId) || (event.utmCampaign && campaigns.some(candidate => candidate.platform === platform && normalize(candidate.campaignName) === normalize(event.utmCampaign)))));
+    });
+    const utmSource = evidence?.utmSource ?? bitrixUtmSource;
+    const utmCampaign = evidence?.utmCampaign ?? bitrixUtmCampaign;
+    const channel = utmChannelLabel(utmSource);
+    const mediaPlatform: "google_ads" | "meta_ads" | null = channel === "Google Ads" ? "google_ads" : channel === "Meta Ads" ? "meta_ads" : null;
+    const campaignMatches = mediaPlatform ? campaigns.filter(candidate => candidate.platform === mediaPlatform && (candidate.campaignId === evidence?.mediaCampaignId || (utmCampaign && normalize(candidate.campaignName) === normalize(utmCampaign)))) : [];
+    const mediaCampaignId = campaignMatches.length === 1 ? campaignMatches[0].campaignId : null;
+    const rdEventUuid = mediaCampaignId && evidence ? evidence.eventUuid : null;
+    const identified = Boolean(rdContactUuid && rdEventUuid && mediaCampaignId);
+    return {
+      brand: input.brand,
+      bitrixDealId: row.bitrixDealId,
+      rdContactUuid,
+      rdEventUuid,
+      mediaPlatform,
+      mediaCampaignId,
+      utmSource,
+      utmCampaign,
+      matchStatus: identified ? "identified" as const : mediaPlatform ? "channel_signal" as const : "not_identified" as const,
+      matchMethod: identified ? "identifier" as const : mediaCampaignId ? "utm_campaign" as const : mediaPlatform ? "utm_source" as const : "none" as const,
+      revenueValue: String(payload.STAGE_SEMANTIC_ID ?? "") === "S" ? Number(payload.OPPORTUNITY ?? 0) || 0 : 0,
+      updatedAt: new Date(),
+    };
+  });
+  if (!values.length) return 0;
+  await db.insert(attributionAuditLinks).values(values).onDuplicateKeyUpdate({ set: {
+    rdContactUuid: sql`values(rdContactUuid)`, rdEventUuid: sql`values(rdEventUuid)`, mediaPlatform: sql`values(mediaPlatform)`, mediaCampaignId: sql`values(mediaCampaignId)`, utmSource: sql`values(utmSource)`, utmCampaign: sql`values(utmCampaign)`, matchStatus: sql`values(matchStatus)`, matchMethod: sql`values(matchMethod)`, revenueValue: sql`values(revenueValue)`, updatedAt: new Date(),
+  } });
+  return values.length;
+}
+
+export async function mediaDashboardAnalytics(brand: AnalyticsBrand, period: AnalyticsPeriod = "2026-07") {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  const periodRange = { "2026-07": { start: new Date("2026-07-01T00:00:00-03:00"), end: new Date("2026-08-01T00:00:00-03:00") } }[period];
+  const { start, end } = periodRange;
   const brands = brand === "all" ? ["medsystems", "beautysystems"] as const : [brand] as const;
   const mediaWhere = and(eq(mediaDailyPerformance.recordLevel, "campaign"), inArray(mediaDailyPerformance.brand, brands), gte(mediaDailyPerformance.reportDate, start), lt(mediaDailyPerformance.reportDate, end));
   const adWhere = and(eq(mediaDailyPerformance.recordLevel, "ad"), inArray(mediaDailyPerformance.brand, brands), gte(mediaDailyPerformance.reportDate, start), lt(mediaDailyPerformance.reportDate, end));
@@ -506,9 +699,10 @@ export async function mediaDashboardAnalytics(brand: AnalyticsBrand) {
     .from(rdStationJulyLeadViews)
     .where(and(inArray(rdStationJulyLeadViews.accountKey, brands), eq(rdStationJulyLeadViews.viewType, "primeira"), eq(rdStationJulyLeadViews.status, "qualificado")))
     .groupBy(rdStationJulyLeadViews.accountKey);
+  const attribution = await attributionAuditSummary(brand);
 
   return {
-    period: { start: "2026-07-01", end: "2026-07-31" },
+    period: { key: period, start: "2026-07-01", end: "2026-07-31" },
     media: {
       spend: analyticsNumber(mediaTotal?.spend),
       impressions: analyticsNumber(mediaTotal?.impressions),
@@ -521,6 +715,7 @@ export async function mediaDashboardAnalytics(brand: AnalyticsBrand) {
     campaigns: campaigns.map(row => ({ platform: row.platform, brand: row.brand, campaignId: row.campaignId, campaignName: row.campaignName ?? "Sem nome", spend: analyticsNumber(row.spend), impressions: analyticsNumber(row.impressions), clicks: analyticsNumber(row.clicks), leads: analyticsNumber(row.leads) })),
     ads: ads.map(row => ({ platform: row.platform, brand: row.brand, campaignId: row.campaignId, campaignName: row.campaignName ?? "Sem nome", adGroupId: row.adGroupId ?? "", adGroupName: row.adGroupName ?? "Sem grupo", adId: row.adId ?? "", adName: row.adName ?? "Sem nome", spend: analyticsNumber(row.spend), impressions: analyticsNumber(row.impressions), clicks: analyticsNumber(row.clicks), leads: analyticsNumber(row.leads) })),
     rdLeads: Object.fromEntries(rdQualified.map(row => [row.accountKey, analyticsNumber(row.count)])),
+    attribution,
   };
 }
 

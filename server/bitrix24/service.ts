@@ -1,4 +1,4 @@
-import { bitrixDealJulyAnalytics, bitrixJulyTotals, finishBitrixSyncRun, startBitrixSyncRun, type BitrixEntityType, type DealStatusFilter, upsertBitrixEntities } from "../db";
+import { bitrixDealBrand, bitrixDealJulyAnalytics, bitrixJulyTotals, finishBitrixSyncRun, reconcileAttributionAuditLinks, reconcileBitrixEntities, refreshAttributionAuditFromBitrix, startBitrixSyncRun, type BitrixEntityType, type DealStatusFilter, upsertBitrixEntities } from "../db";
 
 const CRM_CAPABILITIES = ["Leads", "Contatos", "Negócios"] as const;
 const JULY_2026_START = new Date("2026-07-01T00:00:00-03:00");
@@ -11,7 +11,7 @@ const ENTITY_METHOD: Record<BitrixEntityType, string> = {
 const ENTITY_SELECT: Record<BitrixEntityType, string[]> = {
   lead: ["ID", "TITLE", "NAME", "LAST_NAME", "SECOND_NAME", "EMAIL", "PHONE", "STATUS_ID", "DATE_CREATE", "DATE_MODIFY"],
   contact: ["ID", "NAME", "LAST_NAME", "SECOND_NAME", "EMAIL", "PHONE", "DATE_CREATE", "DATE_MODIFY"],
-  deal: ["ID", "TITLE", "STAGE_ID", "STAGE_SEMANTIC_ID", "CLOSED", "CLOSEDATE", "OPPORTUNITY", "CURRENCY_ID", "SOURCE_ID", "SOURCE_DESCRIPTION", "ORIGINATOR_ID", "ORIGIN_ID", "UTM_SOURCE", "COMMENTS", "DATE_CREATE", "DATE_MODIFY"],
+  deal: ["*", "UF_*"],
 };
 
 function webhookBaseUrl() {
@@ -63,12 +63,27 @@ export async function syncMedsystemsJulyEntity(entityType: BitrixEntityType) {
   const runId = await startBitrixSyncRun(portal, entityType, JULY_2026_START, JULY_2026_END);
   let start: number | null = 0;
   let importedCount = 0;
+  const returnedIds: number[] = [];
+  const returnedDealIdsByBrand = { medsystems: [] as number[], beautysystems: [] as number[] };
   try {
     while (start !== null) {
       const page = await bitrixList(entityType, start);
+      returnedIds.push(...page.rows.map(row => Number(row.ID)).filter(id => Number.isInteger(id) && id > 0));
+      if (entityType === "deal") for (const row of page.rows) {
+        const brand = bitrixDealBrand(row);
+        const id = Number(row.ID);
+        if (brand && Number.isInteger(id) && id > 0) returnedDealIdsByBrand[brand].push(id);
+      }
       importedCount += await upsertBitrixEntities({ portal, entityType, entities: page.rows });
       start = page.next;
       if (start !== null) await pause(650);
+    }
+    await reconcileBitrixEntities({ portal, entityType, periodStart: JULY_2026_START, periodEnd: JULY_2026_END, bitrixIds: returnedIds });
+    if (entityType === "deal") {
+      await refreshAttributionAuditFromBitrix({ brand: "medsystems", portal, start: JULY_2026_START, end: JULY_2026_END });
+      await refreshAttributionAuditFromBitrix({ brand: "beautysystems", portal, start: JULY_2026_START, end: JULY_2026_END });
+      await reconcileAttributionAuditLinks({ brand: "medsystems", bitrixDealIds: returnedDealIdsByBrand.medsystems });
+      await reconcileAttributionAuditLinks({ brand: "beautysystems", bitrixDealIds: returnedDealIdsByBrand.beautysystems });
     }
     await finishBitrixSyncRun(runId, importedCount);
     return { entityType, importedCount, totals: await bitrixJulyTotals(portal, JULY_2026_START, JULY_2026_END) };
@@ -83,6 +98,6 @@ export async function medsystemsBitrixJulyTotals() {
   return bitrixJulyTotals(new URL(webhookBaseUrl()).host, JULY_2026_START, JULY_2026_END);
 }
 
-export async function medsystemsBitrixJulyDealAnalytics(statusFilter: DealStatusFilter = "all") {
-  return bitrixDealJulyAnalytics(new URL(webhookBaseUrl()).host, JULY_2026_START, JULY_2026_END, statusFilter);
+export async function medsystemsBitrixJulyDealAnalytics(statusFilter: DealStatusFilter = "all", brand: "all" | "medsystems" | "beautysystems" = "all") {
+  return bitrixDealJulyAnalytics(new URL(webhookBaseUrl()).host, JULY_2026_START, JULY_2026_END, statusFilter, brand);
 }

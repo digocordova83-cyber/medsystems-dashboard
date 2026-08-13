@@ -1,0 +1,1 @@
+ALTER TABLE `attributionAuditLinks` ADD `rdEventUuid` varchar(160);

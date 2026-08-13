@@ -7,6 +7,8 @@ const julyLeadStatusValues = ["pendente", "qualificado", "rejeitado"] as const;
 const bitrixEntityTypeValues = ["lead", "contact", "deal"] as const;
 const mediaPlatformValues = ["google_ads", "meta_ads"] as const;
 const mediaRecordLevelValues = ["campaign", "ad"] as const;
+const attributionStatusValues = ["not_identified", "channel_signal", "identified"] as const;
+const attributionMethodValues = ["none", "utm_source", "utm_campaign", "identifier"] as const;
 
 export const users = mysqlTable("users", {
   id: int("id").autoincrement().primaryKey(),
@@ -162,6 +164,26 @@ export const mediaDailyPerformance = mysqlTable("mediaDailyPerformance", {
   uniqueIndex("media_daily_platform_account_date_campaign_ad_unique").on(table.platform, table.accountId, table.reportDate, table.campaignId, table.adGroupId, table.adId),
   index("media_daily_brand_date_index").on(table.brand, table.reportDate),
   index("media_daily_platform_date_index").on(table.platform, table.reportDate),
+]);
+
+export const attributionAuditLinks = mysqlTable("attributionAuditLinks", {
+  id: int("id").autoincrement().primaryKey(),
+  brand: mysqlEnum("brand", accountKeyValues).notNull(),
+  bitrixDealId: int("bitrixDealId").notNull(),
+  rdContactUuid: varchar("rdContactUuid", { length: 128 }),
+  rdEventUuid: varchar("rdEventUuid", { length: 160 }),
+  mediaPlatform: mysqlEnum("mediaPlatform", mediaPlatformValues),
+  mediaCampaignId: varchar("mediaCampaignId", { length: 128 }),
+  utmSource: varchar("utmSource", { length: 160 }),
+  utmCampaign: varchar("utmCampaign", { length: 512 }),
+  matchStatus: mysqlEnum("matchStatus", attributionStatusValues).default("not_identified").notNull(),
+  matchMethod: mysqlEnum("matchMethod", attributionMethodValues).default("none").notNull(),
+  revenueValue: double("revenueValue").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, table => [
+  uniqueIndex("attribution_audit_brand_deal_unique").on(table.brand, table.bitrixDealId),
+  index("attribution_audit_brand_status_index").on(table.brand, table.matchStatus),
 ]);
 
 export type User = typeof users.$inferSelect;

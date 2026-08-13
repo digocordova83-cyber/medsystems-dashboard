@@ -31,7 +31,7 @@ const accountAccent: Record<AccountKey, string> = {
 };
 
 function formatDate(value: Date | string | null | undefined) {
-  if (!value) return "—";
+  if (!value) return "Indisponível";
   return new Intl.DateTimeFormat("pt-BR", { dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
 }
 

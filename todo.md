@@ -41,12 +41,18 @@
 - [x] Calcular negócios fechados, valores, descartes, motivos de descarte e origens para julho de 2026, registrando que o motivo não é estruturado no payload recebido.
 - [x] Exibir a visão analítica de negócios de julho no painel administrativo Bitrix24.
 - [x] Criar navegação analítica com Overview, Google Ads, Meta Ads, Negócios, Origem & Funil e Perdidos & Descartes.
-- [ ] Implementar filtros globais de marca, período, canal e status sem alterar os dados de origem.
-- [ ] Modelar a camada analítica normalizada para mídia, leads, negócios, vendas, receita, origens e UTMs.
+- [x] Implementar filtros globais de marca, período, canal e status sem alterar os dados de origem.
+- [x] Modelar a camada analítica normalizada fim a fim para mídia, leads, negócios, vendas, receita, origens e UTMs, com vínculos persistidos somente quando houver contato RD, evento RD e identificador de campanha exatos.
 - [x] Persistir as métricas reais de julho de 2026 de Google Ads e Meta Ads retornadas pelo Windsor.ai em uma camada normalizada por marca, plataforma e campanha.
 - [x] Construir o overview executivo com investimento, leads, CPL, negócios, vendas e receita; exibir ROAS apenas após atribuição auditável por identificador ou UTM.
 - [x] Construir funil de qualidade, visão de origens e visão de perdidos/descartes com dados Bitrix24 disponíveis.
 - [x] Integrar dados de Google Ads e Meta Ads por conta, campanha, conjunto e anúncio após a autorização das plataformas.
-- [ ] Implementar atribuição auditável entre mídia, lead, negócio e venda por identificadores ou UTMs, sem inferir relações não comprovadas.
-- [ ] Conectar o Bitrix24 da BeautySystems para disponibilizar negócios, vendas, receita e perdas comerciais da segunda marca.
-- [ ] Tornar motivo de perda e motivo de descarte campos estruturados e obrigatórios no Bitrix24 para permitir análises por motivo.
+- [x] Implementar atribuição auditável entre mídia, lead, negócio e venda por identificadores ou UTMs, sem inferir relações não comprovadas; negócios sem identificadores permanecem como “não identificado”.
+- [x] Mapear, no portal Bitrix24 compartilhado, os campos existentes que registram perda, descarte e respectivos motivos antes de criar qualquer campo novo; o campo estruturado de descarte foi confirmado pelo usuário.
+- [x] Identificar e validar o critério estruturado que separa Medsystems e BeautySystems no mesmo portal Bitrix24, mantendo as métricas comerciais isoladas por marca.
+- [x] Aplicar a regra confirmada do campo `UF_CRM_1683207237`: “Medsystems” para Medsystems e “Negócios e Redes” para BeautySystems; manter outros valores fora das métricas por marca.
+- [ ] Validar um campo estruturado específico de motivo de perda; o painel mantém perdas por pipeline e usa, separadamente, o motivo de descarte confirmado.
+- [x] Validar e incorporar o campo existente `UF_CRM_1687285902` como motivo de descarte, usando suas opções reais sem reclassificação automática.
+- [x] Tratar `UF_CRM_1769707203` exclusivamente como status financeiro, sem usá-lo como motivo de perda, descarte ou segmentação de marca.
+- [x] Corrigir rótulos legados de Medsystems no overview para refletirem a marca ou a visão consolidada selecionada.
+- [x] Exibir “Não identificado” ou “indisponível” para qualquer métrica, campo ou vínculo sem evidência armazenada, sem estimar ou criar valores substitutos.

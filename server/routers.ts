@@ -60,10 +60,10 @@ export const appRouter = router({
   bitrix24: router({
     medsystemsStatus: adminProcedure.query(() => medsystemsBitrixStatus()),
     medsystemsJulyTotals: adminProcedure.query(() => medsystemsBitrixJulyTotals()),
-    medsystemsJulyDealAnalytics: adminProcedure.input(z.object({ status: z.enum(["all", "open", "won", "lost"]) }).optional()).query(({ input }) => medsystemsBitrixJulyDealAnalytics(input?.status ?? "all")),
+    medsystemsJulyDealAnalytics: adminProcedure.input(z.object({ status: z.enum(["all", "open", "won", "lost"]), brand: analyticsBrandInput }).optional()).query(({ input }) => medsystemsBitrixJulyDealAnalytics(input?.status ?? "all", input?.brand ?? "all")),
   }),
   analytics: router({
-    dashboard: adminProcedure.input(z.object({ brand: analyticsBrandInput })).query(({ input }) => mediaDashboardAnalytics(input.brand)),
+    dashboard: adminProcedure.input(z.object({ brand: analyticsBrandInput, period: z.enum(["2026-07"]).default("2026-07") })).query(({ input }) => mediaDashboardAnalytics(input.brand, input.period)),
   }),
 });
 

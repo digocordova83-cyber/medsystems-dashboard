@@ -22,7 +22,7 @@
 - [x] Validar as credenciais da Medsystems pela autorização OAuth real e pela troca bem-sucedida do código retornado no callback.
 - [x] Registrar e validar pelo fluxo OAuth real o Client ID e Client Secret da BeautySystems, sem reutilizar credenciais da Medsystems.
 - [x] Aplicar em cada conta o filtro de origem com Desconhecido, Mídia paga, Outros canais e Outras publicidades.
-- [ ] Implementar um mecanismo verificável para excluir exatamente as conversões cujo recurso usado seja Importação, usando uma segmentação ou fonte que exponha esse campo, por meio da importação de uma segmentação filtrada do RD Station.
+- [x] Decisão registrada: manter a coleta direta do RD Station aprovada pelo usuário e não criar segmentações adicionais para reproduzir o filtro nativo exato de Importação neste escopo.
 - [x] Limpar os contatos previamente importados a partir da segmentação ampla antes de carregar o recorte válido de julho de 2026.
 - [x] Calcular os leads de julho de 2026 por conta somente após aplicar as regras de origem permitida e recurso diferente de Importação.
 - [x] Consolidar e entregar separadamente primeira conversão em julho/2026 e última conversão em julho/2026 para Medsystems e BeautySystems.

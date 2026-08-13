@@ -258,6 +258,7 @@ export async function upsertConversionEvents(accountKey: RdAccountKey, contactUu
 export type JulyViewType = "primeira" | "ultima";
 export type BitrixEntityType = "lead" | "contact" | "deal";
 export type AnalyticsBrand = "all" | "medsystems" | "beautysystems";
+export type DealStatusFilter = "all" | "open" | "won" | "lost";
 
 function firstMultiValue(value: unknown) {
   if (!Array.isArray(value) || !value.length) return null;
@@ -339,7 +340,19 @@ const lostStageLabels: Record<string, string> = {
   "C57:LOSE": "Pipeline C57 — Negócio perdido",
 };
 
-export async function bitrixDealJulyAnalytics(portal: string, start: Date, end: Date) {
+export function utmChannelLabel(value: unknown) {
+  const source = String(value ?? "").trim().toLowerCase();
+  if (source === "google" || source.includes("google")) return "Google Ads";
+  if (source === "facebook" || source === "fb" || source === "meta" || source.includes("facebook") || source.includes("meta")) return "Meta Ads";
+  return "Não identificado";
+}
+
+export function dealStatusFromSemantic(value: unknown): Exclude<DealStatusFilter, "all"> {
+  const semantic = String(value ?? "");
+  return semantic === "S" ? "won" : semantic === "F" ? "lost" : "open";
+}
+
+export async function bitrixDealJulyAnalytics(portal: string, start: Date, end: Date, statusFilter: DealStatusFilter = "all") {
   const db = await getDb();
   if (!db) throw new Error("Banco de dados indisponível.");
   const rows = await db.select({ stageOrStatus: bitrix24Entities.stageOrStatus, rawPayload: bitrix24Entities.rawPayload })
@@ -347,6 +360,7 @@ export async function bitrixDealJulyAnalytics(portal: string, start: Date, end: 
     .where(and(eq(bitrix24Entities.portal, portal), eq(bitrix24Entities.entityType, "deal"), gte(bitrix24Entities.createdAtBitrix, start), lt(bitrix24Entities.createdAtBitrix, end)));
   const sources = new Map<string, { count: number; value: number }>();
   const losses = new Map<string, { count: number; value: number; withObservation: number }>();
+  const utmSources = new Map<string, { count: number; value: number }>();
   let won = 0;
   let lost = 0;
   let closed = 0;
@@ -354,10 +368,14 @@ export async function bitrixDealJulyAnalytics(portal: string, start: Date, end: 
   let wonValue = 0;
   let lostValue = 0;
   let lostWithObservation = 0;
+  let total = 0;
 
   for (const row of rows) {
     const payload = JSON.parse(row.rawPayload) as Record<string, unknown>;
     const semantic = String(payload.STAGE_SEMANTIC_ID ?? "");
+    const dealStatus = dealStatusFromSemantic(semantic);
+    if (statusFilter !== "all" && dealStatus !== statusFilter) continue;
+    total += 1;
     const sourceId = String(payload.SOURCE_ID ?? "");
     const value = Number(payload.OPPORTUNITY ?? 0) || 0;
     const hasObservation = Boolean(String(payload.COMMENTS ?? "").trim());
@@ -366,6 +384,11 @@ export async function bitrixDealJulyAnalytics(portal: string, start: Date, end: 
     source.count += 1;
     source.value += value;
     sources.set(sourceLabel, source);
+    const utmLabel = utmChannelLabel(payload.UTM_SOURCE);
+    const utm = utmSources.get(utmLabel) ?? { count: 0, value: 0 };
+    utm.count += 1;
+    utm.value += value;
+    utmSources.set(utmLabel, utm);
     totalValue += value;
     if (payload.CLOSED === "Y") closed += 1;
     if (semantic === "S") { won += 1; wonValue += value; }
@@ -384,8 +407,8 @@ export async function bitrixDealJulyAnalytics(portal: string, start: Date, end: 
 
   const toBreakdown = (entries: Map<string, { count: number; value: number }>) => Array.from(entries, ([label, item]) => ({ label, ...item })).sort((a, b) => b.count - a.count);
   return {
-    total: rows.length,
-    open: rows.length - closed,
+    total,
+    open: total - closed,
     closed,
     won,
     lost,
@@ -396,6 +419,7 @@ export async function bitrixDealJulyAnalytics(portal: string, start: Date, end: 
     averageWonTicket: won ? wonValue / won : 0,
     lostWithObservation,
     sources: toBreakdown(sources),
+    utmSources: toBreakdown(utmSources),
     losses: Array.from(losses, ([label, item]) => ({ label, ...item })).sort((a, b) => b.count - a.count),
   };
 }
@@ -410,7 +434,8 @@ export async function mediaDashboardAnalytics(brand: AnalyticsBrand) {
   const start = new Date("2026-07-01T00:00:00-03:00");
   const end = new Date("2026-08-01T00:00:00-03:00");
   const brands = brand === "all" ? ["medsystems", "beautysystems"] as const : [brand] as const;
-  const mediaWhere = and(inArray(mediaDailyPerformance.brand, brands), gte(mediaDailyPerformance.reportDate, start), lt(mediaDailyPerformance.reportDate, end));
+  const mediaWhere = and(eq(mediaDailyPerformance.recordLevel, "campaign"), inArray(mediaDailyPerformance.brand, brands), gte(mediaDailyPerformance.reportDate, start), lt(mediaDailyPerformance.reportDate, end));
+  const adWhere = and(eq(mediaDailyPerformance.recordLevel, "ad"), inArray(mediaDailyPerformance.brand, brands), gte(mediaDailyPerformance.reportDate, start), lt(mediaDailyPerformance.reportDate, end));
 
   const [mediaTotal] = await db.select({
     spend: sql<number>`sum(${mediaDailyPerformance.spend})`,
@@ -453,6 +478,30 @@ export async function mediaDashboardAnalytics(brand: AnalyticsBrand) {
     mediaDailyPerformance.campaignName,
   ).orderBy(desc(sql`sum(${mediaDailyPerformance.spend})`)).limit(20);
 
+  const ads = await db.select({
+    platform: mediaDailyPerformance.platform,
+    brand: mediaDailyPerformance.brand,
+    campaignId: mediaDailyPerformance.campaignId,
+    campaignName: mediaDailyPerformance.campaignName,
+    adGroupId: mediaDailyPerformance.adGroupId,
+    adGroupName: mediaDailyPerformance.adGroupName,
+    adId: mediaDailyPerformance.adId,
+    adName: mediaDailyPerformance.adName,
+    spend: sql<number>`sum(${mediaDailyPerformance.spend})`,
+    impressions: sql<number>`sum(${mediaDailyPerformance.impressions})`,
+    clicks: sql<number>`sum(${mediaDailyPerformance.clicks})`,
+    leads: sql<number>`sum(${mediaDailyPerformance.platformLeads})`,
+  }).from(mediaDailyPerformance).where(adWhere).groupBy(
+    mediaDailyPerformance.platform,
+    mediaDailyPerformance.brand,
+    mediaDailyPerformance.campaignId,
+    mediaDailyPerformance.campaignName,
+    mediaDailyPerformance.adGroupId,
+    mediaDailyPerformance.adGroupName,
+    mediaDailyPerformance.adId,
+    mediaDailyPerformance.adName,
+  ).orderBy(desc(sql`sum(${mediaDailyPerformance.spend})`)).limit(80);
+
   const rdQualified = await db.select({ accountKey: rdStationJulyLeadViews.accountKey, count: sql<number>`count(*)` })
     .from(rdStationJulyLeadViews)
     .where(and(inArray(rdStationJulyLeadViews.accountKey, brands), eq(rdStationJulyLeadViews.viewType, "primeira"), eq(rdStationJulyLeadViews.status, "qualificado")))
@@ -470,6 +519,7 @@ export async function mediaDashboardAnalytics(brand: AnalyticsBrand) {
     platforms: platforms.map(row => ({ platform: row.platform, spend: analyticsNumber(row.spend), impressions: analyticsNumber(row.impressions), clicks: analyticsNumber(row.clicks), leads: analyticsNumber(row.leads) })),
     brandPlatforms: brandPlatforms.map(row => ({ brand: row.brand, platform: row.platform, spend: analyticsNumber(row.spend), impressions: analyticsNumber(row.impressions), clicks: analyticsNumber(row.clicks), leads: analyticsNumber(row.leads) })),
     campaigns: campaigns.map(row => ({ platform: row.platform, brand: row.brand, campaignId: row.campaignId, campaignName: row.campaignName ?? "Sem nome", spend: analyticsNumber(row.spend), impressions: analyticsNumber(row.impressions), clicks: analyticsNumber(row.clicks), leads: analyticsNumber(row.leads) })),
+    ads: ads.map(row => ({ platform: row.platform, brand: row.brand, campaignId: row.campaignId, campaignName: row.campaignName ?? "Sem nome", adGroupId: row.adGroupId ?? "", adGroupName: row.adGroupName ?? "Sem grupo", adId: row.adId ?? "", adName: row.adName ?? "Sem nome", spend: analyticsNumber(row.spend), impressions: analyticsNumber(row.impressions), clicks: analyticsNumber(row.clicks), leads: analyticsNumber(row.leads) })),
     rdLeads: Object.fromEntries(rdQualified.map(row => [row.accountKey, analyticsNumber(row.count)])),
   };
 }

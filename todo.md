@@ -46,5 +46,7 @@
 - [x] Persistir as métricas reais de julho de 2026 de Google Ads e Meta Ads retornadas pelo Windsor.ai em uma camada normalizada por marca, plataforma e campanha.
 - [x] Construir o overview executivo com investimento, leads, CPL, negócios, vendas e receita; exibir ROAS apenas após atribuição auditável por identificador ou UTM.
 - [x] Construir funil de qualidade, visão de origens e visão de perdidos/descartes com dados Bitrix24 disponíveis.
-- [ ] Integrar dados de Google Ads e Meta Ads por conta, campanha, conjunto e anúncio após a autorização das plataformas.
+- [x] Integrar dados de Google Ads e Meta Ads por conta, campanha, conjunto e anúncio após a autorização das plataformas.
 - [ ] Implementar atribuição auditável entre mídia, lead, negócio e venda por identificadores ou UTMs, sem inferir relações não comprovadas.
+- [ ] Conectar o Bitrix24 da BeautySystems para disponibilizar negócios, vendas, receita e perdas comerciais da segunda marca.
+- [ ] Tornar motivo de perda e motivo de descarte campos estruturados e obrigatórios no Bitrix24 para permitir análises por motivo.

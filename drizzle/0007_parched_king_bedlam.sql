@@ -1,0 +1,1 @@
+ALTER TABLE `mediaDailyPerformance` ADD `recordLevel` enum('campaign','ad') DEFAULT 'campaign' NOT NULL;

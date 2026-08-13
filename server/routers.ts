@@ -60,7 +60,7 @@ export const appRouter = router({
   bitrix24: router({
     medsystemsStatus: adminProcedure.query(() => medsystemsBitrixStatus()),
     medsystemsJulyTotals: adminProcedure.query(() => medsystemsBitrixJulyTotals()),
-    medsystemsJulyDealAnalytics: adminProcedure.query(() => medsystemsBitrixJulyDealAnalytics()),
+    medsystemsJulyDealAnalytics: adminProcedure.input(z.object({ status: z.enum(["all", "open", "won", "lost"]) }).optional()).query(({ input }) => medsystemsBitrixJulyDealAnalytics(input?.status ?? "all")),
   }),
   analytics: router({
     dashboard: adminProcedure.input(z.object({ brand: analyticsBrandInput })).query(({ input }) => mediaDashboardAnalytics(input.brand)),

@@ -1,4 +1,4 @@
-import { bitrixDealJulyAnalytics, bitrixJulyTotals, finishBitrixSyncRun, startBitrixSyncRun, type BitrixEntityType, upsertBitrixEntities } from "../db";
+import { bitrixDealJulyAnalytics, bitrixJulyTotals, finishBitrixSyncRun, startBitrixSyncRun, type BitrixEntityType, type DealStatusFilter, upsertBitrixEntities } from "../db";
 
 const CRM_CAPABILITIES = ["Leads", "Contatos", "Negócios"] as const;
 const JULY_2026_START = new Date("2026-07-01T00:00:00-03:00");
@@ -83,6 +83,6 @@ export async function medsystemsBitrixJulyTotals() {
   return bitrixJulyTotals(new URL(webhookBaseUrl()).host, JULY_2026_START, JULY_2026_END);
 }
 
-export async function medsystemsBitrixJulyDealAnalytics() {
-  return bitrixDealJulyAnalytics(new URL(webhookBaseUrl()).host, JULY_2026_START, JULY_2026_END);
+export async function medsystemsBitrixJulyDealAnalytics(statusFilter: DealStatusFilter = "all") {
+  return bitrixDealJulyAnalytics(new URL(webhookBaseUrl()).host, JULY_2026_START, JULY_2026_END, statusFilter);
 }

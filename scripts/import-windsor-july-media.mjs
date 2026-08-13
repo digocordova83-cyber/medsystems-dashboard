@@ -53,8 +53,8 @@ try {
 
       await connection.execute(
         `INSERT INTO mediaDailyPerformance
-        (platform, brand, reportDate, accountId, accountName, campaignId, campaignName, spend, impressions, reach, clicks, platformLeads, platformConversions, rawPayload, syncedAt)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+        (platform, recordLevel, brand, reportDate, accountId, accountName, campaignId, campaignName, spend, impressions, reach, clicks, platformLeads, platformConversions, rawPayload, syncedAt)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
         ON DUPLICATE KEY UPDATE
           accountName = VALUES(accountName), campaignName = VALUES(campaignName), spend = VALUES(spend),
           impressions = VALUES(impressions), reach = VALUES(reach), clicks = VALUES(clicks),
@@ -62,6 +62,7 @@ try {
           rawPayload = VALUES(rawPayload), syncedAt = NOW()`,
         [
           source.platform,
+          "campaign",
           brand,
           new Date(`${row.date}T12:00:00.000Z`),
           accountId,

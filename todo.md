@@ -59,6 +59,8 @@
 - [x] Criar uma nova experiência de dashboard premium com navegação lateral, filtros globais e páginas de Overview, Google Ads, Meta Ads, Revenue, Origem & Funil e Perdidos & Descartes.
 - [x] Adaptar as visualizações ao modelo de dados existente, mantendo ROAS e receita por canal bloqueados quando não houver atribuição auditável.
 - [ ] Configurar e publicar a versão validada em um novo domínio ou prefixo do projeto; o endereço atual `medoauth-pfvjidwp.manus.space` permanece ativo até a confirmação do novo endereço.
+- [ ] Entregar ao usuário o inventário consolidado de URLs e UTMs por marca, plataforma e campanha, com exemplos reais observados no Windsor.ai.
+- [ ] Confirmar a entrega do inventário no registro de tarefas após o envio explícito ao usuário.
 - [x] Auditar diretamente no Windsor.ai os campos e valores de URL, tracking template e UTMs de Google Ads e Meta Ads para agosto de 2026.
 - [x] Comparar os padrões encontrados no Windsor.ai com UTMs recebidas no Bitrix24 e ajustar a conciliação somente diante de evidência verificável.
 - [x] Auditar padrões de UTM term/content/campaign dos leads Bitrix24 contra identificadores, nomes e hierarquias de mídia importados.

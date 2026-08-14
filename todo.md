@@ -59,6 +59,9 @@
 - [x] Criar uma nova experiência de dashboard premium com navegação lateral, filtros globais e páginas de Overview, Google Ads, Meta Ads, Revenue, Origem & Funil e Perdidos & Descartes.
 - [x] Adaptar as visualizações ao modelo de dados existente, mantendo ROAS e receita por canal bloqueados quando não houver atribuição auditável.
 - [ ] Configurar e publicar a versão validada em um novo domínio do projeto.
+- [x] Auditar UTMs e identificadores de campanha existentes em leads e negócios do Bitrix24, por período e marca.
+- [x] Modelar campanhas que geraram negócios, ganhos, perdidos e descartes somente por vínculo explícito de lead e campanha.
+- [x] Exibir no deck Revenue o ranking de campanhas com negócios e descartes, incluindo motivos reais de descarte e estado “Não identificado” quando necessário.
 - [x] Auditar, por período e marca, os campos Bitrix24 de origem, UTM e identificadores capazes de provar o canal de cada lead e negócio.
 - [x] Modelar o funil auditável por canal: leads recebidos no Bitrix24, negócios, ganhos, perdidos e descartes; manter “Não identificado” sem evidência.
 - [x] Inserir a análise de conversão por canal no deck contínuo de Revenue, com filtros globais de período, marca, canal e status.

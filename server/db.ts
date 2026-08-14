@@ -601,6 +601,102 @@ export async function bitrixLeadChannelFunnel(portal: string, start: Date, end: 
   };
 }
 
+type CampaignTrackingCandidate = { campaignId: string; campaignName: string; platform: "google_ads" | "meta_ads"; matchLevel: "campaign" | "ad_group" | "ad" };
+
+export function campaignTrackingValue(payload: Record<string, unknown>) {
+  const campaign = cleanAuditString(payload.UTM_CAMPAIGN);
+  if (campaign) return { field: "UTM campaign", value: campaign };
+  const term = cleanAuditString(payload.UTM_TERM);
+  if (term) return { field: "UTM term", value: term };
+  const content = cleanAuditString(payload.UTM_CONTENT);
+  if (content) return { field: "UTM content", value: content };
+  return null;
+}
+
+export async function bitrixCampaignAttributionDetail(portal: string, start: Date, end: Date, statusFilter: DealStatusFilter = "all", brand: AnalyticsBrand = "all") {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  const [leadRows, dealRows, mediaRows] = await Promise.all([
+    db.select({ bitrixId: bitrix24Entities.bitrixId, rawPayload: bitrix24Entities.rawPayload }).from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, portal), eq(bitrix24Entities.entityType, "lead"), gte(bitrix24Entities.createdAtBitrix, start), lt(bitrix24Entities.createdAtBitrix, end))),
+    db.select({ rawPayload: bitrix24Entities.rawPayload }).from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, portal), eq(bitrix24Entities.entityType, "deal"), gte(bitrix24Entities.createdAtBitrix, start), lt(bitrix24Entities.createdAtBitrix, end))),
+    db.select({ platform: mediaDailyPerformance.platform, campaignId: mediaDailyPerformance.campaignId, campaignName: mediaDailyPerformance.campaignName, adGroupName: mediaDailyPerformance.adGroupName, adName: mediaDailyPerformance.adName, recordLevel: mediaDailyPerformance.recordLevel }).from(mediaDailyPerformance).where(and(gte(mediaDailyPerformance.reportDate, start), lt(mediaDailyPerformance.reportDate, end), ...(brand === "all" ? [] : [eq(mediaDailyPerformance.brand, brand)]))),
+  ]);
+  const campaignLabels = new Map<string, CampaignTrackingCandidate | null>();
+  const register = (value: string | null, candidate: CampaignTrackingCandidate) => {
+    const normalized = cleanAuditString(value)?.toLowerCase();
+    if (!normalized) return;
+    const existing = campaignLabels.get(normalized);
+    if (!existing) { campaignLabels.set(normalized, candidate); return; }
+    if (existing.campaignId !== candidate.campaignId || existing.platform !== candidate.platform) campaignLabels.set(normalized, null);
+  };
+  for (const row of mediaRows) {
+    const base = { campaignId: row.campaignId, campaignName: row.campaignName || row.campaignId, platform: row.platform };
+    register(row.campaignName, { ...base, matchLevel: "campaign" });
+    register(row.adGroupName, { ...base, matchLevel: "ad_group" });
+    register(row.adName, { ...base, matchLevel: "ad" });
+  }
+  type LeadEvidence = { campaign: CampaignTrackingCandidate | null; tracking: { field: string; value: string } | null; channel: string };
+  const leadEvidence = new Map<string, LeadEvidence>();
+  const campaignRows = new Map<string, { campaignName: string; platform: "google_ads" | "meta_ads"; matchLevel: CampaignTrackingCandidate["matchLevel"]; leads: number; deals: number; won: number; lost: number; discards: number; discardReasons: Map<string, number> }>();
+  const trackingRows = new Map<string, { trackingField: string; trackingValue: string; channel: string; leads: number; deals: number; won: number; lost: number; discards: number }>();
+  const addCampaign = (candidate: CampaignTrackingCandidate) => {
+    const key = `${candidate.platform}:${candidate.campaignId}:${candidate.matchLevel}`;
+    const existing = campaignRows.get(key) ?? { campaignName: candidate.campaignName, platform: candidate.platform, matchLevel: candidate.matchLevel, leads: 0, deals: 0, won: 0, lost: 0, discards: 0, discardReasons: new Map<string, number>() };
+    campaignRows.set(key, existing);
+    return existing;
+  };
+  const addTracking = (tracking: { field: string; value: string }, channel: string) => {
+    const key = `${tracking.field}:${tracking.value}`;
+    const existing = trackingRows.get(key) ?? { trackingField: tracking.field, trackingValue: tracking.value, channel, leads: 0, deals: 0, won: 0, lost: 0, discards: 0 };
+    trackingRows.set(key, existing);
+    return existing;
+  };
+  let leadsWithTracking = 0;
+  for (const lead of leadRows) {
+    try {
+      const payload = JSON.parse(lead.rawPayload) as Record<string, unknown>;
+      const tracking = campaignTrackingValue(payload);
+      const candidate = tracking ? campaignLabels.get(tracking.value.toLowerCase()) ?? null : null;
+      const channel = utmChannelLabel(payload.UTM_SOURCE);
+      leadEvidence.set(String(lead.bitrixId), { campaign: candidate, tracking, channel });
+      if (tracking) leadsWithTracking += 1;
+      if (candidate) addCampaign(candidate).leads += 1;
+      else if (tracking) addTracking(tracking, channel).leads += 1;
+    } catch {
+      leadEvidence.set(String(lead.bitrixId), { campaign: null, tracking: null, channel: "Não identificado" });
+    }
+  }
+  const unassigned = { deals: 0, won: 0, lost: 0, discards: 0, discardReasons: new Map<string, number>() };
+  for (const deal of dealRows) {
+    try {
+      const payload = JSON.parse(deal.rawPayload) as Record<string, unknown>;
+      const dealBrand = bitrixDealBrand(payload);
+      if (!dealBrand || (brand !== "all" && dealBrand !== brand)) continue;
+      const status = dealStatusFromSemantic(payload.STAGE_SEMANTIC_ID);
+      if (statusFilter !== "all" && status !== statusFilter) continue;
+      const evidence = leadEvidence.get(cleanAuditString(payload.LEAD_ID) ?? "");
+      const discardReason = bitrixDiscardReason(payload);
+      const increment = (row: { deals: number; won: number; lost: number; discards: number }) => { row.deals += 1; if (status === "won") row.won += 1; if (status === "lost") row.lost += 1; if (discardReason) row.discards += 1; };
+      if (evidence?.campaign) {
+        const row = addCampaign(evidence.campaign); increment(row);
+        if (discardReason) row.discardReasons.set(discardReason, (row.discardReasons.get(discardReason) ?? 0) + 1);
+      } else if (evidence?.tracking) {
+        increment(addTracking(evidence.tracking, evidence.channel));
+      } else {
+        increment(unassigned);
+        if (discardReason) unassigned.discardReasons.set(discardReason, (unassigned.discardReasons.get(discardReason) ?? 0) + 1);
+      }
+    } catch { unassigned.deals += 1; }
+  }
+  return {
+    leadsWithTracking,
+    exactCampaignMatches: Array.from(campaignRows.values()).reduce((sum, row) => sum + row.leads, 0),
+    campaigns: Array.from(campaignRows.values()).map(row => ({ ...row, discardReasons: Array.from(row.discardReasons, ([label, count]) => ({ label, count })).sort((a, b) => b.count - a.count) })).sort((a, b) => b.deals - a.deals || b.discards - a.discards),
+    tracking: Array.from(trackingRows.values()).sort((a, b) => b.deals - a.deals || b.leads - a.leads),
+    unassigned: { ...unassigned, discardReasons: Array.from(unassigned.discardReasons, ([label, count]) => ({ label, count })).sort((a, b) => b.count - a.count) },
+  };
+}
+
 function analyticsNumber(value: unknown) {
   return Number(value ?? 0) || 0;
 }

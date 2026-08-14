@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { bitrixDealBrand, bitrixDiscardReason, bitrixFinancialStatus, dealStatusFromSemantic, rdEventAttribution, utmChannelLabel } from "../db";
+import { bitrixDealBrand, bitrixDiscardReason, bitrixFinancialStatus, campaignTrackingValue, dealStatusFromSemantic, rdEventAttribution, utmChannelLabel } from "../db";
 
 describe("classificação comercial auditável", () => {
   it("preserva os significados de estágio do Bitrix24", () => {
@@ -36,5 +36,11 @@ describe("classificação comercial auditável", () => {
     expect(bitrixFinancialStatus({ UF_CRM_1769707203: "20393" })).toBe("Aprovado Medsystems");
     expect(bitrixFinancialStatus({ UF_CRM_1769707203: "20395" })).toBe("Recusada");
     expect(bitrixFinancialStatus({ UF_CRM_1769707203: "desconhecido" })).toBeNull();
+  });
+
+  it("prioriza identificadores UTM explícitos sem promover valores ausentes a campanha", () => {
+    expect(campaignTrackingValue({ UTM_CAMPAIGN: "campanha-verificada", UTM_TERM: "criativo" })).toEqual({ field: "UTM campaign", value: "campanha-verificada" });
+    expect(campaignTrackingValue({ UTM_CAMPAIGN: "null", UTM_TERM: "criativo" })).toEqual({ field: "UTM term", value: "criativo" });
+    expect(campaignTrackingValue({ UTM_CONTENT: "undefined" })).toBeNull();
   });
 });

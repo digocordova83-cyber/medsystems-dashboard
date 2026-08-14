@@ -1,4 +1,4 @@
-import { bitrixDealBrand, bitrixDealJulyAnalytics, bitrixLeadChannelFunnel, bitrixJulyTotals, finishBitrixSyncRun, reconcileAttributionAuditLinks, reconcileBitrixEntities, refreshAttributionAuditFromBitrix, startBitrixSyncRun, type AnalyticsPeriod, type BitrixEntityType, type DealStatusFilter, upsertBitrixEntities } from "../db";
+import { bitrixCampaignAttributionDetail, bitrixDealBrand, bitrixDealJulyAnalytics, bitrixLeadChannelFunnel, bitrixJulyTotals, finishBitrixSyncRun, reconcileAttributionAuditLinks, reconcileBitrixEntities, refreshAttributionAuditFromBitrix, startBitrixSyncRun, type AnalyticsPeriod, type BitrixEntityType, type DealStatusFilter, upsertBitrixEntities } from "../db";
 
 const CRM_CAPABILITIES = ["Leads", "Contatos", "Negócios"] as const;
 const PERIODS: Record<AnalyticsPeriod, { start: Date; end: Date; bitrixStart: string; bitrixEnd: string }> = {
@@ -89,4 +89,9 @@ export async function medsystemsBitrixJulyDealAnalytics(statusFilter: DealStatus
 export async function medsystemsBitrixLeadChannelFunnel(statusFilter: DealStatusFilter = "all", brand: "all" | "medsystems" | "beautysystems" = "all", period: AnalyticsPeriod = "2026-07") {
   const range = PERIODS[period];
   return bitrixLeadChannelFunnel(new URL(webhookBaseUrl()).host, range.start, range.end, statusFilter, brand);
+}
+
+export async function medsystemsBitrixCampaignAttributionDetail(statusFilter: DealStatusFilter = "all", brand: "all" | "medsystems" | "beautysystems" = "all", period: AnalyticsPeriod = "2026-07") {
+  const range = PERIODS[period];
+  return bitrixCampaignAttributionDetail(new URL(webhookBaseUrl()).host, range.start, range.end, statusFilter, brand);
 }

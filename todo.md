@@ -56,3 +56,6 @@
 - [x] Tratar `UF_CRM_1769707203` exclusivamente como status financeiro, sem usá-lo como motivo de perda, descarte ou segmentação de marca.
 - [x] Corrigir rótulos legados de Medsystems no overview para refletirem a marca ou a visão consolidada selecionada.
 - [x] Exibir “Não identificado” ou “indisponível” para qualquer métrica, campo ou vínculo sem evidência armazenada, sem estimar ou criar valores substitutos.
+- [x] Criar uma nova experiência de dashboard premium com navegação lateral, filtros globais e páginas de Overview, Google Ads, Meta Ads, Revenue, Origem & Funil e Perdidos & Descartes.
+- [x] Adaptar as visualizações ao modelo de dados existente, mantendo ROAS e receita por canal bloqueados quando não houver atribuição auditável.
+- [ ] Validar a nova experiência em desktop e mobile e publicar a versão em um novo domínio do projeto.

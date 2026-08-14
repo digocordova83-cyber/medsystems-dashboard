@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
 import { ArrowDownRight, ArrowUpRight, BarChart3, ChevronRight, CircleAlert, DollarSign, Filter, Layers3, MousePointerClick, Target, TrendingUp } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type Brand = "all" | "medsystems" | "beautysystems";
 type Channel = "all" | "google_ads" | "meta_ads";
@@ -74,6 +74,15 @@ export function RevenueAnalytics() {
   const [period, setPeriod] = useState<ReportingPeriod>("2026-07");
   const [tab, setTab] = useState<Tab>("overview");
   const [revenueView, setRevenueView] = useState<RevenueView>("pipeline");
+  useEffect(() => {
+    const updateFromHash = () => {
+      const requested = window.location.hash.replace("#", "") as Tab;
+      if (TABS.some(item => item.id === requested)) setTab(requested);
+    };
+    updateFromHash();
+    window.addEventListener("hashchange", updateFromHash);
+    return () => window.removeEventListener("hashchange", updateFromHash);
+  }, []);
   const dashboard = trpc.analytics.dashboard.useQuery({ brand, period }, { refetchInterval: 60_000 });
   const bitrixDeals = trpc.bitrix24.medsystemsJulyDealAnalytics.useQuery({ status: dealStatus, brand }, { refetchInterval: 60_000 });
 
@@ -109,8 +118,6 @@ export function RevenueAnalytics() {
 
       <div className="mt-6 flex flex-col gap-3"><div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between"><div className="flex flex-wrap gap-2">{(["all", "medsystems", "beautysystems"] as Brand[]).map(option => <Button key={option} size="sm" variant={brand === option ? "default" : "outline"} className={brand === option ? "bg-cyan-200 text-slate-950 hover:bg-cyan-100" : "border-white/10 bg-black/10 text-muted-foreground hover:bg-white/10 hover:text-white"} onClick={() => setBrand(option)}>{BRAND_LABEL[option]}</Button>)}</div><div className="flex flex-wrap gap-2">{(["all", "google_ads", "meta_ads"] as Channel[]).map(option => <Button key={option} size="sm" variant={channel === option ? "secondary" : "outline"} className={channel === option ? "bg-white/10 text-white" : "border-white/10 bg-black/10 text-muted-foreground hover:bg-white/10 hover:text-white"} onClick={() => setChannel(option)}>{option === "all" ? "Todos os canais" : PLATFORM_LABEL[option]}</Button>)}</div></div><div className="flex flex-wrap items-center gap-2"><span className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">Status comercial · {BRAND_LABEL[brand]}</span>{(["all", "open", "won", "lost"] as DealStatus[]).map(option => <Button key={option} size="sm" variant={dealStatus === option ? "secondary" : "outline"} className={dealStatus === option ? "border-emerald-300/20 bg-emerald-300/10 text-emerald-100" : "border-white/10 bg-black/10 text-muted-foreground"} onClick={() => setDealStatus(option)}>{({ all: "Todos", open: "Em aberto", won: "Ganhos", lost: "Perdidos" } as Record<DealStatus, string>)[option]}</Button>)}</div></div>
     </div>
-
-    <div className="overflow-x-auto border-b border-white/10 px-5 lg:px-7"><div className="flex min-w-max gap-1 py-3">{TABS.map(item => <button key={item.id} onClick={() => setTab(item.id)} className={`rounded-lg px-3 py-2 text-sm transition ${tab === item.id ? "bg-cyan-200/10 text-cyan-100" : "text-muted-foreground hover:bg-white/5 hover:text-white"}`}>{item.label}</button>)}</div></div>
 
     {dashboard.isLoading ? <div className="grid min-h-80 place-items-center"><div className="text-center"><BarChart3 className="mx-auto h-6 w-6 animate-pulse text-cyan-200" /><p className="mt-3 text-sm text-muted-foreground">Carregando métricas de mídia…</p></div></div> : dashboard.isError ? <DataState title="Não foi possível carregar as métricas" detail={dashboard.error.message || "Tente atualizar a página. Os dados de origem não foram alterados."} /> : !model || model.platforms.length === 0 ? <DataState title="Não há mídia para este recorte" detail="Não foram encontrados registros de Google Ads ou Meta Ads para a marca e canal selecionados." /> : <div className="p-5 lg:p-7">
       {tab === "overview" ? <Overview brand={brand} model={model} dealData={dealData} maxCampaignSpend={maxCampaignSpend} attribution={model.attribution} /> : null}

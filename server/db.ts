@@ -414,7 +414,7 @@ function cleanAuditString(value: unknown) {
   return normalized && !["null", "undefined"].includes(normalized.toLowerCase()) ? normalized : null;
 }
 
-export function rdEventAttribution(rawPayload: string) {
+export function rdEventUtmValues(rawPayload: string) {
   try {
     const event = JSON.parse(rawPayload) as { payload?: Record<string, unknown> };
     const payload = event.payload ?? {};
@@ -423,11 +423,18 @@ export function rdEventAttribution(rawPayload: string) {
     return {
       utmSource: cleanAuditString(payload.cf_utm_source_real ?? payload.cf_utm_source ?? params?.get("utm_source")),
       utmCampaign: cleanAuditString(payload.cf_utm_campaign_real ?? payload.cf_utm_campaign ?? params?.get("utm_campaign")),
+      utmContent: cleanAuditString(payload.cf_utm_content_real ?? payload.cf_utm_content ?? params?.get("utm_content")),
+      utmTerm: cleanAuditString(payload.cf_utm_term_real ?? payload.cf_utm_term ?? params?.get("utm_term")),
       mediaCampaignId: cleanAuditString(params?.get("utm_id")),
     };
   } catch {
-    return { utmSource: null, utmCampaign: null, mediaCampaignId: null };
+    return { utmSource: null, utmCampaign: null, utmContent: null, utmTerm: null, mediaCampaignId: null };
   }
+}
+
+export function rdEventAttribution(rawPayload: string) {
+  const { utmSource, utmCampaign, mediaCampaignId } = rdEventUtmValues(rawPayload);
+  return { utmSource, utmCampaign, mediaCampaignId };
 }
 
 export function dealStatusFromSemantic(value: unknown): Exclude<DealStatusFilter, "all"> {
@@ -598,6 +605,68 @@ export async function bitrixLeadChannelFunnel(portal: string, start: Date, end: 
     linkedDeals,
     unlinkedDeals,
     rows: Array.from(rows, ([channel, row]) => ({ channel, ...row, leadsReceived: channel.includes("sem LEAD_ID vinculável") ? null : brand === "all" ? row.leadsReceived : null })).sort((a, b) => b.deals - a.deals || (b.leadsReceived ?? 0) - (a.leadsReceived ?? 0)),
+  };
+}
+
+type UtmCoverage = { total: number; withSource: number; withCampaign: number; withContent: number; withTerm: number };
+
+export async function utmReceiptCoverage(portal: string, start: Date, end: Date, period: AnalyticsPeriod, brand: AnalyticsBrand = "all") {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  const [bitrixRows, rdRows, mediaRows] = await Promise.all([
+    db.select({ rawPayload: bitrix24Entities.rawPayload }).from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, portal), eq(bitrix24Entities.entityType, "lead"), gte(bitrix24Entities.createdAtBitrix, start), lt(bitrix24Entities.createdAtBitrix, end))),
+    period === "2026-07" ? db.select({ accountKey: rdStationConversionEvents.accountKey, rawPayload: rdStationConversionEvents.rawPayload }).from(rdStationConversionEvents).where(and(gte(rdStationConversionEvents.eventCreatedAt, start), lt(rdStationConversionEvents.eventCreatedAt, end), ...(brand === "all" ? [] : [eq(rdStationConversionEvents.accountKey, brand)]))) : Promise.resolve([]),
+    db.select({ brand: mediaDailyPerformance.brand, campaignName: mediaDailyPerformance.campaignName }).from(mediaDailyPerformance).where(and(eq(mediaDailyPerformance.recordLevel, "campaign"), gte(mediaDailyPerformance.reportDate, start), lt(mediaDailyPerformance.reportDate, end), ...(brand === "all" ? [] : [eq(mediaDailyPerformance.brand, brand)]))),
+  ]);
+  const createCoverage = (): UtmCoverage => ({ total: 0, withSource: 0, withCampaign: 0, withContent: 0, withTerm: 0 });
+  const addCoverage = (target: UtmCoverage, values: { utmSource: string | null; utmCampaign: string | null; utmContent: string | null; utmTerm: string | null }) => {
+    target.total += 1;
+    if (values.utmSource) target.withSource += 1;
+    if (values.utmCampaign) target.withCampaign += 1;
+    if (values.utmContent) target.withContent += 1;
+    if (values.utmTerm) target.withTerm += 1;
+  };
+  const mediaCampaigns = new Map<string, Set<string>>();
+  for (const media of mediaRows) {
+    const key = cleanAuditString(media.campaignName)?.toLowerCase();
+    if (!key) continue;
+    const brands = mediaCampaigns.get(key) ?? new Set<string>();
+    brands.add(media.brand);
+    mediaCampaigns.set(key, brands);
+  }
+  const bitrix = createCoverage();
+  if (brand === "all") for (const row of bitrixRows) {
+    try {
+      const payload = JSON.parse(row.rawPayload) as Record<string, unknown>;
+      addCoverage(bitrix, {
+        utmSource: cleanAuditString(payload.UTM_SOURCE),
+        utmCampaign: cleanAuditString(payload.UTM_CAMPAIGN),
+        utmContent: cleanAuditString(payload.UTM_CONTENT),
+        utmTerm: cleanAuditString(payload.UTM_TERM),
+      });
+    } catch { bitrix.total += 1; }
+  }
+  const rd = createCoverage();
+  const campaigns = new Map<string, { campaign: string; brand: Exclude<AnalyticsBrand, "all">; rdEvents: number; mediaCampaignFound: boolean }>();
+  for (const row of rdRows) {
+    const values = rdEventUtmValues(row.rawPayload);
+    addCoverage(rd, values);
+    if (!values.utmCampaign) continue;
+    const key = `${row.accountKey}:${values.utmCampaign.toLowerCase()}`;
+    const existing = campaigns.get(key) ?? {
+      campaign: values.utmCampaign,
+      brand: row.accountKey,
+      rdEvents: 0,
+      mediaCampaignFound: mediaCampaigns.get(values.utmCampaign.toLowerCase())?.has(row.accountKey) ?? false,
+    };
+    existing.rdEvents += 1;
+    campaigns.set(key, existing);
+  }
+  return {
+    period,
+    bitrix: { available: brand === "all", reason: brand === "all" ? null : "Os leads Bitrix24 não têm marca estruturada; a cobertura consolidada não é atribuível à marca selecionada.", brandScopeAvailable: brand === "all", ...bitrix },
+    rd: { available: period === "2026-07", reason: period === "2026-08" ? "Coleta real do RD Station ainda não foi executada para agosto." : "A cobertura UTM do RD Station usa eventos de conversão; os contatos sincronizados de julho não trazem campos UTM utilizáveis.", ...rd },
+    rdCampaigns: Array.from(campaigns.values()).sort((a, b) => b.rdEvents - a.rdEvents || a.campaign.localeCompare(b.campaign)),
   };
 }
 

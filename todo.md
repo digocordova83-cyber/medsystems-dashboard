@@ -59,8 +59,12 @@
 - [x] Criar uma nova experiência de dashboard premium com navegação lateral, filtros globais e páginas de Overview, Google Ads, Meta Ads, Revenue, Origem & Funil e Perdidos & Descartes.
 - [x] Adaptar as visualizações ao modelo de dados existente, mantendo ROAS e receita por canal bloqueados quando não houver atribuição auditável.
 - [ ] Configurar e publicar a versão validada em um novo domínio ou prefixo do projeto; o endereço atual `medoauth-pfvjidwp.manus.space` permanece ativo até a confirmação do novo endereço.
-- [ ] Entregar ao usuário o inventário consolidado de URLs e UTMs por marca, plataforma e campanha, com exemplos reais observados no Windsor.ai.
-- [ ] Confirmar a entrega do inventário no registro de tarefas após o envio explícito ao usuário.
+- [x] Auditar a cobertura das UTMs configuradas nas campanhas entre os leads Bitrix24 e eventos/contatos RD Station por período; no Bitrix24, a auditoria é somente consolidada porque os leads não possuem marca estruturada, enquanto o RD Station permanece separado por marca.
+- [x] Modelar e exibir a comparação auditável de recebimento de UTM entre Bitrix24 e RD Station, mantendo como indisponível qualquer período sem coleta real de uma fonte.
+- [x] Validar a cobertura de UTM dos leads Bitrix24 e contatos/eventos RD Station no mesmo recorte de julho, documentando campos ausentes: eventos contêm UTMs, contatos não.
+- [x] Exibir a métrica Bitrix24 como indisponível sob filtro de marca enquanto os leads não tiverem marca estruturada comprovada.
+- [x] Entregar ao usuário o inventário consolidado de URLs e UTMs por marca, plataforma e campanha, com exemplos reais observados no Windsor.ai.
+- [x] Confirmar a entrega do inventário no registro de tarefas após o envio explícito ao usuário.
 - [x] Auditar diretamente no Windsor.ai os campos e valores de URL, tracking template e UTMs de Google Ads e Meta Ads para agosto de 2026.
 - [x] Comparar os padrões encontrados no Windsor.ai com UTMs recebidas no Bitrix24 e ajustar a conciliação somente diante de evidência verificável.
 - [x] Auditar padrões de UTM term/content/campaign dos leads Bitrix24 contra identificadores, nomes e hierarquias de mídia importados.

@@ -601,7 +601,7 @@ export async function bitrixLeadChannelFunnel(portal: string, start: Date, end: 
   };
 }
 
-type CampaignTrackingCandidate = { campaignId: string; campaignName: string; brand: Exclude<AnalyticsBrand, "all">; platform: "google_ads" | "meta_ads"; matchLevel: "campaign" | "ad_group" | "ad"; matchMethod: "exact" | "creative_key" };
+type CampaignTrackingCandidate = { campaignId: string; campaignName: string; brand: Exclude<AnalyticsBrand, "all">; platform: "google_ads" | "meta_ads"; matchLevel: "campaign" | "ad_group" | "ad"; matchMethod: "exact" | "creative_key" | "url_utm" };
 
 export function normalizeCreativeKey(value: unknown) {
   const normalized = cleanAuditString(value)?.toLowerCase();
@@ -625,7 +625,7 @@ export async function bitrixCampaignAttributionDetail(portal: string, start: Dat
   const [leadRows, dealRows, mediaRows] = await Promise.all([
     db.select({ bitrixId: bitrix24Entities.bitrixId, rawPayload: bitrix24Entities.rawPayload }).from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, portal), eq(bitrix24Entities.entityType, "lead"), gte(bitrix24Entities.createdAtBitrix, start), lt(bitrix24Entities.createdAtBitrix, end))),
     db.select({ rawPayload: bitrix24Entities.rawPayload }).from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, portal), eq(bitrix24Entities.entityType, "deal"), gte(bitrix24Entities.createdAtBitrix, start), lt(bitrix24Entities.createdAtBitrix, end))),
-    db.select({ platform: mediaDailyPerformance.platform, brand: mediaDailyPerformance.brand, campaignId: mediaDailyPerformance.campaignId, campaignName: mediaDailyPerformance.campaignName, adGroupName: mediaDailyPerformance.adGroupName, adName: mediaDailyPerformance.adName, recordLevel: mediaDailyPerformance.recordLevel }).from(mediaDailyPerformance).where(and(gte(mediaDailyPerformance.reportDate, start), lt(mediaDailyPerformance.reportDate, end), ...(brand === "all" ? [] : [eq(mediaDailyPerformance.brand, brand)]))),
+    db.select({ platform: mediaDailyPerformance.platform, brand: mediaDailyPerformance.brand, campaignId: mediaDailyPerformance.campaignId, campaignName: mediaDailyPerformance.campaignName, adGroupName: mediaDailyPerformance.adGroupName, adName: mediaDailyPerformance.adName, rawPayload: mediaDailyPerformance.rawPayload, recordLevel: mediaDailyPerformance.recordLevel }).from(mediaDailyPerformance).where(and(gte(mediaDailyPerformance.reportDate, start), lt(mediaDailyPerformance.reportDate, end), ...(brand === "all" ? [] : [eq(mediaDailyPerformance.brand, brand)]))),
   ]);
   const exactCampaignLabels = new Map<string, CampaignTrackingCandidate | null>();
   const creativeKeyLabels = new Map<string, CampaignTrackingCandidate | null>();
@@ -647,6 +647,15 @@ export async function bitrixCampaignAttributionDetail(portal: string, start: Dat
       const candidate: CampaignTrackingCandidate = { ...base, matchLevel: "ad", matchMethod: "creative_key" };
       if (!existing) creativeKeyLabels.set(creativeKey, candidate);
       else if (existing.campaignId !== candidate.campaignId || existing.platform !== candidate.platform || existing.brand !== candidate.brand) creativeKeyLabels.set(creativeKey, null);
+    }
+    try {
+      const payload = JSON.parse(row.rawPayload) as { _trackingIdentifiers?: { parameter?: string; value?: string }[] };
+      for (const identifier of payload._trackingIdentifiers ?? []) {
+        const matchLevel = identifier.parameter === "utm_campaign" ? "campaign" : identifier.parameter === "utm_content" ? "ad_group" : "ad";
+        register(exactCampaignLabels, identifier.value ?? null, { ...base, matchLevel, matchMethod: "url_utm" });
+      }
+    } catch {
+      // Dados de mídia sem payload válido permanecem fora da conciliação por URL.
     }
   }
   type LeadEvidence = { campaign: CampaignTrackingCandidate | null; tracking: { field: string; value: string } | null; channel: string };

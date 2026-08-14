@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { DASHBOARD_TABS, dashboardMath } from "./RevenueAnalytics";
+import { DASHBOARD_TABS, SUPPORTED_REPORTING_PERIODS, dashboardMath } from "./RevenueAnalytics";
 
 describe("dashboardMath.ratio", () => {
   it("calcula CPL, custo por venda e ROAS preservando precisão", () => {
@@ -14,5 +14,9 @@ describe("dashboardMath.ratio", () => {
 
   it("mantém Revenue como a única visão comercial central", () => {
     expect(DASHBOARD_TABS.map(tab => tab.id)).toEqual(["overview", "google", "meta", "revenue"]);
+  });
+
+  it("mantém agosto e julho como períodos explícitos de análise", () => {
+    expect(SUPPORTED_REPORTING_PERIODS).toEqual(["2026-08", "2026-07"]);
   });
 });

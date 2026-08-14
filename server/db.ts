@@ -260,7 +260,7 @@ export type JulyViewType = "primeira" | "ultima";
 export type BitrixEntityType = "lead" | "contact" | "deal";
 export type AnalyticsBrand = "all" | "medsystems" | "beautysystems";
 export type DealStatusFilter = "all" | "open" | "won" | "lost";
-export type AnalyticsPeriod = "2026-07";
+export type AnalyticsPeriod = "2026-07" | "2026-08";
 
 const BITRIX_BRAND_FIELD = "UF_CRM_1683207237";
 const BITRIX_BRAND_VALUES = { "1907": "medsystems", "3065": "beautysystems" } as const;
@@ -444,6 +444,7 @@ export async function bitrixDealJulyAnalytics(portal: string, start: Date, end: 
   const sources = new Map<string, { count: number; value: number }>();
   const losses = new Map<string, { count: number; value: number; withObservation: number }>();
   const discards = new Map<string, { count: number; value: number }>();
+  const discardChannels = new Map<string, { count: number; value: number }>();
   const financialStatuses = new Map<string, { count: number; value: number }>();
   const utmSources = new Map<string, { count: number; value: number }>();
   let won = 0;
@@ -471,6 +472,13 @@ export async function bitrixDealJulyAnalytics(portal: string, start: Date, end: 
       discard.count += 1;
       discard.value += value;
       discards.set(discardReason, discard);
+      const discardChannel = utmChannelLabel(payload.UTM_SOURCE);
+      if (discardChannel !== "Não identificado") {
+        const channel = discardChannels.get(discardChannel) ?? { count: 0, value: 0 };
+        channel.count += 1;
+        channel.value += value;
+        discardChannels.set(discardChannel, channel);
+      }
     }
     const financialStatus = bitrixFinancialStatus(payload);
     if (financialStatus) {
@@ -523,6 +531,7 @@ export async function bitrixDealJulyAnalytics(portal: string, start: Date, end: 
     utmSources: toBreakdown(utmSources),
     losses: Array.from(losses, ([label, item]) => ({ label, ...item })).sort((a, b) => b.count - a.count),
     discards: toBreakdown(discards),
+    discardChannels: toBreakdown(discardChannels),
     financialStatuses: toBreakdown(financialStatuses),
   };
 }
@@ -624,7 +633,10 @@ export async function refreshAttributionAuditFromBitrix(input: { brand: Exclude<
 export async function mediaDashboardAnalytics(brand: AnalyticsBrand, period: AnalyticsPeriod = "2026-07") {
   const db = await getDb();
   if (!db) throw new Error("Banco de dados indisponível.");
-  const periodRange = { "2026-07": { start: new Date("2026-07-01T00:00:00-03:00"), end: new Date("2026-08-01T00:00:00-03:00") } }[period];
+  const periodRange = {
+    "2026-07": { start: new Date("2026-07-01T00:00:00-03:00"), end: new Date("2026-08-01T00:00:00-03:00"), endLabel: "2026-07-31", rdLeadsAvailable: true },
+    "2026-08": { start: new Date("2026-08-01T00:00:00-03:00"), end: new Date("2026-08-14T00:00:00-03:00"), endLabel: "2026-08-13", rdLeadsAvailable: false },
+  }[period];
   const { start, end } = periodRange;
   const brands = brand === "all" ? ["medsystems", "beautysystems"] as const : [brand] as const;
   const mediaWhere = and(eq(mediaDailyPerformance.recordLevel, "campaign"), inArray(mediaDailyPerformance.brand, brands), gte(mediaDailyPerformance.reportDate, start), lt(mediaDailyPerformance.reportDate, end));
@@ -695,14 +707,14 @@ export async function mediaDashboardAnalytics(brand: AnalyticsBrand, period: Ana
     mediaDailyPerformance.adName,
   ).orderBy(desc(sql`sum(${mediaDailyPerformance.spend})`)).limit(80);
 
-  const rdQualified = await db.select({ accountKey: rdStationJulyLeadViews.accountKey, count: sql<number>`count(*)` })
+  const rdQualified = periodRange.rdLeadsAvailable ? await db.select({ accountKey: rdStationJulyLeadViews.accountKey, count: sql<number>`count(*)` })
     .from(rdStationJulyLeadViews)
     .where(and(inArray(rdStationJulyLeadViews.accountKey, brands), eq(rdStationJulyLeadViews.viewType, "primeira"), eq(rdStationJulyLeadViews.status, "qualificado")))
-    .groupBy(rdStationJulyLeadViews.accountKey);
-  const attribution = await attributionAuditSummary(brand);
+    .groupBy(rdStationJulyLeadViews.accountKey) : [];
+  const attribution = periodRange.rdLeadsAvailable ? await attributionAuditSummary(brand) : [];
 
   return {
-    period: { key: period, start: "2026-07-01", end: "2026-07-31" },
+    period: { key: period, start: period === "2026-07" ? "2026-07-01" : "2026-08-01", end: periodRange.endLabel },
     media: {
       spend: analyticsNumber(mediaTotal?.spend),
       impressions: analyticsNumber(mediaTotal?.impressions),
@@ -715,6 +727,7 @@ export async function mediaDashboardAnalytics(brand: AnalyticsBrand, period: Ana
     campaigns: campaigns.map(row => ({ platform: row.platform, brand: row.brand, campaignId: row.campaignId, campaignName: row.campaignName ?? "Sem nome", spend: analyticsNumber(row.spend), impressions: analyticsNumber(row.impressions), clicks: analyticsNumber(row.clicks), leads: analyticsNumber(row.leads) })),
     ads: ads.map(row => ({ platform: row.platform, brand: row.brand, campaignId: row.campaignId, campaignName: row.campaignName ?? "Sem nome", adGroupId: row.adGroupId ?? "", adGroupName: row.adGroupName ?? "Sem grupo", adId: row.adId ?? "", adName: row.adName ?? "Sem nome", spend: analyticsNumber(row.spend), impressions: analyticsNumber(row.impressions), clicks: analyticsNumber(row.clicks), leads: analyticsNumber(row.leads) })),
     rdLeads: Object.fromEntries(rdQualified.map(row => [row.accountKey, analyticsNumber(row.count)])),
+    sourceAvailability: { rdLeads: periodRange.rdLeadsAvailable, attribution: periodRange.rdLeadsAvailable },
     attribution,
   };
 }

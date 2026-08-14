@@ -59,6 +59,10 @@
 - [x] Criar uma nova experiência de dashboard premium com navegação lateral, filtros globais e páginas de Overview, Google Ads, Meta Ads, Revenue, Origem & Funil e Perdidos & Descartes.
 - [x] Adaptar as visualizações ao modelo de dados existente, mantendo ROAS e receita por canal bloqueados quando não houver atribuição auditável.
 - [ ] Configurar e publicar a versão validada em um novo domínio do projeto.
+- [x] Auditar e importar dados reais de agosto de 2026 para mídia e negócios, até 13/08; leads qualificados do RD Station permanecem explicitamente indisponíveis até sua coleta real.
+- [x] Criar análises auditáveis de mídia com maior descarte, origem e motivo, sem vincular canal a descarte quando não houver identificador comprovado.
+- [x] Transformar Revenue em um deck contínuo de análise, substituindo as subseções clicáveis por blocos sequenciais de pipeline, vendas, origens, perdas, descartes e status financeiro.
+- [x] Remover o selo estático de julho do cabeçalho para que a interface reflita exclusivamente o período selecionado no dashboard.
 - [x] Corrigir o erro de permissão ao carregar as consultas analíticas do dashboard publicado.
 - [x] Unificar Revenue, Origem & Funil e Perdidos & Descartes em uma única visão de negócio, mantendo as subseções internas para pipeline, origens, vendas, perdas e descartes.
 - [x] Restaurar no interior de Revenue as subseções explícitas Pipeline, Origem, Vendas, Perdidos e Descartes, sempre sincronizadas aos filtros globais.

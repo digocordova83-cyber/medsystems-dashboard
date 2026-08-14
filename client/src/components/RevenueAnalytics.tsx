@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 
 type Brand = "all" | "medsystems" | "beautysystems";
 type Channel = "all" | "google_ads" | "meta_ads";
-type Tab = "overview" | "google" | "meta" | "revenue" | "origin" | "losses";
+type Tab = "overview" | "google" | "meta" | "revenue";
 type RevenueView = "pipeline" | "origin" | "sales" | "lost" | "discard";
 type DealStatus = "all" | "open" | "won" | "lost";
 type ReportingPeriod = "2026-07";
@@ -31,13 +31,11 @@ type CampaignRow = { platform: "google_ads" | "meta_ads"; campaignId: string; ca
 type AdRow = CampaignRow & { adGroupId: string; adGroupName: string; adId: string; adName: string };
 type AttributionRow = { matchStatus: "not_identified" | "channel_signal" | "identified"; matchMethod: "none" | "utm_source" | "utm_campaign" | "identifier"; mediaPlatform: "google_ads" | "meta_ads" | null; count: number; revenueValue: number };
 
-const TABS: { id: Tab; label: string }[] = [
+export const DASHBOARD_TABS: { id: Tab; label: string }[] = [
   { id: "overview", label: "Overview" },
   { id: "google", label: "Google Ads" },
   { id: "meta", label: "Meta Ads" },
   { id: "revenue", label: "Revenue" },
-  { id: "origin", label: "Origem & Funil" },
-  { id: "losses", label: "Perdidos & Descartes" },
 ];
 
 const BRAND_LABEL: Record<Brand, string> = { all: "Todas as marcas", medsystems: "Medsystems", beautysystems: "BeautySystems" };
@@ -77,7 +75,7 @@ export function RevenueAnalytics() {
   useEffect(() => {
     const updateFromHash = () => {
       const requested = window.location.hash.replace("#", "") as Tab;
-      if (TABS.some(item => item.id === requested)) setTab(requested);
+      if (DASHBOARD_TABS.some(item => item.id === requested)) setTab(requested);
     };
     updateFromHash();
     window.addEventListener("hashchange", updateFromHash);
@@ -122,9 +120,7 @@ export function RevenueAnalytics() {
     {dashboard.isLoading ? <div className="grid min-h-80 place-items-center"><div className="text-center"><BarChart3 className="mx-auto h-6 w-6 animate-pulse text-cyan-200" /><p className="mt-3 text-sm text-muted-foreground">Carregando métricas de mídia…</p></div></div> : dashboard.isError ? <DataState title="Não foi possível carregar as métricas" detail={dashboard.error.message || "Tente atualizar a página. Os dados de origem não foram alterados."} /> : !model || model.platforms.length === 0 ? <DataState title="Não há mídia para este recorte" detail="Não foram encontrados registros de Google Ads ou Meta Ads para a marca e canal selecionados." /> : <div className="p-5 lg:p-7">
       {tab === "overview" ? <Overview brand={brand} model={model} dealData={dealData} maxCampaignSpend={maxCampaignSpend} attribution={model.attribution} /> : null}
       {tab === "google" || tab === "meta" ? <CampaignView title={tab === "google" ? "Google Ads" : "Meta Ads"} campaigns={model.campaigns.filter(item => item.platform === (tab === "google" ? "google_ads" : "meta_ads"))} ads={model.ads.filter(item => item.platform === (tab === "google" ? "google_ads" : "meta_ads"))} maxSpend={maxCampaignSpend} /> : null}
-      {tab === "revenue" ? <RevenueViewPanel view={revenueView} setView={setRevenueView} dealData={dealData} model={model} /> : null}
-      {tab === "origin" ? <OriginFunnel model={model} dealData={dealData} /> : null}
-      {tab === "losses" ? <LossView dealData={dealData} /> : null}
+      {tab === "revenue" ? <BusinessHub brand={brand} dealData={dealData} model={model} view={revenueView} setView={setRevenueView} /> : null}
     </div>}
   </section>;
 }
@@ -150,10 +146,16 @@ function RevenueViewPanel({ view, setView, dealData, model }: { view: RevenueVie
   return <div className="space-y-5"><div className="flex flex-col justify-between gap-4 md:flex-row md:items-center"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">Revenue</p><h3 className="mt-1 text-xl font-bold">Pipeline comercial por marca</h3></div><div className="flex flex-wrap gap-1">{views.map(item => <Button key={item.id} size="sm" variant={item.id === view ? "secondary" : "outline"} className={item.id === view ? "bg-cyan-200/10 text-cyan-100" : "border-white/10 bg-black/10 text-muted-foreground"} onClick={() => setView(item.id)}>{item.label}</Button>)}</div></div>{!dealData ? <UnavailableCommercial /> : <>{view === "pipeline" ? <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5"><FunnelStep label="Leads mídia" value={integer(model.commercialPlatformLeads)} /><FunnelStep label="Qualificados RD" value={integer(model.commercialQualifiedLeads)} /><FunnelStep label="Negócios" value={integer(dealData.total)} /><FunnelStep label="Ganhos" value={integer(dealData.won)} /><FunnelStep label="Receita" value={brl(dealData.wonValue)} /></div> : null}{view === "origin" ? <div className="grid gap-5 xl:grid-cols-2"><Breakdown title="Negócios por origem" rows={dealData.sources.map(item => ({ label: item.label, primary: `${integer(item.count)} negócios`, secondary: brl(item.value) }))} /><div className="space-y-3"><Breakdown title="Sinal UTM por canal" rows={dealData.utmSources.map(item => ({ label: item.label, primary: `${integer(item.count)} negócios`, secondary: brl(item.value) }))} /><p className="rounded-xl border border-amber-200/15 bg-amber-100/5 p-3 text-xs leading-5 text-amber-50/70">UTM identifica somente o canal informado no negócio. Receita atribuída, ROAS e custo por venda continuam bloqueados até o vínculo verificável entre mídia, lead, negócio e venda.</p></div></div> : null}{view === "sales" ? <div className="grid gap-4 sm:grid-cols-3"><KpiCard label="Vendas" value={integer(dealData.won)} helper={`${dealData.wonRateOfClosed.toFixed(1)}% dos fechados`} icon={TrendingUp} accent="green" /><KpiCard label="Receita" value={brl(dealData.wonValue)} helper="Negócios ganhos em julho" icon={DollarSign} accent="green" /><KpiCard label="Custo por venda atribuído" value="—" helper="Matching UTM mídia → venda pendente" icon={MousePointerClick} /></div> : null}{view === "lost" ? <Breakdown title="Negócios perdidos por pipeline" rows={dealData.losses.map(item => ({ label: item.label, primary: `${integer(item.count)} perdas`, secondary: brl(item.value) }))} /> : null}{view === "discard" ? discardRows.length ? <Breakdown title="Descartes por motivo" rows={discardRows} /> : <DataState title="Não há motivos de descarte preenchidos" detail="O campo de motivo de descarte existe no Bitrix24, mas não há valores para a marca e o status selecionados." /> : null}</>}</div>;
 }
 
-function OriginFunnel({ model, dealData }: { model: { spend: number; platformLeads: number; qualifiedLeads: number; commercialSpend: number; commercialPlatformLeads: number; commercialQualifiedLeads: number }; dealData: DealAnalytics | null }) {
+function BusinessHub({ brand, model, dealData, view, setView }: { brand: Brand; model: { spend: number; platformLeads: number; qualifiedLeads: number; commercialSpend: number; commercialPlatformLeads: number; commercialQualifiedLeads: number }; dealData: DealAnalytics | null; view: RevenueView; setView: (view: RevenueView) => void }) {
+  const revenue = dealData?.wonValue ?? 0;
+  return <div className="space-y-6"><section className="rounded-2xl border border-cyan-200/15 bg-cyan-300/[.035] p-5"><div className="flex flex-col justify-between gap-3 md:flex-row md:items-end"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.16em] text-cyan-100/70">Visão única de negócio</p><h3 className="mt-1 text-xl font-bold">Do investimento ao resultado comercial</h3><p className="mt-1 text-sm text-muted-foreground">Pipeline, origem, funil, vendas, perdas e descartes no mesmo contexto.</p></div><Badge variant="outline" className="w-fit border-amber-200/20 text-amber-100">ROAS por canal bloqueado</Badge></div><div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-6"><FunnelStep label="Investimento" value={brl(model.commercialSpend)} /><FunnelStep label="Leads" value={integer(model.commercialPlatformLeads)} /><FunnelStep label="Qualificados" value={integer(model.commercialQualifiedLeads)} /><FunnelStep label="Negócios" value={dealData ? integer(dealData.total) : "Indisponível"} /><FunnelStep label="Vendas" value={dealData ? integer(dealData.won) : "Indisponível"} /><FunnelStep label="Receita" value={dealData ? brl(revenue) : "Indisponível"} /></div></section><RevenueViewPanel view={view} setView={setView} dealData={dealData} model={model} /></div>;
+}
+
+function OriginFunnel({ brand, model, dealData }: { brand: Brand; model: { spend: number; platformLeads: number; qualifiedLeads: number; commercialSpend: number; commercialPlatformLeads: number; commercialQualifiedLeads: number }; dealData: DealAnalytics | null }) {
   const mediaLeads = dealData ? model.commercialPlatformLeads : model.platformLeads;
   const qualifiedLeads = dealData ? model.commercialQualifiedLeads : model.qualifiedLeads;
-  return <div className="grid gap-5 xl:grid-cols-[.9fr_1.1fr]"><div className="rounded-2xl border border-white/10 bg-black/15 p-5"><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">Funil de qualidade</p><div className="mt-5 space-y-3"><FunnelBar label={dealData ? "Leads de plataforma Medsystems" : "Leads de plataforma"} value={mediaLeads} max={mediaLeads} color="bg-cyan-300" /><FunnelBar label={dealData ? "Leads qualificados RD Medsystems" : "Leads qualificados RD"} value={qualifiedLeads} max={mediaLeads} color="bg-emerald-300" /><FunnelBar label="Negócios Bitrix" value={dealData?.total ?? 0} max={mediaLeads} color="bg-violet-300" /><FunnelBar label="Vendas ganhas" value={dealData?.won ?? 0} max={mediaLeads} color="bg-orange-300" /></div></div>{dealData ? <Breakdown title="Origem × valor de negócio" rows={dealData.sources.map(item => ({ label: item.label, primary: `${integer(item.count)} negócios`, secondary: brl(item.value) }))} /> : <UnavailableCommercial />}</div>;
+  const label = brand === "all" ? "Todas as marcas" : BRAND_LABEL[brand];
+  return <div className="grid gap-5 xl:grid-cols-[.9fr_1.1fr]"><div className="rounded-2xl border border-white/10 bg-black/15 p-5"><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">Funil de qualidade</p><div className="mt-5 space-y-3"><FunnelBar label={`Leads de plataforma · ${label}`} value={mediaLeads} max={mediaLeads} color="bg-cyan-300" /><FunnelBar label={`Leads qualificados RD · ${label}`} value={qualifiedLeads} max={mediaLeads} color="bg-emerald-300" /><FunnelBar label="Negócios Bitrix" value={dealData?.total ?? 0} max={mediaLeads} color="bg-violet-300" /><FunnelBar label="Vendas ganhas" value={dealData?.won ?? 0} max={mediaLeads} color="bg-orange-300" /></div></div>{dealData ? <Breakdown title="Origem × valor de negócio" rows={dealData.sources.map(item => ({ label: item.label, primary: `${integer(item.count)} negócios`, secondary: brl(item.value) }))} /> : <UnavailableCommercial />}</div>;
 }
 
 function LossView({ dealData }: { dealData: DealAnalytics | null }) {

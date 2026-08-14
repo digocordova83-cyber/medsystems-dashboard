@@ -58,4 +58,8 @@
 - [x] Exibir “Não identificado” ou “indisponível” para qualquer métrica, campo ou vínculo sem evidência armazenada, sem estimar ou criar valores substitutos.
 - [x] Criar uma nova experiência de dashboard premium com navegação lateral, filtros globais e páginas de Overview, Google Ads, Meta Ads, Revenue, Origem & Funil e Perdidos & Descartes.
 - [x] Adaptar as visualizações ao modelo de dados existente, mantendo ROAS e receita por canal bloqueados quando não houver atribuição auditável.
-- [ ] Validar a nova experiência em desktop e mobile e publicar a versão em um novo domínio do projeto.
+- [ ] Configurar e publicar a versão validada em um novo domínio do projeto.
+- [x] Corrigir o erro de permissão ao carregar as consultas analíticas do dashboard publicado.
+- [x] Unificar Revenue, Origem & Funil e Perdidos & Descartes em uma única visão de negócio, mantendo as subseções internas para pipeline, origens, vendas, perdas e descartes.
+- [x] Restaurar no interior de Revenue as subseções explícitas Pipeline, Origem, Vendas, Perdidos e Descartes, sempre sincronizadas aos filtros globais.
+- [x] Corrigir os rótulos do funil consolidado para refletir a marca selecionada, sem identificar incorretamente o modo “Todas as marcas” como Medsystems.

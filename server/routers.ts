@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
-import { adminProcedure, publicProcedure, router } from "./_core/trpc";
+import { adminProcedure, protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import { systemRouter } from "./_core/systemRouter";
 import { callbackUrl, createAuthorizationUrl, fetchSegmentations, integrationStatus, syncNextContactPage, syncNextJulyConversionBatch, updateSegmentation } from "./rdstation/service";
 import { isRdAccountKey, RD_ACCOUNTS, type RdAccountKey } from "./rdstation/types";
@@ -60,10 +60,10 @@ export const appRouter = router({
   bitrix24: router({
     medsystemsStatus: adminProcedure.query(() => medsystemsBitrixStatus()),
     medsystemsJulyTotals: adminProcedure.query(() => medsystemsBitrixJulyTotals()),
-    medsystemsJulyDealAnalytics: adminProcedure.input(z.object({ status: z.enum(["all", "open", "won", "lost"]), brand: analyticsBrandInput }).optional()).query(({ input }) => medsystemsBitrixJulyDealAnalytics(input?.status ?? "all", input?.brand ?? "all")),
+    medsystemsJulyDealAnalytics: protectedProcedure.input(z.object({ status: z.enum(["all", "open", "won", "lost"]), brand: analyticsBrandInput }).optional()).query(({ input }) => medsystemsBitrixJulyDealAnalytics(input?.status ?? "all", input?.brand ?? "all")),
   }),
   analytics: router({
-    dashboard: adminProcedure.input(z.object({ brand: analyticsBrandInput, period: z.enum(["2026-07"]).default("2026-07") })).query(({ input }) => mediaDashboardAnalytics(input.brand, input.period)),
+    dashboard: protectedProcedure.input(z.object({ brand: analyticsBrandInput, period: z.enum(["2026-07"]).default("2026-07") })).query(({ input }) => mediaDashboardAnalytics(input.brand, input.period)),
   }),
 });
 

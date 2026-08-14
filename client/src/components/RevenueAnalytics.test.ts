@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { dashboardMath } from "./RevenueAnalytics";
+import { DASHBOARD_TABS, dashboardMath } from "./RevenueAnalytics";
 
 describe("dashboardMath.ratio", () => {
   it("calcula CPL, custo por venda e ROAS preservando precisão", () => {
@@ -10,5 +10,9 @@ describe("dashboardMath.ratio", () => {
 
   it("retorna zero quando a base de divisão não possui registros", () => {
     expect(dashboardMath.ratio(5_000, 0)).toBe(0);
+  });
+
+  it("mantém Revenue como a única visão comercial central", () => {
+    expect(DASHBOARD_TABS.map(tab => tab.id)).toEqual(["overview", "google", "meta", "revenue"]);
   });
 });

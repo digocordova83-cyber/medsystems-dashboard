@@ -51,7 +51,7 @@
 - [x] Mapear, no portal Bitrix24 compartilhado, os campos existentes que registram perda, descarte e respectivos motivos antes de criar qualquer campo novo; o campo estruturado de descarte foi confirmado pelo usuário.
 - [x] Identificar e validar o critério estruturado que separa Medsystems e BeautySystems no mesmo portal Bitrix24, mantendo as métricas comerciais isoladas por marca.
 - [x] Aplicar a regra confirmada do campo `UF_CRM_1683207237`: “Medsystems” para Medsystems e “Negócios e Redes” para BeautySystems; manter outros valores fora das métricas por marca.
-- [ ] Validar um campo estruturado específico de motivo de perda; o painel mantém perdas por pipeline e usa, separadamente, o motivo de descarte confirmado.
+- [x] Decisão confirmada: exibir perdas exclusivamente pela etapa/pipeline do Bitrix24 e manter, separadamente, o motivo de descarte estruturado confirmado.
 - [x] Validar e incorporar o campo existente `UF_CRM_1687285902` como motivo de descarte, usando suas opções reais sem reclassificação automática.
 - [x] Tratar `UF_CRM_1769707203` exclusivamente como status financeiro, sem usá-lo como motivo de perda, descarte ou segmentação de marca.
 - [x] Corrigir rótulos legados de Medsystems no overview para refletirem a marca ou a visão consolidada selecionada.

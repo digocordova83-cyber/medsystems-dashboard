@@ -3,6 +3,7 @@ import mysql from "mysql2/promise";
 const baseUrl = process.env.BITRIX24_MEDSYSTEMS_WEBHOOK_BASE_URL;
 const databaseUrl = process.env.DATABASE_URL;
 const targetField = process.env.TARGET_FIELD;
+const lossCandidatesMode = process.env.LOSS_CANDIDATES === "1";
 if (!baseUrl || !databaseUrl) throw new Error("As variáveis de conexão do Bitrix24 ou banco não estão disponíveis.");
 
 const response = await fetch(`${baseUrl}crm.deal.userfield.list.json`, {
@@ -18,6 +19,7 @@ const connection = await mysql.createConnection(databaseUrl);
 try {
   const [rows] = await connection.execute("SELECT rawPayload FROM bitrix24Entities WHERE entityType = 'deal' AND createdAtBitrix >= ? AND createdAtBitrix < ?", [new Date("2026-07-01T00:00:00-03:00"), new Date("2026-08-01T00:00:00-03:00")]);
   const counts = new Map();
+  const lossCounts = new Map();
   for (const row of rows) {
     const deal = JSON.parse(row.rawPayload);
     for (const [key, value] of Object.entries(deal)) {
@@ -27,6 +29,12 @@ try {
       const normalized = Array.isArray(value) ? value.join(" | ") : String(value);
       item.values.set(normalized, (item.values.get(normalized) ?? 0) + 1);
       counts.set(key, item);
+      if (String(deal.STAGE_SEMANTIC_ID ?? "") === "F") {
+        const lossItem = lossCounts.get(key) ?? { count: 0, values: new Map() };
+        lossItem.count += 1;
+        lossItem.values.set(normalized, (lossItem.values.get(normalized) ?? 0) + 1);
+        lossCounts.set(key, lossItem);
+      }
     }
   }
 
@@ -61,10 +69,17 @@ try {
     };
   });
   const target = targetField ? enumerations.filter(field => field.field === targetField) : [];
+  const lossCandidates = enumerations.map(field => {
+    const activity = lossCounts.get(field.field);
+    const optionById = new Map(field.options.map(option => [option.id, option.value]));
+    return {
+      field: field.field,
+      lostDealsFilled: activity?.count ?? 0,
+      observedOptionsOnLostDeals: activity ? Array.from(activity.values, ([id, count]) => ({ id, option: optionById.get(id) ?? `ID ${id}`, count })).sort((a, b) => b.count - a.count).slice(0, 15) : [],
+    };
+  }).filter(field => field.field !== "UF_CRM_1769707203" && field.lostDealsFilled > 0 && enumerations.find(candidate => candidate.field === field.field)?.options.some(option => /perd|cancel|desist|recus|sem retorno|desinteresse|duplicad|sem recurso/i.test(option.value))).sort((a, b) => b.lostDealsFilled - a.lostDealsFilled).slice(0, 30);
   console.log(JSON.stringify(targetField ? { targetField, fields: summarize(target) } : {
-    metadataFields: userFields.length,
-    brandEnumerations: summarize(brandEnumerations),
-    lossDiscardEnumerations: summarize(lossDiscardEnumerations),
+    ...(lossCandidatesMode ? { lossCandidates } : { metadataFields: userFields.length, brandEnumerations: summarize(brandEnumerations), lossDiscardEnumerations: summarize(lossDiscardEnumerations) }),
   }, null, 2));
 } finally {
   await connection.end();

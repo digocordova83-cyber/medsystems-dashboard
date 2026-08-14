@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { bitrixDealBrand, bitrixDiscardReason, bitrixFinancialStatus, campaignTrackingValue, dealStatusFromSemantic, rdEventAttribution, utmChannelLabel } from "../db";
+import { bitrixDealBrand, bitrixDiscardReason, bitrixFinancialStatus, campaignTrackingValue, dealStatusFromSemantic, normalizeCreativeKey, rdEventAttribution, utmChannelLabel } from "../db";
 
 describe("classificação comercial auditável", () => {
   it("preserva os significados de estágio do Bitrix24", () => {
@@ -42,5 +42,11 @@ describe("classificação comercial auditável", () => {
     expect(campaignTrackingValue({ UTM_CAMPAIGN: "campanha-verificada", UTM_TERM: "criativo" })).toEqual({ field: "UTM campaign", value: "campanha-verificada" });
     expect(campaignTrackingValue({ UTM_CAMPAIGN: "null", UTM_TERM: "criativo" })).toEqual({ field: "UTM term", value: "criativo" });
     expect(campaignTrackingValue({ UTM_CONTENT: "undefined" })).toBeNull();
+  });
+
+  it("normaliza somente o prefixo técnico e a versão numérica de um criativo", () => {
+    expect(normalizeCreativeKey("ad04-estatico-05-vectra-bts-03")).toBe("estatico-05-vectra-bts");
+    expect(normalizeCreativeKey("video-01-aquapure-bts")).toBe("video-01-aquapure-bts");
+    expect(normalizeCreativeKey("undefined")).toBeNull();
   });
 });

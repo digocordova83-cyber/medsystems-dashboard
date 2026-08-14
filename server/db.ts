@@ -601,7 +601,13 @@ export async function bitrixLeadChannelFunnel(portal: string, start: Date, end: 
   };
 }
 
-type CampaignTrackingCandidate = { campaignId: string; campaignName: string; platform: "google_ads" | "meta_ads"; matchLevel: "campaign" | "ad_group" | "ad" };
+type CampaignTrackingCandidate = { campaignId: string; campaignName: string; brand: Exclude<AnalyticsBrand, "all">; platform: "google_ads" | "meta_ads"; matchLevel: "campaign" | "ad_group" | "ad"; matchMethod: "exact" | "creative_key" };
+
+export function normalizeCreativeKey(value: unknown) {
+  const normalized = cleanAuditString(value)?.toLowerCase();
+  if (!normalized) return null;
+  return normalized.replace(/^ad\d{2}-/, "").replace(/-\d{2}$/, "") || null;
+}
 
 export function campaignTrackingValue(payload: Record<string, unknown>) {
   const campaign = cleanAuditString(payload.UTM_CAMPAIGN);
@@ -619,29 +625,37 @@ export async function bitrixCampaignAttributionDetail(portal: string, start: Dat
   const [leadRows, dealRows, mediaRows] = await Promise.all([
     db.select({ bitrixId: bitrix24Entities.bitrixId, rawPayload: bitrix24Entities.rawPayload }).from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, portal), eq(bitrix24Entities.entityType, "lead"), gte(bitrix24Entities.createdAtBitrix, start), lt(bitrix24Entities.createdAtBitrix, end))),
     db.select({ rawPayload: bitrix24Entities.rawPayload }).from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, portal), eq(bitrix24Entities.entityType, "deal"), gte(bitrix24Entities.createdAtBitrix, start), lt(bitrix24Entities.createdAtBitrix, end))),
-    db.select({ platform: mediaDailyPerformance.platform, campaignId: mediaDailyPerformance.campaignId, campaignName: mediaDailyPerformance.campaignName, adGroupName: mediaDailyPerformance.adGroupName, adName: mediaDailyPerformance.adName, recordLevel: mediaDailyPerformance.recordLevel }).from(mediaDailyPerformance).where(and(gte(mediaDailyPerformance.reportDate, start), lt(mediaDailyPerformance.reportDate, end), ...(brand === "all" ? [] : [eq(mediaDailyPerformance.brand, brand)]))),
+    db.select({ platform: mediaDailyPerformance.platform, brand: mediaDailyPerformance.brand, campaignId: mediaDailyPerformance.campaignId, campaignName: mediaDailyPerformance.campaignName, adGroupName: mediaDailyPerformance.adGroupName, adName: mediaDailyPerformance.adName, recordLevel: mediaDailyPerformance.recordLevel }).from(mediaDailyPerformance).where(and(gte(mediaDailyPerformance.reportDate, start), lt(mediaDailyPerformance.reportDate, end), ...(brand === "all" ? [] : [eq(mediaDailyPerformance.brand, brand)]))),
   ]);
-  const campaignLabels = new Map<string, CampaignTrackingCandidate | null>();
-  const register = (value: string | null, candidate: CampaignTrackingCandidate) => {
+  const exactCampaignLabels = new Map<string, CampaignTrackingCandidate | null>();
+  const creativeKeyLabels = new Map<string, CampaignTrackingCandidate | null>();
+  const register = (target: Map<string, CampaignTrackingCandidate | null>, value: string | null, candidate: CampaignTrackingCandidate) => {
     const normalized = cleanAuditString(value)?.toLowerCase();
     if (!normalized) return;
-    const existing = campaignLabels.get(normalized);
-    if (!existing) { campaignLabels.set(normalized, candidate); return; }
-    if (existing.campaignId !== candidate.campaignId || existing.platform !== candidate.platform) campaignLabels.set(normalized, null);
+    const existing = target.get(normalized);
+    if (!existing) { target.set(normalized, candidate); return; }
+    if (existing.campaignId !== candidate.campaignId || existing.platform !== candidate.platform || existing.brand !== candidate.brand) target.set(normalized, null);
   };
   for (const row of mediaRows) {
-    const base = { campaignId: row.campaignId, campaignName: row.campaignName || row.campaignId, platform: row.platform };
-    register(row.campaignName, { ...base, matchLevel: "campaign" });
-    register(row.adGroupName, { ...base, matchLevel: "ad_group" });
-    register(row.adName, { ...base, matchLevel: "ad" });
+    const base = { campaignId: row.campaignId, campaignName: row.campaignName || row.campaignId, brand: row.brand, platform: row.platform };
+    register(exactCampaignLabels, row.campaignName, { ...base, matchLevel: "campaign", matchMethod: "exact" });
+    register(exactCampaignLabels, row.adGroupName, { ...base, matchLevel: "ad_group", matchMethod: "exact" });
+    register(exactCampaignLabels, row.adName, { ...base, matchLevel: "ad", matchMethod: "exact" });
+    const creativeKey = normalizeCreativeKey(row.adName);
+    if (creativeKey) {
+      const existing = creativeKeyLabels.get(creativeKey);
+      const candidate: CampaignTrackingCandidate = { ...base, matchLevel: "ad", matchMethod: "creative_key" };
+      if (!existing) creativeKeyLabels.set(creativeKey, candidate);
+      else if (existing.campaignId !== candidate.campaignId || existing.platform !== candidate.platform || existing.brand !== candidate.brand) creativeKeyLabels.set(creativeKey, null);
+    }
   }
   type LeadEvidence = { campaign: CampaignTrackingCandidate | null; tracking: { field: string; value: string } | null; channel: string };
   const leadEvidence = new Map<string, LeadEvidence>();
-  const campaignRows = new Map<string, { campaignName: string; platform: "google_ads" | "meta_ads"; matchLevel: CampaignTrackingCandidate["matchLevel"]; leads: number; deals: number; won: number; lost: number; discards: number; discardReasons: Map<string, number> }>();
+  const campaignRows = new Map<string, { campaignName: string; platform: "google_ads" | "meta_ads"; matchLevel: CampaignTrackingCandidate["matchLevel"]; matchMethod: CampaignTrackingCandidate["matchMethod"]; leads: number; deals: number; won: number; lost: number; discards: number; discardReasons: Map<string, number> }>();
   const trackingRows = new Map<string, { trackingField: string; trackingValue: string; channel: string; leads: number; deals: number; won: number; lost: number; discards: number }>();
   const addCampaign = (candidate: CampaignTrackingCandidate) => {
     const key = `${candidate.platform}:${candidate.campaignId}:${candidate.matchLevel}`;
-    const existing = campaignRows.get(key) ?? { campaignName: candidate.campaignName, platform: candidate.platform, matchLevel: candidate.matchLevel, leads: 0, deals: 0, won: 0, lost: 0, discards: 0, discardReasons: new Map<string, number>() };
+    const existing = campaignRows.get(key) ?? { campaignName: candidate.campaignName, platform: candidate.platform, matchLevel: candidate.matchLevel, matchMethod: candidate.matchMethod, leads: 0, deals: 0, won: 0, lost: 0, discards: 0, discardReasons: new Map<string, number>() };
     campaignRows.set(key, existing);
     return existing;
   };
@@ -656,7 +670,8 @@ export async function bitrixCampaignAttributionDetail(portal: string, start: Dat
     try {
       const payload = JSON.parse(lead.rawPayload) as Record<string, unknown>;
       const tracking = campaignTrackingValue(payload);
-      const candidate = tracking ? campaignLabels.get(tracking.value.toLowerCase()) ?? null : null;
+      const rawKey = tracking?.value.toLowerCase();
+      const candidate = !rawKey ? null : exactCampaignLabels.has(rawKey) ? exactCampaignLabels.get(rawKey) ?? null : creativeKeyLabels.get(normalizeCreativeKey(rawKey) ?? "") ?? null;
       const channel = utmChannelLabel(payload.UTM_SOURCE);
       leadEvidence.set(String(lead.bitrixId), { campaign: candidate, tracking, channel });
       if (tracking) leadsWithTracking += 1;
@@ -677,7 +692,7 @@ export async function bitrixCampaignAttributionDetail(portal: string, start: Dat
       const evidence = leadEvidence.get(cleanAuditString(payload.LEAD_ID) ?? "");
       const discardReason = bitrixDiscardReason(payload);
       const increment = (row: { deals: number; won: number; lost: number; discards: number }) => { row.deals += 1; if (status === "won") row.won += 1; if (status === "lost") row.lost += 1; if (discardReason) row.discards += 1; };
-      if (evidence?.campaign) {
+      if (evidence?.campaign && evidence.campaign.brand === dealBrand) {
         const row = addCampaign(evidence.campaign); increment(row);
         if (discardReason) row.discardReasons.set(discardReason, (row.discardReasons.get(discardReason) ?? 0) + 1);
       } else if (evidence?.tracking) {

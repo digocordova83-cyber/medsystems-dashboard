@@ -58,7 +58,10 @@
 - [x] Exibir “Não identificado” ou “indisponível” para qualquer métrica, campo ou vínculo sem evidência armazenada, sem estimar ou criar valores substitutos.
 - [x] Criar uma nova experiência de dashboard premium com navegação lateral, filtros globais e páginas de Overview, Google Ads, Meta Ads, Revenue, Origem & Funil e Perdidos & Descartes.
 - [x] Adaptar as visualizações ao modelo de dados existente, mantendo ROAS e receita por canal bloqueados quando não houver atribuição auditável.
-- [ ] Configurar e publicar a versão validada em um novo domínio do projeto.
+- [ ] Configurar e publicar a versão validada em um novo domínio ou prefixo do projeto; o endereço atual `medoauth-pfvjidwp.manus.space` permanece ativo até a confirmação do novo endereço.
+- [x] Auditar padrões de UTM term/content/campaign dos leads Bitrix24 contra identificadores, nomes e hierarquias de mídia importados.
+- [x] Definir uma tabela de reconciliação auditável que aceite somente correspondências únicas e comprováveis, mantendo ambiguidades sem atribuição.
+- [x] Aplicar a reconciliação confirmada ao ranking de campanhas, negócios e descartes e expor a evidência de correspondência no deck Revenue.
 - [x] Auditar UTMs e identificadores de campanha existentes em leads e negócios do Bitrix24, por período e marca.
 - [x] Modelar campanhas que geraram negócios, ganhos, perdidos e descartes somente por vínculo explícito de lead e campanha.
 - [x] Exibir no deck Revenue o ranking de campanhas com negócios e descartes, incluindo motivos reais de descarte e estado “Não identificado” quando necessário.

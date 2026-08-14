@@ -1,4 +1,4 @@
-import { bitrixDealBrand, bitrixDealJulyAnalytics, bitrixJulyTotals, finishBitrixSyncRun, reconcileAttributionAuditLinks, reconcileBitrixEntities, refreshAttributionAuditFromBitrix, startBitrixSyncRun, type AnalyticsPeriod, type BitrixEntityType, type DealStatusFilter, upsertBitrixEntities } from "../db";
+import { bitrixDealBrand, bitrixDealJulyAnalytics, bitrixLeadChannelFunnel, bitrixJulyTotals, finishBitrixSyncRun, reconcileAttributionAuditLinks, reconcileBitrixEntities, refreshAttributionAuditFromBitrix, startBitrixSyncRun, type AnalyticsPeriod, type BitrixEntityType, type DealStatusFilter, upsertBitrixEntities } from "../db";
 
 const CRM_CAPABILITIES = ["Leads", "Contatos", "Negócios"] as const;
 const PERIODS: Record<AnalyticsPeriod, { start: Date; end: Date; bitrixStart: string; bitrixEnd: string }> = {
@@ -7,7 +7,7 @@ const PERIODS: Record<AnalyticsPeriod, { start: Date; end: Date; bitrixStart: st
 };
 const ENTITY_METHOD: Record<BitrixEntityType, string> = { lead: "crm.lead.list", contact: "crm.contact.list", deal: "crm.deal.list" };
 const ENTITY_SELECT: Record<BitrixEntityType, string[]> = {
-  lead: ["ID", "TITLE", "NAME", "LAST_NAME", "SECOND_NAME", "EMAIL", "PHONE", "STATUS_ID", "DATE_CREATE", "DATE_MODIFY"],
+  lead: ["*", "UF_*"],
   contact: ["ID", "NAME", "LAST_NAME", "SECOND_NAME", "EMAIL", "PHONE", "DATE_CREATE", "DATE_MODIFY"],
   deal: ["*", "UF_*"],
 };
@@ -84,4 +84,9 @@ export async function medsystemsBitrixJulyTotals() { const range = PERIODS["2026
 export async function medsystemsBitrixJulyDealAnalytics(statusFilter: DealStatusFilter = "all", brand: "all" | "medsystems" | "beautysystems" = "all", period: AnalyticsPeriod = "2026-07") {
   const range = PERIODS[period];
   return bitrixDealJulyAnalytics(new URL(webhookBaseUrl()).host, range.start, range.end, statusFilter, brand);
+}
+
+export async function medsystemsBitrixLeadChannelFunnel(statusFilter: DealStatusFilter = "all", brand: "all" | "medsystems" | "beautysystems" = "all", period: AnalyticsPeriod = "2026-07") {
+  const range = PERIODS[period];
+  return bitrixLeadChannelFunnel(new URL(webhookBaseUrl()).host, range.start, range.end, statusFilter, brand);
 }

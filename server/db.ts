@@ -536,6 +536,71 @@ export async function bitrixDealJulyAnalytics(portal: string, start: Date, end: 
   };
 }
 
+export async function bitrixLeadChannelFunnel(portal: string, start: Date, end: Date, statusFilter: DealStatusFilter = "all", brand: AnalyticsBrand = "all") {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  const [leadRows, dealRows] = await Promise.all([
+    db.select({ bitrixId: bitrix24Entities.bitrixId, rawPayload: bitrix24Entities.rawPayload }).from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, portal), eq(bitrix24Entities.entityType, "lead"), gte(bitrix24Entities.createdAtBitrix, start), lt(bitrix24Entities.createdAtBitrix, end))),
+    db.select({ rawPayload: bitrix24Entities.rawPayload }).from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, portal), eq(bitrix24Entities.entityType, "deal"), gte(bitrix24Entities.createdAtBitrix, start), lt(bitrix24Entities.createdAtBitrix, end))),
+  ]);
+  const leadChannels = new Map<string, string>();
+  const rows = new Map<string, { leadsReceived: number; deals: number; won: number; lost: number; discards: number }>();
+  const add = (channel: string) => {
+    const existing = rows.get(channel) ?? { leadsReceived: 0, deals: 0, won: 0, lost: 0, discards: 0 };
+    rows.set(channel, existing);
+    return existing;
+  };
+  for (const lead of leadRows) {
+    try {
+      const payload = JSON.parse(lead.rawPayload) as Record<string, unknown>;
+      const channel = utmChannelLabel(payload.UTM_SOURCE);
+      leadChannels.set(String(lead.bitrixId), channel);
+      add(channel).leadsReceived += 1;
+    } catch {
+      leadChannels.set(String(lead.bitrixId), "Não identificado");
+      add("Não identificado").leadsReceived += 1;
+    }
+  }
+  let linkedDeals = 0;
+  let unlinkedDeals = 0;
+  const unlinked = { leadsReceived: 0, deals: 0, won: 0, lost: 0, discards: 0 };
+  for (const deal of dealRows) {
+    try {
+      const payload = JSON.parse(deal.rawPayload) as Record<string, unknown>;
+      const dealBrand = bitrixDealBrand(payload);
+      if (!dealBrand || (brand !== "all" && dealBrand !== brand)) continue;
+      const status = dealStatusFromSemantic(payload.STAGE_SEMANTIC_ID);
+      if (statusFilter !== "all" && status !== statusFilter) continue;
+      const leadId = cleanAuditString(payload.LEAD_ID);
+      const channel = leadId ? leadChannels.get(leadId) : null;
+      if (!channel) {
+        unlinkedDeals += 1;
+        unlinked.deals += 1;
+        if (status === "won") unlinked.won += 1;
+        if (status === "lost") unlinked.lost += 1;
+        if (bitrixDiscardReason(payload)) unlinked.discards += 1;
+        continue;
+      }
+      const row = add(channel);
+      linkedDeals += 1;
+      row.deals += 1;
+      if (status === "won") row.won += 1;
+      if (status === "lost") row.lost += 1;
+      if (bitrixDiscardReason(payload)) row.discards += 1;
+    } catch {
+      unlinkedDeals += 1;
+      unlinked.deals += 1;
+    }
+  }
+  if (unlinked.deals) rows.set("Não identificado — negócio sem LEAD_ID vinculável", unlinked);
+  return {
+    leadBrandScopeAvailable: brand === "all",
+    linkedDeals,
+    unlinkedDeals,
+    rows: Array.from(rows, ([channel, row]) => ({ channel, ...row, leadsReceived: channel.includes("sem LEAD_ID vinculável") ? null : brand === "all" ? row.leadsReceived : null })).sort((a, b) => b.deals - a.deals || (b.leadsReceived ?? 0) - (a.leadsReceived ?? 0)),
+  };
+}
+
 function analyticsNumber(value: unknown) {
   return Number(value ?? 0) || 0;
 }

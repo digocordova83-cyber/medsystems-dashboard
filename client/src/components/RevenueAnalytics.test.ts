@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { DASHBOARD_TABS, SUPPORTED_REPORTING_PERIODS, dashboardMath } from "./RevenueAnalytics";
+import { DASHBOARD_TABS, SUPPORTED_REPORTING_PERIODS, channelFunnelMath, dashboardMath } from "./RevenueAnalytics";
 
 describe("dashboardMath.ratio", () => {
   it("calcula CPL, custo por venda e ROAS preservando precisão", () => {
@@ -18,5 +18,10 @@ describe("dashboardMath.ratio", () => {
 
   it("mantém agosto e julho como períodos explícitos de análise", () => {
     expect(SUPPORTED_REPORTING_PERIODS).toEqual(["2026-08", "2026-07"]);
+  });
+
+  it("não calcula conversão por canal quando os leads não têm escopo de marca comprovado", () => {
+    expect(channelFunnelMath.conversionRate(60, 2)).toBeCloseTo(2 / 60);
+    expect(channelFunnelMath.conversionRate(null, 2)).toBeNull();
   });
 });

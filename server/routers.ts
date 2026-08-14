@@ -5,7 +5,7 @@ import { adminProcedure, protectedProcedure, publicProcedure, router } from "./_
 import { systemRouter } from "./_core/systemRouter";
 import { callbackUrl, createAuthorizationUrl, fetchSegmentations, integrationStatus, syncNextContactPage, syncNextJulyConversionBatch, updateSegmentation } from "./rdstation/service";
 import { isRdAccountKey, RD_ACCOUNTS, type RdAccountKey } from "./rdstation/types";
-import { medsystemsBitrixJulyDealAnalytics, medsystemsBitrixJulyTotals, medsystemsBitrixStatus } from "./bitrix24/service";
+import { medsystemsBitrixLeadChannelFunnel, medsystemsBitrixJulyDealAnalytics, medsystemsBitrixJulyTotals, medsystemsBitrixStatus } from "./bitrix24/service";
 import { mediaDashboardAnalytics } from "./db";
 
 const accountInput = z.enum(RD_ACCOUNTS);
@@ -61,6 +61,7 @@ export const appRouter = router({
     medsystemsStatus: adminProcedure.query(() => medsystemsBitrixStatus()),
     medsystemsJulyTotals: adminProcedure.query(() => medsystemsBitrixJulyTotals()),
     medsystemsJulyDealAnalytics: protectedProcedure.input(z.object({ status: z.enum(["all", "open", "won", "lost"]), brand: analyticsBrandInput, period: z.enum(["2026-07", "2026-08"]).default("2026-07") }).optional()).query(({ input }) => medsystemsBitrixJulyDealAnalytics(input?.status ?? "all", input?.brand ?? "all", input?.period ?? "2026-07")),
+    medsystemsLeadChannelFunnel: protectedProcedure.input(z.object({ status: z.enum(["all", "open", "won", "lost"]), brand: analyticsBrandInput, period: z.enum(["2026-07", "2026-08"]).default("2026-07") }).optional()).query(({ input }) => medsystemsBitrixLeadChannelFunnel(input?.status ?? "all", input?.brand ?? "all", input?.period ?? "2026-07")),
   }),
   analytics: router({
     dashboard: protectedProcedure.input(z.object({ brand: analyticsBrandInput, period: z.enum(["2026-07", "2026-08"]).default("2026-07") })).query(({ input }) => mediaDashboardAnalytics(input.brand, input.period)),

@@ -59,6 +59,11 @@
 - [x] Criar uma nova experiência de dashboard premium com navegação lateral, filtros globais e páginas de Overview, Google Ads, Meta Ads, Revenue, Origem & Funil e Perdidos & Descartes.
 - [x] Adaptar as visualizações ao modelo de dados existente, mantendo ROAS e receita por canal bloqueados quando não houver atribuição auditável.
 - [ ] Configurar e publicar a versão validada em um novo domínio do projeto.
+- [x] Auditar, por período e marca, os campos Bitrix24 de origem, UTM e identificadores capazes de provar o canal de cada lead e negócio.
+- [x] Modelar o funil auditável por canal: leads recebidos no Bitrix24, negócios, ganhos, perdidos e descartes; manter “Não identificado” sem evidência.
+- [x] Inserir a análise de conversão por canal no deck contínuo de Revenue, com filtros globais de período, marca, canal e status.
+- [x] Incluir explicitamente no funil a linha de negócios “Não identificado” sem `LEAD_ID` vinculável, com conversão indisponível e seus estágios reais.
+- [x] Corrigir o total exibido de negócios vinculados para excluir a linha de negócios não identificados sem `LEAD_ID` comprovado.
 - [x] Auditar e importar dados reais de agosto de 2026 para mídia e negócios, até 13/08; leads qualificados do RD Station permanecem explicitamente indisponíveis até sua coleta real.
 - [x] Criar análises auditáveis de mídia com maior descarte, origem e motivo, sem vincular canal a descarte quando não houver identificador comprovado.
 - [x] Transformar Revenue em um deck contínuo de análise, substituindo as subseções clicáveis por blocos sequenciais de pipeline, vendas, origens, perdas, descartes e status financeiro.

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { bitrixDealBrand, bitrixDiscardReason, bitrixFinancialStatus, campaignTrackingValue, dealStatusFromSemantic, normalizeCreativeKey, rdEventAttribution, rdEventUtmValues, utmChannelLabel } from "../db";
+import { bitrixDealBrand, bitrixDiscardReason, bitrixFinancialStatus, campaignTrackingValue, dealStatusFromSemantic, normalizeCreativeKey, normalizeIdentityEmail, rdEventAttribution, rdEventUtmValues, utmChannelLabel } from "../db";
 
 describe("classificação comercial auditável", () => {
   it("preserva os significados de estágio do Bitrix24", () => {
@@ -23,6 +23,12 @@ describe("classificação comercial auditável", () => {
   it("preserva content e term da landing page RD Station quando estão presentes", () => {
     const event = JSON.stringify({ payload: { cf_landing_page: "https://exemplo.com/?utm_source=facebook&utm_campaign=medical-mpt-lp&utm_content=audiencia-quente&utm_term=video-01-mpt" } });
     expect(rdEventUtmValues(event)).toMatchObject({ utmSource: "facebook", utmCampaign: "medical-mpt-lp", utmContent: "audiencia-quente", utmTerm: "video-01-mpt" });
+  });
+
+  it("normaliza e-mail somente quando há uma chave utilizável para o de-para", () => {
+    expect(normalizeIdentityEmail("  Lead@Empresa.com.br ")).toBe("lead@empresa.com.br");
+    expect(normalizeIdentityEmail("sem-email")).toBeNull();
+    expect(normalizeIdentityEmail(null)).toBeNull();
   });
 
   it("separa as marcas somente pelos valores confirmados no campo Bitrix24", () => {

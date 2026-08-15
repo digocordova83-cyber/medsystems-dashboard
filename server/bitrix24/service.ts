@@ -1,4 +1,4 @@
-import { bitrixCampaignAttributionDetail, bitrixDealBrand, bitrixDealJulyAnalytics, bitrixLeadChannelFunnel, bitrixJulyTotals, finishBitrixSyncRun, reconcileAttributionAuditLinks, reconcileBitrixEntities, refreshAttributionAuditFromBitrix, startBitrixSyncRun, type AnalyticsPeriod, type BitrixEntityType, type DealStatusFilter, upsertBitrixEntities, utmReceiptCoverage } from "../db";
+import { bitrixCampaignAttributionDetail, bitrixDealBrand, bitrixDealJulyAnalytics, bitrixLeadChannelFunnel, bitrixJulyTotals, bitrixReferencedContactIds, finishBitrixSyncRun, reconcileAttributionAuditLinks, reconcileBitrixEntities, refreshAttributionAuditFromBitrix, startBitrixSyncRun, type AnalyticsPeriod, type BitrixEntityType, type DealStatusFilter, upsertBitrixEntities, utmReceiptCoverage } from "../db";
 
 const CRM_CAPABILITIES = ["Leads", "Contatos", "Negócios"] as const;
 const PERIODS: Record<AnalyticsPeriod, { start: Date; end: Date; bitrixStart: string; bitrixEnd: string }> = {
@@ -27,6 +27,17 @@ async function bitrixList(entityType: BitrixEntityType, start: number, range: { 
   const payload = await response.json() as { result?: Record<string, unknown>[]; next?: number; error?: string; error_description?: string };
   if (!response.ok || payload.error) throw new Error(payload.error_description || payload.error || `O Bitrix24 retornou ${response.status}.`);
   return { rows: Array.isArray(payload.result) ? payload.result : [], next: typeof payload.next === "number" ? payload.next : null };
+}
+
+async function bitrixContactsByIds(contactIds: number[]) {
+  const cmd = Object.fromEntries(contactIds.map((contactId, index) => [`contact_${index}`, `crm.contact.get?id=${contactId}`]));
+  const response = await fetch(`${webhookBaseUrl()}batch.json`, {
+    method: "POST", headers: { "content-type": "application/json" },
+    body: JSON.stringify({ halt: 0, cmd }), signal: AbortSignal.timeout(25_000),
+  });
+  const payload = await response.json() as { result?: { result?: Record<string, Record<string, unknown> | false> }; error?: string; error_description?: string };
+  if (!response.ok || payload.error) throw new Error(payload.error_description || payload.error || `O Bitrix24 retornou ${response.status}.`);
+  return Object.values(payload.result?.result ?? {}).filter((contact): contact is Record<string, unknown> => Boolean(contact));
 }
 
 function pause(milliseconds: number) { return new Promise(resolve => setTimeout(resolve, milliseconds)); }
@@ -77,6 +88,19 @@ export async function syncMedsystemsEntityForPeriod(entityType: BitrixEntityType
     await finishBitrixSyncRun(runId, importedCount, message);
     throw new Error(message);
   }
+}
+
+export async function syncMedsystemsReferencedContactsForPeriod(period: AnalyticsPeriod) {
+  const range = PERIODS[period];
+  const portal = new URL(webhookBaseUrl()).host;
+  const contactIds = await bitrixReferencedContactIds({ portal, start: range.start, end: range.end });
+  const contacts: Record<string, unknown>[] = [];
+  for (let start = 0; start < contactIds.length; start += 50) {
+    contacts.push(...await bitrixContactsByIds(contactIds.slice(start, start + 50)));
+    if (start + 50 < contactIds.length) await pause(700);
+  }
+  const importedCount = await upsertBitrixEntities({ portal, entityType: "contact", entities: contacts });
+  return { period, referencedContactIds: contactIds.length, importedCount };
 }
 
 export async function syncMedsystemsJulyEntity(entityType: BitrixEntityType) { return syncMedsystemsEntityForPeriod(entityType, "2026-07"); }

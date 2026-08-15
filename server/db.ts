@@ -341,6 +341,25 @@ export async function upsertBitrixEntities(input: {
   return values.length;
 }
 
+export async function bitrixReferencedContactIds(input: { portal: string; start: Date; end: Date }) {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  const rows = await db.select({ rawPayload: bitrix24Entities.rawPayload }).from(bitrix24Entities).where(and(
+    eq(bitrix24Entities.portal, input.portal),
+    inArray(bitrix24Entities.entityType, ["lead", "deal"]),
+    gte(bitrix24Entities.createdAtBitrix, input.start),
+    lt(bitrix24Entities.createdAtBitrix, input.end),
+  ));
+  const ids = new Set<number>();
+  for (const row of rows) {
+    try {
+      const contactId = Number((JSON.parse(row.rawPayload) as Record<string, unknown>).CONTACT_ID);
+      if (Number.isInteger(contactId) && contactId > 0) ids.add(contactId);
+    } catch { /* Registro inválido não produz vínculo. */ }
+  }
+  return Array.from(ids);
+}
+
 export async function reconcileBitrixEntities(input: { portal: string; entityType: BitrixEntityType; periodStart: Date; periodEnd: Date; bitrixIds: number[] }) {
   const db = await getDb();
   if (!db || !input.bitrixIds.length) return 0;
@@ -610,13 +629,20 @@ export async function bitrixLeadChannelFunnel(portal: string, start: Date, end: 
 
 type UtmCoverage = { total: number; withSource: number; withCampaign: number; withContent: number; withTerm: number };
 
+export function normalizeIdentityEmail(value: unknown) {
+  const normalized = String(value ?? "").trim().toLowerCase();
+  return normalized.includes("@") ? normalized : null;
+}
+
 export async function utmReceiptCoverage(portal: string, start: Date, end: Date, period: AnalyticsPeriod, brand: AnalyticsBrand = "all") {
   const db = await getDb();
   if (!db) throw new Error("Banco de dados indisponível.");
-  const [bitrixRows, rdRows, mediaRows] = await Promise.all([
+  const [bitrixRows, rdRows, mediaRows, bitrixContacts, rdContacts] = await Promise.all([
     db.select({ rawPayload: bitrix24Entities.rawPayload }).from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, portal), eq(bitrix24Entities.entityType, "lead"), gte(bitrix24Entities.createdAtBitrix, start), lt(bitrix24Entities.createdAtBitrix, end))),
     period === "2026-07" ? db.select({ accountKey: rdStationConversionEvents.accountKey, rawPayload: rdStationConversionEvents.rawPayload }).from(rdStationConversionEvents).where(and(gte(rdStationConversionEvents.eventCreatedAt, start), lt(rdStationConversionEvents.eventCreatedAt, end), ...(brand === "all" ? [] : [eq(rdStationConversionEvents.accountKey, brand)]))) : Promise.resolve([]),
     db.select({ brand: mediaDailyPerformance.brand, campaignName: mediaDailyPerformance.campaignName }).from(mediaDailyPerformance).where(and(eq(mediaDailyPerformance.recordLevel, "campaign"), gte(mediaDailyPerformance.reportDate, start), lt(mediaDailyPerformance.reportDate, end), ...(brand === "all" ? [] : [eq(mediaDailyPerformance.brand, brand)]))),
+    db.select({ bitrixId: bitrix24Entities.bitrixId, email: bitrix24Entities.email }).from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, portal), eq(bitrix24Entities.entityType, "contact"))),
+    db.select({ accountKey: rdStationContacts.accountKey, contactUuid: rdStationContacts.contactUuid, email: rdStationContacts.email }).from(rdStationContacts),
   ]);
   const createCoverage = (): UtmCoverage => ({ total: 0, withSource: 0, withCampaign: 0, withContent: 0, withTerm: 0 });
   const addCoverage = (target: UtmCoverage, values: { utmSource: string | null; utmCampaign: string | null; utmContent: string | null; utmTerm: string | null }) => {
@@ -635,16 +661,36 @@ export async function utmReceiptCoverage(portal: string, start: Date, end: Date,
     mediaCampaigns.set(key, brands);
   }
   const bitrix = createCoverage();
-  if (brand === "all") for (const row of bitrixRows) {
+  const contactEmailById = new Map(bitrixContacts.map(contact => [String(contact.bitrixId), normalizeIdentityEmail(contact.email)]));
+  const rdIdentityByEmail = new Map<string, { brand: Exclude<AnalyticsBrand, "all">; count: number }>();
+  for (const contact of rdContacts) {
+    const email = normalizeIdentityEmail(contact.email);
+    if (!email) continue;
+    const existing = rdIdentityByEmail.get(email);
+    if (existing) existing.count += 1;
+    else rdIdentityByEmail.set(email, { brand: contact.accountKey, count: 1 });
+  }
+  const identity = { email: 0, phone: 0, cpf: 0, ambiguous: 0, unmatched: 0 };
+  for (const row of bitrixRows) {
     try {
       const payload = JSON.parse(row.rawPayload) as Record<string, unknown>;
+      const email = contactEmailById.get(String(payload.CONTACT_ID ?? ""));
+      const candidate = email ? rdIdentityByEmail.get(email) : null;
+      const matchedBrand = candidate?.count === 1 ? candidate.brand : null;
+      if (brand !== "all" && matchedBrand !== brand) continue;
+      if (candidate && !matchedBrand) identity.ambiguous += 1;
+      if (matchedBrand) identity.email += 1;
+      else identity.unmatched += 1;
       addCoverage(bitrix, {
         utmSource: cleanAuditString(payload.UTM_SOURCE),
         utmCampaign: cleanAuditString(payload.UTM_CAMPAIGN),
         utmContent: cleanAuditString(payload.UTM_CONTENT),
         utmTerm: cleanAuditString(payload.UTM_TERM),
       });
-    } catch { bitrix.total += 1; }
+    } catch {
+      identity.unmatched += 1;
+      if (brand === "all") bitrix.total += 1;
+    }
   }
   const rd = createCoverage();
   const campaigns = new Map<string, { campaign: string; brand: Exclude<AnalyticsBrand, "all">; rdEvents: number; mediaCampaignFound: boolean }>();
@@ -664,7 +710,7 @@ export async function utmReceiptCoverage(portal: string, start: Date, end: Date,
   }
   return {
     period,
-    bitrix: { available: brand === "all", reason: brand === "all" ? null : "Os leads Bitrix24 não têm marca estruturada; a cobertura consolidada não é atribuível à marca selecionada.", brandScopeAvailable: brand === "all", ...bitrix },
+    bitrix: { available: brand === "all" || bitrix.total > 0, reason: brand !== "all" && !bitrix.total ? "Nenhum lead Bitrix24 foi vinculado de forma única à marca selecionada por e-mail." : null, brandScopeAvailable: brand === "all" || bitrix.total > 0, identity, ...bitrix },
     rd: { available: period === "2026-07", reason: period === "2026-08" ? "Coleta real do RD Station ainda não foi executada para agosto." : "A cobertura UTM do RD Station usa eventos de conversão; os contatos sincronizados de julho não trazem campos UTM utilizáveis.", ...rd },
     rdCampaigns: Array.from(campaigns.values()).sort((a, b) => b.rdEvents - a.rdEvents || a.campaign.localeCompare(b.campaign)),
   };

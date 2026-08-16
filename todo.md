@@ -59,6 +59,9 @@
 - [x] Criar uma nova experiência de dashboard premium com navegação lateral, filtros globais e páginas de Overview, Google Ads, Meta Ads, Revenue, Origem & Funil e Perdidos & Descartes.
 - [x] Adaptar as visualizações ao modelo de dados existente, mantendo ROAS e receita por canal bloqueados quando não houver atribuição auditável.
 - [ ] Configurar e publicar a versão validada em um novo domínio ou prefixo do projeto; o endereço atual `medoauth-pfvjidwp.manus.space` permanece ativo até a confirmação do novo endereço.
+- [x] Criar uma aba-guia para cliente que explique as fontes, períodos, métricas e regras de cada cruzamento aplicado no dashboard.
+- [x] Documentar na aba-guia as limitações, indisponibilidades e dúvidas de dados que ainda exigem validação do cliente ou das fontes.
+- [x] Validar a navegação, a clareza e a responsividade da aba-guia antes de publicá-la.
 - [x] Auditar a disponibilidade e unicidade de e-mail, telefone e CPF nos registros Bitrix24 e RD Station, sem exibir valores pessoais.
 - [x] Criar de-para por e-mail normalizado e único, registrando o método de vínculo; telefone e CPF foram auditados como indisponíveis nas duas fontes neste recorte e não são usados para atribuição.
 - [x] Aplicar os vínculos de identidade ao recorte de marca e à cobertura de UTM, exibindo apenas métricas agregadas e métodos de match no dashboard.

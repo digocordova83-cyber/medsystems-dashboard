@@ -30,14 +30,13 @@ async function bitrixList(entityType: BitrixEntityType, start: number, range: { 
 }
 
 async function bitrixContactsByIds(contactIds: number[]) {
-  const cmd = Object.fromEntries(contactIds.map((contactId, index) => [`contact_${index}`, `crm.contact.get?id=${contactId}`]));
-  const response = await fetch(`${webhookBaseUrl()}batch.json`, {
+  const response = await fetch(`${webhookBaseUrl()}crm.contact.list.json`, {
     method: "POST", headers: { "content-type": "application/json" },
-    body: JSON.stringify({ halt: 0, cmd }), signal: AbortSignal.timeout(25_000),
+    body: JSON.stringify({ select: ENTITY_SELECT.contact, order: { ID: "ASC" }, filter: { ID: contactIds }, start: 0 }), signal: AbortSignal.timeout(25_000),
   });
-  const payload = await response.json() as { result?: { result?: Record<string, Record<string, unknown> | false> }; error?: string; error_description?: string };
+  const payload = await response.json() as { result?: Record<string, unknown>[]; error?: string; error_description?: string };
   if (!response.ok || payload.error) throw new Error(payload.error_description || payload.error || `O Bitrix24 retornou ${response.status}.`);
-  return Object.values(payload.result?.result ?? {}).filter((contact): contact is Record<string, unknown> => Boolean(contact));
+  return Array.isArray(payload.result) ? payload.result : [];
 }
 
 function pause(milliseconds: number) { return new Promise(resolve => setTimeout(resolve, milliseconds)); }

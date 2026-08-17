@@ -59,6 +59,9 @@
 - [x] Criar uma nova experiência de dashboard premium com navegação lateral, filtros globais e páginas de Overview, Google Ads, Meta Ads, Revenue, Origem & Funil e Perdidos & Descartes.
 - [x] Adaptar as visualizações ao modelo de dados existente, mantendo ROAS e receita por canal bloqueados quando não houver atribuição auditável.
 - [ ] Configurar e publicar a versão validada em um novo domínio ou prefixo do projeto; o endereço atual `medoauth-pfvjidwp.manus.space` permanece ativo até a confirmação do novo endereço.
+- [x] Auditar a cobertura e unicidade de nome, e-mail e telefone entre leads Bitrix24 e contatos RD Station sem exibir valores pessoais; em julho, 40 matches de e-mail são únicos e 26 são ambíguos.
+- [x] Enriquecer leads Bitrix24 por vínculo único com contatos e eventos RD Station, recuperando fonte, origem, UTMs e método de evidência.
+- [x] Exibir no deck Revenue a cobertura e a qualidade do enriquecimento Bitrix24–RD Station, sem revelar dados pessoais e sem usar nome como chave isolada.
 - [x] Criar uma aba-guia para cliente que explique as fontes, períodos, métricas e regras de cada cruzamento aplicado no dashboard.
 - [x] Documentar na aba-guia as limitações, indisponibilidades e dúvidas de dados que ainda exigem validação do cliente ou das fontes.
 - [x] Validar a navegação, a clareza e a responsividade da aba-guia antes de publicá-la.

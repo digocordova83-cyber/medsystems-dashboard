@@ -13,7 +13,7 @@ const sourceCards = [
 const reconciliationRows = [
   { label: "Campanha de mídia ↔ UTM do lead", evidence: "UTM campaign, term ou content contra campanha, grupo/conjunto ou anúncio importado.", rule: "Match exato; ou chave criativa normalizada; ou UTM declarada na URL da plataforma. Cada chave só é aceita se apontar para uma campanha única da mesma marca.", output: "Campanha, método de evidência e negócios associados." },
   { label: "Lead Bitrix24 ↔ negócio", evidence: "LEAD_ID explícito do negócio.", rule: "Apenas o ID armazenado no Bitrix24 é aceito. Negócios sem LEAD_ID ficam em “Não identificado”.", output: "Leads recebidos, negócios, ganhos, perdas e descartes por canal." },
-  { label: "Contato Bitrix24 ↔ contato RD", evidence: "CONTACT_ID do Bitrix24 → e-mail do contato → e-mail do RD Station.", rule: "E-mail normalizado e único. Em agosto, 7 leads possuem essa correspondência; telefone e CPF não têm chave utilizável nas duas fontes.", output: "Cobertura por marca no Bitrix24 e leitura de UTM sem expor dados pessoais." },
+  { label: "Contato Bitrix24 ↔ contato RD", evidence: "CONTACT_ID do Bitrix24 → e-mail do contato → e-mail do RD Station.", rule: "E-mail normalizado e único. Em julho, 40 leads têm match seguro; 26 e-mails duplicados e 1.981 sem chave permanecem fora do cruzamento. Telefone e CPF não têm chave utilizável nas duas fontes.", output: "Fonte, origem e UTMs dos eventos RD ligados, sem expor dados pessoais." },
   { label: "Evento RD ↔ mídia", evidence: "UTMs de landing page e identificador de campanha no evento RD Station.", rule: "A associação só é aceita se a campanha estiver registrada na camada de mídia da mesma marca e período.", output: "Evidência de origem para os eventos que chegam ao RD Station." },
 ];
 

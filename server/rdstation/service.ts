@@ -164,6 +164,17 @@ export async function fetchSegmentations(accountKey: RdAccountKey) {
   return items;
 }
 
+export async function inspectDirectContactsPage(accountKey: RdAccountKey) {
+  const { payload, headers } = await rdGet(accountKey, `/platform/contacts?page=1&page_size=${PAGE_SIZE}`);
+  const contacts = Array.isArray(payload.contacts) ? payload.contacts : (Array.isArray(payload) ? payload : []);
+  const sample = contacts[0] as Record<string, unknown> | undefined;
+  return {
+    count: contacts.length,
+    total: Number(headers.get("pagination-total-rows") ?? 0),
+    fields: sample ? Object.keys(sample).sort() : [],
+  };
+}
+
 export async function syncNextContactPage(accountKey: RdAccountKey) {
   const account = await getAccountByKey(accountKey);
   if (!account?.segmentationId) throw new Error("Informe o identificador da segmentação de julho de 2026 antes de sincronizar.");

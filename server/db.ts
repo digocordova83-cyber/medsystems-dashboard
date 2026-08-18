@@ -970,7 +970,7 @@ export async function mediaDashboardAnalytics(brand: AnalyticsBrand, period: Ana
   if (!db) throw new Error("Banco de dados indisponível.");
   const periodRange = {
     "2026-07": { start: new Date("2026-07-01T00:00:00-03:00"), end: new Date("2026-08-01T00:00:00-03:00"), endLabel: "2026-07-31", rdLeadsAvailable: true },
-    "2026-08": { start: new Date("2026-08-01T00:00:00-03:00"), end: new Date("2026-08-14T00:00:00-03:00"), endLabel: "2026-08-13", rdLeadsAvailable: false },
+    "2026-08": { start: new Date("2026-08-01T00:00:00-03:00"), end: new Date("2026-08-18T00:00:00-03:00"), endLabel: "2026-08-17", rdLeadsAvailable: false },
   }[period];
   const { start, end } = periodRange;
   const brands = brand === "all" ? ["medsystems", "beautysystems"] as const : [brand] as const;

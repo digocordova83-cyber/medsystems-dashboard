@@ -3,7 +3,7 @@ import { bitrixCampaignAttributionDetail, bitrixDealBrand, bitrixDealJulyAnalyti
 const CRM_CAPABILITIES = ["Leads", "Contatos", "Negócios"] as const;
 const PERIODS: Record<AnalyticsPeriod, { start: Date; end: Date; bitrixStart: string; bitrixEnd: string }> = {
   "2026-07": { start: new Date("2026-07-01T00:00:00-03:00"), end: new Date("2026-08-01T00:00:00-03:00"), bitrixStart: "2026-07-01T00:00:00-03:00", bitrixEnd: "2026-08-01T00:00:00-03:00" },
-  "2026-08": { start: new Date("2026-08-01T00:00:00-03:00"), end: new Date("2026-08-14T00:00:00-03:00"), bitrixStart: "2026-08-01T00:00:00-03:00", bitrixEnd: "2026-08-14T00:00:00-03:00" },
+  "2026-08": { start: new Date("2026-08-01T00:00:00-03:00"), end: new Date("2026-08-18T00:00:00-03:00"), bitrixStart: "2026-08-01T00:00:00-03:00", bitrixEnd: "2026-08-18T00:00:00-03:00" },
 };
 const ENTITY_METHOD: Record<BitrixEntityType, string> = { lead: "crm.lead.list", contact: "crm.contact.list", deal: "crm.deal.list" };
 const ENTITY_SELECT: Record<BitrixEntityType, string[]> = {

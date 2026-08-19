@@ -128,3 +128,4 @@
 - [x] Decodificar `traffic_source` dos eventos RD Station e cobrir a extração de UTMs com teste automatizado antes de recalcular os leads de mídia.
 - [x] Executar as consultas, cruzamentos e validações desta atualização exclusivamente por API, sem depender de interfaces manuais das plataformas.
 - [x] Deduplicar eventos RD Station por contato antes do de-para por e-mail, preservando o primeiro evento com UTM de cada lead.
+- [x] Documentar na guia de dados que o KPI atual usa UTM comprovada, enquanto os filtros internos de origem da segmentação BRRO não são expostos pela API.

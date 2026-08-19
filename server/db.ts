@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, gte, inArray, isNull, lt, notInArray, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gt, gte, inArray, isNull, lt, notInArray, or, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
   attributionAuditLinks,
@@ -222,6 +222,22 @@ export async function getContactsPendingEventSync(accountKey: RdAccountKey, limi
   return db.select().from(rdStationContacts)
     .where(and(eq(rdStationContacts.accountKey, accountKey), isNull(rdStationContacts.eventsSyncedAt)))
     .orderBy(asc(rdStationContacts.id)).limit(limit);
+}
+
+export async function getContactsForEventWindow(accountKey: RdAccountKey, start: Date, end: Date, afterId: number, limit: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  return db.select().from(rdStationContacts)
+    .where(and(
+      eq(rdStationContacts.accountKey, accountKey),
+      gt(rdStationContacts.id, afterId),
+      or(
+        and(gte(rdStationContacts.createdAtRd, start), lt(rdStationContacts.createdAtRd, end)),
+        and(gte(rdStationContacts.lastConversionAt, start), lt(rdStationContacts.lastConversionAt, end)),
+      ),
+    ))
+    .orderBy(asc(rdStationContacts.id))
+    .limit(limit);
 }
 
 export async function markContactsEventsSynced(ids: number[]) {
@@ -639,7 +655,7 @@ export async function utmReceiptCoverage(portal: string, start: Date, end: Date,
   if (!db) throw new Error("Banco de dados indisponível.");
   const [bitrixRows, rdRows, mediaRows, bitrixContacts, rdContacts, rdLeadViews] = await Promise.all([
     db.select({ rawPayload: bitrix24Entities.rawPayload }).from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, portal), eq(bitrix24Entities.entityType, "lead"), gte(bitrix24Entities.createdAtBitrix, start), lt(bitrix24Entities.createdAtBitrix, end))),
-    period === "2026-07" ? db.select({ accountKey: rdStationConversionEvents.accountKey, contactUuid: rdStationConversionEvents.contactUuid, rawPayload: rdStationConversionEvents.rawPayload }).from(rdStationConversionEvents).where(and(gte(rdStationConversionEvents.eventCreatedAt, start), lt(rdStationConversionEvents.eventCreatedAt, end), ...(brand === "all" ? [] : [eq(rdStationConversionEvents.accountKey, brand)]))) : Promise.resolve([]),
+    db.select({ accountKey: rdStationConversionEvents.accountKey, contactUuid: rdStationConversionEvents.contactUuid, rawPayload: rdStationConversionEvents.rawPayload }).from(rdStationConversionEvents).where(and(gte(rdStationConversionEvents.eventCreatedAt, start), lt(rdStationConversionEvents.eventCreatedAt, end), ...(brand === "all" ? [] : [eq(rdStationConversionEvents.accountKey, brand)]))),
     db.select({ brand: mediaDailyPerformance.brand, campaignName: mediaDailyPerformance.campaignName }).from(mediaDailyPerformance).where(and(eq(mediaDailyPerformance.recordLevel, "campaign"), gte(mediaDailyPerformance.reportDate, start), lt(mediaDailyPerformance.reportDate, end), ...(brand === "all" ? [] : [eq(mediaDailyPerformance.brand, brand)]))),
     db.select({ bitrixId: bitrix24Entities.bitrixId, email: bitrix24Entities.email }).from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, portal), eq(bitrix24Entities.entityType, "contact"))),
     db.select({ accountKey: rdStationContacts.accountKey, contactUuid: rdStationContacts.contactUuid, email: rdStationContacts.email }).from(rdStationContacts),
@@ -701,7 +717,7 @@ export async function utmReceiptCoverage(portal: string, start: Date, end: Date,
           rdEnrichment.withRdEvent += 1;
           addCoverage(enrichedUtm, eventUtm);
           if (eventUtm.utmSource || eventUtm.utmCampaign || eventUtm.utmContent || eventUtm.utmTerm) rdEnrichment.withUtm += 1;
-          const origin = rdOriginByContact.get(key) ?? "Não identificado";
+          const origin = rdOriginByContact.get(key) ?? eventUtm.utmSource ?? "Não identificado";
           rdEnrichment.origins.set(origin, (rdEnrichment.origins.get(origin) ?? 0) + 1);
         } else rdEnrichment.withoutRdEvent += 1;
       }
@@ -736,10 +752,10 @@ export async function utmReceiptCoverage(portal: string, start: Date, end: Date,
   return {
     period,
     bitrix: { available: brand === "all" || bitrix.total > 0, reason: brand !== "all" && !bitrix.total ? "Nenhum lead Bitrix24 foi vinculado de forma única à marca selecionada por e-mail." : null, brandScopeAvailable: brand === "all" || bitrix.total > 0, identity, ...bitrix },
-    rd: { available: period === "2026-07", reason: period === "2026-08" ? "Coleta real do RD Station ainda não foi executada para agosto." : "A cobertura UTM do RD Station usa eventos de conversão; os contatos sincronizados de julho não trazem campos UTM utilizáveis.", ...rd },
+    rd: { available: rdRows.length > 0, reason: rdRows.length ? null : "Não há eventos de conversão RD Station disponíveis no recorte selecionado.", ...rd },
     bitrixRdEnrichment: {
-      available: period === "2026-07",
-      reason: period === "2026-08" ? "A coleta de eventos do RD Station não está disponível para agosto." : null,
+      available: rdRows.length > 0,
+      reason: rdRows.length ? null : "Não há eventos de conversão RD Station disponíveis no recorte selecionado.",
       matchedIdentity: rdEnrichment.matchedIdentity,
       withRdEvent: rdEnrichment.withRdEvent,
       withUtm: rdEnrichment.withUtm,
@@ -970,7 +986,7 @@ export async function mediaDashboardAnalytics(brand: AnalyticsBrand, period: Ana
   if (!db) throw new Error("Banco de dados indisponível.");
   const periodRange = {
     "2026-07": { start: new Date("2026-07-01T00:00:00-03:00"), end: new Date("2026-08-01T00:00:00-03:00"), endLabel: "2026-07-31", rdLeadsAvailable: true },
-    "2026-08": { start: new Date("2026-08-01T00:00:00-03:00"), end: new Date("2026-08-18T00:00:00-03:00"), endLabel: "2026-08-17", rdLeadsAvailable: false },
+    "2026-08": { start: new Date("2026-08-01T00:00:00-03:00"), end: new Date("2026-08-18T00:00:00-03:00"), endLabel: "2026-08-17", rdLeadsAvailable: true },
   }[period];
   const { start, end } = periodRange;
   const brands = brand === "all" ? ["medsystems", "beautysystems"] as const : [brand] as const;
@@ -1042,11 +1058,16 @@ export async function mediaDashboardAnalytics(brand: AnalyticsBrand, period: Ana
     mediaDailyPerformance.adName,
   ).orderBy(desc(sql`sum(${mediaDailyPerformance.spend})`)).limit(80);
 
-  const rdQualified = periodRange.rdLeadsAvailable ? await db.select({ accountKey: rdStationJulyLeadViews.accountKey, count: sql<number>`count(*)` })
-    .from(rdStationJulyLeadViews)
-    .where(and(inArray(rdStationJulyLeadViews.accountKey, brands), eq(rdStationJulyLeadViews.viewType, "primeira"), eq(rdStationJulyLeadViews.status, "qualificado")))
-    .groupBy(rdStationJulyLeadViews.accountKey) : [];
-  const attribution = periodRange.rdLeadsAvailable ? await attributionAuditSummary(brand) : [];
+  const rdQualified = period === "2026-07"
+    ? await db.select({ accountKey: rdStationJulyLeadViews.accountKey, count: sql<number>`count(*)` })
+      .from(rdStationJulyLeadViews)
+      .where(and(inArray(rdStationJulyLeadViews.accountKey, brands), eq(rdStationJulyLeadViews.viewType, "primeira"), eq(rdStationJulyLeadViews.status, "qualificado")))
+      .groupBy(rdStationJulyLeadViews.accountKey)
+    : await db.select({ accountKey: rdStationConversionEvents.accountKey, count: sql<number>`count(distinct ${rdStationConversionEvents.contactUuid})` })
+      .from(rdStationConversionEvents)
+      .where(and(inArray(rdStationConversionEvents.accountKey, brands), gte(rdStationConversionEvents.eventCreatedAt, start), lt(rdStationConversionEvents.eventCreatedAt, end)))
+      .groupBy(rdStationConversionEvents.accountKey);
+  const attribution = period === "2026-07" ? await attributionAuditSummary(brand) : [];
 
   return {
     period: { key: period, start: period === "2026-07" ? "2026-07-01" : "2026-08-01", end: periodRange.endLabel },
@@ -1062,7 +1083,7 @@ export async function mediaDashboardAnalytics(brand: AnalyticsBrand, period: Ana
     campaigns: campaigns.map(row => ({ platform: row.platform, brand: row.brand, campaignId: row.campaignId, campaignName: row.campaignName ?? "Sem nome", spend: analyticsNumber(row.spend), impressions: analyticsNumber(row.impressions), clicks: analyticsNumber(row.clicks), leads: analyticsNumber(row.leads) })),
     ads: ads.map(row => ({ platform: row.platform, brand: row.brand, campaignId: row.campaignId, campaignName: row.campaignName ?? "Sem nome", adGroupId: row.adGroupId ?? "", adGroupName: row.adGroupName ?? "Sem grupo", adId: row.adId ?? "", adName: row.adName ?? "Sem nome", spend: analyticsNumber(row.spend), impressions: analyticsNumber(row.impressions), clicks: analyticsNumber(row.clicks), leads: analyticsNumber(row.leads) })),
     rdLeads: Object.fromEntries(rdQualified.map(row => [row.accountKey, analyticsNumber(row.count)])),
-    sourceAvailability: { rdLeads: periodRange.rdLeadsAvailable, attribution: periodRange.rdLeadsAvailable },
+    sourceAvailability: { rdLeads: rdQualified.length > 0, attribution: period === "2026-07" },
     attribution,
   };
 }

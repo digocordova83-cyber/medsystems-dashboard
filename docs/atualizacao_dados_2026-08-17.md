@@ -7,7 +7,7 @@
 | Bitrix24 Medsystems | 01/08 a 17/08/2026 | Leads e negócios reconciliados diretamente pela API do portal compartilhado. |
 | Google Ads | 01/08 a 17/08/2026 | Contas Medsystems e BeautySystems atualizadas por campanha e dia via Windsor.ai. |
 | Meta Ads | 01/08 a 17/08/2026 | Contas Medsystems e BeautySystems atualizadas por campanha e dia via Windsor.ai. |
-| RD Station Marketing | Contatos até 12/08; eventos até 31/07 | A listagem direta de contatos retornou erro 502 e não há segmentação específica de agosto/2026 disponível. Não foi inventado recorte adicional. |
+| RD Station Marketing | Segmentações BRRO até 17/08/2026 | Coleta concluída por API para as duas contas: contatos distintos com evento e eventos de conversão foram persistidos separadamente, sem completar dados ausentes. |
 
 ## Totais atuais de mídia — 01 a 17/08
 
@@ -31,11 +31,11 @@ O portal retornou **2.594 leads**, com última criação em **17/08/2026 às 23:
 | `utm_content` | 112 |
 | `utm_term` | 339 |
 
-## RD Station — cobertura disponível
+## RD Station — segmentação BRRO até 17/08
 
-| Marca | Contatos persistidos | Última conversão disponível |
-|---|---:|---|
-| Medsystems | 1.314 | 12/08/2026 12:48:39 |
-| BeautySystems | 1.034 | 12/08/2026 12:49:17 |
+| Marca | Contatos distintos com ao menos um evento | Eventos de conversão coletados |
+|---|---:|---:|
+| Medsystems | 635 | 733 |
+| BeautySystems | 2.458 | 2.534 |
 
-Os eventos de conversão persistidos permanecem no recorte de julho: **971** Medsystems e **810** BeautySystems. Portanto, não há base suficiente para afirmar o total de leads RD Station até 17/08.
+O total exibido como **leads RD com evento** é a quantidade de contatos distintos do recorte BRRO que possuem ao menos um evento no período: **3.093** no consolidado. O volume de eventos, **3.267**, é maior porque um contato pode converter mais de uma vez. Essa coleta prova a chegada no RD Station, mas não autoriza atribuição de receita por canal sem vínculo auditável até negócio e venda.

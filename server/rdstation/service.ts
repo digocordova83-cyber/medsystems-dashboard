@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import {
   createSyncRun,
   getAccountByKey,
+  getContactsForEventWindow,
   getContactsPendingEventSync,
   getPendingJulyViewCandidates,
   listIntegrationAccounts,
@@ -24,6 +25,13 @@ import { isInJuly2026, RD_ACCOUNT_META, type RdAccountKey } from "./types";
 const RD_API_BASE = "https://api.rd.services";
 const PAGE_SIZE = 125;
 const EVENT_BATCH_SIZE = 8;
+const AUGUST_2026_START = new Date("2026-08-01T03:00:00.000Z");
+const AUGUST_2026_END = new Date("2026-08-18T03:00:00.000Z");
+
+function isInAugust1To17(value: string) {
+  const date = new Date(value);
+  return !Number.isNaN(date.valueOf()) && date >= AUGUST_2026_START && date < AUGUST_2026_END;
+}
 
 type TokenPayload = {
   access_token: string;
@@ -164,8 +172,9 @@ export async function fetchSegmentations(accountKey: RdAccountKey) {
   return items;
 }
 
-export async function inspectDirectContactsPage(accountKey: RdAccountKey) {
-  const { payload, headers } = await rdGet(accountKey, `/platform/contacts?page=1&page_size=${PAGE_SIZE}`);
+export async function inspectDirectContactsPage(accountKey: RdAccountKey, pageSize = PAGE_SIZE) {
+  const safePageSize = Math.max(1, Math.min(PAGE_SIZE, pageSize));
+  const { payload, headers } = await rdGet(accountKey, `/platform/contacts?page=1&page_size=${safePageSize}`);
   const contacts = Array.isArray(payload.contacts) ? payload.contacts : (Array.isArray(payload) ? payload : []);
   const sample = contacts[0] as Record<string, unknown> | undefined;
   return {
@@ -227,6 +236,41 @@ export async function syncNextJulyConversionBatch(accountKey: RdAccountKey) {
     }
     await setAccountSyncStatus(accountKey, "pronta", null, new Date());
     return { runId: run.id, contactsProcessed: contacts.length, eventsStored, complete: contacts.length < EVENT_BATCH_SIZE };
+  } catch (error) {
+    await setAccountSyncStatus(accountKey, "erro", error instanceof Error ? error.message : "Erro desconhecido");
+    throw error;
+  }
+}
+
+export async function syncAugustConversionBatch(accountKey: RdAccountKey, afterId = 0, limit = EVENT_BATCH_SIZE) {
+  await setAccountSyncStatus(accountKey, "sincronizando", null);
+  const run = await createSyncRun(accountKey, "conversoes");
+  const contacts = await getContactsForEventWindow(accountKey, AUGUST_2026_START, AUGUST_2026_END, afterId, limit);
+  let eventsStored = 0;
+  try {
+    const syncContact = async (contact: (typeof contacts)[number]) => {
+      const selectedEvents: Record<string, unknown>[] = [];
+      for (let page = 1; ; page += 1) {
+        const { payload } = await rdGet(
+          accountKey,
+          `/platform/contacts/${encodeURIComponent(contact.contactUuid)}/events?event_type=CONVERSION&order=created_at:asc&page=${page}`,
+        );
+        const events = Array.isArray(payload) ? payload : (Array.isArray(payload.events) ? payload.events : []);
+        selectedEvents.push(...events.filter((event: Record<string, unknown>) => isInAugust1To17(String(event.event_timestamp ?? event.created_at ?? ""))));
+        if (events.length < 10) break;
+      }
+      await upsertConversionEvents(accountKey, contact.contactUuid, selectedEvents);
+      await markContactsEventsSynced([contact.id]);
+      return selectedEvents.length;
+    };
+    const concurrency = 3;
+    for (let index = 0; index < contacts.length; index += concurrency) {
+      const outcomes = await Promise.all(contacts.slice(index, index + concurrency).map(syncContact));
+      eventsStored += outcomes.reduce((total, count) => total + count, 0);
+    }
+    await setAccountSyncStatus(accountKey, "pronta", null, new Date());
+    const nextCursor = contacts.length ? contacts[contacts.length - 1].id : afterId;
+    return { runId: run.id, contactsProcessed: contacts.length, eventsStored, nextCursor, complete: contacts.length < limit };
   } catch (error) {
     await setAccountSyncStatus(accountKey, "erro", error instanceof Error ? error.message : "Erro desconhecido");
     throw error;

@@ -99,3 +99,20 @@
 - [x] Atualizar Bitrix24 e mídia (Google Ads e Meta Ads) com dados reais de 01 a 17/08/2026, preservando as contas e marcas separadas.
 - [x] Corrigir duplicidade de linhas consolidadas por campanha em agosto antes de exibir ou entregar os totais de mídia atualizados.
 - [ ] Coletar contatos e eventos RD Station de 14 a 17/08/2026 após obter um recorte de agosto disponível na API ou uma segmentação válida; a listagem direta retornou erro 502 e não há segmentação de agosto/2026 identificada.
+- [ ] Criar nas contas Medsystems e BeautySystems segmentações RD Station de 01 a 17/08/2026, conforme autorização do usuário.
+- [ ] Criar e sincronizar o recorte RD Station de 01 a 17/08/2026 exclusivamente por API, sem uso da interface web.
+- [ ] Implementar sincronização direta, paginada e retomável de todos os contatos RD Station para aplicar localmente o recorte de agosto até 17/08/2026.
+- [ ] Importar toda a base de contatos retornada pela API RD Station e aplicar localmente o filtro de criação ou conversão de 01 a 17/08/2026.
+- [ ] Recuperar páginas iniciais de contatos RD Station ausentes dos cursores históricos antes de declarar a importação integral concluída.
+- [ ] Retomar a coleta integral RD Station com retry e backoff após timeouts transitórios, sem reiniciar páginas já persistidas.
+- [ ] Auditar e documentar os caminhos de coleta RD Station já usados, distinguindo segmentações existentes, contatos persistidos e a rota direta atualmente indisponível.
+- [x] Localizar e sincronizar por API a nova segmentação RD Station criada pelo usuário para leads a partir do mês anterior.
+- [x] Confirmar os IDs BRRO nas contas Medsystems e BeautySystems e sincronizar os dois recortes separadamente por API.
+- [x] Sincronizar BRRO Medsystems (`19993961`) e BRRO BeautySystems (`19993973`) por API, aplicando o recorte de agosto até 17/08.
+- [x] Sincronizar em lotes os eventos de conversão de agosto dos contatos BRRO para recuperar fonte, origem e UTMs por API.
+- [x] Otimizar a coleta de eventos BRRO com concorrência controlada e retomada por cursor, sem alterar os critérios de evento ou duplicar registros.
+- [x] Corrigir textos legados que informam indisponibilidade do RD Station em agosto após a sincronização BRRO concluída.
+- [x] Atualizar a nota final da guia de dados para registrar a coleta BRRO de agosto concluída até 17/08.
+- [x] Revisar rótulos internos e o registro auditado de agosto que ainda mencionam o corte de 13/08 ou RD parcialmente indisponível.
+- [ ] Sincronizar contatos e eventos das segmentações de agosto, reconciliar as origens com o Bitrix24 e atualizar os totais do dashboard.
+- [x] Consultar, sincronizar e validar as fontes do dashboard exclusivamente por API, sem depender de operações manuais nas interfaces das plataformas.

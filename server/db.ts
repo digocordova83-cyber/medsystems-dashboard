@@ -449,18 +449,46 @@ function cleanAuditString(value: unknown) {
   return normalized && !["null", "undefined"].includes(normalized.toLowerCase()) ? normalized : null;
 }
 
+function rdTrafficSourceParams(...candidates: unknown[]) {
+  for (const candidate of candidates) {
+    const raw = cleanAuditString(candidate);
+    if (!raw) continue;
+    try {
+      const decoded = raw.startsWith("encoded_")
+        ? Buffer.from(raw.slice("encoded_".length), "base64").toString("utf8")
+        : raw;
+      const parsed = JSON.parse(decoded) as Record<string, unknown>;
+      const sessions = [parsed.current_session, parsed.first_session, parsed];
+      for (const session of sessions) {
+        const value = typeof session === "object" && session !== null
+          ? cleanAuditString((session as Record<string, unknown>).value)
+          : cleanAuditString(session);
+        if (value && value.includes("utm_")) return new URLSearchParams(value.replace(/^\?/, ""));
+      }
+    } catch {
+      try {
+        if (raw.includes("utm_")) return new URLSearchParams(raw.replace(/^\?/, ""));
+      } catch {
+        // Mantém a extração sem evidência quando o formato não é legível.
+      }
+    }
+  }
+  return null;
+}
+
 export function rdEventUtmValues(rawPayload: string) {
   try {
     const event = JSON.parse(rawPayload) as { payload?: Record<string, unknown> };
     const payload = event.payload ?? {};
     const landingPage = cleanAuditString(payload.cf_landing_page);
     const params = landingPage ? new URL(landingPage).searchParams : null;
+    const trafficParams = rdTrafficSourceParams(payload.traffic_source, payload.conversion_origin);
     return {
-      utmSource: cleanAuditString(payload.cf_utm_source_real ?? payload.cf_utm_source ?? params?.get("utm_source")),
-      utmCampaign: cleanAuditString(payload.cf_utm_campaign_real ?? payload.cf_utm_campaign ?? params?.get("utm_campaign")),
-      utmContent: cleanAuditString(payload.cf_utm_content_real ?? payload.cf_utm_content ?? params?.get("utm_content")),
-      utmTerm: cleanAuditString(payload.cf_utm_term_real ?? payload.cf_utm_term ?? params?.get("utm_term")),
-      mediaCampaignId: cleanAuditString(params?.get("utm_id")),
+      utmSource: cleanAuditString(payload.cf_utm_source_real ?? payload.cf_utm_source ?? trafficParams?.get("utm_source") ?? params?.get("utm_source")),
+      utmCampaign: cleanAuditString(payload.cf_utm_campaign_real ?? payload.cf_utm_campaign ?? trafficParams?.get("utm_campaign") ?? params?.get("utm_campaign")),
+      utmContent: cleanAuditString(payload.cf_utm_content_real ?? payload.cf_utm_content ?? trafficParams?.get("utm_content") ?? params?.get("utm_content")),
+      utmTerm: cleanAuditString(payload.cf_utm_term_real ?? payload.cf_utm_term ?? trafficParams?.get("utm_term") ?? params?.get("utm_term")),
+      mediaCampaignId: cleanAuditString(trafficParams?.get("utm_id") ?? params?.get("utm_id")),
     };
   } catch {
     return { utmSource: null, utmCampaign: null, utmContent: null, utmTerm: null, mediaCampaignId: null };
@@ -981,6 +1009,78 @@ export async function refreshAttributionAuditFromBitrix(input: { brand: Exclude<
   return values.length;
 }
 
+type RdUtmLeadFlow = {
+  rdUtmLeads: Record<Exclude<AnalyticsBrand, "all">, number>;
+  bitrixArrivals: Record<Exclude<AnalyticsBrand, "all">, number>;
+};
+
+async function rdUtmLeadFlow(brands: readonly Exclude<AnalyticsBrand, "all">[], start: Date, end: Date): Promise<RdUtmLeadFlow> {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  const [events, rdContacts, bitrixLeads, bitrixContacts] = await Promise.all([
+    db.select({ accountKey: rdStationConversionEvents.accountKey, contactUuid: rdStationConversionEvents.contactUuid, eventCreatedAt: rdStationConversionEvents.eventCreatedAt, rawPayload: rdStationConversionEvents.rawPayload })
+      .from(rdStationConversionEvents)
+      .where(and(inArray(rdStationConversionEvents.accountKey, brands), gte(rdStationConversionEvents.eventCreatedAt, start), lt(rdStationConversionEvents.eventCreatedAt, end))),
+    db.select({ accountKey: rdStationContacts.accountKey, contactUuid: rdStationContacts.contactUuid, email: rdStationContacts.email })
+      .from(rdStationContacts)
+      .where(inArray(rdStationContacts.accountKey, brands)),
+    db.select({ bitrixId: bitrix24Entities.bitrixId, email: bitrix24Entities.email, createdAtBitrix: bitrix24Entities.createdAtBitrix, rawPayload: bitrix24Entities.rawPayload })
+      .from(bitrix24Entities)
+      .where(and(eq(bitrix24Entities.portal, "medsystems.bitrix24.com.br"), eq(bitrix24Entities.entityType, "lead"))),
+    db.select({ bitrixId: bitrix24Entities.bitrixId, email: bitrix24Entities.email })
+      .from(bitrix24Entities)
+      .where(and(eq(bitrix24Entities.portal, "medsystems.bitrix24.com.br"), eq(bitrix24Entities.entityType, "contact"))),
+  ]);
+  const rdEmailByContact = new Map(rdContacts.map(contact => [`${contact.accountKey}:${contact.contactUuid}`, normalizeIdentityEmail(contact.email)]));
+  const firstUtmEventByContact = new Map<string, { accountKey: Exclude<AnalyticsBrand, "all">; contactUuid: string; firstEventAt: Date }>();
+  for (const event of events) {
+    if (!rdEventUtmValues(event.rawPayload).utmSource) continue;
+    const key = `${event.accountKey}:${event.contactUuid}`;
+    const current = firstUtmEventByContact.get(key);
+    if (!current || event.eventCreatedAt < current.firstEventAt) {
+      firstUtmEventByContact.set(key, { accountKey: event.accountKey, contactUuid: event.contactUuid, firstEventAt: event.eventCreatedAt });
+    }
+  }
+  const candidateByBrandEmail = new Map<string, { count: number; firstEventAt: Date }>();
+  for (const event of Array.from(firstUtmEventByContact.values())) {
+    const email = rdEmailByContact.get(`${event.accountKey}:${event.contactUuid}`);
+    if (!email) continue;
+    const key = `${event.accountKey}:${email}`;
+    const current = candidateByBrandEmail.get(key);
+    if (current) {
+      current.count += 1;
+      if (event.firstEventAt < current.firstEventAt) current.firstEventAt = event.firstEventAt;
+    } else candidateByBrandEmail.set(key, { count: 1, firstEventAt: event.firstEventAt });
+  }
+  const bitrixContactEmailById = new Map(bitrixContacts.map(contact => [String(contact.bitrixId), normalizeIdentityEmail(contact.email)]));
+  const bitrixLeadByEmail = new Map<string, { count: number; firstLeadAt: Date }>();
+  for (const lead of bitrixLeads) {
+    try {
+      const payload = JSON.parse(lead.rawPayload) as Record<string, unknown>;
+      const email = normalizeIdentityEmail(lead.email) ?? bitrixContactEmailById.get(String(payload.CONTACT_ID ?? "")) ?? null;
+      if (!email) continue;
+      const current = bitrixLeadByEmail.get(email);
+      if (current) {
+        current.count += 1;
+        if (lead.createdAtBitrix < current.firstLeadAt) current.firstLeadAt = lead.createdAtBitrix;
+      } else bitrixLeadByEmail.set(email, { count: 1, firstLeadAt: lead.createdAtBitrix });
+    } catch {
+      // Sem payload utilizável, o lead não entra na atribuição auditável.
+    }
+  }
+  const empty = () => ({ medsystems: 0, beautysystems: 0 });
+  const rdUtmLeads = empty();
+  const bitrixArrivals = empty();
+  for (const [key, candidate] of Array.from(candidateByBrandEmail.entries())) {
+    if (candidate.count !== 1) continue;
+    const [accountKey, email] = key.split(":", 2) as [Exclude<AnalyticsBrand, "all">, string];
+    rdUtmLeads[accountKey] += 1;
+    const bitrixLead = bitrixLeadByEmail.get(email);
+    if (bitrixLead?.count === 1 && bitrixLead.firstLeadAt >= candidate.firstEventAt) bitrixArrivals[accountKey] += 1;
+  }
+  return { rdUtmLeads, bitrixArrivals };
+}
+
 export async function mediaDashboardAnalytics(brand: AnalyticsBrand, period: AnalyticsPeriod = "2026-07") {
   const db = await getDb();
   if (!db) throw new Error("Banco de dados indisponível.");
@@ -1067,6 +1167,7 @@ export async function mediaDashboardAnalytics(brand: AnalyticsBrand, period: Ana
       .from(rdStationConversionEvents)
       .where(and(inArray(rdStationConversionEvents.accountKey, brands), gte(rdStationConversionEvents.eventCreatedAt, start), lt(rdStationConversionEvents.eventCreatedAt, end)))
       .groupBy(rdStationConversionEvents.accountKey);
+  const rdUtmFlow = await rdUtmLeadFlow(brands, start, end);
   const attribution = period === "2026-07" ? await attributionAuditSummary(brand) : [];
 
   return {
@@ -1083,7 +1184,9 @@ export async function mediaDashboardAnalytics(brand: AnalyticsBrand, period: Ana
     campaigns: campaigns.map(row => ({ platform: row.platform, brand: row.brand, campaignId: row.campaignId, campaignName: row.campaignName ?? "Sem nome", spend: analyticsNumber(row.spend), impressions: analyticsNumber(row.impressions), clicks: analyticsNumber(row.clicks), leads: analyticsNumber(row.leads) })),
     ads: ads.map(row => ({ platform: row.platform, brand: row.brand, campaignId: row.campaignId, campaignName: row.campaignName ?? "Sem nome", adGroupId: row.adGroupId ?? "", adGroupName: row.adGroupName ?? "Sem grupo", adId: row.adId ?? "", adName: row.adName ?? "Sem nome", spend: analyticsNumber(row.spend), impressions: analyticsNumber(row.impressions), clicks: analyticsNumber(row.clicks), leads: analyticsNumber(row.leads) })),
     rdLeads: Object.fromEntries(rdQualified.map(row => [row.accountKey, analyticsNumber(row.count)])),
-    sourceAvailability: { rdLeads: rdQualified.length > 0, attribution: period === "2026-07" },
+    rdUtmLeads: rdUtmFlow.rdUtmLeads,
+    bitrixArrivals: rdUtmFlow.bitrixArrivals,
+    sourceAvailability: { rdLeads: rdQualified.length > 0, rdUtmLeads: true, attribution: period === "2026-07" },
     attribution,
   };
 }

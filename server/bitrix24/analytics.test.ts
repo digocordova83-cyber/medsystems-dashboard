@@ -25,6 +25,21 @@ describe("classificação comercial auditável", () => {
     expect(rdEventUtmValues(event)).toMatchObject({ utmSource: "facebook", utmCampaign: "medical-mpt-lp", utmContent: "audiencia-quente", utmTerm: "video-01-mpt" });
   });
 
+  it("decodifica UTMs no traffic_source codificado enviado pelo RD Station", () => {
+    const traffic = Buffer.from(JSON.stringify({
+      first_session: { value: "utm_source=facebook&utm_medium=cpc&utm_campaign=bts-mpt-conversao-lp&utm_content=video-03&utm_term=estudos-mpt&utm_id=120238" },
+      current_session: { value: "utm_source=facebook&utm_medium=cpc&utm_campaign=bts-mpt-conversao-lp&utm_content=video-03&utm_term=estudos-mpt&utm_id=120238" },
+    })).toString("base64");
+    const event = JSON.stringify({ payload: { traffic_source: `encoded_${traffic}` } });
+    expect(rdEventUtmValues(event)).toEqual({
+      utmSource: "facebook",
+      utmCampaign: "bts-mpt-conversao-lp",
+      utmContent: "video-03",
+      utmTerm: "estudos-mpt",
+      mediaCampaignId: "120238",
+    });
+  });
+
   it("normaliza e-mail somente quando há uma chave utilizável para o de-para", () => {
     expect(normalizeIdentityEmail("  Lead@Empresa.com.br ")).toBe("lead@empresa.com.br");
     expect(normalizeIdentityEmail("sem-email")).toBeNull();

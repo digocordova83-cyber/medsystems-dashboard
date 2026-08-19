@@ -116,3 +116,15 @@
 - [x] Revisar rótulos internos e o registro auditado de agosto que ainda mencionam o corte de 13/08 ou RD parcialmente indisponível.
 - [ ] Sincronizar contatos e eventos das segmentações de agosto, reconciliar as origens com o Bitrix24 e atualizar os totais do dashboard.
 - [x] Consultar, sincronizar e validar as fontes do dashboard exclusivamente por API, sem depender de operações manuais nas interfaces das plataformas.
+- [x] Apurar e listar por API os leads de agosto do RD Station por marca e os leads do Bitrix24 até o último corte disponível, identificando explicitamente a data de cada fonte.
+- [x] Auditar se o recorte RD Station de agosto aplicado por API corresponde aos filtros de leads gerados acordados e explicitar qualquer diferença de critério.
+- [ ] Reapurar os leads gerados de agosto no RD Station com os filtros acordados de origem e exclusão de Importação, antes de substituir os totais BRRO exibidos.
+- [ ] Registrar e conciliar separadamente os totais reportados pelo gestor de tráfego com as métricas capturadas por API, identificando período, fontes e critérios antes de qualquer substituição no dashboard.
+- [x] Investigar como os totais de leads reportados pelo gestor de tráfego podem ter sido calculados, confrontando período, escopo de campanhas e definição de conversão com os dados de API.
+- [x] Analisar o documento do responsável de mídia para confirmar a fórmula de leads, fontes e critérios usados no relatório antes de alterar qualquer métrica exibida.
+- [ ] Adequar a métrica de leads de mídia ao método documentado: leads RD com UTM, Meta Instant Forms e conversas de Click-to-WhatsApp apenas quando o opt-in de sincronização estiver comprovado.
+- [ ] Ajustar o dashboard para exibir a composição de leads de mídia segundo o método documentado pelo gestor, reconciliando os totais reportados por marca com evidência por componente.
+- [x] Redefinir a métrica de leads de mídia como contatos do RD Station com UTM e cruzá-la por e-mail único com o Bitrix24 para medir chegadas comprovadas ao CRM.
+- [x] Decodificar `traffic_source` dos eventos RD Station e cobrir a extração de UTMs com teste automatizado antes de recalcular os leads de mídia.
+- [x] Executar as consultas, cruzamentos e validações desta atualização exclusivamente por API, sem depender de interfaces manuais das plataformas.
+- [x] Deduplicar eventos RD Station por contato antes do de-para por e-mail, preservando o primeiro evento com UTM de cada lead.

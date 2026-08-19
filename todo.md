@@ -119,7 +119,7 @@
 - [x] Apurar e listar por API os leads de agosto do RD Station por marca e os leads do Bitrix24 até o último corte disponível, identificando explicitamente a data de cada fonte.
 - [x] Auditar se o recorte RD Station de agosto aplicado por API corresponde aos filtros de leads gerados acordados e explicitar qualquer diferença de critério.
 - [ ] Reapurar os leads gerados de agosto no RD Station com os filtros acordados de origem e exclusão de Importação, antes de substituir os totais BRRO exibidos.
-- [ ] Registrar e conciliar separadamente os totais reportados pelo gestor de tráfego com as métricas capturadas por API, identificando período, fontes e critérios antes de qualquer substituição no dashboard.
+- [x] Registrar e conciliar separadamente os totais reportados pelo gestor de tráfego com as métricas capturadas por API, identificando período, fontes e critérios antes de qualquer substituição no dashboard.
 - [x] Investigar como os totais de leads reportados pelo gestor de tráfego podem ter sido calculados, confrontando período, escopo de campanhas e definição de conversão com os dados de API.
 - [x] Analisar o documento do responsável de mídia para confirmar a fórmula de leads, fontes e critérios usados no relatório antes de alterar qualquer métrica exibida.
 - [ ] Adequar a métrica de leads de mídia ao método documentado: leads RD com UTM, Meta Instant Forms e conversas de Click-to-WhatsApp apenas quando o opt-in de sincronização estiver comprovado.

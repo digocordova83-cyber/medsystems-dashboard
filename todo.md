@@ -140,3 +140,4 @@
 - [x] Aplicar no dashboard a metodologia documentada de leads de mídia: RD com UTM, Meta Instant Forms e Click-to-WhatsApp somente com opt-in comprovado.
 - [x] Nesta atualização, limitar o escopo do dashboard a mídia paga; não atualizar CRM, negócios, receita ou atribuição comercial.
 - [x] Aplicar no deck Revenue a análise documentada de leads de mídia, separando RD com UTM, Meta Instant Forms e Click-to-WhatsApp conforme evidência disponível.
+- [x] Reconstruir a composição dos 422 leads Medsystems até 19/08 segundo a integração documentada pelo gestor, separando componentes comprovados de componentes não acessíveis.

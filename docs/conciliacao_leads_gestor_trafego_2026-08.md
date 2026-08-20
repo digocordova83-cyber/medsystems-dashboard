@@ -34,3 +34,17 @@ O relatório do gestor contempla fontes Meta adicionais que não estão armazena
 ## Limite de evidência
 
 O RD Station retorna os eventos e suas UTMs, mas não retorna a composição interna dos filtros de origem da segmentação BRRO. Assim, o dashboard não presume que filtros como origem ou exclusão de Importação tenham sido aplicados; o filtro efetivamente comprovado é a presença de UTM no evento.
+
+## Atualização de 19/08 — Medsystems
+
+O gestor reportou **422 leads** até 19/08/2026. Pelo documento de integração, a composição usa: (1) leads RD Station recebidos em tempo real por webhook e com UTM, (2) Meta Instant Forms e (3) conversas de Click-to-WhatsApp transformadas em leads sintéticos quando a flag `syncs_whatsapp` está habilitada.
+
+| Componente | Evidência disponível | Valor |
+|---|---|---:|
+| Meta Instant Forms | API Meta, `actions_leadgen_grouped`, 01 a 19/08 | 0 |
+| Conversas Meta iniciadas | API Meta, `actions_onsite_conversion_messaging_conversation_started_7d`, 01 a 19/08 | 32 |
+| Leads RD com UTM no dashboard atual | Segmentação BRRO, 01 a 17/08 | 356 |
+| Leads RD com UTM necessários para fechar o total do gestor | `422 - 32 - 0` | 390 |
+| Diferença ante a coleta BRRO atual | `390 - 356` | 34 |
+
+A composição **mais provável** é `390` leads RD com UTM via webhook + `0` Instant Forms + `32` leads sintéticos de WhatsApp = `422`. O salto de 34 é compatível com conversões de 18 e 19/08, porque o webhook do gestor é em tempo real enquanto a coleta BRRO local ainda termina em 17/08. Essa fórmula só se torna confirmada com acesso de leitura à tabela `leads` do Supabase do gestor ou a uma exportação dela, além da confirmação da flag `syncs_whatsapp` para Medsystems.

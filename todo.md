@@ -148,3 +148,6 @@
 - [x] Corrigir filtros de Medsystems e BeautySystems para que todas as consultas e abas atualizem exclusivamente com os dados da marca selecionada.
 - [x] Ocultar blocos Bitrix24 sem marca comprovada sob filtro de marca e separar UTMs RD que divergem da conta selecionada, sem misturar dados no resultado principal.
 - [x] Redesenhar a aba Bitrix24 sob filtro de marca para exibir leads sem marca estruturada em bloco consolidado separado, sem o grande estado visual de indisponibilidade.
+- [x] Aplicar o filtro de Medsystems e BeautySystems ao volume de leads Bitrix24 pelo campo explícito Pipeline de Vendas, mantendo valores fora dos pipelines reconhecidos como não identificados.
+- [x] Aplicar o Pipeline de Vendas como critério de escopo do volume de leads: Negócios e Redes para BeautySystems e Medsystems para Medsystems.
+- [x] Usar a exportação Bitrix24 de 19/08 como referência de campos para validar a atribuição de leads por pipeline e reproduzi-la por API, sem depender da planilha em produção.

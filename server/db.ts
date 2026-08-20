@@ -305,6 +305,17 @@ export function bitrixDealBrand(payload: Record<string, unknown>): Exclude<Analy
   return BITRIX_BRAND_VALUES[value as keyof typeof BITRIX_BRAND_VALUES] ?? null;
 }
 
+export const BITRIX_LEAD_PIPELINE_FIELD = "UF_CRM_1739195085";
+const BITRIX_LEAD_PIPELINE_BRANDS = {
+  "15391": "medsystems",
+  "15395": "beautysystems",
+} as const satisfies Record<string, Exclude<AnalyticsBrand, "all">>;
+
+export function bitrixLeadPipelineBrand(payload: Record<string, unknown>): Exclude<AnalyticsBrand, "all"> | null {
+  const value = String(payload[BITRIX_LEAD_PIPELINE_FIELD] ?? "").trim();
+  return BITRIX_LEAD_PIPELINE_BRANDS[value as keyof typeof BITRIX_LEAD_PIPELINE_BRANDS] ?? null;
+}
+
 export function bitrixDiscardReason(payload: Record<string, unknown>) {
   const value = String(payload[BITRIX_DISCARD_REASON_FIELD] ?? "").trim();
   return BITRIX_DISCARD_REASON_VALUES[value] ?? null;
@@ -693,16 +704,25 @@ export async function bitrixOperationsDashboard(portal: string, start: Date, end
       .from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, portal), eq(bitrix24Entities.entityType, "deal"), gte(bitrix24Entities.createdAtBitrix, start), lt(bitrix24Entities.createdAtBitrix, end))),
     bitrixDealJulyAnalytics(portal, start, end, statusFilter, brand),
   ]);
+  const parsedLeadRows = leadRows.map(lead => {
+    try {
+      const payload = JSON.parse(lead.rawPayload) as Record<string, unknown>;
+      return { ...lead, payload, pipelineBrand: bitrixLeadPipelineBrand(payload) };
+    } catch {
+      return { ...lead, payload: null, pipelineBrand: null };
+    }
+  });
+  const scopedLeadRows = brand === "all" ? parsedLeadRows : parsedLeadRows.filter(lead => lead.pipelineBrand === brand);
   const leadsByDay = new Map<string, number>();
   const leadOrigins = new Map<string, number>();
   const leadChannels = new Map<string, number>();
   let leadsWithSource = 0;
   let leadsWithUtm = 0;
-  for (const lead of leadRows) {
+  for (const lead of scopedLeadRows) {
     const day = lead.createdAtBitrix.toISOString().slice(0, 10);
     leadsByDay.set(day, (leadsByDay.get(day) ?? 0) + 1);
-    try {
-      const payload = JSON.parse(lead.rawPayload) as Record<string, unknown>;
+    if (lead.payload) {
+      const payload = lead.payload;
       const sourceId = String(payload.SOURCE_ID ?? "");
       const sourceLabel = bitrixSourceLabels[sourceId] ?? (sourceId ? `Código ${sourceId}` : "Não informado");
       leadOrigins.set(sourceLabel, (leadOrigins.get(sourceLabel) ?? 0) + 1);
@@ -710,7 +730,7 @@ export async function bitrixOperationsDashboard(portal: string, start: Date, end
       const channel = utmChannelLabel(payload.UTM_SOURCE);
       leadChannels.set(channel, (leadChannels.get(channel) ?? 0) + 1);
       if (cleanAuditString(payload.UTM_SOURCE)) leadsWithUtm += 1;
-    } catch {
+    } else {
       leadOrigins.set("Não identificado", (leadOrigins.get("Não identificado") ?? 0) + 1);
       leadChannels.set("Não identificado", (leadChannels.get("Não identificado") ?? 0) + 1);
     }
@@ -735,10 +755,16 @@ export async function bitrixOperationsDashboard(portal: string, start: Date, end
   }
   const breakdown = (map: Map<string, number>) => Array.from(map, ([label, count]) => ({ label, count })).sort((a, b) => b.count - a.count);
   return {
-    leadBrandScopeAvailable: false,
+    leadBrandScopeAvailable: true,
+    contactsScopeAvailable: brand === "all",
+    leadPipelineScope: {
+      field: BITRIX_LEAD_PIPELINE_FIELD,
+      method: brand === "all" ? "Todos os pipelines" : brand === "medsystems" ? "Pipeline Medsystems" : "Pipeline Negócios e Redes",
+      leadsWithoutRecognizedPipeline: parsedLeadRows.filter(lead => !lead.pipelineBrand).length,
+    },
     leads: {
-      total: leadRows.length,
-      contactsCreated: contactRows.length,
+      total: scopedLeadRows.length,
+      contactsCreated: brand === "all" ? contactRows.length : 0,
       withSource: leadsWithSource,
       withUtm: leadsWithUtm,
       byDay: Array.from(leadsByDay, ([date, count]) => ({ date, count })).sort((a, b) => a.date.localeCompare(b.date)),

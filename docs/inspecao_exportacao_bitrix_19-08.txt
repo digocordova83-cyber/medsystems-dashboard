@@ -1,0 +1,110 @@
+Arquivo: LeadsRecebidos19.08.xlsx
+Abas: Base, Leads Recebidos, Analise, Dashboard, Tecnologias
+
+Aba: Base
+Registros: 2592
+Campos:
+- ID: 2592 preenchidos
+- Etapa: 2592 preenchidos
+- Nome do Lead: 2592 preenchidos
+- Primeiro nome: 2590 preenchidos
+- Data de nascimento: 0 preenchidos
+- Criado: 2592 preenchidos
+- Fonte: 2592 preenchidos
+- Observadores: 5 preenchidos
+- Telefone de trabalho: 2587 preenchidos
+- Responsável: 2592 preenchidos
+- Informações da fonte: 995 preenchidos
+- Criado por: 2592 preenchidos
+- Modificado: 2592 preenchidos
+- Modificado por: 2592 preenchidos
+- Nome da Empresa: 995 preenchidos
+- Posição: 995 preenchidos
+- Total: 2592 preenchidos
+- Moeda: 2592 preenchidos
+- Lead repetido: 2592 preenchidos
+- Cliente: 0 preenchidos
+- UF - PF: 2526 preenchidos
+- Motivo de declínio - WF0: 137 preenchidos
+- Observação do Declínio - WF0: 138 preenchidos
+- DDD: 2517 preenchidos
+- SDR: 35 preenchidos
+- Equipamento de Interesse: 35 preenchidos
+- Tags: 995 preenchidos
+- Clínica / Hospital: 0 preenchidos
+- Profissão RD Station: 995 preenchidos
+- Tecnologia: 2592 preenchidos
+- Identificador: 2586 preenchidos
+- RD_Possui Filiais: 2592 preenchidos
+- RD_Nome da Clinica: 989 preenchidos
+- RD_Segmento: 995 preenchidos
+- ID_Rdstation: 2586 preenchidos
+- RD Station: 2592 preenchidos
+- Produto de Interesse: 995 preenchidos
+- Segmento: 995 preenchidos
+- Whatsapp Web: 2592 preenchidos
+- Pipeline de Vendas: 2592 preenchidos
+- Vendedor Responsável: 240 preenchidos
+- Última atualização em: 2592 preenchidos
+Valores categóricos observados:
+- Etapa: Leads de EVENTOS (1591); Primeiro Contato (479); Lead Descartado (126); Terceiro Contato (116); SDR (108); Relacionamento (80); Segundo Contato (46); Histórico Lead Repassados (35); Lead Descartado p/ MKT (11)
+- Responsável: Vitor da Silva (1498); Eduardo Santos Franca (386); Maria Julia Pazinatto Rodrigues (347); Marcela Assis Satilho Muller (259); Gleidsson Santos Felix (99); Yasmin De Souza Freitas (3)
+- Nome da Empresa: undefined (414); Sim (5); 2. MEDSYSTEMS BRASIL (5); Consultório (4); Nao (4); Santos (4); Não (3); Não tenho (3); abc (3); Estética (3); Instituto Daniela Slompo (2); Lumina (2); . (2); Medsystems (2); Ara estética avançada (2); SL (2); Clínica Vencer plena (2); Odontologia Integrada e Saúde (2); AP medica (2); Renata waltrick clinica de estetica e harmonizacao facial (2); Médica (2); Livia Machado (2); Sirleia Souza Estética (2); Ok (2); @pilaresdabeleza (2)
+- Pipeline de Vendas: Negócios e Redes (2239); Medsystems (353)
+- Vendedor Responsável: Automação Bitrix (204); Marina Torquato Memoria (3); Miguel Eduardo Barbosa da Silva (3); Jaqueline Calaca (2); Felipe Zadorosny Brun (2); Debora Lucato (2); Cleibson Dos Santos Moura (2); Thiago Amodio (2); Solange Azevedo Costa (2); Aline Bolognini Ocinschi (2); Thiago Henrique Zagury Cardoso (2); Bruno Leque Remicio (2); Jose Jorge de Menezes Junior (1); Nathalia Cristina Nogueira Chaves (1); Deusumar Santos Almeida Junior (1); Thais Ferreira Reis (1); Eduardo Santos Franca (1); Diana Cristina de Carvalho (1); Alberto Finkler Schmidt (1); Alexandre Coelho Rodrigues de Sousa (1); Keicyane Aguiar da Silva (1); Laura Carvalho de Barros (1); William Leite Pereira (1); Daniel Dedin Brizola (1)
+
+Aba: Leads Recebidos
+Registros: 54
+Campos:
+- coluna_1: 0 preenchidos
+- coluna_2: 21 preenchidos
+- coluna_3: 21 preenchidos
+- coluna_4: 21 preenchidos
+- coluna_5: 21 preenchidos
+- coluna_6: 0 preenchidos
+- coluna_7: 2 preenchidos
+- coluna_8: 0 preenchidos
+- coluna_9: 8 preenchidos
+- coluna_10: 41 preenchidos
+- coluna_11: 48 preenchidos
+
+Aba: Analise
+Registros: 50
+Campos:
+- coluna_1: 0 preenchidos
+- coluna_2: 21 preenchidos
+- coluna_3: 21 preenchidos
+- coluna_4: 0 preenchidos
+- coluna_5: 11 preenchidos
+- coluna_6: 11 preenchidos
+- coluna_7: 0 preenchidos
+- coluna_8: 16 preenchidos
+- coluna_9: 16 preenchidos
+- coluna_10: 0 preenchidos
+- coluna_11: 0 preenchidos
+- coluna_12: 44 preenchidos
+- coluna_13: 44 preenchidos
+- coluna_14: 0 preenchidos
+- coluna_15: 10 preenchidos
+- coluna_16: 10 preenchidos
+- coluna_17: 0 preenchidos
+- coluna_18: 29 preenchidos
+- coluna_19: 29 preenchidos
+- coluna_20: 0 preenchidos
+- coluna_21: 28 preenchidos
+- coluna_22: 28 preenchidos
+
+Aba: Dashboard
+Registros: 25
+Campos:
+- coluna_1: 0 preenchidos
+- coluna_2: 21 preenchidos
+- coluna_3: 21 preenchidos
+- coluna_4: 21 preenchidos
+
+Aba: Tecnologias
+Registros: 65
+Campos:
+- coluna_1: 0 preenchidos
+- Identificador: 64 preenchidos
+- Tecnologia: 65 preenchidos

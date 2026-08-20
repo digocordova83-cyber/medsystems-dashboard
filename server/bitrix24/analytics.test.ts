@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { bitrixDealBrand, bitrixDiscardReason, bitrixFinancialStatus, campaignTrackingValue, dealStatusFromSemantic, normalizeCreativeKey, normalizeIdentityEmail, rdEventAttribution, rdEventUtmValues, utmChannelLabel } from "../db";
+import { bitrixDealBrand, bitrixDiscardReason, bitrixFinancialStatus, bitrixLeadPipelineBrand, campaignTrackingValue, dealStatusFromSemantic, normalizeCreativeKey, normalizeIdentityEmail, rdEventAttribution, rdEventUtmValues, utmChannelLabel } from "../db";
 
 describe("classificação comercial auditável", () => {
   it("preserva os significados de estágio do Bitrix24", () => {
@@ -33,6 +33,7 @@ describe("classificação comercial auditável", () => {
     const event = JSON.stringify({ payload: { traffic_source: `encoded_${traffic}` } });
     expect(rdEventUtmValues(event)).toEqual({
       utmSource: "facebook",
+      utmMedium: "cpc",
       utmCampaign: "bts-mpt-conversao-lp",
       utmContent: "video-03",
       utmTerm: "estudos-mpt",
@@ -50,6 +51,12 @@ describe("classificação comercial auditável", () => {
     expect(bitrixDealBrand({ UF_CRM_1683207237: "1907" })).toBe("medsystems");
     expect(bitrixDealBrand({ UF_CRM_1683207237: "3065" })).toBe("beautysystems");
     expect(bitrixDealBrand({ UF_CRM_1683207237: "outro" })).toBeNull();
+  });
+
+  it("aplica o Pipeline de Vendas exportado ao escopo de leads por marca", () => {
+    expect(bitrixLeadPipelineBrand({ UF_CRM_1739195085: "15391" })).toBe("medsystems");
+    expect(bitrixLeadPipelineBrand({ UF_CRM_1739195085: "15395" })).toBe("beautysystems");
+    expect(bitrixLeadPipelineBrand({ UF_CRM_1739195085: "20889" })).toBeNull();
   });
 
   it("usa somente códigos confirmados para rotular motivos de descarte", () => {

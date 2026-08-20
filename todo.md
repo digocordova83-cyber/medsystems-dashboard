@@ -58,7 +58,7 @@
 - [x] Exibir “Não identificado” ou “indisponível” para qualquer métrica, campo ou vínculo sem evidência armazenada, sem estimar ou criar valores substitutos.
 - [x] Criar uma nova experiência de dashboard premium com navegação lateral, filtros globais e páginas de Overview, Google Ads, Meta Ads, Revenue, Origem & Funil e Perdidos & Descartes.
 - [x] Adaptar as visualizações ao modelo de dados existente, mantendo ROAS e receita por canal bloqueados quando não houver atribuição auditável.
-- [ ] Configurar e publicar a versão validada em um novo domínio ou prefixo do projeto; o endereço atual `medoauth-pfvjidwp.manus.space` permanece ativo até a confirmação do novo endereço.
+- [x] Decisão de publicação: manter o dashboard no endereço Manus Space atual `medoauth-pfvjidwp.manus.space`, sem configurar novo domínio ou prefixo neste momento.
 - [x] Priorizar no recorte atualizado o de-para RD Station–Bitrix24 por e-mail exato e único para recuperar a origem mais próxima; telefone e CPF permanecem fora por ausência de chave utilizável.
 - [x] Auditar a cobertura e unicidade de nome, e-mail e telefone entre leads Bitrix24 e contatos RD Station sem exibir valores pessoais; em julho, 40 matches de e-mail são únicos e 26 são ambíguos.
 - [x] Enriquecer leads Bitrix24 por vínculo único com contatos e eventos RD Station, recuperando fonte, origem, UTMs e método de evidência.
@@ -151,3 +151,4 @@
 - [x] Aplicar o filtro de Medsystems e BeautySystems ao volume de leads Bitrix24 pelo campo explícito Pipeline de Vendas, mantendo valores fora dos pipelines reconhecidos como não identificados.
 - [x] Aplicar o Pipeline de Vendas como critério de escopo do volume de leads: Negócios e Redes para BeautySystems e Medsystems para Medsystems.
 - [x] Usar a exportação Bitrix24 de 19/08 como referência de campos para validar a atribuição de leads por pipeline e reproduzi-la por API, sem depender da planilha em produção.
+- [x] Validar o Overview publicado após o carregamento inicial: as métricas de mídia concluem normalmente no endereço Manus Space e não há bloqueio persistente.

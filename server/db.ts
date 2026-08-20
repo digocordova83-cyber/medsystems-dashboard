@@ -444,6 +444,14 @@ export function utmChannelLabel(value: unknown) {
   return "Não identificado";
 }
 
+export function rdCampaignBrandHint(value: unknown): Exclude<AnalyticsBrand, "all"> | null {
+  const campaign = cleanAuditString(value)?.toLowerCase() ?? "";
+  if (!campaign) return null;
+  if (/(^|[^a-z0-9])(bts|beautysystems)([^a-z0-9]|$)/.test(campaign)) return "beautysystems";
+  if (/(^|[^a-z0-9])(medical|medsystems|med)([^a-z0-9]|$)|(^|[^a-z0-9])ms_/.test(campaign)) return "medsystems";
+  return null;
+}
+
 function cleanAuditString(value: unknown) {
   const normalized = String(value ?? "").trim();
   return normalized && !["null", "undefined"].includes(normalized.toLowerCase()) ? normalized : null;
@@ -1242,7 +1250,9 @@ export async function rdStationOperationsDashboard(brand: AnalyticsBrand, period
   const sources = new Map<string, number>();
   const mediums = new Map<string, number>();
   const campaigns = new Map<string, { count: number; channel: string }>();
+  const campaignConflicts = new Map<string, { count: number; expectedBrand: Exclude<AnalyticsBrand, "all">; channel: string }>();
   const eventTypes = new Map<string, number>();
+  const eventConflicts = new Map<string, { count: number; expectedBrand: Exclude<AnalyticsBrand, "all"> }>();
   const coverage = { withSource: 0, withMedium: 0, withCampaign: 0, withContent: 0, withTerm: 0 };
   for (const event of Array.from(firstEventByContact.values())) byBrand[event.accountKey].convertedContacts += 1;
   for (const event of Array.from(firstUtmEventByContact.values())) {
@@ -1257,11 +1267,25 @@ export async function rdStationOperationsDashboard(brand: AnalyticsBrand, period
     const medium = details.utmMedium ?? "Não identificado";
     mediums.set(medium, (mediums.get(medium) ?? 0) + 1);
     const campaign = details.utmCampaign ?? "Não identificado";
-    const campaignRow = campaigns.get(campaign) ?? { count: 0, channel: utmChannelLabel(details.utmSource) };
-    campaignRow.count += 1;
-    campaigns.set(campaign, campaignRow);
+    const campaignBrand = rdCampaignBrandHint(campaign);
+    if (campaignBrand && campaignBrand !== event.accountKey) {
+      const conflict = campaignConflicts.get(campaign) ?? { count: 0, expectedBrand: campaignBrand, channel: utmChannelLabel(details.utmSource) };
+      conflict.count += 1;
+      campaignConflicts.set(campaign, conflict);
+    } else {
+      const campaignRow = campaigns.get(campaign) ?? { count: 0, channel: utmChannelLabel(details.utmSource) };
+      campaignRow.count += 1;
+      campaigns.set(campaign, campaignRow);
+    }
     const eventType = cleanAuditString(payload.conversion_event ?? payload.conversion_identifier ?? payload.event_identifier ?? payload.event_type ?? payload.cf_conversion_event) ?? "Evento RD com UTM";
-    eventTypes.set(eventType, (eventTypes.get(eventType) ?? 0) + 1);
+    const eventBrand = rdCampaignBrandHint(eventType);
+    if (eventBrand && eventBrand !== event.accountKey) {
+      const conflict = eventConflicts.get(eventType) ?? { count: 0, expectedBrand: eventBrand };
+      conflict.count += 1;
+      eventConflicts.set(eventType, conflict);
+    } else {
+      eventTypes.set(eventType, (eventTypes.get(eventType) ?? 0) + 1);
+    }
     if (details.utmSource) coverage.withSource += 1;
     if (details.utmMedium) coverage.withMedium += 1;
     if (details.utmCampaign) coverage.withCampaign += 1;
@@ -1279,7 +1303,9 @@ export async function rdStationOperationsDashboard(brand: AnalyticsBrand, period
     sources: breakdown(sources),
     mediums: breakdown(mediums),
     campaigns: Array.from(campaigns, ([campaign, data]) => ({ campaign, ...data })).sort((a, b) => b.count - a.count),
+    campaignConflicts: Array.from(campaignConflicts, ([campaign, data]) => ({ campaign, ...data })).sort((a, b) => b.count - a.count),
     conversionEvents: breakdown(eventTypes),
+    eventConflicts: Array.from(eventConflicts, ([label, data]) => ({ label, ...data })).sort((a, b) => b.count - a.count),
   };
 }
 

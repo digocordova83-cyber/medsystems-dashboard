@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { normalizeIdentityPhone, rdEventUtmValues } from "../db";
+import { normalizeIdentityPhone, rdCampaignBrandHint, rdEventUtmValues } from "../db";
 import { rdPhoneFromContactDetail } from "./service";
 
 describe("hidratação de telefone RD Station", () => {
@@ -24,5 +24,12 @@ describe("hidratação de telefone RD Station", () => {
     const source = Buffer.from(JSON.stringify({ current_session: { value: "utm_source=facebook&utm_medium=cpc&utm_campaign=campanha_teste" } })).toString("base64");
     const values = rdEventUtmValues(JSON.stringify({ payload: { traffic_source: `encoded_${source}` } }));
     expect(values).toMatchObject({ utmSource: "facebook", utmMedium: "cpc", utmCampaign: "campanha_teste" });
+  });
+
+  it("identifica somente campanhas com sinal explícito de marca", () => {
+    expect(rdCampaignBrandHint("bts-aquapure-conversao-lp")).toBe("beautysystems");
+    expect(rdCampaignBrandHint("[BEAUTYSYSTEMS] [MPT] [LEAD ADS]")).toBe("beautysystems");
+    expect(rdCampaignBrandHint("medical-volnewmer-conversao-lp")).toBe("medsystems");
+    expect(rdCampaignBrandHint("mentoria_agosto")).toBeNull();
   });
 });

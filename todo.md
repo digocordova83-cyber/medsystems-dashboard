@@ -147,3 +147,4 @@
 - [x] Exibir a série diária RD Station no fuso de São Paulo, sem deslocar eventos de 17/08 para 18/08 por conversão UTC.
 - [x] Corrigir filtros de Medsystems e BeautySystems para que todas as consultas e abas atualizem exclusivamente com os dados da marca selecionada.
 - [x] Ocultar blocos Bitrix24 sem marca comprovada sob filtro de marca e separar UTMs RD que divergem da conta selecionada, sem misturar dados no resultado principal.
+- [x] Redesenhar a aba Bitrix24 sob filtro de marca para exibir leads sem marca estruturada em bloco consolidado separado, sem o grande estado visual de indisponibilidade.

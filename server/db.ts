@@ -495,6 +495,72 @@ export function rdEventUtmValues(rawPayload: string) {
   }
 }
 
+export async function getRdUtmContactUuids(accountKey: RdAccountKey, start: Date, end: Date) {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  const [events, contacts] = await Promise.all([
+    db.select({ contactUuid: rdStationConversionEvents.contactUuid, rawPayload: rdStationConversionEvents.rawPayload })
+      .from(rdStationConversionEvents)
+      .where(and(eq(rdStationConversionEvents.accountKey, accountKey), gte(rdStationConversionEvents.eventCreatedAt, start), lt(rdStationConversionEvents.eventCreatedAt, end))),
+    db.select({ contactUuid: rdStationContacts.contactUuid, phone: rdStationContacts.phone })
+      .from(rdStationContacts)
+      .where(eq(rdStationContacts.accountKey, accountKey)),
+  ]);
+  const phoneByContact = new Map(contacts.map(contact => [contact.contactUuid, contact.phone]));
+  return Array.from(new Set(events.filter(event => Boolean(rdEventUtmValues(event.rawPayload).utmSource)).map(event => event.contactUuid)))
+    .filter(contactUuid => !phoneByContact.get(contactUuid));
+}
+
+export function normalizeIdentityPhone(value: string | null | undefined) {
+  const digits = String(value ?? "").replace(/\D/g, "").replace(/^0+/, "");
+  if (!digits) return null;
+  if (digits.length === 10 || digits.length === 11) return `55${digits}`;
+  return digits.length >= 12 && digits.length <= 13 ? digits : null;
+}
+
+export async function rdUtmPhoneMatchFlow(brands: readonly Exclude<AnalyticsBrand, "all">[], start: Date, end: Date) {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  const [events, rdContacts, bitrixContacts] = await Promise.all([
+    db.select({ accountKey: rdStationConversionEvents.accountKey, contactUuid: rdStationConversionEvents.contactUuid, rawPayload: rdStationConversionEvents.rawPayload })
+      .from(rdStationConversionEvents)
+      .where(and(inArray(rdStationConversionEvents.accountKey, brands), gte(rdStationConversionEvents.eventCreatedAt, start), lt(rdStationConversionEvents.eventCreatedAt, end))),
+    db.select({ accountKey: rdStationContacts.accountKey, contactUuid: rdStationContacts.contactUuid, phone: rdStationContacts.phone })
+      .from(rdStationContacts)
+      .where(inArray(rdStationContacts.accountKey, brands)),
+    db.select({ phone: bitrix24Entities.phone })
+      .from(bitrix24Entities)
+      .where(and(eq(bitrix24Entities.portal, "medsystems.bitrix24.com.br"), eq(bitrix24Entities.entityType, "contact"))),
+  ]);
+  const rdPhoneByContact = new Map(rdContacts.map(contact => [`${contact.accountKey}:${contact.contactUuid}`, normalizeIdentityPhone(contact.phone)]));
+  const utmContactKeys = new Set(events.filter(event => Boolean(rdEventUtmValues(event.rawPayload).utmSource)).map(event => `${event.accountKey}:${event.contactUuid}`));
+  const rdByBrandPhone = new Map<string, number>();
+  for (const key of Array.from(utmContactKeys)) {
+    const phone = rdPhoneByContact.get(key);
+    if (!phone) continue;
+    const [brand] = key.split(":", 1) as [Exclude<AnalyticsBrand, "all">];
+    const lookup = `${brand}:${phone}`;
+    rdByBrandPhone.set(lookup, (rdByBrandPhone.get(lookup) ?? 0) + 1);
+  }
+  const bitrixPhoneCounts = new Map<string, number>();
+  for (const contact of bitrixContacts) {
+    const phone = normalizeIdentityPhone(contact.phone);
+    if (phone) bitrixPhoneCounts.set(phone, (bitrixPhoneCounts.get(phone) ?? 0) + 1);
+  }
+  const empty = () => ({ rdUtmContactsWithPhone: 0, uniqueRdPhones: 0, ambiguousRdPhones: 0, bitrixContactMatches: 0, ambiguousBitrixPhones: 0 });
+  const result = { medsystems: empty(), beautysystems: empty() };
+  for (const [lookup, count] of Array.from(rdByBrandPhone.entries())) {
+    const [brand, phone] = lookup.split(":", 2) as [Exclude<AnalyticsBrand, "all">, string];
+    result[brand].rdUtmContactsWithPhone += count;
+    if (count !== 1) { result[brand].ambiguousRdPhones += count; continue; }
+    result[brand].uniqueRdPhones += 1;
+    const bitrixCount = bitrixPhoneCounts.get(phone) ?? 0;
+    if (bitrixCount === 1) result[brand].bitrixContactMatches += 1;
+    else if (bitrixCount > 1) result[brand].ambiguousBitrixPhones += 1;
+  }
+  return result;
+}
+
 export function rdEventAttribution(rawPayload: string) {
   const { utmSource, utmCampaign, mediaCampaignId } = rdEventUtmValues(rawPayload);
   return { utmSource, utmCampaign, mediaCampaignId };

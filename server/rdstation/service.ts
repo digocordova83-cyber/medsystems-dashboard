@@ -4,6 +4,7 @@ import {
   getAccountByKey,
   getContactsForEventWindow,
   getContactsPendingEventSync,
+  getRdUtmContactUuids,
   getPendingJulyViewCandidates,
   listIntegrationAccounts,
   markContactsEventsSynced,
@@ -150,6 +151,47 @@ async function rdGet(accountKey: RdAccountKey, path: string, retried = false) {
     throw new Error(payload?.message || payload?.error || `A API do RD Station retornou ${response.status}.`);
   }
   return { payload, headers: response.headers };
+}
+
+export function rdPhoneFromContactDetail(contact: Record<string, unknown>) {
+  const phones = Array.isArray(contact.phones) ? contact.phones : [];
+  const candidates: unknown[] = [contact.phone, contact.mobile_phone, contact.personal_phone, contact.phone_number, ...phones];
+  for (const candidate of candidates) {
+    const value = typeof candidate === "string"
+      ? candidate
+      : candidate && typeof candidate === "object"
+        ? String((candidate as Record<string, unknown>).phone ?? (candidate as Record<string, unknown>).value ?? (candidate as Record<string, unknown>).number ?? "")
+        : "";
+    if (value.trim()) return value.trim();
+  }
+  return null;
+}
+
+export async function hydrateUtmContactPhones(accountKey: RdAccountKey, start: Date, end: Date, maxContacts = Number.MAX_SAFE_INTEGER) {
+  const contactUuids = (await getRdUtmContactUuids(accountKey, start, end)).slice(0, Math.max(0, maxContacts));
+  const contacts: Record<string, unknown>[] = [];
+  let errors = 0;
+  const concurrency = 6;
+  for (let index = 0; index < contactUuids.length; index += concurrency) {
+    const batch = contactUuids.slice(index, index + concurrency);
+    const outcomes = await Promise.allSettled(batch.map(async contactUuid => {
+      const { payload } = await rdGet(accountKey, `/platform/contacts/${encodeURIComponent(contactUuid)}`);
+      const detail = payload && typeof payload === "object" && "contact" in payload && typeof payload.contact === "object"
+        ? payload.contact as Record<string, unknown>
+        : payload as Record<string, unknown>;
+      const phone = rdPhoneFromContactDetail(detail);
+      return { ...detail, uuid: String(detail.uuid ?? contactUuid), phone };
+    }));
+    for (const outcome of outcomes) {
+      if (outcome.status === "fulfilled") contacts.push(outcome.value);
+      else errors += 1;
+    }
+    if ((index + batch.length) % 30 === 0 || index + batch.length === contactUuids.length) {
+      console.log(`[RD phone] ${accountKey}: ${index + batch.length}/${contactUuids.length} detalhes consultados`);
+    }
+  }
+  await upsertContacts(accountKey, contacts);
+  return { selected: contactUuids.length, detailsFetched: contacts.length, phonesFound: contacts.filter(contact => Boolean(contact.phone)).length, errors };
 }
 
 export async function updateSegmentation(accountKey: RdAccountKey, segmentationId: string) {

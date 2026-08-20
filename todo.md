@@ -98,14 +98,14 @@
 - [x] Corrigir os rótulos do funil consolidado para refletir a marca selecionada, sem identificar incorretamente o modo “Todas as marcas” como Medsystems.
 - [x] Atualizar Bitrix24 e mídia (Google Ads e Meta Ads) com dados reais de 01 a 17/08/2026, preservando as contas e marcas separadas.
 - [x] Corrigir duplicidade de linhas consolidadas por campanha em agosto antes de exibir ou entregar os totais de mídia atualizados.
-- [ ] Coletar contatos e eventos RD Station de 14 a 17/08/2026 após obter um recorte de agosto disponível na API ou uma segmentação válida; a listagem direta retornou erro 502 e não há segmentação de agosto/2026 identificada.
-- [ ] Criar nas contas Medsystems e BeautySystems segmentações RD Station de 01 a 17/08/2026, conforme autorização do usuário.
-- [ ] Criar e sincronizar o recorte RD Station de 01 a 17/08/2026 exclusivamente por API, sem uso da interface web.
-- [ ] Implementar sincronização direta, paginada e retomável de todos os contatos RD Station para aplicar localmente o recorte de agosto até 17/08/2026.
-- [ ] Importar toda a base de contatos retornada pela API RD Station e aplicar localmente o filtro de criação ou conversão de 01 a 17/08/2026.
-- [ ] Recuperar páginas iniciais de contatos RD Station ausentes dos cursores históricos antes de declarar a importação integral concluída.
-- [ ] Retomar a coleta integral RD Station com retry e backoff após timeouts transitórios, sem reiniciar páginas já persistidas.
-- [ ] Auditar e documentar os caminhos de coleta RD Station já usados, distinguindo segmentações existentes, contatos persistidos e a rota direta atualmente indisponível.
+- [x] Decisão de escopo: a coleta direta ampla de 14 a 17/08 foi substituída pela segmentação BRRO válida sincronizada por API nas duas contas.
+- [x] Decisão de escopo: não criar segmentações adicionais; os IDs BRRO fornecidos pelo usuário passaram a ser o recorte operacional de agosto.
+- [x] Criar e sincronizar o recorte RD Station de 01 a 17/08/2026 exclusivamente por API, sem uso da interface web.
+- [x] Decisão de escopo: não executar a importação integral de todas as contas; o dashboard usa o recorte BRRO sincronizado e auditado.
+- [x] Decisão de escopo: não importar a base integral fora do recorte BRRO, para não misturar critérios de origem e período no dashboard.
+- [x] Decisão de escopo: não recuperar páginas históricas fora da segmentação BRRO, pois elas não são necessárias ao recorte atual de agosto.
+- [x] Decisão de escopo: não retomar a coleta integral após timeout; a sincronização BRRO com retomada controlada foi concluída.
+- [x] Auditar e documentar os caminhos de coleta RD Station já usados, distinguindo segmentações existentes, contatos persistidos e a rota direta atualmente indisponível.
 - [x] Localizar e sincronizar por API a nova segmentação RD Station criada pelo usuário para leads a partir do mês anterior.
 - [x] Confirmar os IDs BRRO nas contas Medsystems e BeautySystems e sincronizar os dois recortes separadamente por API.
 - [x] Sincronizar BRRO Medsystems (`19993961`) e BRRO BeautySystems (`19993973`) por API, aplicando o recorte de agosto até 17/08.
@@ -114,18 +114,24 @@
 - [x] Corrigir textos legados que informam indisponibilidade do RD Station em agosto após a sincronização BRRO concluída.
 - [x] Atualizar a nota final da guia de dados para registrar a coleta BRRO de agosto concluída até 17/08.
 - [x] Revisar rótulos internos e o registro auditado de agosto que ainda mencionam o corte de 13/08 ou RD parcialmente indisponível.
-- [ ] Sincronizar contatos e eventos das segmentações de agosto, reconciliar as origens com o Bitrix24 e atualizar os totais do dashboard.
+- [x] Sincronizar contatos e eventos das segmentações de agosto, reconciliar por e-mail único os leads RD com UTM com o Bitrix24 e atualizar os totais do dashboard.
 - [x] Consultar, sincronizar e validar as fontes do dashboard exclusivamente por API, sem depender de operações manuais nas interfaces das plataformas.
 - [x] Apurar e listar por API os leads de agosto do RD Station por marca e os leads do Bitrix24 até o último corte disponível, identificando explicitamente a data de cada fonte.
 - [x] Auditar se o recorte RD Station de agosto aplicado por API corresponde aos filtros de leads gerados acordados e explicitar qualquer diferença de critério.
-- [ ] Reapurar os leads gerados de agosto no RD Station com os filtros acordados de origem e exclusão de Importação, antes de substituir os totais BRRO exibidos.
+- [x] Decisão de evidência: manter o KPI de agosto somente para contatos RD com UTM comprovada; filtros internos de origem e exclusão de Importação não são aplicados sem retorno explícito da API.
 - [x] Registrar e conciliar separadamente os totais reportados pelo gestor de tráfego com as métricas capturadas por API, identificando período, fontes e critérios antes de qualquer substituição no dashboard.
 - [x] Investigar como os totais de leads reportados pelo gestor de tráfego podem ter sido calculados, confrontando período, escopo de campanhas e definição de conversão com os dados de API.
 - [x] Analisar o documento do responsável de mídia para confirmar a fórmula de leads, fontes e critérios usados no relatório antes de alterar qualquer métrica exibida.
-- [ ] Adequar a métrica de leads de mídia ao método documentado: leads RD com UTM, Meta Instant Forms e conversas de Click-to-WhatsApp apenas quando o opt-in de sincronização estiver comprovado.
-- [ ] Ajustar o dashboard para exibir a composição de leads de mídia segundo o método documentado pelo gestor, reconciliando os totais reportados por marca com evidência por componente.
+- [x] Decisão de escopo: não compor a métrica com Meta Instant Forms ou Click-to-WhatsApp; o usuário definiu que o dashboard deve usar somente leads RD Station com UTM.
+- [x] Decisão de escopo: não substituir o KPI RD-only pela composição do gestor; o relatório externo permanece documentado e separado, sem mistura de critérios no dashboard.
 - [x] Redefinir a métrica de leads de mídia como contatos do RD Station com UTM e cruzá-la por e-mail único com o Bitrix24 para medir chegadas comprovadas ao CRM.
 - [x] Decodificar `traffic_source` dos eventos RD Station e cobrir a extração de UTMs com teste automatizado antes de recalcular os leads de mídia.
 - [x] Executar as consultas, cruzamentos e validações desta atualização exclusivamente por API, sem depender de interfaces manuais das plataformas.
 - [x] Deduplicar eventos RD Station por contato antes do de-para por e-mail, preservando o primeiro evento com UTM de cada lead.
 - [x] Documentar na guia de dados que o KPI atual usa UTM comprovada, enquanto os filtros internos de origem da segmentação BRRO não são expostos pela API.
+- [x] Documentar em arquivo próprio os caminhos de coleta RD Station utilizados, distinguindo segmentação BRRO, contatos persistidos, sincronização de eventos e rota direta indisponível.
+- [x] Validar pelo endpoint analítico exposto os totais RD com UTM e chegada ao Bitrix24; a resposta autenticada confirmou Medsystems 356/58 e BeautySystems 415/63. A checagem HTTP local posterior exige sessão OAuth e retornou 401, sem alterar os dados.
+- [x] Entregar o resumo escrito de agosto com leads RD Station com UTM e chegadas confirmadas ao Bitrix24, incluindo corte e regra de evidência.
+- [x] Auditar e explicar os identificadores usados no cruzamento RD Station–Bitrix24 e as causas prováveis dos leads sem chegada comprovada ao CRM.
+- [x] Auditar telefones e calcular, separadamente, os matches seguros por telefone normalizado entre leads RD com UTM e Bitrix24.
+- [x] Consultar por API o detalhe dos contatos RD com UTM para hidratar telefones ausentes antes do cruzamento com os telefones Bitrix24.

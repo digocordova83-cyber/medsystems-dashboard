@@ -141,3 +141,5 @@
 - [x] Nesta atualização, limitar o escopo do dashboard a mídia paga; não atualizar CRM, negócios, receita ou atribuição comercial.
 - [x] Aplicar no deck Revenue a análise documentada de leads de mídia, separando RD com UTM, Meta Instant Forms e Click-to-WhatsApp conforme evidência disponível.
 - [x] Reconstruir a composição dos 422 leads Medsystems até 19/08 segundo a integração documentada pelo gestor, separando componentes comprovados de componentes não acessíveis.
+- [x] Criar uma aba exclusiva de Bitrix24 com leads por dia, origens, negócios, perdas, descartes, cruzamentos comprovados e filtros auditáveis de período, marca e status.
+- [ ] Criar uma aba exclusiva de RD Station seguindo a metodologia documentada, com leads por dia, UTMs, origens, campanhas, conversões e limitações de evidência explícitas.

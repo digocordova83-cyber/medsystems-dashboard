@@ -12,8 +12,8 @@ describe("dashboardMath.ratio", () => {
     expect(dashboardMath.ratio(5_000, 0)).toBe(0);
   });
 
-  it("mantém Revenue como a única visão comercial central", () => {
-    expect(DASHBOARD_TABS.map(tab => tab.id)).toEqual(["overview", "google", "meta", "revenue"]);
+  it("mantém as visões comerciais centrais e a aba exclusiva Bitrix24", () => {
+    expect(DASHBOARD_TABS.map(tab => tab.id)).toEqual(["overview", "google", "meta", "revenue", "bitrix"]);
   });
 
   it("mantém agosto e julho como períodos explícitos de análise", () => {

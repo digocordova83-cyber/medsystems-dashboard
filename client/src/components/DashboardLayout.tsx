@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { startLogin } from "@/const";
-import { BarChart3, BookOpenCheck, CircleDollarSign, LayoutDashboard, LogOut, PanelLeft } from "lucide-react";
+import { BarChart3, BookOpenCheck, CircleDollarSign, Database, LayoutDashboard, LogOut, PanelLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { DashboardLayoutSkeleton } from "./DashboardLayoutSkeleton";
 
@@ -13,6 +13,7 @@ const menuItems = [
   { icon: BarChart3, label: "Google Ads", hash: "google" },
   { icon: BarChart3, label: "Meta Ads", hash: "meta" },
   { icon: CircleDollarSign, label: "Revenue", hash: "revenue" },
+  { icon: Database, label: "Bitrix24", hash: "bitrix" },
   { icon: BookOpenCheck, label: "Guia de dados", hash: "guide" },
 ];
 

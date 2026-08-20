@@ -672,6 +672,75 @@ export async function bitrixDealJulyAnalytics(portal: string, start: Date, end: 
   };
 }
 
+export async function bitrixOperationsDashboard(portal: string, start: Date, end: Date, statusFilter: DealStatusFilter = "all", brand: AnalyticsBrand = "all") {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  const [leadRows, contactRows, dealRows, dealAnalytics] = await Promise.all([
+    db.select({ bitrixId: bitrix24Entities.bitrixId, createdAtBitrix: bitrix24Entities.createdAtBitrix, rawPayload: bitrix24Entities.rawPayload })
+      .from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, portal), eq(bitrix24Entities.entityType, "lead"), gte(bitrix24Entities.createdAtBitrix, start), lt(bitrix24Entities.createdAtBitrix, end))),
+    db.select({ bitrixId: bitrix24Entities.bitrixId, createdAtBitrix: bitrix24Entities.createdAtBitrix })
+      .from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, portal), eq(bitrix24Entities.entityType, "contact"), gte(bitrix24Entities.createdAtBitrix, start), lt(bitrix24Entities.createdAtBitrix, end))),
+    db.select({ rawPayload: bitrix24Entities.rawPayload })
+      .from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, portal), eq(bitrix24Entities.entityType, "deal"), gte(bitrix24Entities.createdAtBitrix, start), lt(bitrix24Entities.createdAtBitrix, end))),
+    bitrixDealJulyAnalytics(portal, start, end, statusFilter, brand),
+  ]);
+  const leadsByDay = new Map<string, number>();
+  const leadOrigins = new Map<string, number>();
+  const leadChannels = new Map<string, number>();
+  let leadsWithSource = 0;
+  let leadsWithUtm = 0;
+  for (const lead of leadRows) {
+    const day = lead.createdAtBitrix.toISOString().slice(0, 10);
+    leadsByDay.set(day, (leadsByDay.get(day) ?? 0) + 1);
+    try {
+      const payload = JSON.parse(lead.rawPayload) as Record<string, unknown>;
+      const sourceId = String(payload.SOURCE_ID ?? "");
+      const sourceLabel = bitrixSourceLabels[sourceId] ?? (sourceId ? `Código ${sourceId}` : "Não informado");
+      leadOrigins.set(sourceLabel, (leadOrigins.get(sourceLabel) ?? 0) + 1);
+      if (sourceId) leadsWithSource += 1;
+      const channel = utmChannelLabel(payload.UTM_SOURCE);
+      leadChannels.set(channel, (leadChannels.get(channel) ?? 0) + 1);
+      if (cleanAuditString(payload.UTM_SOURCE)) leadsWithUtm += 1;
+    } catch {
+      leadOrigins.set("Não identificado", (leadOrigins.get("Não identificado") ?? 0) + 1);
+      leadChannels.set("Não identificado", (leadChannels.get("Não identificado") ?? 0) + 1);
+    }
+  }
+  let dealsWithLeadId = 0;
+  let dealsLinkedToLeadInPeriod = 0;
+  let dealsWithoutLeadId = 0;
+  const leadIds = new Set(leadRows.map(row => String(row.bitrixId)));
+  for (const deal of dealRows) {
+    try {
+      const payload = JSON.parse(deal.rawPayload) as Record<string, unknown>;
+      const dealBrand = bitrixDealBrand(payload);
+      if (!dealBrand || (brand !== "all" && dealBrand !== brand)) continue;
+      if (statusFilter !== "all" && dealStatusFromSemantic(payload.STAGE_SEMANTIC_ID) !== statusFilter) continue;
+      const leadId = cleanAuditString(payload.LEAD_ID);
+      if (!leadId) { dealsWithoutLeadId += 1; continue; }
+      dealsWithLeadId += 1;
+      if (leadIds.has(leadId)) dealsLinkedToLeadInPeriod += 1;
+    } catch {
+      dealsWithoutLeadId += 1;
+    }
+  }
+  const breakdown = (map: Map<string, number>) => Array.from(map, ([label, count]) => ({ label, count })).sort((a, b) => b.count - a.count);
+  return {
+    leadBrandScopeAvailable: false,
+    leads: {
+      total: leadRows.length,
+      contactsCreated: contactRows.length,
+      withSource: leadsWithSource,
+      withUtm: leadsWithUtm,
+      byDay: Array.from(leadsByDay, ([date, count]) => ({ date, count })).sort((a, b) => a.date.localeCompare(b.date)),
+      origins: breakdown(leadOrigins),
+      channels: breakdown(leadChannels),
+    },
+    deals: dealAnalytics,
+    crossings: { dealsWithLeadId, dealsLinkedToLeadInPeriod, dealsWithoutLeadId },
+  };
+}
+
 export async function bitrixLeadChannelFunnel(portal: string, start: Date, end: Date, statusFilter: DealStatusFilter = "all", brand: AnalyticsBrand = "all") {
   const db = await getDb();
   if (!db) throw new Error("Banco de dados indisponível.");

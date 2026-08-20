@@ -8,7 +8,19 @@ INPUT = Path("/home/ubuntu/upload/LeadsRecebidos19.08.xlsx")
 OUTPUT = Path("/home/ubuntu/medsystems-rdstation-oauth/docs/inspecao_exportacao_bitrix_19-08.txt")
 
 wb = load_workbook(INPUT, read_only=True, data_only=True)
-lines: list[str] = [f"Arquivo: {INPUT.name}", f"Abas: {', '.join(wb.sheetnames)}", ""]
+properties = wb.properties
+filter_workbook = load_workbook(INPUT, read_only=False, data_only=True)
+filter_refs = {worksheet.title: worksheet.auto_filter.ref for worksheet in filter_workbook.worksheets}
+filter_workbook.close()
+lines: list[str] = [
+    f"Arquivo: {INPUT.name}",
+    f"Abas: {', '.join(wb.sheetnames)}",
+    f"Criado no arquivo: {properties.created or 'não informado'}",
+    f"Modificado no arquivo: {properties.modified or 'não informado'}",
+    f"Autor: {properties.creator or 'não informado'}",
+    f"Último modificador: {properties.lastModifiedBy or 'não informado'}",
+    "",
+]
 
 for ws in wb.worksheets:
     rows = ws.iter_rows(values_only=True)
@@ -36,6 +48,8 @@ for ws in wb.worksheets:
                 pipeline_by_day[(str(pipeline_value).strip(), day)] += 1
 
     lines.extend([f"Aba: {ws.title}", f"Registros: {count}", "Campos:"])
+    if filter_refs.get(ws.title):
+        lines.append(f"Filtro automático salvo: {filter_refs[ws.title]}")
     lines.extend(f"- {header}: {non_empty[index]} preenchidos" for index, header in enumerate(headers))
     if categorical:
         lines.append("Valores categóricos observados:")

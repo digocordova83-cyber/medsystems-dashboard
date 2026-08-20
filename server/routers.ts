@@ -7,6 +7,7 @@ import { callbackUrl, createAuthorizationUrl, fetchSegmentations, integrationSta
 import { isRdAccountKey, RD_ACCOUNTS, type RdAccountKey } from "./rdstation/types";
 import { medsystemsBitrixCampaignAttributionDetail, medsystemsBitrixLeadChannelFunnel, medsystemsBitrixJulyDealAnalytics, medsystemsBitrixJulyTotals, medsystemsBitrixOperationsDashboard, medsystemsBitrixStatus, medsystemsUtmReceiptCoverage } from "./bitrix24/service";
 import { mediaDashboardAnalytics, rdStationOperationsDashboard } from "./db";
+import { bitrixExportSnapshot } from "./spreadsheet/bitrixExportSnapshot";
 
 const accountInput = z.enum(RD_ACCOUNTS);
 const analyticsBrandInput = z.enum(["all", "medsystems", "beautysystems"]);
@@ -69,6 +70,9 @@ export const appRouter = router({
   }),
   analytics: router({
     dashboard: protectedProcedure.input(z.object({ brand: analyticsBrandInput, period: z.enum(["2026-07", "2026-08"]).default("2026-07") })).query(({ input }) => mediaDashboardAnalytics(input.brand, input.period)),
+  }),
+  spreadsheet: router({
+    bitrixExportDashboard: protectedProcedure.query(() => bitrixExportSnapshot),
   }),
 });
 

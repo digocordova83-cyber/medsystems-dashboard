@@ -1,5 +1,9 @@
 Arquivo: LeadsRecebidos19.08.xlsx
 Abas: Base, Leads Recebidos, Analise, Dashboard, Tecnologias
+Criado no arquivo: 2025-02-14 12:53:11
+Modificado no arquivo: 2026-08-20 17:29:58
+Autor: Kelly do Nascimento Fraga
+Último modificador: Isadora F. L. Charbonnier
 
 Aba: Base
 Registros: 2592

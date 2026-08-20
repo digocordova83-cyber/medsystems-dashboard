@@ -156,4 +156,8 @@
 - [x] Mapear BeautySystems diretamente pelo rótulo `Negócios e Redes` do Pipeline de Vendas, confirmado pelo usuário e presente na exportação Bitrix24.
 - [x] Estender a sincronização Bitrix24 de agosto até 19/08/2026, com tentativas automáticas para instabilidades da API, e refletir o corte na aba operacional.
 - [x] Comparar os IDs técnicos da planilha com a API por pipeline, preservando no dashboard os 16 leads adicionais atuais da API sem suprimir dados reais.
-- [ ] Obter o horário exato e possíveis filtros adicionais da exportação Bitrix24 de 19/08/2026 para explicar os 16 registros que a API atual retorna além da planilha.
+- [x] Investigar o horário e possíveis filtros adicionais da exportação Bitrix24 de 19/08/2026: o arquivo não preserva esse critério; a solicitação foi encaminhada ao usuário para eventual refinamento futuro.
+- [x] Mapear os campos, categorias e métricas efetivamente disponíveis na aba Base da planilha Bitrix24 enviada, sem inferir dados ausentes.
+- [x] Criar uma aba exclusiva “Planilha Bitrix24” com KPIs, gráficos e tabelas baseados somente na exportação enviada.
+- [x] Incluir leituras de canais, origens, pipelines, etapas e série diária, sempre com a origem da planilha sinalizada na interface.
+- [x] Validar a nova aba com testes de agregação, tipagem, compilação de produção e revisão do estado protegido antes da publicação.

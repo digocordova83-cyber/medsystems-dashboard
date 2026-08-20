@@ -3,7 +3,7 @@ import { bitrixCampaignAttributionDetail, bitrixDealBrand, bitrixDealJulyAnalyti
 const CRM_CAPABILITIES = ["Leads", "Contatos", "Negócios"] as const;
 const PERIODS: Record<AnalyticsPeriod, { start: Date; end: Date; bitrixStart: string; bitrixEnd: string }> = {
   "2026-07": { start: new Date("2026-07-01T00:00:00-03:00"), end: new Date("2026-08-01T00:00:00-03:00"), bitrixStart: "2026-07-01T00:00:00-03:00", bitrixEnd: "2026-08-01T00:00:00-03:00" },
-  "2026-08": { start: new Date("2026-08-01T00:00:00-03:00"), end: new Date("2026-08-18T00:00:00-03:00"), bitrixStart: "2026-08-01T00:00:00-03:00", bitrixEnd: "2026-08-18T00:00:00-03:00" },
+  "2026-08": { start: new Date("2026-08-01T00:00:00-03:00"), end: new Date("2026-08-20T00:00:00-03:00"), bitrixStart: "2026-08-01T00:00:00-03:00", bitrixEnd: "2026-08-20T00:00:00-03:00" },
 };
 const ENTITY_METHOD: Record<BitrixEntityType, string> = { lead: "crm.lead.list", contact: "crm.contact.list", deal: "crm.deal.list" };
 const ENTITY_SELECT: Record<BitrixEntityType, string[]> = {
@@ -19,14 +19,23 @@ function webhookBaseUrl() {
 }
 
 async function bitrixList(entityType: BitrixEntityType, start: number, range: { bitrixStart: string; bitrixEnd: string }) {
-  const response = await fetch(`${webhookBaseUrl()}${ENTITY_METHOD[entityType]}.json`, {
-    method: "POST", headers: { "content-type": "application/json" },
-    body: JSON.stringify({ select: ENTITY_SELECT[entityType], order: { DATE_CREATE: "ASC" }, filter: { ">=DATE_CREATE": range.bitrixStart, "<DATE_CREATE": range.bitrixEnd }, start }),
-    signal: AbortSignal.timeout(20_000),
-  });
-  const payload = await response.json() as { result?: Record<string, unknown>[]; next?: number; error?: string; error_description?: string };
-  if (!response.ok || payload.error) throw new Error(payload.error_description || payload.error || `O Bitrix24 retornou ${response.status}.`);
-  return { rows: Array.isArray(payload.result) ? payload.result : [], next: typeof payload.next === "number" ? payload.next : null };
+  let lastError: unknown;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      const response = await fetch(`${webhookBaseUrl()}${ENTITY_METHOD[entityType]}.json`, {
+        method: "POST", headers: { "content-type": "application/json" },
+        body: JSON.stringify({ select: ENTITY_SELECT[entityType], order: { DATE_CREATE: "ASC" }, filter: { ">=DATE_CREATE": range.bitrixStart, "<DATE_CREATE": range.bitrixEnd }, start }),
+        signal: AbortSignal.timeout(60_000),
+      });
+      const payload = await response.json() as { result?: Record<string, unknown>[]; next?: number; error?: string; error_description?: string };
+      if (!response.ok || payload.error) throw new Error(payload.error_description || payload.error || `O Bitrix24 retornou ${response.status}.`);
+      return { rows: Array.isArray(payload.result) ? payload.result : [], next: typeof payload.next === "number" ? payload.next : null };
+    } catch (error) {
+      lastError = error;
+      if (attempt < 3) await pause(1_000 * attempt);
+    }
+  }
+  throw lastError instanceof Error ? lastError : new Error("O Bitrix24 não respondeu após três tentativas.");
 }
 
 async function bitrixContactsByIds(contactIds: number[]) {

@@ -152,3 +152,8 @@
 - [x] Aplicar o Pipeline de Vendas como critério de escopo do volume de leads: Negócios e Redes para BeautySystems e Medsystems para Medsystems.
 - [x] Usar a exportação Bitrix24 de 19/08 como referência de campos para validar a atribuição de leads por pipeline e reproduzi-la por API, sem depender da planilha em produção.
 - [x] Validar o Overview publicado após o carregamento inicial: as métricas de mídia concluem normalmente no endereço Manus Space e não há bloqueio persistente.
+- [x] Reconciliar o volume de leads BeautySystems até 19/08 entre planilha e API, corrigindo a regra do Pipeline de Vendas que retorna zero para a marca; todos os IDs da planilha foram encontrados e 10 leads adicionais atuais da API foram preservados.
+- [x] Mapear BeautySystems diretamente pelo rótulo `Negócios e Redes` do Pipeline de Vendas, confirmado pelo usuário e presente na exportação Bitrix24.
+- [x] Estender a sincronização Bitrix24 de agosto até 19/08/2026, com tentativas automáticas para instabilidades da API, e refletir o corte na aba operacional.
+- [x] Comparar os IDs técnicos da planilha com a API por pipeline, preservando no dashboard os 16 leads adicionais atuais da API sem suprimir dados reais.
+- [ ] Obter o horário exato e possíveis filtros adicionais da exportação Bitrix24 de 19/08/2026 para explicar os 16 registros que a API atual retorna além da planilha.

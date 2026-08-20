@@ -171,7 +171,7 @@ function BitrixOperationsHub({ brand, period, status, data, loading, error }: { 
   if (loading) return <section className="rounded-2xl border border-white/10 bg-black/15 p-8 text-center text-sm text-muted-foreground">Carregando análise operacional do Bitrix24…</section>;
   if (error) return <DataState title="Não foi possível carregar a análise Bitrix24" detail={error} />;
   if (!data) return <DataState title="Análise Bitrix24 indisponível" detail="Não houve retorno de dados para os filtros selecionados." />;
-  const periodLabel = period === "2026-08" ? "Agosto · Bitrix24 até 18/08" : "Julho · 2026";
+  const periodLabel = period === "2026-08" ? "Agosto · Bitrix24 até 19/08" : "Julho · 2026";
   const percentage = (value: number, total: number) => total ? `${((value / total) * 100).toFixed(1).replace(".", ",")}%` : "Indisponível";
   const emptyRows = (label: string) => [{ label, primary: "0", secondary: "Não informado" }];
   const canScopeLeads = data.leadBrandScopeAvailable || brand === "all";

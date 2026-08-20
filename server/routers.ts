@@ -6,7 +6,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { callbackUrl, createAuthorizationUrl, fetchSegmentations, integrationStatus, syncNextContactPage, syncNextJulyConversionBatch, updateSegmentation } from "./rdstation/service";
 import { isRdAccountKey, RD_ACCOUNTS, type RdAccountKey } from "./rdstation/types";
 import { medsystemsBitrixCampaignAttributionDetail, medsystemsBitrixLeadChannelFunnel, medsystemsBitrixJulyDealAnalytics, medsystemsBitrixJulyTotals, medsystemsBitrixOperationsDashboard, medsystemsBitrixStatus, medsystemsUtmReceiptCoverage } from "./bitrix24/service";
-import { mediaDashboardAnalytics } from "./db";
+import { mediaDashboardAnalytics, rdStationOperationsDashboard } from "./db";
 
 const accountInput = z.enum(RD_ACCOUNTS);
 const analyticsBrandInput = z.enum(["all", "medsystems", "beautysystems"]);
@@ -56,6 +56,7 @@ export const appRouter = router({
     syncNextEvents: adminProcedure.input(z.object({ accountKey: accountInput })).mutation(async ({ input }) => (
       syncNextJulyConversionBatch(input.accountKey as RdAccountKey)
     )),
+    operationsDashboard: protectedProcedure.input(z.object({ brand: analyticsBrandInput, period: z.enum(["2026-07", "2026-08"]).default("2026-07") })).query(({ input }) => rdStationOperationsDashboard(input.brand, input.period)),
   }),
   bitrix24: router({
     medsystemsStatus: adminProcedure.query(() => medsystemsBitrixStatus()),

@@ -485,13 +485,14 @@ export function rdEventUtmValues(rawPayload: string) {
     const trafficParams = rdTrafficSourceParams(payload.traffic_source, payload.conversion_origin);
     return {
       utmSource: cleanAuditString(payload.cf_utm_source_real ?? payload.cf_utm_source ?? trafficParams?.get("utm_source") ?? params?.get("utm_source")),
+      utmMedium: cleanAuditString(payload.cf_utm_medium_real ?? payload.cf_utm_medium ?? trafficParams?.get("utm_medium") ?? params?.get("utm_medium")),
       utmCampaign: cleanAuditString(payload.cf_utm_campaign_real ?? payload.cf_utm_campaign ?? trafficParams?.get("utm_campaign") ?? params?.get("utm_campaign")),
       utmContent: cleanAuditString(payload.cf_utm_content_real ?? payload.cf_utm_content ?? trafficParams?.get("utm_content") ?? params?.get("utm_content")),
       utmTerm: cleanAuditString(payload.cf_utm_term_real ?? payload.cf_utm_term ?? trafficParams?.get("utm_term") ?? params?.get("utm_term")),
       mediaCampaignId: cleanAuditString(trafficParams?.get("utm_id") ?? params?.get("utm_id")),
     };
   } catch {
-    return { utmSource: null, utmCampaign: null, utmContent: null, utmTerm: null, mediaCampaignId: null };
+    return { utmSource: null, utmMedium: null, utmCampaign: null, utmContent: null, utmTerm: null, mediaCampaignId: null };
   }
 }
 
@@ -1214,6 +1215,72 @@ async function rdUtmLeadFlow(brands: readonly Exclude<AnalyticsBrand, "all">[], 
     if (bitrixLead?.count === 1 && bitrixLead.firstLeadAt >= candidate.firstEventAt) bitrixArrivals[accountKey] += 1;
   }
   return { rdUtmLeads, bitrixArrivals };
+}
+
+export async function rdStationOperationsDashboard(brand: AnalyticsBrand, period: AnalyticsPeriod = "2026-07") {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  const range = period === "2026-08"
+    ? { start: new Date("2026-08-01T00:00:00-03:00"), end: new Date("2026-08-18T00:00:00-03:00"), endLabel: "2026-08-17" }
+    : { start: new Date("2026-07-01T00:00:00-03:00"), end: new Date("2026-08-01T00:00:00-03:00"), endLabel: "2026-07-31" };
+  const brands = brand === "all" ? ["medsystems", "beautysystems"] as const : [brand] as const;
+  const events = await db.select({ accountKey: rdStationConversionEvents.accountKey, contactUuid: rdStationConversionEvents.contactUuid, eventCreatedAt: rdStationConversionEvents.eventCreatedAt, rawPayload: rdStationConversionEvents.rawPayload })
+    .from(rdStationConversionEvents)
+    .where(and(inArray(rdStationConversionEvents.accountKey, brands), gte(rdStationConversionEvents.eventCreatedAt, range.start), lt(rdStationConversionEvents.eventCreatedAt, range.end)));
+  const firstEventByContact = new Map<string, { accountKey: Exclude<AnalyticsBrand, "all">; contactUuid: string; eventCreatedAt: Date; rawPayload: string }>();
+  const firstUtmEventByContact = new Map<string, { accountKey: Exclude<AnalyticsBrand, "all">; contactUuid: string; eventCreatedAt: Date; rawPayload: string }>();
+  for (const event of events) {
+    const key = `${event.accountKey}:${event.contactUuid}`;
+    const first = firstEventByContact.get(key);
+    if (!first || event.eventCreatedAt < first.eventCreatedAt) firstEventByContact.set(key, event as typeof first extends never ? never : NonNullable<typeof first>);
+    if (!rdEventUtmValues(event.rawPayload).utmSource) continue;
+    const firstUtm = firstUtmEventByContact.get(key);
+    if (!firstUtm || event.eventCreatedAt < firstUtm.eventCreatedAt) firstUtmEventByContact.set(key, event as typeof firstUtm extends never ? never : NonNullable<typeof firstUtm>);
+  }
+  const byDay = new Map<string, number>();
+  const byBrand = { medsystems: { convertedContacts: 0, utmLeads: 0 }, beautysystems: { convertedContacts: 0, utmLeads: 0 } };
+  const sources = new Map<string, number>();
+  const mediums = new Map<string, number>();
+  const campaigns = new Map<string, { count: number; channel: string }>();
+  const eventTypes = new Map<string, number>();
+  const coverage = { withSource: 0, withMedium: 0, withCampaign: 0, withContent: 0, withTerm: 0 };
+  for (const event of Array.from(firstEventByContact.values())) byBrand[event.accountKey].convertedContacts += 1;
+  for (const event of Array.from(firstUtmEventByContact.values())) {
+    byBrand[event.accountKey].utmLeads += 1;
+    const details = rdEventUtmValues(event.rawPayload);
+    const payload = (() => { try { return (JSON.parse(event.rawPayload) as { payload?: Record<string, unknown> }).payload ?? {}; } catch { return {}; } })();
+    const day = event.eventCreatedAt.toLocaleDateString("en-CA", { timeZone: "America/Sao_Paulo" });
+    const dailyKey = `${day}:${event.accountKey}`;
+    byDay.set(dailyKey, (byDay.get(dailyKey) ?? 0) + 1);
+    const source = details.utmSource ?? "Não identificado";
+    sources.set(source, (sources.get(source) ?? 0) + 1);
+    const medium = details.utmMedium ?? "Não identificado";
+    mediums.set(medium, (mediums.get(medium) ?? 0) + 1);
+    const campaign = details.utmCampaign ?? "Não identificado";
+    const campaignRow = campaigns.get(campaign) ?? { count: 0, channel: utmChannelLabel(details.utmSource) };
+    campaignRow.count += 1;
+    campaigns.set(campaign, campaignRow);
+    const eventType = cleanAuditString(payload.conversion_event ?? payload.conversion_identifier ?? payload.event_identifier ?? payload.event_type ?? payload.cf_conversion_event) ?? "Evento RD com UTM";
+    eventTypes.set(eventType, (eventTypes.get(eventType) ?? 0) + 1);
+    if (details.utmSource) coverage.withSource += 1;
+    if (details.utmMedium) coverage.withMedium += 1;
+    if (details.utmCampaign) coverage.withCampaign += 1;
+    if (details.utmContent) coverage.withContent += 1;
+    if (details.utmTerm) coverage.withTerm += 1;
+  }
+  const breakdown = (rows: Map<string, number>) => Array.from(rows, ([label, count]) => ({ label, count })).sort((a, b) => b.count - a.count);
+  const totals = brands.reduce((acc, current) => ({ convertedContacts: acc.convertedContacts + byBrand[current].convertedContacts, utmLeads: acc.utmLeads + byBrand[current].utmLeads }), { convertedContacts: 0, utmLeads: 0 });
+  return {
+    period: { key: period, start: period === "2026-08" ? "2026-08-01" : "2026-07-01", end: range.endLabel },
+    totals,
+    byBrand,
+    coverage,
+    byDay: Array.from(byDay, ([key, count]) => { const [date, accountKey] = key.split(":", 2); return { date, brand: accountKey as Exclude<AnalyticsBrand, "all">, count }; }).sort((a, b) => a.date.localeCompare(b.date) || a.brand.localeCompare(b.brand)),
+    sources: breakdown(sources),
+    mediums: breakdown(mediums),
+    campaigns: Array.from(campaigns, ([campaign, data]) => ({ campaign, ...data })).sort((a, b) => b.count - a.count),
+    conversionEvents: breakdown(eventTypes),
+  };
 }
 
 export async function mediaDashboardAnalytics(brand: AnalyticsBrand, period: AnalyticsPeriod = "2026-07") {

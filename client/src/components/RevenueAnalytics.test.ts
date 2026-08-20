@@ -13,7 +13,7 @@ describe("dashboardMath.ratio", () => {
   });
 
   it("mantém as visões comerciais centrais e a aba exclusiva Bitrix24", () => {
-    expect(DASHBOARD_TABS.map(tab => tab.id)).toEqual(["overview", "google", "meta", "revenue", "bitrix"]);
+    expect(DASHBOARD_TABS.map(tab => tab.id)).toEqual(["overview", "google", "meta", "revenue", "bitrix", "rdstation"]);
   });
 
   it("mantém agosto e julho como períodos explícitos de análise", () => {

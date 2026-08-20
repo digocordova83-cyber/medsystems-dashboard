@@ -142,4 +142,6 @@
 - [x] Aplicar no deck Revenue a análise documentada de leads de mídia, separando RD com UTM, Meta Instant Forms e Click-to-WhatsApp conforme evidência disponível.
 - [x] Reconstruir a composição dos 422 leads Medsystems até 19/08 segundo a integração documentada pelo gestor, separando componentes comprovados de componentes não acessíveis.
 - [x] Criar uma aba exclusiva de Bitrix24 com leads por dia, origens, negócios, perdas, descartes, cruzamentos comprovados e filtros auditáveis de período, marca e status.
-- [ ] Criar uma aba exclusiva de RD Station seguindo a metodologia documentada, com leads por dia, UTMs, origens, campanhas, conversões e limitações de evidência explícitas.
+- [x] Criar uma aba exclusiva de RD Station seguindo a metodologia documentada, com leads por dia, UTMs, origens, campanhas, conversões e limitações de evidência explícitas.
+- [x] Garantir que a agregação RD Station não exponha nomes ou outros dados pessoais em rótulos de eventos, mantendo somente categorias agregadas seguras.
+- [x] Exibir a série diária RD Station no fuso de São Paulo, sem deslocar eventos de 17/08 para 18/08 por conversão UTC.

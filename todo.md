@@ -161,3 +161,6 @@
 - [x] Criar uma aba exclusiva “Planilha Bitrix24” com KPIs, gráficos e tabelas baseados somente na exportação enviada.
 - [x] Incluir leituras de canais, origens, pipelines, etapas e série diária, sempre com a origem da planilha sinalizada na interface.
 - [x] Validar a nova aba com testes de agregação, tipagem, compilação de produção e revisão do estado protegido antes da publicação.
+- [x] Remover a barreira de acesso protegido da visualização pública do dashboard, preservando dados agregados e controles sensíveis protegidos.
+- [x] Liberar somente as consultas analíticas necessárias para as abas públicas, sem expor credenciais, dados pessoais ou operações administrativas.
+- [x] Validar o dashboard sem sessão e publicar a abertura de acesso: Overview e Planilha Bitrix24 carregam métricas agregadas sem cookie de sessão.

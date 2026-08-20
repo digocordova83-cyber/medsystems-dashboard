@@ -1152,9 +1152,10 @@ export async function mediaDashboardAnalytics(brand: AnalyticsBrand, period: Ana
   if (!db) throw new Error("Banco de dados indisponível.");
   const periodRange = {
     "2026-07": { start: new Date("2026-07-01T00:00:00-03:00"), end: new Date("2026-08-01T00:00:00-03:00"), endLabel: "2026-07-31", rdLeadsAvailable: true },
-    "2026-08": { start: new Date("2026-08-01T00:00:00-03:00"), end: new Date("2026-08-18T00:00:00-03:00"), endLabel: "2026-08-17", rdLeadsAvailable: true },
+    "2026-08": { start: new Date("2026-08-01T00:00:00-03:00"), end: new Date("2026-08-20T00:00:00-03:00"), endLabel: "2026-08-19", rdEnd: new Date("2026-08-18T00:00:00-03:00"), rdEndLabel: "2026-08-17", rdLeadsAvailable: true },
   }[period];
   const { start, end } = periodRange;
+  const rdEnd = (period === "2026-08" ? periodRange.rdEnd : end) ?? end;
   const brands = brand === "all" ? ["medsystems", "beautysystems"] as const : [brand] as const;
   const mediaWhere = and(eq(mediaDailyPerformance.recordLevel, "campaign"), inArray(mediaDailyPerformance.brand, brands), gte(mediaDailyPerformance.reportDate, start), lt(mediaDailyPerformance.reportDate, end));
   const adWhere = and(eq(mediaDailyPerformance.recordLevel, "ad"), inArray(mediaDailyPerformance.brand, brands), gte(mediaDailyPerformance.reportDate, start), lt(mediaDailyPerformance.reportDate, end));
@@ -1224,6 +1225,12 @@ export async function mediaDashboardAnalytics(brand: AnalyticsBrand, period: Ana
     mediaDailyPerformance.adName,
   ).orderBy(desc(sql`sum(${mediaDailyPerformance.spend})`)).limit(80);
 
+  const methodologyRows = await db.select({
+    brand: mediaDailyPerformance.brand,
+    platform: mediaDailyPerformance.platform,
+    rawPayload: mediaDailyPerformance.rawPayload,
+  }).from(mediaDailyPerformance).where(mediaWhere);
+
   const rdQualified = period === "2026-07"
     ? await db.select({ accountKey: rdStationJulyLeadViews.accountKey, count: sql<number>`count(*)` })
       .from(rdStationJulyLeadViews)
@@ -1231,13 +1238,14 @@ export async function mediaDashboardAnalytics(brand: AnalyticsBrand, period: Ana
       .groupBy(rdStationJulyLeadViews.accountKey)
     : await db.select({ accountKey: rdStationConversionEvents.accountKey, count: sql<number>`count(distinct ${rdStationConversionEvents.contactUuid})` })
       .from(rdStationConversionEvents)
-      .where(and(inArray(rdStationConversionEvents.accountKey, brands), gte(rdStationConversionEvents.eventCreatedAt, start), lt(rdStationConversionEvents.eventCreatedAt, end)))
+      .where(and(inArray(rdStationConversionEvents.accountKey, brands), gte(rdStationConversionEvents.eventCreatedAt, start), lt(rdStationConversionEvents.eventCreatedAt, rdEnd)))
       .groupBy(rdStationConversionEvents.accountKey);
-  const rdUtmFlow = await rdUtmLeadFlow(brands, start, end);
+  const rdUtmFlow = await rdUtmLeadFlow(brands, start, rdEnd);
+  const paidMediaLeadComponents = summarizePaidMediaLeadComponents(methodologyRows);
   const attribution = period === "2026-07" ? await attributionAuditSummary(brand) : [];
 
   return {
-    period: { key: period, start: period === "2026-07" ? "2026-07-01" : "2026-08-01", end: periodRange.endLabel },
+    period: { key: period, start: period === "2026-07" ? "2026-07-01" : "2026-08-01", end: periodRange.endLabel, rdEnd: "rdEndLabel" in periodRange ? periodRange.rdEndLabel : periodRange.endLabel },
     media: {
       spend: analyticsNumber(mediaTotal?.spend),
       impressions: analyticsNumber(mediaTotal?.impressions),
@@ -1252,9 +1260,37 @@ export async function mediaDashboardAnalytics(brand: AnalyticsBrand, period: Ana
     rdLeads: Object.fromEntries(rdQualified.map(row => [row.accountKey, analyticsNumber(row.count)])),
     rdUtmLeads: rdUtmFlow.rdUtmLeads,
     bitrixArrivals: rdUtmFlow.bitrixArrivals,
+    paidMediaLeadComponents,
     sourceAvailability: { rdLeads: rdQualified.length > 0, rdUtmLeads: true, attribution: period === "2026-07" },
     attribution,
   };
+}
+
+type PaidMediaMethodologyRow = { brand: string; platform: string; rawPayload: string | null };
+type PaidMediaLeadComponents = { instantForms: number; messagingConversations: number; messagingFirstReplies: number; messagingConnections: number };
+
+const emptyPaidMediaLeadComponents = (): PaidMediaLeadComponents => ({ instantForms: 0, messagingConversations: 0, messagingFirstReplies: 0, messagingConnections: 0 });
+
+export function summarizePaidMediaLeadComponents(rows: PaidMediaMethodologyRow[]) {
+  const result: Record<string, PaidMediaLeadComponents> = {
+    medsystems: emptyPaidMediaLeadComponents(),
+    beautysystems: emptyPaidMediaLeadComponents(),
+  };
+  for (const row of rows) {
+    if (row.platform !== "meta_ads" || !(row.brand in result)) continue;
+    try {
+      const payload = JSON.parse(row.rawPayload ?? "{}") as Record<string, unknown>;
+      const toNumber = (value: unknown) => Number.isFinite(Number(value)) ? Number(value) : 0;
+      const bucket = result[row.brand];
+      bucket.instantForms += toNumber(payload.actions_leadgen_grouped);
+      bucket.messagingConversations += toNumber(payload.actions_onsite_conversion_messaging_conversation_started_7d);
+      bucket.messagingFirstReplies += toNumber(payload.actions_onsite_conversion_messaging_first_reply);
+      bucket.messagingConnections += toNumber(payload.actions_onsite_conversion_total_messaging_connection);
+    } catch {
+      // Registros sem payload JSON não contribuem para componentes Meta.
+    }
+  }
+  return result;
 }
 
 export async function getPendingJulyViewCandidates(accountKey: RdAccountKey, viewType: JulyViewType, limit: number) {

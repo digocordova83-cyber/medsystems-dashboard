@@ -136,3 +136,7 @@
 - [x] Auditar telefones e calcular, separadamente, os matches seguros por telefone normalizado entre leads RD com UTM e Bitrix24.
 - [x] Consultar por API o detalhe dos contatos RD com UTM para hidratar telefones ausentes antes do cruzamento com os telefones Bitrix24.
 - [x] Exportar todos os leads RD Station e Bitrix24 de 01 a 05/08/2026 em abas separadas, sem deduplicação ou cruzamento entre fontes.
+- [x] Atualizar as fontes do dashboard até 19/08/2026 exclusivamente por API, preservando contas e marcas separadas.
+- [x] Aplicar no dashboard a metodologia documentada de leads de mídia: RD com UTM, Meta Instant Forms e Click-to-WhatsApp somente com opt-in comprovado.
+- [x] Nesta atualização, limitar o escopo do dashboard a mídia paga; não atualizar CRM, negócios, receita ou atribuição comercial.
+- [x] Aplicar no deck Revenue a análise documentada de leads de mídia, separando RD com UTM, Meta Instant Forms e Click-to-WhatsApp conforme evidência disponível.

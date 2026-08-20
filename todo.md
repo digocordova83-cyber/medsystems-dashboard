@@ -135,3 +135,4 @@
 - [x] Auditar e explicar os identificadores usados no cruzamento RD Station–Bitrix24 e as causas prováveis dos leads sem chegada comprovada ao CRM.
 - [x] Auditar telefones e calcular, separadamente, os matches seguros por telefone normalizado entre leads RD com UTM e Bitrix24.
 - [x] Consultar por API o detalhe dos contatos RD com UTM para hidratar telefones ausentes antes do cruzamento com os telefones Bitrix24.
+- [x] Exportar todos os leads RD Station e Bitrix24 de 01 a 05/08/2026 em abas separadas, sem deduplicação ou cruzamento entre fontes.

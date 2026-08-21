@@ -1,128 +1,55 @@
 export type SpreadsheetMetric = { label: string; count: number };
 
+type BrandScope = {
+  totalLeads: number;
+  pipelines: { label: string; brand: string; count: number }[];
+  origins: SpreadsheetMetric[];
+  stages: SpreadsheetMetric[];
+  dailyByPipeline: { date: string; medsystems: number; beautysystems: number }[];
+};
+
+const dates = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"];
+const medsystemsDaily = [12, 11, 28, 23, 30, 26, 12, 21, 14, 19, 26, 19, 17, 16, 14, 10, 15, 14, 26];
+const beautySystemsDaily = [34, 31, 32, 40, 45, 33, 30, 23, 37, 24, 35, 34, 34, 33, 22, 39, 43, 43, 36];
+const dailyRows = (scope: "all" | "medsystems" | "beautysystems") => dates.map((day, index) => ({
+  date: `2026-08-${day}`,
+  medsystems: scope === "beautysystems" ? 0 : medsystemsDaily[index],
+  beautysystems: scope === "medsystems" ? 0 : beautySystemsDaily[index],
+}));
+
+const scopes: Record<"all" | "medsystems" | "beautysystems", BrandScope> = {
+  all: {
+    totalLeads: 1001,
+    pipelines: [{ label: "Negócios e Redes", brand: "BeautySystems", count: 648 }, { label: "Medsystems", brand: "Medsystems", count: 353 }],
+    origins: [{ label: "Tráfego pago", count: 626 }, { label: "Tráfego orgânico", count: 257 }, { label: "Outros", count: 82 }, { label: "Social", count: 34 }, { label: "Instagram MKT · Medsystems", count: 1 }, { label: "Chamada", count: 1 }],
+    stages: [{ label: "Primeiro contato", count: 479 }, { label: "Lead descartado", count: 126 }, { label: "Terceiro contato", count: 116 }, { label: "SDR", count: 108 }, { label: "Relacionamento", count: 80 }, { label: "Segundo contato", count: 46 }, { label: "Histórico de leads repassados", count: 35 }, { label: "Lead descartado p/ MKT", count: 11 }],
+    dailyByPipeline: dailyRows("all"),
+  },
+  medsystems: {
+    totalLeads: 353,
+    pipelines: [{ label: "Medsystems", brand: "Medsystems", count: 353 }],
+    origins: [{ label: "Tráfego pago", count: 143 }, { label: "Tráfego orgânico", count: 119 }, { label: "Outros", count: 67 }, { label: "Social", count: 24 }],
+    stages: [{ label: "Primeiro contato", count: 136 }, { label: "Lead descartado", count: 59 }, { label: "SDR", count: 57 }, { label: "Relacionamento", count: 50 }, { label: "Histórico de leads repassados", count: 18 }, { label: "Terceiro contato", count: 18 }, { label: "Segundo contato", count: 13 }, { label: "Lead descartado p/ MKT", count: 2 }],
+    dailyByPipeline: dailyRows("medsystems"),
+  },
+  beautysystems: {
+    totalLeads: 648,
+    pipelines: [{ label: "Negócios e Redes", brand: "BeautySystems", count: 648 }],
+    origins: [{ label: "Tráfego pago", count: 483 }, { label: "Tráfego orgânico", count: 138 }, { label: "Outros", count: 15 }, { label: "Social", count: 10 }, { label: "Instagram MKT · Medsystems", count: 1 }, { label: "Chamada", count: 1 }],
+    stages: [{ label: "Primeiro contato", count: 343 }, { label: "Terceiro contato", count: 98 }, { label: "Lead descartado", count: 67 }, { label: "SDR", count: 51 }, { label: "Segundo contato", count: 33 }, { label: "Relacionamento", count: 30 }, { label: "Histórico de leads repassados", count: 17 }, { label: "Lead descartado p/ MKT", count: 9 }],
+    dailyByPipeline: dailyRows("beautysystems"),
+  },
+};
+
 export const bitrixExportSnapshot = {
   source: {
     label: "Planilha Bitrix24 enviada",
     fileName: "LeadsRecebidos19.08.xlsx",
     worksheet: "Base",
     periodLabel: "01/08 a 19/08/2026",
-    scope: "Snapshot estático da planilha; não utiliza os registros atuais da API.",
+    scope: "Snapshot da planilha após retirar registros com Fonte igual a Evento.",
   },
-  totalLeads: 2592,
   period: { start: "2026-08-01", end: "2026-08-19", days: 19 },
-  pipelines: [
-    { label: "Negócios e Redes", brand: "BeautySystems", count: 2239 },
-    { label: "Medsystems", brand: "Medsystems", count: 353 },
-  ],
-  origins: [
-    { label: "Evento", count: 1591 },
-    { label: "Tráfego pago", count: 626 },
-    { label: "Tráfego orgânico", count: 257 },
-    { label: "Outros", count: 82 },
-    { label: "Social", count: 34 },
-    { label: "Instagram MKT · Medsystems", count: 1 },
-    { label: "Chamada", count: 1 },
-  ] satisfies SpreadsheetMetric[],
-  stages: [
-    { label: "Leads de EVENTOS", count: 1591 },
-    { label: "Primeiro contato", count: 479 },
-    { label: "Lead descartado", count: 126 },
-    { label: "Terceiro contato", count: 116 },
-    { label: "SDR", count: 108 },
-    { label: "Relacionamento", count: 80 },
-    { label: "Segundo contato", count: 46 },
-    { label: "Histórico de leads repassados", count: 35 },
-    { label: "Lead descartado p/ MKT", count: 11 },
-  ] satisfies SpreadsheetMetric[],
-  technologies: [
-    { label: "Não informado", count: 1809 },
-    { label: "MPT", count: 228 },
-    { label: "VOLNEWMER", count: 158 },
-    { label: "AQUAPURE", count: 147 },
-    { label: "VECTRA H2", count: 58 },
-    { label: "YOULASER", count: 40 },
-    { label: "YOULASER PRIME", count: 33 },
-    { label: "VOLFORMER", count: 20 },
-    { label: "HAIRMETRIX", count: 19 },
-    { label: "DSB", count: 18 },
-    { label: "EBOOK", count: 14 },
-    { label: "Outras tecnologias", count: 48 },
-  ] satisfies SpreadsheetMetric[],
-  interests: [
-    { label: "Não informado", count: 1597 },
-    { label: "ULTRAFORMER MPT 2026Q2 LP", count: 150 },
-    { label: "VOLNEWMER 2026Q2 LP", count: 148 },
-    { label: "AQUAPURE ADS", count: 104 },
-    { label: "[BEAUTYSYSTEMS] [MPT] [LEAD ADS] [OUT.2025]", count: 58 },
-    { label: "VECTRA H2 ADS", count: 53 },
-    { label: "INSCRIÇÃO MENTORIA 12 08 26 VOLFORMER", count: 49 },
-    { label: "MED SAVE THE DATE QUANTA ACADEMY", count: 48 },
-    { label: "SITE MED AQUAPURE", count: 42 },
-    { label: "YOULASER ADS", count: 40 },
-    { label: "YOULASER PRIME LP", count: 32 },
-    { label: "Outros interesses", count: 271 },
-  ] satisfies SpreadsheetMetric[],
-  segments: [
-    { label: "Não informado / valor literal 'undefined'", count: 2323 },
-    { label: "Médico", count: 145 },
-    { label: "Estético", count: 91 },
-    { label: "Outro", count: 33 },
-  ] satisfies SpreadsheetMetric[],
-  states: [
-    { label: "SP", count: 1519 },
-    { label: "RJ", count: 144 },
-    { label: "MG", count: 141 },
-    { label: "PR", count: 104 },
-    { label: "RS", count: 79 },
-    { label: "Não informado", count: 66 },
-    { label: "SC", count: 59 },
-    { label: "BA", count: 57 },
-    { label: "ES", count: 47 },
-    { label: "PA", count: 45 },
-    { label: "GO", count: 38 },
-    { label: "PE", count: 38 },
-    { label: "CE", count: 29 },
-    { label: "Demais UFs", count: 160 },
-  ] satisfies SpreadsheetMetric[],
-  declineReasons: [
-    { label: "Duplicado", count: 55 },
-    { label: "Outros", count: 21 },
-    { label: "Dados cadastrados incorretamente", count: 18 },
-    { label: "Não tinha o perfil", count: 14 },
-    { label: "Paciente", count: 7 },
-    { label: "Sem retorno WhatsApp e ligação", count: 7 },
-    { label: "Sem recursos financeiros", count: 5 },
-    { label: "Estudante", count: 4 },
-    { label: "Sem retorno Evento", count: 2 },
-    { label: "Desinteresse pelo atendimento e/ou produto", count: 2 },
-    { label: "Outros motivos unitários", count: 2 },
-  ] satisfies SpreadsheetMetric[],
-  coverage: [
-    { label: "Telefone de trabalho", count: 2587 },
-    { label: "Informações da fonte", count: 995 },
-    { label: "Nome da empresa", count: 995 },
-    { label: "Produto de interesse", count: 995 },
-    { label: "Vendedor responsável", count: 240 },
-  ] satisfies SpreadsheetMetric[],
-  dailyByPipeline: [
-    { date: "2026-08-01", medsystems: 12, beautysystems: 34 },
-    { date: "2026-08-02", medsystems: 11, beautysystems: 31 },
-    { date: "2026-08-03", medsystems: 28, beautysystems: 32 },
-    { date: "2026-08-04", medsystems: 23, beautysystems: 40 },
-    { date: "2026-08-05", medsystems: 30, beautysystems: 1636 },
-    { date: "2026-08-06", medsystems: 26, beautysystems: 33 },
-    { date: "2026-08-07", medsystems: 12, beautysystems: 30 },
-    { date: "2026-08-08", medsystems: 21, beautysystems: 23 },
-    { date: "2026-08-09", medsystems: 14, beautysystems: 37 },
-    { date: "2026-08-10", medsystems: 19, beautysystems: 24 },
-    { date: "2026-08-11", medsystems: 26, beautysystems: 35 },
-    { date: "2026-08-12", medsystems: 19, beautysystems: 34 },
-    { date: "2026-08-13", medsystems: 17, beautysystems: 34 },
-    { date: "2026-08-14", medsystems: 16, beautysystems: 33 },
-    { date: "2026-08-15", medsystems: 14, beautysystems: 22 },
-    { date: "2026-08-16", medsystems: 10, beautysystems: 39 },
-    { date: "2026-08-17", medsystems: 15, beautysystems: 43 },
-    { date: "2026-08-18", medsystems: 14, beautysystems: 43 },
-    { date: "2026-08-19", medsystems: 26, beautysystems: 36 },
-  ],
+  eventExclusion: { field: "Fonte", label: "Evento", excluded: 1591, remaining: 1001 },
+  scopes,
 } as const;

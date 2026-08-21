@@ -164,3 +164,7 @@
 - [x] Remover a barreira de acesso protegido da visualização pública do dashboard, preservando dados agregados e controles sensíveis protegidos.
 - [x] Liberar somente as consultas analíticas necessárias para as abas públicas, sem expor credenciais, dados pessoais ou operações administrativas.
 - [x] Validar o dashboard sem sessão e publicar a abertura de acesso: Overview e Planilha Bitrix24 carregam métricas agregadas sem cookie de sessão.
+- [x] Excluir das visões Bitrix24 e Planilha Bitrix24 os leads classificados como Evento por campos estruturados, sem alterar as demais abas.
+- [x] Recalcular o snapshot da planilha após a exclusão de Evento e documentar o novo recorte de volume.
+- [x] Adicionar filtro local de Todas as marcas, Medsystems e BeautySystems na aba Planilha Bitrix24.
+- [x] Validar os filtros e os totais sem Evento antes de publicar: Medsystems 353 e BeautySystems 648 na planilha; Bitrix24 sem a origem Evento no ranking operacional.

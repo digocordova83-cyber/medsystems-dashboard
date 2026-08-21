@@ -441,6 +441,11 @@ const bitrixSourceLabels: Record<string, string> = {
   "106": "Atendimento WF4",
   UC_45K0VX: "Evento",
 };
+const BITRIX_EVENT_SOURCE_ID = "UC_45K0VX";
+
+export function isBitrixEventLead(payload: Record<string, unknown> | null) {
+  return String(payload?.SOURCE_ID ?? "") === BITRIX_EVENT_SOURCE_ID;
+}
 
 const lostStageLabels: Record<string, string> = {
   "C42:LOSE": "Pipeline C42 — Negócio perdido",
@@ -712,7 +717,8 @@ export async function bitrixOperationsDashboard(portal: string, start: Date, end
       return { ...lead, payload: null, pipelineBrand: null };
     }
   });
-  const scopedLeadRows = brand === "all" ? parsedLeadRows : parsedLeadRows.filter(lead => lead.pipelineBrand === brand);
+  const nonEventLeadRows = parsedLeadRows.filter(lead => !isBitrixEventLead(lead.payload));
+  const scopedLeadRows = brand === "all" ? nonEventLeadRows : nonEventLeadRows.filter(lead => lead.pipelineBrand === brand);
   const leadsByDay = new Map<string, number>();
   const leadOrigins = new Map<string, number>();
   const leadChannels = new Map<string, number>();
@@ -738,7 +744,7 @@ export async function bitrixOperationsDashboard(portal: string, start: Date, end
   let dealsWithLeadId = 0;
   let dealsLinkedToLeadInPeriod = 0;
   let dealsWithoutLeadId = 0;
-  const leadIds = new Set(leadRows.map(row => String(row.bitrixId)));
+  const leadIds = new Set(scopedLeadRows.map(row => String(row.bitrixId)));
   for (const deal of dealRows) {
     try {
       const payload = JSON.parse(deal.rawPayload) as Record<string, unknown>;
@@ -760,7 +766,8 @@ export async function bitrixOperationsDashboard(portal: string, start: Date, end
     leadPipelineScope: {
       field: BITRIX_LEAD_PIPELINE_FIELD,
       method: brand === "all" ? "Todos os pipelines" : brand === "medsystems" ? "Pipeline Medsystems" : "Pipeline Negócios e Redes",
-      leadsWithoutRecognizedPipeline: parsedLeadRows.filter(lead => !lead.pipelineBrand).length,
+      leadsWithoutRecognizedPipeline: nonEventLeadRows.filter(lead => !lead.pipelineBrand).length,
+      eventExclusion: { field: "SOURCE_ID", value: BITRIX_EVENT_SOURCE_ID, label: "Evento", excluded: parsedLeadRows.length - nonEventLeadRows.length },
     },
     leads: {
       total: scopedLeadRows.length,

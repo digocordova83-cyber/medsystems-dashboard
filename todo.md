@@ -172,3 +172,6 @@
 - [x] Sincronizar contatos e eventos de conversão do RD Station até 20/08/2026 por API, sem misturar contas ou critérios de origem.
 - [x] Recalcular as métricas RD do dashboard e atualizar os textos de corte para refletir os retornos confirmados.
 - [x] Validar os totais atualizados, tipagem e testes antes de publicar: RD até 20/08 exibido na aba operacional; tipagem aprovada e 49 testes concluídos.
+- [x] Registrar e comparar os totais informados pelo gestor para RD Station: Medsystems 451 e BeautySystems 500.
+- [x] Apurar a diferença contra o recorte API de primeiro evento com UTM até 20/08: Medsystems 442 e BeautySystems 494.
+- [x] Documentar a hipótese de diferença de critério sem substituir os indicadores auditados da API.

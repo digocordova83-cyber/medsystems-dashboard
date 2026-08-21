@@ -48,3 +48,16 @@ O gestor reportou **422 leads** até 19/08/2026. Pelo documento de integração,
 | Diferença ante a coleta BRRO atual | `390 - 356` | 34 |
 
 A composição **mais provável** é `390` leads RD com UTM via webhook + `0` Instant Forms + `32` leads sintéticos de WhatsApp = `422`. O salto de 34 é compatível com conversões de 18 e 19/08, porque o webhook do gestor é em tempo real enquanto a coleta BRRO local ainda termina em 17/08. Essa fórmula só se torna confirmada com acesso de leitura à tabela `leads` do Supabase do gestor ou a uma exportação dela, além da confirmação da flag `syncs_whatsapp` para Medsystems.
+
+## Atualização de 21/08 — totais informados pelo gestor
+
+Após a sincronização da segmentação BRRO e dos eventos RD Station até 20/08, o gestor informou **451** leads para Medsystems e **500** para BeautySystems. A comparação abaixo é mantida como conciliação de metodologias, e não como substituição automática dos indicadores auditados por API.
+
+| Marca | Total informado pelo gestor | RD Station API: primeiro contato com UTM até 20/08 | Diferença | Diferença sobre o total do gestor |
+|---|---:|---:|---:|---:|
+| Medsystems | 451 | 442 | 9 | 1,99% |
+| BeautySystems | 500 | 494 | 6 | 1,20% |
+
+O recorte agora está próximo, mas não é idêntico. A API do dashboard conta cada contato uma única vez pelo seu primeiro evento com UTM no período, enquanto o gestor pode usar o webhook em tempo real, um horário de extração diferente ou regras adicionais de deduplicação e inclusão. A diferença de 15 leads não pode ser atribuída a uma causa única sem o identificador técnico dos registros ou uma exportação do relatório do gestor.
+
+> Os valores de 451 e 500 permanecem registrados como números externos. O painel mantém 442 e 494 como métricas RD-only auditáveis até que o de-para por identificador seja disponibilizado.

@@ -168,3 +168,7 @@
 - [x] Recalcular o snapshot da planilha após a exclusão de Evento e documentar o novo recorte de volume.
 - [x] Adicionar filtro local de Todas as marcas, Medsystems e BeautySystems na aba Planilha Bitrix24.
 - [x] Validar os filtros e os totais sem Evento antes de publicar: Medsystems 353 e BeautySystems 648 na planilha; Bitrix24 sem a origem Evento no ranking operacional.
+- [x] Verificar o último cursor e a cobertura sincronizada das segmentações BRRO Medsystems e BeautySystems no RD Station.
+- [x] Sincronizar contatos e eventos de conversão do RD Station até 20/08/2026 por API, sem misturar contas ou critérios de origem.
+- [x] Recalcular as métricas RD do dashboard e atualizar os textos de corte para refletir os retornos confirmados.
+- [x] Validar os totais atualizados, tipagem e testes antes de publicar: RD até 20/08 exibido na aba operacional; tipagem aprovada e 49 testes concluídos.

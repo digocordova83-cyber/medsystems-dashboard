@@ -266,7 +266,7 @@ function CampaignAttributionPanel({ channel, data, loading, error }: { channel: 
 }
 
 function ContinuousRevenueDeck({ brand, period, model, dealData }: { brand: Brand; period: ReportingPeriod; model: { commercialSpend: number; commercialPlatformLeads: number; commercialQualifiedLeads: number; rdLeadsAvailable: boolean }; dealData: DealAnalytics | null }) {
-  const periodLabel = period === "2026-08" ? "Agosto · até 17/08" : "Julho · 2026";
+  const periodLabel = period === "2026-08" ? "Agosto · RD até 20/08" : "Julho · 2026";
   const discardReasons = dealData?.discards.map(item => ({ label: item.label, primary: `${integer(item.count)} descartes`, secondary: brl(item.value) })) ?? [];
   const discardChannels = dealData?.discardChannels.map(item => ({ label: item.label, primary: `${integer(item.count)} descartes com UTM`, secondary: brl(item.value) })) ?? [];
   const financial = dealData?.financialStatuses.map(item => ({ label: item.label, primary: `${integer(item.count)} negócios`, secondary: brl(item.value) })) ?? [];

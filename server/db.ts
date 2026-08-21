@@ -1262,7 +1262,7 @@ export async function rdStationOperationsDashboard(brand: AnalyticsBrand, period
   const db = await getDb();
   if (!db) throw new Error("Banco de dados indisponível.");
   const range = period === "2026-08"
-    ? { start: new Date("2026-08-01T00:00:00-03:00"), end: new Date("2026-08-18T00:00:00-03:00"), endLabel: "2026-08-17" }
+    ? { start: new Date("2026-08-01T00:00:00-03:00"), end: new Date("2026-08-21T00:00:00-03:00"), endLabel: "2026-08-20" }
     : { start: new Date("2026-07-01T00:00:00-03:00"), end: new Date("2026-08-01T00:00:00-03:00"), endLabel: "2026-07-31" };
   const brands = brand === "all" ? ["medsystems", "beautysystems"] as const : [brand] as const;
   const events = await db.select({ accountKey: rdStationConversionEvents.accountKey, contactUuid: rdStationConversionEvents.contactUuid, eventCreatedAt: rdStationConversionEvents.eventCreatedAt, rawPayload: rdStationConversionEvents.rawPayload })
@@ -1347,7 +1347,7 @@ export async function mediaDashboardAnalytics(brand: AnalyticsBrand, period: Ana
   if (!db) throw new Error("Banco de dados indisponível.");
   const periodRange = {
     "2026-07": { start: new Date("2026-07-01T00:00:00-03:00"), end: new Date("2026-08-01T00:00:00-03:00"), endLabel: "2026-07-31", rdLeadsAvailable: true },
-    "2026-08": { start: new Date("2026-08-01T00:00:00-03:00"), end: new Date("2026-08-20T00:00:00-03:00"), endLabel: "2026-08-19", rdEnd: new Date("2026-08-18T00:00:00-03:00"), rdEndLabel: "2026-08-17", rdLeadsAvailable: true },
+    "2026-08": { start: new Date("2026-08-01T00:00:00-03:00"), end: new Date("2026-08-20T00:00:00-03:00"), endLabel: "2026-08-19", rdEnd: new Date("2026-08-21T00:00:00-03:00"), rdEndLabel: "2026-08-20", rdLeadsAvailable: true },
   }[period];
   const { start, end } = periodRange;
   const rdEnd = (period === "2026-08" ? periodRange.rdEnd : end) ?? end;

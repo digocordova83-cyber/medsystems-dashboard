@@ -7,7 +7,7 @@ describe("ClientDataGuide", () => {
     expect(AUGUST_DATA_AVAILABILITY).toEqual({
       media: "Completo até 19/08",
       crm: "Leads e negócios até 19/08",
-      rd: "Contatos BRRO e eventos coletados por API até 17/08",
+      rd: "Contatos BRRO e eventos coletados por API até 20/08",
     });
   });
 });

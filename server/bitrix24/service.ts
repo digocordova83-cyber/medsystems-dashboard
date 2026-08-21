@@ -1,4 +1,5 @@
 import { bitrixCampaignAttributionDetail, bitrixDealBrand, bitrixDealJulyAnalytics, bitrixLeadChannelFunnel, bitrixJulyTotals, bitrixOperationsDashboard, bitrixReferencedContactIds, finishBitrixSyncRun, reconcileAttributionAuditLinks, reconcileBitrixEntities, refreshAttributionAuditFromBitrix, startBitrixSyncRun, type AnalyticsPeriod, type BitrixEntityType, type DealStatusFilter, upsertBitrixEntities, utmReceiptCoverage } from "../db";
+import { rdOpportunityManagerDashboard } from "./rdOpportunityAnalytics";
 
 const CRM_CAPABILITIES = ["Leads", "Contatos", "Negócios"] as const;
 const PERIODS: Record<AnalyticsPeriod, { start: Date; end: Date; bitrixStart: string; bitrixEnd: string }> = {
@@ -136,4 +137,15 @@ export async function medsystemsUtmReceiptCoverage(brand: "all" | "medsystems" |
 export async function medsystemsBitrixOperationsDashboard(statusFilter: DealStatusFilter = "all", brand: "all" | "medsystems" | "beautysystems" = "all", period: AnalyticsPeriod = "2026-07") {
   const range = PERIODS[period];
   return bitrixOperationsDashboard(new URL(webhookBaseUrl()).host, range.start, range.end, statusFilter, brand);
+}
+
+export async function medsystemsBitrixRdOpportunityDashboard(pipeline = "all", period: AnalyticsPeriod = "2026-08") {
+  const range = PERIODS[period];
+  return rdOpportunityManagerDashboard({
+    portal: new URL(webhookBaseUrl()).host,
+    start: range.start,
+    end: range.end,
+    period,
+    pipeline,
+  });
 }

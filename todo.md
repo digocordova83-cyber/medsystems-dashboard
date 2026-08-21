@@ -175,3 +175,10 @@
 - [x] Registrar e comparar os totais informados pelo gestor para RD Station: Medsystems 451 e BeautySystems 500.
 - [x] Apurar a diferença contra o recorte API de primeiro evento com UTM até 20/08: Medsystems 442 e BeautySystems 494.
 - [x] Documentar a hipótese de diferença de critério sem substituir os indicadores auditados da API.
+- [x] Remover integralmente o conteúdo atual da aba Bitrix24, sem alterar as demais abas do dashboard.
+- [x] Filtrar a nova visão exclusivamente por leads cujo Nome do Lead seja `Oportunidade do RD Station`.
+- [x] Mapear na API os campos reais de responsável, Informações da fonte, Etapa, Posição, Produto de Interesse e Pipeline de Vendas; nomes sem vínculo unívoco permanecem identificados pelo ID.
+- [x] Criar consulta gerencial com total e série diária de leads, rankings e indicadores de qualidade por Pipeline de Vendas.
+- [x] Criar filtro local de Pipeline de Vendas que atualize simultaneamente KPIs, gráficos, tabelas e insights da aba Bitrix24.
+- [x] Reconstruir a interface Bitrix24 com leitura rápida, gráficos gerenciais, estados vazios auditáveis e responsividade.
+- [x] Validar totais, filtros, tipagem, 52 testes, build de produção e visual desktop/mobile antes de publicar.

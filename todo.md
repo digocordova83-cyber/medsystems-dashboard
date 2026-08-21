@@ -182,3 +182,13 @@
 - [x] Criar filtro local de Pipeline de Vendas que atualize simultaneamente KPIs, gráficos, tabelas e insights da aba Bitrix24.
 - [x] Reconstruir a interface Bitrix24 com leitura rápida, gráficos gerenciais, estados vazios auditáveis e responsividade.
 - [x] Validar totais, filtros, tipagem, 52 testes, build de produção e visual desktop/mobile antes de publicar.
+- [x] Ocultar da navegação pública as abas Revenue, Planilha Bitrix24 e RD Station, preservando seus dados e rotas internas sem exposição no menu.
+- [x] Renomear a aba Bitrix24 para Negócios em todos os rótulos e títulos visíveis.
+- [x] Implementar filtro configurável de data em Google Ads, Meta Ads e Negócios, usando o mês atual como intervalo padrão.
+- [x] Criar na aba Google Ads gráficos de investimento e leads por dia, distribuição de verba por campanha e leituras gerenciais baseadas em dados reais.
+- [x] Criar na aba Meta Ads gráficos de investimento e leads por dia, distribuição de verba por campanha e leituras gerenciais baseadas em dados reais.
+- [x] Exibir na aba Meta Ads os criativos ativos disponíveis, com filtro por campanha e sem inventar status ou ativos não retornados pelas fontes.
+- [x] Permitir filtros cruzados na aba Negócios por data, Pipeline de Vendas, responsável, origem, etapa, posição e produto de interesse.
+- [x] Adicionar à aba Negócios a análise de negócios fechados por data e origem, somente quando houver vínculo e campos comerciais comprovados no Bitrix24.
+- [x] Incluir melhorias gerenciais pertinentes nas três abas, com estados indisponíveis explícitos quando faltarem dados auditáveis.
+- [x] Validar filtros, totais, insights, tipagem, testes e responsividade antes de publicar as atualizações.

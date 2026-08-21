@@ -8,9 +8,12 @@ import { isRdAccountKey, RD_ACCOUNTS, type RdAccountKey } from "./rdstation/type
 import { medsystemsBitrixCampaignAttributionDetail, medsystemsBitrixLeadChannelFunnel, medsystemsBitrixJulyDealAnalytics, medsystemsBitrixJulyTotals, medsystemsBitrixOperationsDashboard, medsystemsBitrixRdOpportunityDashboard, medsystemsBitrixStatus, medsystemsUtmReceiptCoverage } from "./bitrix24/service";
 import { mediaDashboardAnalytics, rdStationOperationsDashboard } from "./db";
 import { bitrixExportSnapshot } from "./spreadsheet/bitrixExportSnapshot";
+import { mediaChannelDashboard } from "./media/channelDashboard";
 
 const accountInput = z.enum(RD_ACCOUNTS);
 const analyticsBrandInput = z.enum(["all", "medsystems", "beautysystems"]);
+const dashboardDateInput = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
+const optionalFilterInput = z.string().max(512).default("all");
 
 function requestOrigin(req: { protocol?: string; header: (name: string) => string | undefined }) {
   const browserOrigin = req.header("origin");
@@ -67,10 +70,37 @@ export const appRouter = router({
     medsystemsCampaignAttributionDetail: publicProcedure.input(z.object({ status: z.enum(["all", "open", "won", "lost"]), brand: analyticsBrandInput, period: z.enum(["2026-07", "2026-08"]).default("2026-07") }).optional()).query(({ input }) => medsystemsBitrixCampaignAttributionDetail(input?.status ?? "all", input?.brand ?? "all", input?.period ?? "2026-07")),
     medsystemsUtmReceiptCoverage: publicProcedure.input(z.object({ brand: analyticsBrandInput, period: z.enum(["2026-07", "2026-08"]).default("2026-07") }).optional()).query(({ input }) => medsystemsUtmReceiptCoverage(input?.brand ?? "all", input?.period ?? "2026-07")),
     operationsDashboard: publicProcedure.input(z.object({ status: z.enum(["all", "open", "won", "lost"]), brand: analyticsBrandInput, period: z.enum(["2026-07", "2026-08"]).default("2026-07") }).optional()).query(({ input }) => medsystemsBitrixOperationsDashboard(input?.status ?? "all", input?.brand ?? "all", input?.period ?? "2026-07")),
-    rdOpportunityDashboard: publicProcedure.input(z.object({ pipeline: z.string().max(32).default("all"), period: z.enum(["2026-07", "2026-08"]).default("2026-08") }).optional()).query(({ input }) => medsystemsBitrixRdOpportunityDashboard(input?.pipeline ?? "all", input?.period ?? "2026-08")),
+    rdOpportunityDashboard: publicProcedure.input(z.object({
+      startDate: dashboardDateInput.default("2026-08-01"),
+      endDate: dashboardDateInput.default("2026-08-19"),
+      pipeline: z.string().max(32).default("all"),
+      responsible: optionalFilterInput,
+      source: optionalFilterInput,
+      stage: optionalFilterInput,
+      position: optionalFilterInput,
+      product: optionalFilterInput,
+    }).optional()).query(({ input }) => medsystemsBitrixRdOpportunityDashboard({
+      startDate: input?.startDate ?? "2026-08-01",
+      endDate: input?.endDate ?? "2026-08-19",
+      filters: {
+        pipeline: input?.pipeline ?? "all",
+        responsible: input?.responsible ?? "all",
+        source: input?.source ?? "all",
+        stage: input?.stage ?? "all",
+        position: input?.position ?? "all",
+        product: input?.product ?? "all",
+      },
+    })),
   }),
   analytics: router({
     dashboard: publicProcedure.input(z.object({ brand: analyticsBrandInput, period: z.enum(["2026-07", "2026-08"]).default("2026-07") })).query(({ input }) => mediaDashboardAnalytics(input.brand, input.period)),
+    channelDashboard: publicProcedure.input(z.object({
+      platform: z.enum(["google_ads", "meta_ads"]),
+      brand: analyticsBrandInput.default("all"),
+      startDate: dashboardDateInput.default("2026-08-01"),
+      endDate: dashboardDateInput.default("2026-08-19"),
+      campaignId: z.string().max(128).optional(),
+    })).query(({ input }) => mediaChannelDashboard(input)),
   }),
   spreadsheet: router({
     bitrixExportDashboard: publicProcedure.query(() => bitrixExportSnapshot),

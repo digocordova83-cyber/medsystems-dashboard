@@ -1,5 +1,5 @@
 import { bitrixCampaignAttributionDetail, bitrixDealBrand, bitrixDealJulyAnalytics, bitrixLeadChannelFunnel, bitrixJulyTotals, bitrixOperationsDashboard, bitrixReferencedContactIds, finishBitrixSyncRun, reconcileAttributionAuditLinks, reconcileBitrixEntities, refreshAttributionAuditFromBitrix, startBitrixSyncRun, type AnalyticsPeriod, type BitrixEntityType, type DealStatusFilter, upsertBitrixEntities, utmReceiptCoverage } from "../db";
-import { rdOpportunityManagerDashboard } from "./rdOpportunityAnalytics";
+import { rdOpportunityManagerDashboard, validateBusinessDateRange, type RdOpportunityFilters } from "./rdOpportunityAnalytics";
 
 const CRM_CAPABILITIES = ["Leads", "Contatos", "Negócios"] as const;
 const PERIODS: Record<AnalyticsPeriod, { start: Date; end: Date; bitrixStart: string; bitrixEnd: string }> = {
@@ -139,13 +139,14 @@ export async function medsystemsBitrixOperationsDashboard(statusFilter: DealStat
   return bitrixOperationsDashboard(new URL(webhookBaseUrl()).host, range.start, range.end, statusFilter, brand);
 }
 
-export async function medsystemsBitrixRdOpportunityDashboard(pipeline = "all", period: AnalyticsPeriod = "2026-08") {
-  const range = PERIODS[period];
+export async function medsystemsBitrixRdOpportunityDashboard(input: { startDate: string; endDate: string; filters: RdOpportunityFilters }) {
+  const range = validateBusinessDateRange(input.startDate, input.endDate);
   return rdOpportunityManagerDashboard({
     portal: new URL(webhookBaseUrl()).host,
     start: range.start,
-    end: range.end,
-    period,
-    pipeline,
+    end: range.endExclusive,
+    startDate: input.startDate,
+    endDate: input.endDate,
+    filters: input.filters,
   });
 }

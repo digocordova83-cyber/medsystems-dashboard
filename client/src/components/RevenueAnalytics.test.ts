@@ -12,8 +12,8 @@ describe("dashboardMath.ratio", () => {
     expect(dashboardMath.ratio(5_000, 0)).toBe(0);
   });
 
-  it("mantém as visões comerciais centrais e a aba exclusiva Bitrix24", () => {
-    expect(DASHBOARD_TABS.map(tab => tab.id)).toEqual(["overview", "google", "meta", "revenue", "bitrix", "rdstation"]);
+  it("mantém somente as visões públicas solicitadas no painel principal", () => {
+    expect(DASHBOARD_TABS.map(tab => tab.id)).toEqual(["overview", "google", "meta", "bitrix"]);
   });
 
   it("mantém agosto e julho como períodos explícitos de análise", () => {

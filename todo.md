@@ -192,3 +192,6 @@
 - [x] Adicionar à aba Negócios a análise de negócios fechados por data e origem, somente quando houver vínculo e campos comerciais comprovados no Bitrix24.
 - [x] Incluir melhorias gerenciais pertinentes nas três abas, com estados indisponíveis explícitos quando faltarem dados auditáveis.
 - [x] Validar filtros, totais, insights, tipagem, testes e responsividade antes de publicar as atualizações.
+- [x] Atualizar dados de RD Station, Bitrix24, histórico de etapas e Google/Meta Ads até o dia anterior ao processamento.
+- [x] Validar o corte D-1, totais por fonte/marca e consistência das visões públicas após a sincronização.
+- [x] Executar testes focados (56/57 aprovados; callback externo retornou 502 no teste de URL pública), registrar a exceção e publicar o checkpoint da atualização D-1.

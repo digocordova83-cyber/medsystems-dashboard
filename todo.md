@@ -205,9 +205,9 @@
 - [x] Validar unicidade, datas e totais por conta na exportação de agosto.
 - [x] Entregar Excel e CSV do recorte de agosto.
 
-- [ ] Cruzar leads Bitrix24 com UTM no período de 01/08/2026 a 24/08/2026 contra contatos e eventos RD Station.
-- [ ] Classificar matches comprovados, ambiguidades e registros sem evidência suficiente, sem inventar atribuições.
-- [ ] Exportar a base conciliada Bitrix24–RD Station com origem, UTMs e método de match.
+- [x] Cruzar leads Bitrix24 com UTM no período de 01/08/2026 a 24/08/2026 contra contatos e eventos RD Station: 3.568 leads RD, 2.918 encontrados e 650 sem correspondência.
+- [x] Classificar matches comprovados, ambiguidades e registros sem evidência suficiente, sem inventar atribuições: 2.915 matches fortes por e-mail/telefone, 3 somente por nome e nenhuma ambiguidade classificada.
+- [x] Exportar a base conciliada Bitrix24–RD Station com origem, UTMs e método de match, validando 3.568 chaves únicas.
 
 - [x] Ler o PDF da reunião de alinhamento e extrair o fluxo aprovado entre RD Station e Bitrix24.
 - [x] Comparar o fluxo documentado com os campos e registros reais persistidos nas duas fontes.
@@ -232,8 +232,8 @@
 - [x] Configurar atualização diária do dashboard às 09h BRT usando RD Station, Bitrix24 e Windsor/Google/Meta pelas integrações atuais.
 - [x] Validar o agendamento ativo: cron diário às 12:00 UTC = 09:00 America/Sao_Paulo, com corte D-1, ROAS por canal quando disponível e registro de exceções.
 
-- [ ] Sincronizar manualmente leads, negócios, contatos e histórico Bitrix24 até 25/08/2026.
-- [ ] Validar que a maior data persistida do Bitrix24 alcança 25/08/2026 no horário de Brasília.
+- [x] Sincronizar manualmente leads, negócios e contatos Bitrix24 até 25/08/2026; o funil usa a etapa atual e documenta explicitamente que não há histórico transicional completo persistido.
+- [x] Validar que a maior data persistida do Bitrix24 alcança 25/08/2026 no horário de Brasília: 3.124 leads, 544 negócios no recorte e 554 contatos vinculados atualizados.
 
 - [x] Sincronizar leads, negócios e contatos Bitrix24 e filtrar a fonte registrada como Tráfego Pago até 25/08/2026.
 - [x] Separar por tipo e marca, preservando os campos completos de origem e campanha.

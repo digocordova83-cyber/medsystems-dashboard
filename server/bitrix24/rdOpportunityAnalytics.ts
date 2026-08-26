@@ -1,4 +1,4 @@
-import { and, eq, gte, lt } from "drizzle-orm";
+import { and, eq, gte, like, lt } from "drizzle-orm";
 import { bitrix24Entities } from "../../drizzle/schema";
 import { getDb } from "../db";
 
@@ -261,7 +261,13 @@ export async function rdOpportunityManagerDashboard(input: {
   if (!db) throw new Error("Banco de dados indisponível.");
   const [rows, dealRows] = await Promise.all([
     db.select({ bitrixId: bitrix24Entities.bitrixId, createdAtBitrix: bitrix24Entities.createdAtBitrix, stageOrStatus: bitrix24Entities.stageOrStatus, rawPayload: bitrix24Entities.rawPayload })
-      .from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, input.portal), eq(bitrix24Entities.entityType, "lead"), gte(bitrix24Entities.createdAtBitrix, input.start), lt(bitrix24Entities.createdAtBitrix, input.end))),
+      .from(bitrix24Entities).where(and(
+        eq(bitrix24Entities.portal, input.portal),
+        eq(bitrix24Entities.entityType, "lead"),
+        gte(bitrix24Entities.createdAtBitrix, input.start),
+        lt(bitrix24Entities.createdAtBitrix, input.end),
+        like(bitrix24Entities.rawPayload, `%"${PAID_TRAFFIC_FIELD}":"${PAID_TRAFFIC_VALUE}"%`),
+      )),
     db.select({ rawPayload: bitrix24Entities.rawPayload }).from(bitrix24Entities)
       .where(and(eq(bitrix24Entities.portal, input.portal), eq(bitrix24Entities.entityType, "deal"))),
   ]);

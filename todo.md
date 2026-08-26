@@ -246,3 +246,8 @@
 - [x] Implementar detalhamento de UTM por canal, campanha, conjunto e criativo, usando `Não identificado` quando não houver evidência.
 - [x] Adicionar testes Vitest para agregações, filtros, funil e atribuição UTM.
 - [x] Validar a nova aba em desktop e mobile antes de publicar.
+
+- [x] Reproduzir e diagnosticar o carregamento infinito da aba Negócios no domínio publicado.
+- [x] Reduzir o tempo da consulta do funil de Tráfego Pago sem alterar volumes, valores ou regras de atribuição: de aproximadamente 9,5 s para 991 ms na prévia.
+- [x] Exibir estado de erro com opção de tentar novamente quando a consulta falhar ou exceder o tempo esperado.
+- [x] Validar o carregamento da aba Negócios no desktop e mobile e publicar a correção.

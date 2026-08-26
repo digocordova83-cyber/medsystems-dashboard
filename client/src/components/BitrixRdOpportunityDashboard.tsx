@@ -39,12 +39,15 @@ export function BitrixRdOpportunityDashboard() {
   const [draftEnd, setDraftEnd] = useState(defaultEnd);
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
   const [utmSearch, setUtmSearch] = useState("");
-  const query = trpc.bitrix24.rdOpportunityDashboard.useQuery({ startDate, endDate, ...filters }, { refetchInterval: 60_000 });
+  const query = trpc.bitrix24.rdOpportunityDashboard.useQuery(
+    { startDate, endDate, ...filters },
+    { retry: 1, staleTime: 5 * 60_000, refetchOnWindowFocus: false },
+  );
   const data = query.data;
   const activeFilterCount = Object.values(filters).filter(value => value !== "all").length;
 
   if (query.isLoading && !data) return <LoadingState />;
-  if (query.isError) return <EmptyState title="Não foi possível carregar Negócios" detail={query.error.message || "A consulta gerencial não respondeu."} />;
+  if (query.isError) return <ErrorState detail={query.error.message || "A consulta gerencial não respondeu."} onRetry={() => query.refetch()} />;
   if (!data) return <EmptyState title="Visão gerencial indisponível" detail="Não houve retorno para o recorte selecionado." />;
 
   const options = (key: string) => (data.filterOptions[key] ?? []) as FilterOption[];
@@ -175,4 +178,5 @@ function NumberCell({ value }: { value: number }) { return <td className="px-4 p
 function RankPanel({ eyebrow, title, rows, total, tone }: { eyebrow: string; title: string; rows: { label: string; count: number }[]; total: number; tone: "cyan" | "violet" | "emerald" }) { const color = { cyan: "bg-cyan-300", violet: "bg-violet-300", emerald: "bg-emerald-300" }[tone]; const max = Math.max(1, ...rows.map(item => item.count)); return <section className="rounded-2xl border border-white/10 bg-black/20 p-5"><PanelHeader eyebrow={eyebrow} title={title} detail="Distribuição dentro dos filtros ativos." /><div className="mt-5 space-y-3">{rows.slice(0, 8).map(row => <div key={row.label}><div className="mb-1.5 flex justify-between gap-3"><span className="truncate text-xs text-slate-400" title={row.label}>{row.label}</span><span className="shrink-0 font-mono-ui text-[10px] text-white">{integer(row.count)} · {ratio(row.count, total)}</span></div><div className="h-1.5 overflow-hidden rounded-full bg-white/5"><div className={`h-full rounded-full ${color}`} style={{ width: `${Math.max(2, (row.count / max) * 100)}%` }} /></div></div>)}</div></section>; }
 function MethodCard({ label, text }: { label: string; text: string }) { return <article className="rounded-xl border border-amber-100/10 bg-black/15 p-4"><p className="font-mono-ui text-[10px] uppercase tracking-[.12em] text-amber-200">{label}</p><p className="mt-2 text-xs leading-5 text-slate-400">{text}</p></article>; }
 function LoadingState() { return <section className="grid min-h-[460px] place-items-center rounded-3xl border border-white/10 bg-black/20"><div className="text-center"><Workflow className="mx-auto h-8 w-8 animate-pulse text-cyan-200" /><p className="mt-3 text-sm text-slate-500">Montando o funil de Tráfego Pago…</p></div></section>; }
+function ErrorState({ detail, onRetry }: { detail: string; onRetry: () => void }) { return <section className="grid min-h-64 place-items-center rounded-2xl border border-rose-200/15 bg-rose-200/[.03] p-8 text-center"><div><Workflow className="mx-auto h-7 w-7 text-rose-200" /><h4 className="mt-3 font-bold text-white">Não foi possível carregar Negócios</h4><p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">{detail}</p><Button className="mt-5 bg-white text-slate-950 hover:bg-slate-100" onClick={onRetry}>Tentar novamente</Button></div></section>; }
 function EmptyState({ title, detail }: { title: string; detail: string }) { return <section className="grid min-h-64 place-items-center rounded-2xl border border-white/10 bg-black/20 p-8 text-center"><div><Workflow className="mx-auto h-7 w-7 text-cyan-200" /><h4 className="mt-3 font-bold text-white">{title}</h4><p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">{detail}</p></div></section>; }

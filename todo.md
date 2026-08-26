@@ -195,3 +195,54 @@
 - [x] Atualizar dados de RD Station, Bitrix24, histórico de etapas e Google/Meta Ads até o dia anterior ao processamento.
 - [x] Validar o corte D-1, totais por fonte/marca e consistência das visões públicas após a sincronização.
 - [x] Executar testes focados (56/57 aprovados; callback externo retornou 502 no teste de URL pública), registrar a exceção e publicar o checkpoint da atualização D-1.
+
+- [x] Aplicar à exportação RD Station as regras da documentação anexada: webhook como origem de leads, UTMs preservadas e separação por cliente/conta.
+- [x] Atualizar os contatos e eventos RD Station das contas Medsystems e BeautySystems até 24/08/2026.
+- [x] Gerar planilha sem duplicatas com todos os leads exportáveis até 24/08/2026, mantendo campos pessoais e de atribuição disponíveis na base.
+- [x] Validar contagens, datas, duplicidade e cobertura de UTMs da exportação e entregar o arquivo ao usuário.
+
+- [x] Refazer a exportação RD Station somente de 01/08/2026 a 24/08/2026, usando a última conversão como data de referência e, na ausência, a criação dentro da janela.
+- [x] Validar unicidade, datas e totais por conta na exportação de agosto.
+- [x] Entregar Excel e CSV do recorte de agosto.
+
+- [ ] Cruzar leads Bitrix24 com UTM no período de 01/08/2026 a 24/08/2026 contra contatos e eventos RD Station.
+- [ ] Classificar matches comprovados, ambiguidades e registros sem evidência suficiente, sem inventar atribuições.
+- [ ] Exportar a base conciliada Bitrix24–RD Station com origem, UTMs e método de match.
+
+- [x] Ler o PDF da reunião de alinhamento e extrair o fluxo aprovado entre RD Station e Bitrix24.
+- [x] Comparar o fluxo documentado com os campos e registros reais persistidos nas duas fontes.
+- [x] Documentar divergências e ajustar o critério do cruzamento de leads de agosto, se necessário.
+
+- [x] Preparar a entrega por e-mail do cruzamento RD Station–Bitrix24 no corte fechado de 01/08/2026 a 23/08/2026.
+- [x] Gerar anexos com base RD, matches Bitrix24 e divergências auditáveis.
+- [x] Redigir e-mail para revisão, sem enviar antes da confirmação do usuário.
+
+- [x] Filtrar o recorte RD de 01/08/2026 a 23/08/2026 para mídia paga ou UTM comprovada.
+- [x] Recalcular os matches Bitrix24 e os totais por conta após o novo filtro.
+- [x] Gerar e validar os anexos revisados para envio.
+
+- [x] Exportar leads RD Station com UTM comprovada de 01/08/2026 a 23/08/2026.
+- [x] Separar a exportação por Medsystems e BeautySystems e validar unicidade.
+- [x] Entregar Excel e CSV da base com UTM.
+
+- [x] Exportar leads Bitrix24 com `SOURCE_DESCRIPTION` explicitamente iniciado por `Paid Search` no período de 01/08/2026 a 23/08/2026.
+- [x] Separar a base por pipeline/marca e preservar origem, campanha, UTM e demais campos disponíveis.
+- [x] Validar unicidade, contagens e entregar Excel e CSV da base Bitrix24 de mídia paga.
+
+- [x] Configurar atualização diária do dashboard às 09h BRT usando RD Station, Bitrix24 e Windsor/Google/Meta pelas integrações atuais.
+- [x] Validar o agendamento ativo: cron diário às 12:00 UTC = 09:00 America/Sao_Paulo, com corte D-1, ROAS por canal quando disponível e registro de exceções.
+
+- [ ] Sincronizar manualmente leads, negócios, contatos e histórico Bitrix24 até 25/08/2026.
+- [ ] Validar que a maior data persistida do Bitrix24 alcança 25/08/2026 no horário de Brasília.
+
+- [x] Sincronizar leads, negócios e contatos Bitrix24 e filtrar a fonte registrada como Tráfego Pago até 25/08/2026.
+- [x] Separar por tipo e marca, preservando os campos completos de origem e campanha.
+- [x] Gerar e validar as exportações Bitrix24 de Tráfego Pago.
+
+- [x] Reconstruir a aba Negócios usando como universo-base os leads Bitrix24 com fonte estruturada `Tráfego Pago`.
+- [x] Definir e documentar regras auditáveis para Lead, Qualificado/MQL, SQL e Negócio, sem inferir etapas ausentes.
+- [x] Exibir funil visual completo com volumes, taxas de conversão, valores totais e perdas entre etapas.
+- [x] Implementar filtros visíveis e combináveis por período, marca/pipeline, etapa, responsável, origem e atribuição.
+- [x] Implementar detalhamento de UTM por canal, campanha, conjunto e criativo, usando `Não identificado` quando não houver evidência.
+- [x] Adicionar testes Vitest para agregações, filtros, funil e atribuição UTM.
+- [x] Validar a nova aba em desktop e mobile antes de publicar.

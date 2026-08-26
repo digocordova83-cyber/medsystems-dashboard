@@ -1,0 +1,5 @@
+import mysql from "mysql2/promise";
+function parse(v){try{return JSON.parse(v)}catch{return {}}}
+function flat(v,p='',o={}){if(v==null)return o;if(Array.isArray(v)){v.forEach((x,i)=>flat(x,`${p}[${i}]`,o));return o}if(typeof v==='object'){for(const[k,x]of Object.entries(v))flat(x,p?`${p}.${k}`:k,o);return o}o[p]=String(v);return o}
+const db=await mysql.createConnection(process.env.DATABASE_URL);
+try{const [rows]=await db.query("SELECT entityType, rawPayload, updatedAtBitrix FROM bitrix24Entities WHERE entityType IN ('lead','deal','contact')"); const counts={}; const examples={}; for(const r of rows){const f=flat(parse(r.rawPayload)); for(const [k,v] of Object.entries(f)){if(/source|origem|tr[aá]fego|paid|pago|utm/i.test(k+' '+v)){const key=k+' = '+v; if(key.length<300){counts[key]=(counts[key]??0)+1; examples[key] ??= {type:r.entityType, updated:r.updatedAtBitrix}}}}} console.log(JSON.stringify(Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,120).map(([value,total])=>({total,value,example:examples[value]})),null,2));}finally{await db.end()}

@@ -251,3 +251,13 @@
 - [x] Reduzir o tempo da consulta do funil de Tráfego Pago sem alterar volumes, valores ou regras de atribuição: de aproximadamente 9,5 s para 991 ms na prévia.
 - [x] Exibir estado de erro com opção de tentar novamente quando a consulta falhar ou exceder o tempo esperado.
 - [x] Validar o carregamento da aba Negócios no desktop e mobile e publicar a correção.
+
+- [x] Substituir o scrollbar branco da matriz de atribuição por uma barra fina, arredondada e integrada ao tema escuro.
+- [x] Validar o scrollbar customizado em desktop e publicar a melhoria visual.
+
+- [x] Fazer o clique em qualquer área dos campos de data da aba Negócios abrir o calendário nativo e deixar o ícone branco.
+- [x] Redesenhar a aba Overview no mesmo padrão visual premium, hierárquico e gerencial da aba Negócios.
+- [x] Redesenhar a aba Google Ads com filtros, KPIs, gráficos e distribuição de verba no mesmo sistema visual da aba Negócios.
+- [x] Redesenhar a aba Meta Ads com filtros, KPIs, gráficos, distribuição de verba e criativos no mesmo sistema visual da aba Negócios.
+- [x] Criar e reutilizar padrões compartilhados para cabeçalhos, filtros de data, cards, painéis e estados de carregamento/erro.
+- [x] Validar Overview, Google Ads, Meta Ads e Negócios em desktop e mobile, incluindo build e testes, antes de publicar.

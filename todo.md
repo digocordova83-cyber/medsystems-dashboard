@@ -274,3 +274,9 @@
 - [x] Adicionar testes de login, sessão, autorização e acesso administrativo.
 - [x] Validar os quatro acessos, as permissões de cliente/administrador e publicar a proteção.
 - [x] Usar os logos fornecidos de MedSystems e BeautySystems na tela de login, com símbolo `+` entre eles e fundo branco.
+
+- [x] Auditar o investimento Meta Ads até D-1 após o gestor reportar aproximadamente R$ 115 mil, quase o dobro do valor real.
+- [x] Auditar a diferença de aproximadamente R$ 612 a menos no Google Ads usando o mesmo período, contas e moeda do gestor; o valor exato do gestor não foi fornecido, e a referência canônica ficou documentada por conta.
+- [x] Identificar duplicidades por granularidade, contas, campanhas, anúncios, datas ou cargas repetidas na base normalizada de mídia.
+- [x] Corrigir a importação/agregação de investimento sem apagar dados brutos e criar testes de reconciliação por plataforma.
+- [x] Recalcular Overview, Google Ads e Meta Ads e validar os valores no dashboard publicado.

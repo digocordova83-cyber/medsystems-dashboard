@@ -16,6 +16,7 @@ import {
   users,
 } from "../drizzle/schema";
 import { ENV } from "./_core/env";
+import { dedupeCanonicalCampaignRows, sumCampaignMetrics } from "./media/canonicalCampaignRows";
 import { sha256 } from "./rdstation/crypto";
 import { JULY_2026, RD_ACCOUNTS, RD_ACCOUNT_META, type RdAccountKey } from "./rdstation/types";
 
@@ -1374,9 +1375,14 @@ export async function rdStationOperationsDashboard(brand: AnalyticsBrand, period
 export async function mediaDashboardAnalytics(brand: AnalyticsBrand, period: AnalyticsPeriod = "2026-07") {
   const db = await getDb();
   if (!db) throw new Error("Banco de dados indisponível.");
+  const todayBrt = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(new Date());
+  const todayStartBrt = new Date(`${todayBrt}T00:00:00-03:00`);
+  const augustLimit = new Date("2026-09-01T00:00:00-03:00");
+  const augustEnd = todayStartBrt < augustLimit ? todayStartBrt : augustLimit;
+  const augustEndLabel = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(new Date(augustEnd.getTime() - 1));
   const periodRange = {
     "2026-07": { start: new Date("2026-07-01T00:00:00-03:00"), end: new Date("2026-08-01T00:00:00-03:00"), endLabel: "2026-07-31", rdLeadsAvailable: true },
-    "2026-08": { start: new Date("2026-08-01T00:00:00-03:00"), end: new Date("2026-08-20T00:00:00-03:00"), endLabel: "2026-08-19", rdEnd: new Date("2026-08-21T00:00:00-03:00"), rdEndLabel: "2026-08-20", rdLeadsAvailable: true },
+    "2026-08": { start: new Date("2026-08-01T00:00:00-03:00"), end: augustEnd, endLabel: augustEndLabel, rdEnd: augustEnd, rdEndLabel: augustEndLabel, rdLeadsAvailable: true },
   }[period];
   const { start, end } = periodRange;
   const rdEnd = (period === "2026-08" ? periodRange.rdEnd : end) ?? end;
@@ -1384,46 +1390,53 @@ export async function mediaDashboardAnalytics(brand: AnalyticsBrand, period: Ana
   const mediaWhere = and(eq(mediaDailyPerformance.recordLevel, "campaign"), inArray(mediaDailyPerformance.brand, brands), gte(mediaDailyPerformance.reportDate, start), lt(mediaDailyPerformance.reportDate, end));
   const adWhere = and(eq(mediaDailyPerformance.recordLevel, "ad"), inArray(mediaDailyPerformance.brand, brands), gte(mediaDailyPerformance.reportDate, start), lt(mediaDailyPerformance.reportDate, end));
 
-  const [mediaTotal] = await db.select({
-    spend: sql<number>`sum(${mediaDailyPerformance.spend})`,
-    impressions: sql<number>`sum(${mediaDailyPerformance.impressions})`,
-    reach: sql<number>`sum(${mediaDailyPerformance.reach})`,
-    clicks: sql<number>`sum(${mediaDailyPerformance.clicks})`,
-    platformLeads: sql<number>`sum(${mediaDailyPerformance.platformLeads})`,
-  }).from(mediaDailyPerformance).where(mediaWhere);
-
-  const platforms = await db.select({
-    platform: mediaDailyPerformance.platform,
-    spend: sql<number>`sum(${mediaDailyPerformance.spend})`,
-    impressions: sql<number>`sum(${mediaDailyPerformance.impressions})`,
-    clicks: sql<number>`sum(${mediaDailyPerformance.clicks})`,
-    leads: sql<number>`sum(${mediaDailyPerformance.platformLeads})`,
-  }).from(mediaDailyPerformance).where(mediaWhere).groupBy(mediaDailyPerformance.platform);
-
-  const brandPlatforms = await db.select({
-    brand: mediaDailyPerformance.brand,
-    platform: mediaDailyPerformance.platform,
-    spend: sql<number>`sum(${mediaDailyPerformance.spend})`,
-    impressions: sql<number>`sum(${mediaDailyPerformance.impressions})`,
-    clicks: sql<number>`sum(${mediaDailyPerformance.clicks})`,
-    leads: sql<number>`sum(${mediaDailyPerformance.platformLeads})`,
-  }).from(mediaDailyPerformance).where(mediaWhere).groupBy(mediaDailyPerformance.brand, mediaDailyPerformance.platform);
-
-  const campaigns = await db.select({
+  const rawCampaignRows = await db.select({
+    id: mediaDailyPerformance.id,
     platform: mediaDailyPerformance.platform,
     brand: mediaDailyPerformance.brand,
+    accountId: mediaDailyPerformance.accountId,
+    reportDate: mediaDailyPerformance.reportDate,
     campaignId: mediaDailyPerformance.campaignId,
     campaignName: mediaDailyPerformance.campaignName,
-    spend: sql<number>`sum(${mediaDailyPerformance.spend})`,
-    impressions: sql<number>`sum(${mediaDailyPerformance.impressions})`,
-    clicks: sql<number>`sum(${mediaDailyPerformance.clicks})`,
-    leads: sql<number>`sum(${mediaDailyPerformance.platformLeads})`,
-  }).from(mediaDailyPerformance).where(mediaWhere).groupBy(
-    mediaDailyPerformance.platform,
-    mediaDailyPerformance.brand,
-    mediaDailyPerformance.campaignId,
-    mediaDailyPerformance.campaignName,
-  ).orderBy(desc(sql`sum(${mediaDailyPerformance.spend})`)).limit(20);
+    spend: mediaDailyPerformance.spend,
+    impressions: mediaDailyPerformance.impressions,
+    reach: mediaDailyPerformance.reach,
+    clicks: mediaDailyPerformance.clicks,
+    leads: mediaDailyPerformance.platformLeads,
+    rawPayload: mediaDailyPerformance.rawPayload,
+    syncedAt: mediaDailyPerformance.syncedAt,
+  }).from(mediaDailyPerformance).where(mediaWhere);
+  const canonicalMediaRows = dedupeCanonicalCampaignRows(rawCampaignRows);
+  const canonicalTotals = sumCampaignMetrics(canonicalMediaRows);
+  const mediaTotal = { ...canonicalTotals, platformLeads: canonicalTotals.leads };
+  const platformMap = new Map<string, { platform: "google_ads" | "meta_ads"; spend: number; impressions: number; clicks: number; leads: number }>();
+  const brandPlatformMap = new Map<string, { brand: "medsystems" | "beautysystems"; platform: "google_ads" | "meta_ads"; spend: number; impressions: number; clicks: number; leads: number }>();
+  const campaignMap = new Map<string, { platform: "google_ads" | "meta_ads"; brand: "medsystems" | "beautysystems"; campaignId: string; campaignName: string; spend: number; impressions: number; clicks: number; leads: number }>();
+  for (const row of canonicalMediaRows) {
+    const platform = platformMap.get(row.platform) ?? { platform: row.platform, spend: 0, impressions: 0, clicks: 0, leads: 0 };
+    platform.spend += analyticsNumber(row.spend);
+    platform.impressions += analyticsNumber(row.impressions);
+    platform.clicks += analyticsNumber(row.clicks);
+    platform.leads += analyticsNumber(row.leads);
+    platformMap.set(row.platform, platform);
+    const brandPlatformKey = `${row.brand}|${row.platform}`;
+    const brandPlatform = brandPlatformMap.get(brandPlatformKey) ?? { brand: row.brand, platform: row.platform, spend: 0, impressions: 0, clicks: 0, leads: 0 };
+    brandPlatform.spend += analyticsNumber(row.spend);
+    brandPlatform.impressions += analyticsNumber(row.impressions);
+    brandPlatform.clicks += analyticsNumber(row.clicks);
+    brandPlatform.leads += analyticsNumber(row.leads);
+    brandPlatformMap.set(brandPlatformKey, brandPlatform);
+    const campaignKey = `${row.platform}|${row.brand}|${row.campaignId}`;
+    const campaign = campaignMap.get(campaignKey) ?? { platform: row.platform, brand: row.brand, campaignId: row.campaignId, campaignName: row.campaignName ?? "Sem nome", spend: 0, impressions: 0, clicks: 0, leads: 0 };
+    campaign.spend += analyticsNumber(row.spend);
+    campaign.impressions += analyticsNumber(row.impressions);
+    campaign.clicks += analyticsNumber(row.clicks);
+    campaign.leads += analyticsNumber(row.leads);
+    campaignMap.set(campaignKey, campaign);
+  }
+  const platforms = Array.from(platformMap.values());
+  const brandPlatforms = Array.from(brandPlatformMap.values());
+  const campaigns = Array.from(campaignMap.values()).sort((a, b) => b.spend - a.spend).slice(0, 20);
 
   const ads = await db.select({
     platform: mediaDailyPerformance.platform,
@@ -1449,11 +1462,7 @@ export async function mediaDashboardAnalytics(brand: AnalyticsBrand, period: Ana
     mediaDailyPerformance.adName,
   ).orderBy(desc(sql`sum(${mediaDailyPerformance.spend})`)).limit(80);
 
-  const methodologyRows = await db.select({
-    brand: mediaDailyPerformance.brand,
-    platform: mediaDailyPerformance.platform,
-    rawPayload: mediaDailyPerformance.rawPayload,
-  }).from(mediaDailyPerformance).where(mediaWhere);
+  const methodologyRows = canonicalMediaRows.map(row => ({ brand: row.brand, platform: row.platform, rawPayload: row.rawPayload ?? null }));
 
   const rdQualified = period === "2026-07"
     ? await db.select({ accountKey: rdStationJulyLeadViews.accountKey, count: sql<number>`count(*)` })

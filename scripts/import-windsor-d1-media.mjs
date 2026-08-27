@@ -44,3 +44,11 @@ try {
 } finally {
   await connection.end();
 }
+@@
+-      await connection.execute(`INSERT INTO mediaDailyPerformance
+-        (platform, recordLevel, brand, reportDate, accountId, campaignId, campaignName, spend, impressions, reach, clicks, platformLeads, platformConversions, rawPayload, syncedAt)
+-        VALUES (?, 'campaign', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
++      await connection.execute(`INSERT INTO mediaDailyPerformance
++        (platform, recordLevel, brand, reportDate, accountId, campaignId, campaignName, adGroupId, adId, spend, impressions, reach, clicks, platformLeads, platformConversions, rawPayload, syncedAt)
++        VALUES (?, 'campaign', ?, ?, ?, ?, ?, '', '', ?, ?, ?, ?, ?, ?, ?, NOW())
+         ON DUPLICATE KEY UPDATE campaignName=VALUES(campaignName), spend=VALUES(spend), impressions=VALUES(impressions), reach=VALUES(reach), clicks=VALUES(clicks), platformLeads=VALUES(platformLeads), platformConversions=VALUES(platformConversions), rawPayload=VALUES(rawPayload), syncedAt=NOW()`,

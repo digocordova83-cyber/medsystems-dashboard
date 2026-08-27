@@ -1,6 +1,7 @@
 import { and, desc, eq, gte, inArray, lt, sql } from "drizzle-orm";
 import { mediaDailyPerformance } from "../../drizzle/schema";
 import { getDb } from "../db";
+import { dedupeCanonicalCampaignRows, sumCampaignMetrics } from "./canonicalCampaignRows";
 import { META_ACTIVE_AD_IDS, META_ACTIVE_STATUS_AS_OF, META_CAMPAIGN_PREVIEWS } from "./metaActiveAdsSnapshot";
 
 export type MediaDashboardPlatform = "google_ads" | "meta_ads";
@@ -43,66 +44,62 @@ export async function mediaChannelDashboard(input: {
     gte(mediaDailyPerformance.reportDate, start),
     lt(mediaDailyPerformance.reportDate, endExclusive),
   );
-  const campaignWhere = input.campaignId
-    ? and(campaignBaseWhere, eq(mediaDailyPerformance.campaignId, input.campaignId))
-    : campaignBaseWhere;
+  const rawCampaignRows = await db.select({
+    id: mediaDailyPerformance.id,
+    platform: mediaDailyPerformance.platform,
+    brand: mediaDailyPerformance.brand,
+    accountId: mediaDailyPerformance.accountId,
+    reportDate: mediaDailyPerformance.reportDate,
+    campaignId: mediaDailyPerformance.campaignId,
+    campaignName: mediaDailyPerformance.campaignName,
+    spend: mediaDailyPerformance.spend,
+    impressions: mediaDailyPerformance.impressions,
+    reach: mediaDailyPerformance.reach,
+    clicks: mediaDailyPerformance.clicks,
+    leads: mediaDailyPerformance.platformLeads,
+    rawPayload: mediaDailyPerformance.rawPayload,
+    syncedAt: mediaDailyPerformance.syncedAt,
+  }).from(mediaDailyPerformance).where(campaignBaseWhere);
+  const canonicalBaseRows = dedupeCanonicalCampaignRows(rawCampaignRows);
+  const canonicalRows = input.campaignId
+    ? canonicalBaseRows.filter(row => row.campaignId === input.campaignId)
+    : canonicalBaseRows;
+  const totals = sumCampaignMetrics(canonicalRows);
+  const spend = totals.spend;
+  const leads = totals.leads;
+  const impressions = totals.impressions;
+  const clicks = totals.clicks;
 
-  const [totalsRows, byDayRows, campaignRows, optionRows, coverageRows] = await Promise.all([
-    db.select({
-      spend: sql<number>`sum(${mediaDailyPerformance.spend})`,
-      impressions: sql<number>`sum(${mediaDailyPerformance.impressions})`,
-      clicks: sql<number>`sum(${mediaDailyPerformance.clicks})`,
-      leads: sql<number>`sum(${mediaDailyPerformance.platformLeads})`,
-    }).from(mediaDailyPerformance).where(campaignWhere),
-    db.select({
-      date: mediaDailyPerformance.reportDate,
-      spend: sql<number>`sum(${mediaDailyPerformance.spend})`,
-      leads: sql<number>`sum(${mediaDailyPerformance.platformLeads})`,
-    }).from(mediaDailyPerformance).where(campaignWhere).groupBy(mediaDailyPerformance.reportDate).orderBy(mediaDailyPerformance.reportDate),
-    db.select({
-      campaignId: mediaDailyPerformance.campaignId,
-      campaignName: mediaDailyPerformance.campaignName,
-      brand: mediaDailyPerformance.brand,
-      spend: sql<number>`sum(${mediaDailyPerformance.spend})`,
-      impressions: sql<number>`sum(${mediaDailyPerformance.impressions})`,
-      clicks: sql<number>`sum(${mediaDailyPerformance.clicks})`,
-      leads: sql<number>`sum(${mediaDailyPerformance.platformLeads})`,
-    }).from(mediaDailyPerformance).where(campaignWhere).groupBy(
-      mediaDailyPerformance.campaignId,
-      mediaDailyPerformance.campaignName,
-      mediaDailyPerformance.brand,
-    ).orderBy(desc(sql`sum(${mediaDailyPerformance.spend})`)),
-    db.select({
-      campaignId: mediaDailyPerformance.campaignId,
-      campaignName: mediaDailyPerformance.campaignName,
-      brand: mediaDailyPerformance.brand,
-      spend: sql<number>`sum(${mediaDailyPerformance.spend})`,
-    }).from(mediaDailyPerformance).where(campaignBaseWhere).groupBy(
-      mediaDailyPerformance.campaignId,
-      mediaDailyPerformance.campaignName,
-      mediaDailyPerformance.brand,
-    ).orderBy(desc(sql`sum(${mediaDailyPerformance.spend})`)),
-    db.select({ minDate: sql<Date>`min(${mediaDailyPerformance.reportDate})`, maxDate: sql<Date>`max(${mediaDailyPerformance.reportDate})` })
-      .from(mediaDailyPerformance)
-      .where(campaignBaseWhere),
-  ]);
-
-  const totals = totalsRows[0];
-  const spend = numeric(totals?.spend);
-  const leads = numeric(totals?.leads);
-  const impressions = numeric(totals?.impressions);
-  const clicks = numeric(totals?.clicks);
-  const campaigns = campaignRows.map(row => ({
-    campaignId: row.campaignId,
-    campaignName: row.campaignName ?? "Sem nome",
-    brand: row.brand,
-    spend: numeric(row.spend),
-    impressions: numeric(row.impressions),
-    clicks: numeric(row.clicks),
-    leads: numeric(row.leads),
-    cpl: numeric(row.leads) > 0 ? numeric(row.spend) / numeric(row.leads) : null,
-    spendShare: spend > 0 ? (numeric(row.spend) / spend) * 100 : 0,
+  const byDayMap = new Map<string, { date: string; spend: number; leads: number }>();
+  const campaignMap = new Map<string, { campaignId: string; campaignName: string; brand: "medsystems" | "beautysystems"; spend: number; impressions: number; clicks: number; leads: number }>();
+  const optionMap = new Map<string, { campaignId: string; campaignName: string; brand: "medsystems" | "beautysystems"; spend: number }>();
+  for (const row of canonicalRows) {
+    const date = localDate(row.reportDate);
+    const day = byDayMap.get(date) ?? { date, spend: 0, leads: 0 };
+    day.spend += numeric(row.spend);
+    day.leads += numeric(row.leads);
+    byDayMap.set(date, day);
+    const key = `${row.brand}|${row.campaignId}`;
+    const campaign = campaignMap.get(key) ?? { campaignId: row.campaignId, campaignName: row.campaignName ?? "Sem nome", brand: row.brand, spend: 0, impressions: 0, clicks: 0, leads: 0 };
+    campaign.spend += numeric(row.spend);
+    campaign.impressions += numeric(row.impressions);
+    campaign.clicks += numeric(row.clicks);
+    campaign.leads += numeric(row.leads);
+    campaignMap.set(key, campaign);
+  }
+  for (const row of canonicalBaseRows) {
+    const key = `${row.brand}|${row.campaignId}`;
+    const option = optionMap.get(key) ?? { campaignId: row.campaignId, campaignName: row.campaignName ?? "Sem nome", brand: row.brand, spend: 0 };
+    option.spend += numeric(row.spend);
+    optionMap.set(key, option);
+  }
+  const campaigns = Array.from(campaignMap.values()).sort((a, b) => b.spend - a.spend).map(row => ({
+    ...row,
+    cpl: row.leads > 0 ? row.spend / row.leads : null,
+    spendShare: spend > 0 ? (row.spend / spend) * 100 : 0,
   }));
+  const campaignOptions = Array.from(optionMap.values()).sort((a, b) => b.spend - a.spend);
+  const coverageDates = canonicalBaseRows.map(row => new Date(row.reportDate).getTime()).filter(Number.isFinite);
 
   const activeIds = Array.from(META_ACTIVE_AD_IDS);
   const activeCreatives = input.platform === "meta_ads" && activeIds.length
@@ -136,8 +133,8 @@ export async function mediaChannelDashboard(input: {
     period: {
       start: input.startDate,
       end: input.endDate,
-      dataStart: coverageRows[0]?.minDate ? localDate(coverageRows[0].minDate) : null,
-      dataEnd: coverageRows[0]?.maxDate ? localDate(coverageRows[0].maxDate) : null,
+      dataStart: coverageDates.length ? localDate(new Date(Math.min(...coverageDates))) : null,
+      dataEnd: coverageDates.length ? localDate(new Date(Math.max(...coverageDates))) : null,
     },
     totals: {
       spend,
@@ -149,9 +146,9 @@ export async function mediaChannelDashboard(input: {
       campaigns: campaigns.length,
       activeCreatives: activeCreatives.length,
     },
-    byDay: byDayRows.map(row => ({ date: localDate(row.date), spend: numeric(row.spend), leads: numeric(row.leads) })),
+    byDay: Array.from(byDayMap.values()).sort((a, b) => a.date.localeCompare(b.date)),
     campaigns,
-    campaignOptions: optionRows.map(row => ({ campaignId: row.campaignId, campaignName: row.campaignName ?? "Sem nome", brand: row.brand, spend: numeric(row.spend) })),
+    campaignOptions,
     activeCreatives: activeCreatives.map(row => ({
       campaignId: row.campaignId,
       campaignName: row.campaignName ?? "Sem nome",

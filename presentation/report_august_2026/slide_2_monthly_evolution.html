@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+      
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font-family: 'JetBrains Mono', monospace; background: #FFFFFF; color: #19747E; }
+      
+      .slide-container { 
+        width: 1280px; 
+        min-height: 720px; 
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        background: #D1E8E2;
+      }
+
+      .header-block {
+        padding-top: 60px;
+        padding-left: 80px;
+        padding-bottom: 20px;
+      }
+
+      .header-title {
+        font-size: 32px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .main-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        flex: 1;
+        padding-top: 20px;
+      }
+
+      .left-panel {
+        padding-left: 80px;
+        padding-right: 40px;
+      }
+
+      .right-panel {
+        padding-right: 80px;
+        padding-left: 40px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      .data-table th {
+        text-align: left;
+        font-size: 14px;
+        font-weight: 700;
+        padding-top: 10px;
+        border-bottom: 2px solid #19747E;
+      }
+
+      .data-table td {
+        padding-top: 12px;
+        font-size: 13px;
+        border-bottom: 1px solid #FFFFFF;
+      }
+
+      .val-cell { text-align: right; }
+
+      .methodology-note {
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 2px solid #E27D60;
+        font-size: 12px;
+        line-height: 1.5;
+        color: #19747E;
+      }
+
+      .chart-container {
+        background: #FFFFFF;
+        padding-top: 30px;
+        padding-left: 20px;
+        padding-right: 20px;
+        min-height: 400px;
+      }
+
+      .chart-title {
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        text-align: center;
+        text-transform: uppercase;
+      }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header-block">
+            <h1 class="header-title">Slide 2 — O que mudou de um mês para o outro</h1>
+        </div>
+        
+        <div class="main-content">
+            <div class="left-panel">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>MÉTRICA</th>
+                            <th class="val-cell">JULHO</th>
+                            <th class="val-cell">AGOSTO MTD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Leads Bitrix24 (Tráfego Pago)</td>
+                            <td class="val-cell">1.025</td>
+                            <td class="val-cell">944</td>
+                        </tr>
+                        <tr>
+                            <td>MQL</td>
+                            <td class="val-cell">772</td>
+                            <td class="val-cell">793</td>
+                        </tr>
+                        <tr>
+                            <td>SQL</td>
+                            <td class="val-cell">73</td>
+                            <td class="val-cell">49</td>
+                        </tr>
+                        <tr>
+                            <td>Spend</td>
+                            <td class="val-cell">R$ 23,1k</td>
+                            <td class="val-cell">R$ 74,1k</td>
+                        </tr>
+                        <tr>
+                            <td>Platform Leads</td>
+                            <td class="val-cell">433</td>
+                            <td class="val-cell">1.052</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="methodology-note">
+                    <p><strong>NOTA METODOLÓGICA:</strong> Julho tem 31 dias e agosto considera 26 dias (MTD). O CRM recebeu menos leads no MTD apesar do aumento de mídia, mas o volume qualificado (MQL) ficou ligeiramente acima de julho.</p>
+                </div>
+            </div>
+            
+            <div class="right-panel">
+                <div class="chart-container">
+                    <p class="chart-title">Evolução do Funil (Julho vs Agosto MTD)</p>
+                    <div style="height: 320px;">
+                        <canvas id="evolutionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+      const ctx = document.getElementById('evolutionChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Leads', 'MQL', 'SQL'],
+          datasets: [
+            {
+              label: 'Julho',
+              data: [1025, 772, 73],
+              backgroundColor: '#19747E',
+            },
+            {
+              label: 'Agosto MTD',
+              data: [944, 793, 49],
+              backgroundColor: '#E27D60',
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { font: { family: 'JetBrains Mono', size: 12 } }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: { color: '#D1E8E2' },
+              ticks: { font: { family: 'JetBrains Mono', size: 10 } }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: 'JetBrains Mono', size: 12 } }
+            }
+          }
+        }
+      });
+    </script>
+</body>
+</html>

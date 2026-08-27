@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+      
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font-family: 'JetBrains Mono', monospace; background: #FFFFFF; color: #19747E; }
+      
+      .slide-container { 
+        width: 1280px; 
+        min-height: 720px; 
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .header-block {
+        background: #19747E;
+        color: #FFFFFF;
+        padding-top: 60px;
+        padding-left: 80px;
+        padding-bottom: 30px;
+      }
+
+      .header-title {
+        font-size: 32px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .bu-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        flex: 1;
+      }
+
+      .bu-section {
+        padding-top: 40px;
+        padding-left: 60px;
+        padding-right: 60px;
+      }
+
+      .bu-med { border-right: 1px solid #D1E8E2; }
+
+      .bu-title {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: #E27D60;
+        border-bottom: 4px solid #D1E8E2;
+        padding-bottom: 10px;
+      }
+
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .data-table th {
+        text-align: left;
+        font-size: 12px;
+        font-weight: 700;
+        padding-top: 10px;
+        border-bottom: 2px solid #19747E;
+      }
+
+      .data-table td {
+        padding-top: 15px;
+        padding-bottom: 15px;
+        font-size: 13px;
+        border-bottom: 1px solid #D1E8E2;
+      }
+
+      .val-cell { text-align: right; }
+      .rate-cell { text-align: right; font-weight: 700; background: #F8FBF9; }
+
+      .insight-box {
+        margin-top: 30px;
+        font-size: 13px;
+        line-height: 1.5;
+        background: #D1E8E2;
+        padding-top: 15px;
+        padding-left: 15px;
+        padding-right: 15px;
+        min-height: 80px;
+      }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header-block">
+            <h1 class="header-title">Slide 3 — Lead → MQL → SQL: onde o funil ganhou ou perdeu</h1>
+        </div>
+        
+        <div class="bu-grid">
+            <div class="bu-section bu-med">
+                <h2 class="bu-title">MEDSYSTEMS</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ETAPA</th>
+                            <th class="val-cell">JULHO</th>
+                            <th class="val-cell">AGO MTD</th>
+                            <th class="val-cell">VAR %</th>
+                            <th class="rate-cell">TAXA ATUAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Lead</td>
+                            <td class="val-cell">267</td>
+                            <td class="val-cell">225</td>
+                            <td class="val-cell">-15,7%</td>
+                            <td class="rate-cell">—</td>
+                        </tr>
+                        <tr>
+                            <td>MQL</td>
+                            <td class="val-cell">191</td>
+                            <td class="val-cell">159</td>
+                            <td class="val-cell">-16,8%</td>
+                            <td class="rate-cell">70,7%</td>
+                        </tr>
+                        <tr>
+                            <td>SQL</td>
+                            <td class="val-cell">27</td>
+                            <td class="val-cell">11</td>
+                            <td class="val-cell">-59,3%</td>
+                            <td class="rate-cell">6,9%</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="insight-box">
+                    <p>Medsystems perdeu força no fundo do funil: a taxa MQL→SQL caiu significativamente no recorte atual.</p>
+                </div>
+            </div>
+            
+            <div class="bu-section">
+                <h2 class="bu-title">BEAUTYSYSTEMS</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ETAPA</th>
+                            <th class="val-cell">JULHO</th>
+                            <th class="val-cell">AGO MTD</th>
+                            <th class="val-cell">VAR %</th>
+                            <th class="rate-cell">TAXA ATUAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Lead</td>
+                            <td class="val-cell">758</td>
+                            <td class="val-cell">719</td>
+                            <td class="val-cell">-5,1%</td>
+                            <td class="rate-cell">—</td>
+                        </tr>
+                        <tr>
+                            <td>MQL</td>
+                            <td class="val-cell">581</td>
+                            <td class="val-cell">634</td>
+                            <td class="val-cell">+9,1%</td>
+                            <td class="rate-cell">88,2%</td>
+                        </tr>
+                        <tr>
+                            <td>SQL</td>
+                            <td class="val-cell">46</td>
+                            <td class="val-cell">38</td>
+                            <td class="val-cell">-17,4%</td>
+                            <td class="rate-cell">6,0%</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="insight-box">
+                    <p>BeautySystems melhorou a qualificação inicial (Lead→MQL em +11,5 pp), mas também teve queda em MQL→SQL.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

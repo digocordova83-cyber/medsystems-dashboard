@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+      
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font-family: 'JetBrains Mono', monospace; background: #FFFFFF; color: #19747E; }
+      
+      .slide-container { 
+        width: 1280px; 
+        min-height: 720px; 
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .header-block {
+        background: #E27D60;
+        color: #FFFFFF;
+        padding-top: 60px; /* keep upper padding */
+        padding-left: 80px;
+        padding-bottom: 10px; /* reduced to save height */
+      }
+
+      .header-title {
+        font-size: 32px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .main-content {
+        display: grid;
+        grid-template-columns: 380px 1fr; /* narrower evidence column */
+        flex: 1;
+      }
+
+      .evidence-panel {
+        background: #D1E8E2;
+        padding-top: 20px; /* reduced */
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+      }
+
+      .whatsapp-img {
+        width: 280px;
+        height: auto;
+        max-height: 480px; /* cap height to avoid overflowing beyond 720px */
+        border: 4px solid #FFFFFF;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        object-fit: contain;
+      }
+
+      .response-panel {
+        padding-top: 20px; /* reduced */
+        padding-left: 40px;
+        padding-right: 60px;
+      }
+
+      .response-section {
+        margin-bottom: 20px; /* reduced */
+      }
+
+      .section-title {
+        font-size: 18px;
+        font-weight: 700;
+        text-transform: uppercase;
+        border-bottom: 2px solid #E27D60;
+        padding-bottom: 6px;
+        margin-bottom: 10px;
+      }
+
+      .response-text {
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .kpi-row {
+        display: flex;
+        gap: 12px;
+        margin-top: 6px;
+      }
+
+      .kpi-mini {
+        background: #F8FBF9;
+        padding-top: 6px;
+        padding-left: 12px;
+        padding-right: 12px;
+        border-left: 4px solid #19747E;
+        flex: 1;
+      }
+
+      .kpi-mini-label { font-size: 10px; text-transform: uppercase; color: #666; }
+      .kpi-mini-val { font-size: 16px; font-weight: 700; }
+
+      .recommendation-box {
+        background: #19747E;
+        color: #FFFFFF;
+        padding-top: 12px;
+        padding-left: 20px;
+        padding-right: 20px;
+        margin-top: 12px;
+      }
+
+      .recommendation-title {
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #D1E8E2;
+      }
+
+      .recommendation-list {
+        font-size: 13px;
+        list-style: none;
+      }
+
+      .recommendation-list li {
+        margin-bottom: 6px;
+        padding-left: 15px;
+        position: relative;
+      }
+
+      .recommendation-list li::before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        color: #E27D60;
+      }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header-block">
+            <h1 class="header-title">Slide 6 — Resposta à Isa e plano de leitura</h1>
+        </div>
+        
+        <div class="main-content">
+            <div class="evidence-panel">
+                <img src="/home/ubuntu/upload/IMG_5952.PNG" class="whatsapp-img" alt="Evidência WhatsApp">
+            </div>
+            
+            <div class="response-panel">
+                <div class="response-section">
+                    <h2 class="section-title">Análise de Investimento vs. Resultados</h2>
+                    <div class="response-text">
+                        <p>Agosto MTD apresenta um aumento agressivo de verba (+220,7%), concentrado em Meta Ads. O volume de leads de plataforma acompanhou (+143,0%), mas o custo por lead subiu 32%.</p>
+                        <div class="kpi-row">
+                            <div class="kpi-mini">
+                                <p class="kpi-mini-label">Spend Antes (Jul)</p>
+                                <p class="kpi-mini-val">R$ 23.093</p>
+                            </div>
+                            <div class="kpi-mini">
+                                <p class="kpi-mini-label">Spend Agora (Ago)</p>
+                                <p class="kpi-mini-val">R$ 74.064</p>
+                            </div>
+                            <div class="kpi-mini">
+                                <p class="kpi-mini-label">Variação Leads</p>
+                                <p class="kpi-mini-val">-7,9% (CRM)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="response-section">
+                    <h2 class="section-title">Campanhas Hyperlocal e Push (Até dia 29)</h2>
+                    <div class="response-text">
+                        <p>O efeito destas campanhas está visível na melhora da taxa de qualificação inicial (Lead→MQL), que subiu de 75,3% para 84,0% no consolidado.</p>
+                    </div>
+                    <div class="recommendation-box">
+                        <p class="recommendation-title">RECOMENDAÇÕES OPERACIONAIS</p>
+                        <ul class="recommendation-list">
+                            <li>Monitorar a conversão MQL→SQL destas campanhas específicas até o dia 29.</li>
+                            <li>Validar se o aumento de verba em Meta está gerando leads com perfil de fechamento.</li>
+                            <li>Ajustar a distribuição de verba baseada na eficiência marginal, não apenas no volume.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

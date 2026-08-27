@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "title": "Slide 1 — A leitura executiva em 30 segundos",
+    "created": 1787848447.743,
+    "last_updated": 1787848573.024,
+    "total_slides": 6
+  },
+  "slides": [
+    {
+      "id": "slide_1_exec_summary",
+      "state": "edited",
+      "pageNum": 1
+    },
+    {
+      "id": "slide_2_monthly_evolution",
+      "state": "edited",
+      "pageNum": 2
+    },
+    {
+      "id": "slide_3_bu_funnel",
+      "state": "edited",
+      "pageNum": 3
+    },
+    {
+      "id": "slide_4_benchmarking",
+      "state": "edited",
+      "pageNum": 4
+    },
+    {
+      "id": "slide_5_media_efficiency",
+      "state": "edited",
+      "pageNum": 5
+    },
+    {
+      "id": "slide_6_isa_response",
+      "state": "edited",
+      "pageNum": 6
+    }
+  ],
+  "outline": [
+    {
+      "id": "slide_1_exec_summary",
+      "title": "Slide 1 — A leitura executiva em 30 segundos",
+      "summary": "Resumo dos indicadores-chave comparando julho e agosto MTD, com foco na expansão de mídia e no gargalo MQL→SQL."
+    },
+    {
+      "id": "slide_2_monthly_evolution",
+      "title": "Slide 2 — O que mudou de um mês para o outro",
+      "summary": "Gráfico de evolução mensal comparando leads, MQL, SQL e spend entre julho e agosto MTD."
+    },
+    {
+      "id": "slide_3_bu_funnel",
+      "title": "Slide 3 — Lead → MQL → SQL: onde o funil ganhou ou perdeu",
+      "summary": "Comparação detalhada do funil por BU (Medsystems vs BeautySystems) com taxas de conversão e variações."
+    },
+    {
+      "id": "slide_4_benchmarking",
+      "title": "Slide 4 — Conversão de cada BU versus média",
+      "summary": "Benchmarking das taxas de conversão entre as BUs e a média consolidada para identificar pontos de melhoria."
+    },
+    {
+      "id": "slide_5_media_efficiency",
+      "title": "Slide 5 — Uso da verba: onde está dando efeito",
+      "summary": "Análise da eficiência de mídia, distribuição entre Google e Meta Ads e custo por platform lead."
+    },
+    {
+      "id": "slide_6_isa_response",
+      "title": "Slide 6 — Resposta à Isa e plano de leitura",
+      "summary": "Resposta direta às demandas da Isa, indicativos utilizados e recomendações para as campanhas de hyperlocal e push.",
+      "image_plan": "/home/ubuntu/upload/IMG_5952.PNG - WhatsApp conversation screenshot showing the exact demands from Isa mentioned in the slide text"
+    }
+  ]
+}

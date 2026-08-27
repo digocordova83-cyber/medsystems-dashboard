@@ -283,3 +283,36 @@
 
 - [x] Executar a atualização diária de 27/08/2026 com corte D-1 até 26/08/2026 para RD Station, Bitrix24, Google Ads e Meta Ads.
 - [x] Validar datas máximas, totais por fonte, investimento por marca e registrar exceções da execução diária.
+
+- [x] Produzir relatório executivo em PDF de até 6 slides com evolução Lead→MQL→SQL mês a mês, conversão por BU, comparação com média, uso da verba, indicativos utilizados, pontos de efeito e demandas registradas pela Isa.
+- [x] Consolidar dados auditáveis e validar as métricas antes de gerar o deck e exportar o PDF.
+- [x] Revisar visualmente o deck, exportar o PDF e entregar o arquivo final ao usuário.
+
+## Contexto da demanda da Isa
+
+- [x] Comparar quanto era investido antes versus quanto está sendo investido agora.
+- [x] Comparar leads do mês passado versus o mês atual e relacionar a variação com a verba.
+- [x] Considerar que campanhas de hyperlocal e push foram programadas para rodar até o dia 29.
+- [x] Registrar a urgência de retorno do relatório mencionada na conversa compartilhada.
+
+
+- [x] Refazer o relatório executivo usando exclusivamente dados do RD Station, removendo Bitrix24 e mídia dos cálculos.
+- [x] Revalidar os volumes, taxas Lead→MQL→SQL e comparação mensal por BU diretamente na base RD Station.
+- [x] Revisar o layout dos seis slides, melhorando hierarquia, legibilidade, consistência e notas metodológicas.
+- [x] Apresentar e entregar a nova versão revisada do relatório.
+
+
+- [x] Ler e aplicar a documentação dashboard-leads-como-os-dados-sao-puxados.docx como parâmetro oficial da revisão do relatório RD Station.
+- [x] Revisar os cálculos do relatório conforme os filtros e critérios descritos na documentação.
+
+
+- [x] Incorporar na apresentação os dados e observações das imagens enviadas sobre comparação de verba, leads e evolução semanal.
+- [x] Remover o slide de limitações e substituí-lo por uma síntese executiva final.
+- [x] Revisar a coerência visual e numérica da nova sequência de slides antes da entrega.
+
+
+- [x] Acessar os três relatórios Publya e validar os três formatos de programática em execução.
+- [x] Adicionar dois slides sobre programática, formatos e estratégia de geolocalização de eventos.
+- [x] Registrar Quanta Academy em 27/08 e BOT em 28–29/08 na narrativa operacional.
+- [x] Apresentar e entregar a apresentação atualizada com os novos slides.
+

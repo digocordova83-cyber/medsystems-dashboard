@@ -1,0 +1,89 @@
+{
+  "project_info": {
+    "title": "Slide 1 — O que o RD Station comprova: volumes e cobertura",
+    "created": 1787852820.35,
+    "last_updated": 1787861471.394,
+    "total_slides": 7
+  },
+  "slides": [
+    {
+      "id": "slide_1_rd_proof",
+      "state": "edited",
+      "pageNum": 1
+    },
+    {
+      "id": "slide_2_rd_evolution",
+      "state": "edited",
+      "pageNum": 2
+    },
+    {
+      "id": "slide_3_bu_comparison",
+      "state": "edited",
+      "pageNum": 3
+    },
+    {
+      "id": "slide_4_utm_breakdown",
+      "state": "edited",
+      "pageNum": 4
+    },
+    {
+      "id": "slide_programmatic_formats",
+      "state": "edited",
+      "pageNum": 5
+    },
+    {
+      "id": "slide_geo_strategy",
+      "state": "edited",
+      "pageNum": 6
+    },
+    {
+      "id": "slide_5_rd_limitations",
+      "state": "edited",
+      "pageNum": 7
+    },
+    {
+      "id": "slide_6_isa_response_rd",
+      "state": "deleted",
+      "pageNum": -1
+    }
+  ],
+  "outline": [
+    {
+      "id": "slide_1_rd_proof",
+      "title": "Slide 1 — O que o RD Station comprova: volumes e cobertura",
+      "summary": "Resumo executivo dos contatos únicos, eventos e cobertura UTM, destacando o crescimento bruto versus a queda na rastreabilidade."
+    },
+    {
+      "id": "slide_2_rd_evolution",
+      "title": "Slide 2 — Evolução mensal no RD Station",
+      "summary": "Gráfico comparativo de contatos únicos, contatos com UTM e eventos entre julho e agosto MTD."
+    },
+    {
+      "id": "slide_3_bu_comparison",
+      "title": "Slide 3 — Comparação por BU: Medsystems vs BeautySystems",
+      "summary": "Detalhamento do volume e cobertura UTM por conta, alertando para a queda acentuada em BeautySystems em agosto."
+    },
+    {
+      "id": "slide_4_utm_breakdown",
+      "title": "Slide 4 — O que está chegando identificado por UTM (Agosto MTD)",
+      "summary": "Ranking das origens e meios estruturados identificados nos eventos de agosto, com foco em Facebook e Google Ads."
+    },
+    {
+      "id": "slide_programmatic_formats",
+      "title": "Mídia Programática: Formatos e Desempenho (Publya)",
+      "summary": "Análise dos três formatos em veiculação na programática (Display, PMax e Meta B2B) com métricas de impressões, cliques e CTR extraídas dos relatórios Publya.",
+      "image_plan": "Nenhum"
+    },
+    {
+      "id": "slide_geo_strategy",
+      "title": "Plano de Geolocalização e Eventos (27/08 a 29/08)",
+      "summary": "Detalhamento do foco 100% em display geolocalizado para os eventos Quanta Academy (dia 27) e BOT (dias 28 e 29).",
+      "image_plan": "Nenhum"
+    },
+    {
+      "id": "slide_5_rd_limitations",
+      "title": "Slide 5 — O que o RD não responde sozinho: MQL, SQL e Verba",
+      "summary": "Esclarecimento sobre métricas fora do escopo RD-only e a importância do cruzamento com CRM e mídia para análise de efeito."
+    }
+  ]
+}

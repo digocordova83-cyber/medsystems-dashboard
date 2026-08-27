@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+      
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font-family: 'JetBrains Mono', monospace; background: #FFFFFF; color: #19747E; }
+      
+      .slide-container { 
+        width: 1280px; 
+        min-height: 720px; 
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .header-block {
+        background: #D1E8E2;
+        padding-top: 60px;
+        padding-left: 80px;
+        padding-bottom: 30px;
+      }
+
+      .header-title {
+        font-size: 32px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .main-content {
+        flex: 1;
+        padding-top: 40px;
+        padding-left: 80px;
+        padding-right: 80px;
+      }
+
+      .benchmark-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 40px;
+      }
+
+      .benchmark-table th {
+        text-align: left;
+        font-size: 12px;
+        font-weight: 700;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #19747E;
+        background: #F8FBF9;
+      }
+
+      .benchmark-table td {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        font-size: 14px;
+        border-bottom: 1px solid #D1E8E2;
+      }
+
+      .group-header {
+        background: #19747E;
+        color: #FFFFFF;
+        font-weight: 700;
+        text-align: center !important;
+      }
+
+      .val-cell { text-align: right; }
+      .avg-cell { background: #F0F7F6; font-weight: 700; }
+
+      .insight-footer {
+        border-top: 4px solid #E27D60;
+        padding-top: 20px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+      }
+
+      .insight-text {
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .highlight-label {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #E27D60;
+        margin-bottom: 5px;
+      }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header-block">
+            <h1 class="header-title">Slide 4 — Conversão de cada BU versus média</h1>
+        </div>
+        
+        <div class="main-content">
+            <table class="benchmark-table">
+                <thead>
+                    <tr>
+                        <th rowspan="2" style="background: #FFFFFF; border-bottom: none;">TAXA DE CONVERSÃO</th>
+                        <th colspan="3" class="group-header">JULHO (FECHADO)</th>
+                        <th colspan="3" class="group-header" style="background: #E27D60;">AGOSTO (MTD)</th>
+                    </tr>
+                    <tr>
+                        <th class="val-cell">MEDSYSTEMS</th>
+                        <th class="val-cell">BEAUTY</th>
+                        <th class="val-cell avg-cell">MÉDIA</th>
+                        <th class="val-cell">MEDSYSTEMS</th>
+                        <th class="val-cell">BEAUTY</th>
+                        <th class="val-cell avg-cell">MÉDIA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Lead → MQL</strong> (Qualificação)</td>
+                        <td class="val-cell">71,5%</td>
+                        <td class="val-cell">76,6%</td>
+                        <td class="val-cell avg-cell">74,1%</td>
+                        <td class="val-cell">70,7%</td>
+                        <td class="val-cell" style="color: #E27D60; font-weight: 700;">88,2%</td>
+                        <td class="val-cell avg-cell">79,4%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MQL → SQL</strong> (Oportunidade)</td>
+                        <td class="val-cell">14,1%</td>
+                        <td class="val-cell">7,9%</td>
+                        <td class="val-cell avg-cell">11,0%</td>
+                        <td class="val-cell">6,9%</td>
+                        <td class="val-cell">6,0%</td>
+                        <td class="val-cell avg-cell">6,5%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Lead → SQL</strong> (Eficiência Total)</td>
+                        <td class="val-cell">10,1%</td>
+                        <td class="val-cell">6,1%</td>
+                        <td class="val-cell avg-cell">8,1%</td>
+                        <td class="val-cell">4,9%</td>
+                        <td class="val-cell">5,3%</td>
+                        <td class="val-cell avg-cell">5,1%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Descarte / Lead</strong> (Perda)</td>
+                        <td class="val-cell">28,5%</td>
+                        <td class="val-cell">23,2%</td>
+                        <td class="val-cell avg-cell">25,8%</td>
+                        <td class="val-cell">25,8%</td>
+                        <td class="val-cell" style="color: #19747E; font-weight: 700;">9,9%</td>
+                        <td class="val-cell avg-cell">17,8%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="insight-footer">
+                <div class="insight-text">
+                    <p class="highlight-label">QUALIDADE DO TOPO</p>
+                    <p>A média simples mostra uma melhora de <strong>5,3 pontos percentuais</strong> em Lead→MQL, impulsionada pela forte performance da BeautySystems em agosto.</p>
+                </div>
+                <div class="insight-text">
+                    <p class="highlight-label">GARGALO DE PASSAGEM</p>
+                    <p>O indicador de passagem para oportunidade (MQL→SQL) piorou em ambas as BUs, caindo de uma média de 11,0% para <strong>6,5%</strong> no recorte atual.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

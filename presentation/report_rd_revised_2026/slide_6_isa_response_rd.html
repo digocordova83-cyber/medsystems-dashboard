@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+      
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font-family: 'JetBrains Mono', monospace; background: #FFFFFF; color: #19747E; }
+      
+      .slide-container { 
+        width: 1280px; 
+        min-height: 720px; 
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .header-block {
+        background: #E27D60;
+        color: #FFFFFF;
+        padding-top: 60px;
+        padding-left: 80px;
+        padding-bottom: 15px;
+      }
+
+      .header-title {
+        font-size: 32px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .main-content {
+        display: grid;
+        grid-template-columns: 400px 1fr;
+        flex: 1;
+      }
+
+      .evidence-panel {
+        background: #D1E8E2;
+        padding-top: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+      }
+
+      .whatsapp-img {
+        width: 300px;
+        height: auto;
+        max-height: 500px;
+        border: 4px solid #FFFFFF;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        object-fit: contain;
+      }
+
+      .response-panel {
+        padding-top: 30px;
+        padding-left: 50px;
+        padding-right: 80px;
+      }
+
+      .response-section {
+        margin-bottom: 25px;
+      }
+
+      .section-title {
+        font-size: 18px;
+        font-weight: 700;
+        text-transform: uppercase;
+        border-bottom: 2px solid #E27D60;
+        padding-bottom: 6px;
+        margin-bottom: 12px;
+      }
+
+      .response-text {
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .kpi-row {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+      }
+
+      .kpi-mini {
+        background: #F8FBF9;
+        padding-top: 8px;
+        padding-left: 12px;
+        padding-right: 12px;
+        border-left: 4px solid #19747E;
+        flex: 1;
+      }
+
+      .kpi-mini-label { font-size: 10px; text-transform: uppercase; color: #666; }
+      .kpi-mini-val { font-size: 16px; font-weight: 700; }
+
+      .recommendation-box {
+        background: #19747E;
+        color: #FFFFFF;
+        padding-top: 15px;
+        padding-left: 20px;
+        padding-right: 20px;
+        margin-top: 15px;
+      }
+
+      .recommendation-title {
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #D1E8E2;
+      }
+
+      .recommendation-list {
+        font-size: 13px;
+        list-style: none;
+      }
+
+      .recommendation-list li {
+        margin-bottom: 6px;
+        padding-left: 15px;
+        position: relative;
+      }
+
+      .recommendation-list li::before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        color: #E27D60;
+      }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header-block">
+            <h1 class="header-title">Slide 6 — Resposta à Isa e recomendações operacionais RD</h1>
+        </div>
+        
+        <div class="main-content">
+            <div class="evidence-panel">
+                <img src="/home/ubuntu/upload/IMG_5952.PNG" class="whatsapp-img" alt="Evidência WhatsApp">
+            </div>
+            
+            <div class="response-panel">
+                <div class="response-section">
+                    <h2 class="section-title">Análise de Volume e Rastreabilidade (RD Station)</h2>
+                    <div class="response-text">
+                        <p>O RD Station comprova um crescimento agressivo de contatos únicos (+118,6%) em agosto MTD. No entanto, a cobertura de UTM caiu de 48,6% para 24,4%, indicando que o volume cresceu sem identificação direta de origem.</p>
+                        <div class="kpi-row">
+                            <div class="kpi-mini">
+                                <p class="kpi-mini-label">Contatos Julho</p>
+                                <p class="kpi-mini-val">1.773</p>
+                            </div>
+                            <div class="kpi-mini">
+                                <p class="kpi-mini-label">Contatos Agosto</p>
+                                <p class="kpi-mini-val">3.875</p>
+                            </div>
+                            <div class="kpi-mini">
+                                <p class="kpi-mini-label">Cobertura UTM</p>
+                                <p class="kpi-mini-val">24,4% (Ago)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="response-section">
+                    <h2 class="section-title">Acompanhamento Hyperlocal e Push (Até dia 29)</h2>
+                    <div class="response-text">
+                        <p>Para estas campanhas, o RD é a fonte de verdade para volume bruto e conversões. O principal desafio é validar se o tagging está correto para evitar a queda de cobertura observada em BeautySystems.</p>
+                    </div>
+                    <div class="recommendation-box">
+                        <p class="recommendation-title">PLANO DE AÇÃO RD STATION</p>
+                        <ul class="recommendation-list">
+                            <li>Acompanhar diariamente contatos únicos e cobertura UTM por BU até o dia 29.</li>
+                            <li>Validar o tagging das campanhas Hyperlocal e Push para garantir atribuição.</li>
+                            <li>Cruzar estes volumes com o CRM para identificar a qualidade (MQL/SQL) do incremento.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -262,6 +262,10 @@ export async function getContactsForEventWindow(accountKey: RdAccountKey, start:
       eq(rdStationContacts.accountKey, accountKey),
       gt(rdStationContacts.id, afterId),
       or(
+        isNull(rdStationContacts.eventsSyncedAt),
+        gt(rdStationContacts.lastConversionAt, rdStationContacts.eventsSyncedAt),
+      ),
+      or(
         and(gte(rdStationContacts.createdAtRd, start), lt(rdStationContacts.createdAtRd, end)),
         and(gte(rdStationContacts.lastConversionAt, start), lt(rdStationContacts.lastConversionAt, end)),
       ),

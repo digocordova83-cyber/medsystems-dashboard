@@ -280,3 +280,6 @@
 - [x] Identificar duplicidades por granularidade, contas, campanhas, anúncios, datas ou cargas repetidas na base normalizada de mídia.
 - [x] Corrigir a importação/agregação de investimento sem apagar dados brutos e criar testes de reconciliação por plataforma.
 - [x] Recalcular Overview, Google Ads e Meta Ads e validar os valores no dashboard publicado.
+
+- [x] Executar a atualização diária de 27/08/2026 com corte D-1 até 26/08/2026 para RD Station, Bitrix24, Google Ads e Meta Ads.
+- [x] Validar datas máximas, totais por fonte, investimento por marca e registrar exceções da execução diária.

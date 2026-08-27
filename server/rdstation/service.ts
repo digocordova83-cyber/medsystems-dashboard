@@ -27,9 +27,12 @@ const RD_API_BASE = "https://api.rd.services";
 const PAGE_SIZE = 125;
 const EVENT_BATCH_SIZE = 8;
 const AUGUST_2026_START = new Date("2026-08-01T03:00:00.000Z");
-const AUGUST_2026_END = new Date("2026-08-21T03:00:00.000Z");
+const todayBrt = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(new Date());
+const currentDayStartBrt = new Date(`${todayBrt}T00:00:00-03:00`);
+const augustMonthEnd = new Date("2026-09-01T03:00:00.000Z");
+const AUGUST_2026_END = currentDayStartBrt < augustMonthEnd ? currentDayStartBrt : augustMonthEnd;
 
-export function isInAugust1To20(value: string) {
+export function isInAugustThroughD1(value: string) {
   const date = new Date(value);
   return !Number.isNaN(date.valueOf()) && date >= AUGUST_2026_START && date < AUGUST_2026_END;
 }
@@ -298,7 +301,7 @@ export async function syncAugustConversionBatch(accountKey: RdAccountKey, afterI
           `/platform/contacts/${encodeURIComponent(contact.contactUuid)}/events?event_type=CONVERSION&order=created_at:asc&page=${page}`,
         );
         const events = Array.isArray(payload) ? payload : (Array.isArray(payload.events) ? payload.events : []);
-        selectedEvents.push(...events.filter((event: Record<string, unknown>) => isInAugust1To20(String(event.event_timestamp ?? event.created_at ?? ""))));
+        selectedEvents.push(...events.filter((event: Record<string, unknown>) => isInAugustThroughD1(String(event.event_timestamp ?? event.created_at ?? ""))));
         if (events.length < 10) break;
       }
       await upsertConversionEvents(accountKey, contact.contactUuid, selectedEvents);

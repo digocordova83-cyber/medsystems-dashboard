@@ -13,6 +13,8 @@ const attributionMethodValues = ["none", "utm_source", "utm_campaign", "identifi
 export const users = mysqlTable("users", {
   id: int("id").autoincrement().primaryKey(),
   openId: varchar("openId", { length: 64 }).notNull().unique(),
+  username: varchar("username", { length: 64 }).unique(),
+  passwordHash: text("passwordHash"),
   name: text("name"),
   email: varchar("email", { length: 320 }),
   loginMethod: varchar("loginMethod", { length: 64 }),
@@ -21,6 +23,19 @@ export const users = mysqlTable("users", {
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
 });
+
+export const dashboardAccessLogs = mysqlTable("dashboardAccessLogs", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId"),
+  username: varchar("username", { length: 64 }).notNull(),
+  result: mysqlEnum("result", ["success", "failure", "logout"]).notNull(),
+  ipAddress: varchar("ipAddress", { length: 128 }),
+  userAgent: text("userAgent"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, table => [
+  index("dashboard_access_created_index").on(table.createdAt),
+  index("dashboard_access_username_index").on(table.username, table.createdAt),
+]);
 
 export const rdStationAccounts = mysqlTable("rdStationAccounts", {
   id: int("id").autoincrement().primaryKey(),
@@ -188,3 +203,5 @@ export const attributionAuditLinks = mysqlTable("attributionAuditLinks", {
 
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
+export type DashboardAccessLog = typeof dashboardAccessLogs.$inferSelect;
+export type InsertDashboardAccessLog = typeof dashboardAccessLogs.$inferInsert;

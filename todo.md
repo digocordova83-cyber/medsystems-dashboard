@@ -261,3 +261,16 @@
 - [x] Redesenhar a aba Meta Ads com filtros, KPIs, gráficos, distribuição de verba e criativos no mesmo sistema visual da aba Negócios.
 - [x] Criar e reutilizar padrões compartilhados para cabeçalhos, filtros de data, cards, painéis e estados de carregamento/erro.
 - [x] Validar Overview, Google Ads, Meta Ads e Negócios em desktop e mobile, incluindo build e testes, antes de publicar.
+
+- [x] Alterar o agendamento diário do dashboard de 09h para 08h no horário de Brasília.
+- [x] Confirmar que a rotina atualiza RD Station, Bitrix24, Google Ads e Meta Ads com corte D-1 e gera um resumo após a execução.
+- [x] Validar o status ativo e o próximo horário do agendamento após a alteração: cron `0 0 11 * * *`, equivalente a 08h BRT.
+
+- [x] Criar autenticação própria por usuário e senha com sessão segura para proteger todo o dashboard.
+- [x] Cadastrar `rodrigo` como administrador e `medsystems`, `patrick` e `Isadora` como clientes, armazenando somente hashes das senhas.
+- [x] Impedir que usuários não autenticados acessem as consultas agregadas do dashboard.
+- [x] Criar tela de login responsiva com estados de carregamento, erro e logout.
+- [x] Criar área exclusiva do administrador com log de tentativas e acessos, usuário, data, resultado, IP e agente do navegador quando disponíveis.
+- [x] Adicionar testes de login, sessão, autorização e acesso administrativo.
+- [x] Validar os quatro acessos, as permissões de cliente/administrador e publicar a proteção.
+- [x] Usar os logos fornecidos de MedSystems e BeautySystems na tela de login, com símbolo `+` entre eles e fundo branco.

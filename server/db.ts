@@ -4,7 +4,9 @@ import {
   attributionAuditLinks,
   bitrix24Entities,
   bitrix24SyncRuns,
+  dashboardAccessLogs,
   mediaDailyPerformance,
+  type InsertDashboardAccessLog,
   type InsertUser,
   rdStationAccounts,
   rdStationContacts,
@@ -37,14 +39,14 @@ export async function upsertUser(user: InsertUser): Promise<void> {
   if (!db) throw new Error("Banco de dados indisponível.");
   const values: InsertUser = { openId: user.openId, lastSignedIn: user.lastSignedIn ?? new Date() };
   const updateSet: Record<string, unknown> = { lastSignedIn: values.lastSignedIn };
-  (["name", "email", "loginMethod"] as const).forEach(field => {
+  (["username", "passwordHash", "name", "email", "loginMethod"] as const).forEach(field => {
     if (user[field] !== undefined) {
       values[field] = user[field] ?? null;
       updateSet[field] = user[field] ?? null;
     }
   });
   values.role = user.role ?? (user.openId === ENV.ownerOpenId ? "admin" : "user");
-  updateSet.role = values.role;
+  if (user.role !== undefined || user.openId === ENV.ownerOpenId) updateSet.role = values.role;
   await db.insert(users).values(values).onDuplicateKeyUpdate({ set: updateSet });
 }
 
@@ -53,6 +55,33 @@ export async function getUserByOpenId(openId: string) {
   if (!db) return undefined;
   const result = await db.select().from(users).where(eq(users.openId, openId)).limit(1);
   return result[0];
+}
+
+export async function getUserByUsername(username: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const rows = await db.select().from(users).where(eq(users.username, username)).limit(1);
+  return rows[0];
+}
+
+export async function recordDashboardAccess(entry: InsertDashboardAccessLog) {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  await db.insert(dashboardAccessLogs).values(entry);
+}
+
+export async function listDashboardAccessLogs(limit = 200) {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  return db.select({
+    id: dashboardAccessLogs.id,
+    userId: dashboardAccessLogs.userId,
+    username: dashboardAccessLogs.username,
+    result: dashboardAccessLogs.result,
+    ipAddress: dashboardAccessLogs.ipAddress,
+    userAgent: dashboardAccessLogs.userAgent,
+    createdAt: dashboardAccessLogs.createdAt,
+  }).from(dashboardAccessLogs).orderBy(desc(dashboardAccessLogs.createdAt)).limit(limit);
 }
 
 export async function ensureRdStationAccounts() {

@@ -316,3 +316,25 @@
 - [x] Registrar Quanta Academy em 27/08 e BOT em 28–29/08 na narrativa operacional.
 - [x] Apresentar e entregar a apresentação atualizada com os novos slides.
 
+
+- [x] Integrar explicitamente no relatório executivo os dados de programática da Publya e o plano de geolocalização já levantados.
+- [x] Atualizar o resumo final do executivo para refletir programática, Quanta Academy em 27/08 e BOT em 28–29/08.
+- [x] Apresentar e entregar a versão executiva atualizada.
+
+
+- [x] Extrair e validar os portais de maior impacto no relatório programático da Publya.
+- [x] Inserir o ranking de portais no slide de programática, mantendo todas as legendas na mesma escala visual.
+- [x] Revisar e apresentar a versão atualizada do relatório.
+
+
+- [x] Revisar e corrigir o documento executivo antes do reenvio, mantendo o ranking de portais e as legendas padronizadas.
+- [x] Reenviar o documento executivo atualizado. ao usuário.
+
+
+- [x] Criar usuário cliente `luiza` com senha protegida e acesso ao dashboard.
+- [x] Confirmar no banco o corte mais recente de RD Station, Bitrix24, Google Ads e Meta Ads.
+- [x] Validar o login criado e salvar a alteração publicada.
+
+
+- [x] Alterar o título do site para `Medsystems - Gerencial` e validar a publicação.
+- [x] Inserir favicon com o logo da MedSystems e validar o título `Medsystems - Gerencial` junto aos metadados do site.

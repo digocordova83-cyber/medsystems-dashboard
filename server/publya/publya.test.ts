@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { publyaDashboardInternals } from "./dashboard";
+import { programmaticDashboard, publyaDashboardInternals } from "./dashboard";
 import { publyaScheduleInternals } from "./scheduled";
 import { publyaInternals } from "./service";
 
@@ -46,11 +46,18 @@ describe("integração Publya", () => {
     expect(rows.get("2026-08-27")?.impressions).toBeUndefined();
   });
 
-  it("classifica DV360 como programática e exclui Google Ads e Meta", () => {
+  it("classifica inventário programático sem confundir Google Ads e Meta", () => {
     expect(publyaDashboardInternals.isProgrammaticPlatform("DV360")).toBe(true);
     expect(publyaDashboardInternals.isProgrammaticPlatform("Display Programmatic")).toBe(true);
     expect(publyaDashboardInternals.isProgrammaticPlatform("Google Ads")).toBe(false);
     expect(publyaDashboardInternals.isProgrammaticPlatform("Meta")).toBe(false);
+  });
+
+  it("mapeia os quatro tipos e objetivos mostrados pela Publya", () => {
+    expect(publyaDashboardInternals.reportMetadata({ name: "B2B", platformName: "Google Ads" })).toEqual({ reportType: "PMAX", objective: "Conversões" });
+    expect(publyaDashboardInternals.reportMetadata({ name: "B2B", platformName: "Meta" })).toEqual({ reportType: "Meta", objective: "Geração de Cadastros" });
+    expect(publyaDashboardInternals.reportMetadata({ name: "B2B - Geolocalização", platformName: "DV360" })).toEqual({ reportType: "Programática Display", objective: "Alcance" });
+    expect(publyaDashboardInternals.reportMetadata({ name: "B2B", platformName: "DV360" })).toEqual({ reportType: "Programática Display", objective: "Conversões" });
   });
 
   it("não soma snapshots com os mesmos totais de entrega", () => {
@@ -61,5 +68,20 @@ describe("integração Publya", () => {
 
   it("calcula o corte D-1 em Brasília", () => {
     expect(publyaScheduleInternals.previousDayInSaoPaulo(new Date("2026-08-28T14:00:00.000Z"))).toEqual({ startDate: "2026-08-01", endDate: "2026-08-27" });
+  });
+
+  it("entrega os quatro relatórios B2B sem inflar o snapshot DV360 duplicado", async () => {
+    const data = await programmaticDashboard({ startDate: "2026-08-01", endDate: "2026-08-27" });
+    expect(data.campaigns).toHaveLength(4);
+    expect(data.campaigns.map(row => `${row.reportType}:${row.objective}`)).toEqual(expect.arrayContaining([
+      "PMAX:Conversões",
+      "Meta:Geração de Cadastros",
+      "Programática Display:Alcance",
+      "Programática Display:Conversões",
+    ]));
+    expect(data.campaigns.filter(row => !row.counted)).toHaveLength(1);
+    expect(data.totals.spend).toBeCloseTo(22_194.18, 2);
+    expect(data.totals.impressions).toBe(699_353);
+    expect(data.totals.clicks).toBe(5_183);
   });
 });

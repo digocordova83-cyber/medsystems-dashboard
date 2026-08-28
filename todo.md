@@ -360,3 +360,8 @@
 - [x] Preservar as regras atuais de marca, origem, funil e atribuição de RD Station e Bitrix24.
 - [x] Confirmar datas máximas, totais por fonte, investimento Windsor por conta e registrar fontes que não alcancem D-1.
 - [x] Entregar resumo diário com status, datas sincronizadas, investimento Google/Meta por marca e exceções.
+
+- [x] Validar os quatro relatórios B2B da Publya mostrados na captura: PMAX, Meta e duas campanhas de Programática Display.
+- [x] Ajustar a aba Programática para listar os quatro relatórios com plataforma, objetivo, período, status e métricas separados.
+- [x] Recalcular os totais sem excluir PMAX/Meta e sem duplicar snapshots inconsistentes das duas campanhas DV360.
+- [x] Revisar desktop/mobile, executar testes e publicar a correção dos quatro relatórios.

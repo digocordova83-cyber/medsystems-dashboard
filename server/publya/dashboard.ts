@@ -15,6 +15,15 @@ function isProgrammaticPlatform(value: string | null | undefined) {
   return /dv360|programmatic|gama|display/i.test(value ?? "");
 }
 
+function reportMetadata(campaign: { name: string; platformName: string | null }) {
+  const platform = campaign.platformName ?? "Não identificado";
+  if (/google/i.test(platform)) return { reportType: "PMAX", objective: "Conversões" };
+  if (/meta/i.test(platform)) return { reportType: "Meta", objective: "Geração de Cadastros" };
+  if (isProgrammaticPlatform(platform) && /geo/i.test(campaign.name)) return { reportType: "Programática Display", objective: "Alcance" };
+  if (isProgrammaticPlatform(platform)) return { reportType: "Programática Display", objective: "Conversões" };
+  return { reportType: platform, objective: "Não identificado" };
+}
+
 type SnapshotRow = typeof publyaCampaignSnapshots.$inferSelect;
 
 function snapshotSignature(row: SnapshotRow) {
@@ -54,7 +63,7 @@ export async function programmaticDashboard(input: { startDate: string; endDate:
   const end = brtBoundary(input.endDate, true);
   const account = (await db.select().from(publyaAccounts).where(eq(publyaAccounts.clientId, clientId)).limit(1))[0];
   const allCampaignRows = await db.select().from(publyaCampaigns).where(eq(publyaCampaigns.clientId, clientId)).orderBy(asc(publyaCampaigns.name));
-  const campaignRows = allCampaignRows.filter(row => isProgrammaticPlatform(row.platformName));
+  const campaignRows = allCampaignRows;
   const selectedCampaignIds = input.campaignId ? [input.campaignId] : campaignRows.map(row => row.campaignId);
   const selectedIdSet = new Set(selectedCampaignIds);
 
@@ -140,9 +149,18 @@ export async function programmaticDashboard(input: { startDate: string; endDate:
       cpm: totals.impressions > 0 ? (totals.spend / totals.impressions) * 1000 : 0,
       cpc: totals.clicks > 0 ? totals.spend / totals.clicks : 0,
     },
-    campaigns: snapshotCandidates.map(row => ({
+    campaigns: snapshotCandidates.map(row => {
+      const campaign = campaignRows.find(item => item.campaignId === row.campaignId);
+      const metadata = reportMetadata({ name: campaign?.name ?? `Campanha ${row.campaignId}`, platformName: campaign?.platformName ?? null });
+      return {
       campaignId: row.campaignId,
       campaignName: campaignName.get(row.campaignId) ?? `Campanha ${row.campaignId}`,
+      platform: campaign?.platformName ?? "Não identificado",
+      reportType: metadata.reportType,
+      objective: metadata.objective,
+      startDate: campaign?.startDate ?? null,
+      endDate: campaign?.endDate ?? null,
+      status: campaign?.campaignStatus ?? "unknown",
       spend: numeric(row.spend),
       impressions: numeric(row.impressions),
       clicks: numeric(row.clicks),
@@ -154,17 +172,18 @@ export async function programmaticDashboard(input: { startDate: string; endDate:
       viewability: numeric(row.viewability),
       counted: countedIdSet.has(row.campaignId),
       duplicateOf: duplicates.get(row.campaignId) ?? null,
-    })).sort((a, b) => b.impressions - a.impressions),
-    campaignOptions: campaignRows.map(row => ({ campaignId: row.campaignId, name: row.name, platform: row.platformName, status: row.campaignStatus })),
+    };
+    }).sort((a, b) => (a.startDate?.getTime() ?? 0) - (b.startDate?.getTime() ?? 0)),
+    campaignOptions: campaignRows.map(row => ({ campaignId: row.campaignId, name: row.name, platform: row.platformName, status: row.campaignStatus, ...reportMetadata(row) })),
     byDay: Array.from(byDayMap.values()),
     formats: aggregateGroups("formats"),
     creatives: aggregateGroups("creatives"),
     sites: aggregateGroups("sites"),
     publishers: aggregateGroups("publishers"),
     quality: { duplicateSnapshots: duplicates.size, reachReliable: duplicates.size === 0 },
-    warnings: duplicates.size ? [`A API Publya retornou investimento, impressões, cliques e custos idênticos para ${duplicates.size + 1} campanhas DV360 no mesmo período, enquanto o alcance variou entre chamadas. As duas linhas permanecem visíveis para auditoria, mas apenas uma ocorrência entra nos KPIs e o alcance consolidado fica indisponível.`] : [],
-    methodology: "Dados exclusivos de campanhas programáticas da API Publya v2. Google Ads e Meta Ads retornados pela conta são excluídos desta aba. Totais usam snapshot exato do período; respostas idênticas entre campanhas não são somadas e nenhuma métrica ausente é estimada.",
+    warnings: duplicates.size ? [`A API Publya retornou investimento, impressões, cliques e custos idênticos para as duas campanhas Programática Display no mesmo período, enquanto o alcance variou entre chamadas. Os quatro relatórios permanecem visíveis, mas apenas uma ocorrência desse snapshot duplicado entra nos KPIs e o alcance consolidado fica indisponível.`] : [],
+    methodology: "Dados dos quatro relatórios B2B retornados pela API Publya v2: PMAX, Meta, Programática Display — Alcance e Programática Display — Conversões. Totais usam snapshot exato do período; respostas idênticas entre campanhas não são somadas e nenhuma métrica ausente é estimada.",
   };
 }
 
-export const publyaDashboardInternals = { isProgrammaticPlatform, snapshotSignature, dedupeSnapshots };
+export const publyaDashboardInternals = { isProgrammaticPlatform, reportMetadata, snapshotSignature, dedupeSnapshots };

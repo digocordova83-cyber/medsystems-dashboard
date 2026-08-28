@@ -338,3 +338,22 @@
 
 - [x] Alterar o título do site para `Medsystems - Gerencial` e validar a publicação.
 - [x] Inserir favicon com o logo da MedSystems e validar o título `Medsystems - Gerencial` junto aos metadados do site.
+
+- [ ] Registrar com segurança as credenciais da API Publya e validar a troca do token temporário.
+- [ ] Mapear os endpoints e campos oficiais de campanhas, formatos, portais e desempenho programático.
+- [ ] Criar armazenamento e sincronização idempotente dos dados Publya com corte D-1.
+- [ ] Criar a aba Programática com filtros por período e campanha, KPIs, evolução, formatos e portais.
+- [ ] Integrar a Publya à atualização diária das 08h BRT e documentar a data real de cobertura.
+- [ ] Adicionar testes Vitest, validar desktop/mobile, build e publicar a nova versão.
+- [ ] Verificar acesso autenticado ao portal Publya e gerar um novo token temporário de uso único.
+- [ ] Trocar o novo token temporário uma única vez e armazenar o token permanente com segurança.
+- [x] Consultar a documentação oficial em `docs.publya.com` para confirmar validade, reutilização e regeneração do token temporário.
+- [x] Documentar o endpoint-base, headers obrigatórios e operações oficiais necessárias para alimentar a aba Programática.
+
+- [x] Formalizar a atualização diária às 08h BRT com corte D-1 até 23h59 para RD Station, Bitrix24 e Windsor.ai.
+- [x] Restringir Meta Ads às contas `446269251699575` e `1655942005167160` e Google Ads às contas `672-710-7654` e `864-759-2401`, todas em BRL.
+- [x] Validar que a persistência de mídia usa chave canônica `plataforma + conta + data + campaign_id`, com `adGroupId` e `adId` vazios não nulos e upsert idempotente.
+- [x] Validar que os KPIs usam somente a versão mais recente de cada chave e nunca combinam snapshots históricos, campanha e anúncio.
+- [x] Preservar as regras atuais de marca, origem, funil e atribuição de RD Station e Bitrix24.
+- [x] Confirmar datas máximas, totais por fonte, investimento Windsor por conta e registrar fontes que não alcancem D-1.
+- [x] Entregar resumo diário com status, datas sincronizadas, investimento Google/Meta por marca e exceções.

@@ -343,13 +343,13 @@
 - [x] Mapear os endpoints e campos oficiais de campanhas, formatos, portais e desempenho programático.
 - [x] Criar armazenamento e sincronização idempotente dos dados Publya com corte D-1.
 - [x] Criar a aba Programática com filtros por período e campanha, KPIs, evolução, formatos e portais.
-- [ ] Integrar a Publya à atualização diária das 08h BRT e documentar a data real de cobertura.
-- [ ] Adicionar testes Vitest, validar desktop/mobile, build e publicar a nova versão.
+- [x] Integrar a Publya à atualização diária das 08h BRT e documentar a data real de cobertura.
+- [x] Adicionar testes Vitest, validar desktop/mobile, build e publicar a nova versão.
 - [x] Verificar acesso autenticado ao portal Publya e gerar um novo token temporário de uso único.
 - [x] Trocar o novo token temporário uma única vez e armazenar o token permanente com segurança.
 - [x] Trocar o token temporário Publya recebido em 28/08/2026 e validar o token permanente por listagem de campanhas.
 - [x] Executar a primeira sincronização Publya com corte D-1 e reconciliar campanhas, investimento, formatos, criativos e portais.
-- [ ] Validar a nova aba Programática com os dados coletados e ativar sua rotina diária às 08h BRT.
+- [x] Validar a nova aba Programática com os dados coletados e ativar sua rotina diária às 08h BRT.
 - [x] Consultar a documentação oficial em `docs.publya.com` para confirmar validade, reutilização e regeneração do token temporário.
 - [x] Documentar o endpoint-base, headers obrigatórios e operações oficiais necessárias para alimentar a aba Programática.
 

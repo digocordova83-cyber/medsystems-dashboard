@@ -102,5 +102,28 @@ describe("integração Publya", () => {
     expect(pmax.push).toBeNull();
     expect(pmax.campaigns).toHaveLength(1);
     expect(pmax.campaigns[0]?.reportType).toBe("PMAX");
+    expect(pmax.reportOptions.some(option => option.reportKey === "push:medsystems/b2b/xr50xt2cwdhc")).toBe(true);
+  });
+
+  it("expõe métricas e rankings específicos para Meta, PMAX, Display e Push", async () => {
+    const meta = await programmaticDashboard({ startDate: "2026-08-01", endDate: "2026-08-27", reportKey: "campaign:7069" });
+    expect(meta.campaigns[0]?.leads).toBeGreaterThan(0);
+    expect(meta.campaigns[0]?.reach).toBeGreaterThan(0);
+    expect(meta.states.length).toBeGreaterThan(0);
+
+    const pmax = await programmaticDashboard({ startDate: "2026-08-01", endDate: "2026-08-27", reportKey: "campaign:7058" });
+    expect(pmax.devices.length).toBeGreaterThan(0);
+    expect(pmax.cities.length).toBeGreaterThan(0);
+
+    const display = await programmaticDashboard({ startDate: "2026-08-01", endDate: "2026-08-27", reportKey: "campaign:7083" });
+    expect(display.campaigns[0]?.frequency).toBeGreaterThan(0);
+    expect(display.sites.length).toBeGreaterThan(0);
+    expect(display.formats.length).toBeGreaterThan(0);
+    expect(display.creatives.length).toBeGreaterThan(0);
+    expect(display.strategies.length).toBeGreaterThan(0);
+
+    const push = await programmaticDashboard({ startDate: "2026-08-01", endDate: "2026-08-27", reportKey: "push:medsystems/b2b/xr50xt2cwdhc" });
+    expect(push.byDay.some(row => row.sends > 0)).toBe(true);
+    expect(push.totals.pushCtr).toBeGreaterThan(0);
   });
 });

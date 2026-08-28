@@ -372,3 +372,10 @@
 - [x] Criar overview geral combinando somente métricas comparáveis e filtro individual por Push/campanha/relatório.
 - [x] Exibir data de cobertura e status de atualização de cada fonte no overview.
 - [x] Revisar desktop/mobile, executar testes e publicar a versão completa.
+
+- [x] Auditar leads, conversões, alcance, frequência, portais, formatos e criativos disponíveis separadamente nos cinco relatórios Publya.
+- [x] Personalizar Meta com leads e CPL e PMAX com conversões e custo por conversão, usando somente métricas retornadas pela fonte.
+- [x] Personalizar Display Geolocalização com alcance, frequência, portais, formatos e criativos e Display Conversões com conversões e custo por conversão.
+- [x] Personalizar Push com disparos, cliques, CTR, custo por disparo e evolução diária.
+- [x] Manter overview geral com métricas comparáveis e tornar títulos, KPIs, gráficos e rankings dinâmicos conforme o filtro.
+- [x] Executar testes, validar desktop/mobile e publicar a personalização por frente.

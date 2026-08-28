@@ -101,7 +101,7 @@ export async function programmaticDashboard(input: { startDate: string; endDate:
   )) : [];
   const groups = groupRows.filter(row => countedIdSet.has(row.campaignId));
 
-  const pushCampaign = includePush ? (await db.select().from(publyaPushCampaigns).where(eq(publyaPushCampaigns.clientId, clientId)).limit(1))[0] : undefined;
+  const pushCampaign = (await db.select().from(publyaPushCampaigns).where(eq(publyaPushCampaigns.clientId, clientId)).limit(1))[0];
   const pushRows = includePush ? await db.select().from(publyaPushDaily).where(and(
     eq(publyaPushDaily.clientId, clientId),
     gte(publyaPushDaily.reportDate, start),
@@ -131,11 +131,12 @@ export async function programmaticDashboard(input: { startDate: string; endDate:
     mediaClicks: campaignTotals.clicks,
   };
 
-  const byDayMap = new Map<string, { date: string; impressions: number; clicks: number; spend: number; leads: number; conversions: number; sends: number }>();
+  const byDayMap = new Map<string, { date: string; impressions: number; reach: number; clicks: number; spend: number; leads: number; conversions: number; sends: number }>();
   for (const row of daily) {
     const date = new Date(row.reportDate).toISOString().slice(0, 10);
-    const current = byDayMap.get(date) ?? { date, impressions: 0, clicks: 0, spend: 0, leads: 0, conversions: 0, sends: 0 };
+    const current = byDayMap.get(date) ?? { date, impressions: 0, reach: 0, clicks: 0, spend: 0, leads: 0, conversions: 0, sends: 0 };
     current.impressions += numeric(row.impressions);
+    current.reach += numeric(row.reach);
     current.clicks += numeric(row.clicks);
     current.spend += numeric(row.spend);
     current.leads += numeric(row.leads);
@@ -144,7 +145,7 @@ export async function programmaticDashboard(input: { startDate: string; endDate:
   }
   for (const row of pushRows) {
     const date = new Date(row.reportDate).toISOString().slice(0, 10);
-    const current = byDayMap.get(date) ?? { date, impressions: 0, clicks: 0, spend: 0, leads: 0, conversions: 0, sends: 0 };
+    const current = byDayMap.get(date) ?? { date, impressions: 0, reach: 0, clicks: 0, spend: 0, leads: 0, conversions: 0, sends: 0 };
     current.clicks += numeric(row.clicks);
     current.spend += numeric(row.spend);
     current.sends = numeric(current.sends) + numeric(row.sends);
@@ -152,13 +153,15 @@ export async function programmaticDashboard(input: { startDate: string; endDate:
   }
 
   const aggregateGroups = (type: string) => {
-    const map = new Map<string, { name: string; impressions: number; clicks: number; spend: number; reach: number; viewabilitySum: number; viewabilityWeight: number }>();
+    const map = new Map<string, { name: string; impressions: number; clicks: number; spend: number; reach: number; leads: number; conversions: number; viewabilitySum: number; viewabilityWeight: number }>();
     for (const row of groups.filter(item => item.groupType === type)) {
-      const current = map.get(row.groupName) ?? { name: row.groupName, impressions: 0, clicks: 0, spend: 0, reach: 0, viewabilitySum: 0, viewabilityWeight: 0 };
+      const current = map.get(row.groupName) ?? { name: row.groupName, impressions: 0, clicks: 0, spend: 0, reach: 0, leads: 0, conversions: 0, viewabilitySum: 0, viewabilityWeight: 0 };
       current.impressions += numeric(row.impressions);
       current.clicks += numeric(row.clicks);
       current.spend += numeric(row.spend);
       current.reach += numeric(row.reach);
+      current.leads += numeric(row.leads);
+      current.conversions += numeric(row.conversions);
       current.viewabilitySum += numeric(row.viewability) * Math.max(1, numeric(row.impressions));
       current.viewabilityWeight += Math.max(1, numeric(row.impressions));
       map.set(row.groupName, current);
@@ -169,6 +172,8 @@ export async function programmaticDashboard(input: { startDate: string; endDate:
       clicks: row.clicks,
       spend: row.spend,
       reach: row.reach,
+      leads: row.leads,
+      conversions: row.conversions,
       ctr: row.impressions > 0 ? (row.clicks / row.impressions) * 100 : 0,
       viewability: row.viewabilityWeight > 0 ? row.viewabilitySum / row.viewabilityWeight : 0,
     })).sort((a, b) => b.impressions - a.impressions || b.clicks - a.clicks);
@@ -212,14 +217,16 @@ export async function programmaticDashboard(input: { startDate: string; endDate:
       conversions: numeric(row.conversions),
       ctr: numeric(row.ctr),
       cpm: numeric(row.cpm),
+      cpc: numeric(row.cpc),
       viewability: numeric(row.viewability),
+      frequency: numeric(row.reach) > 0 ? numeric(row.impressions) / numeric(row.reach) : 0,
       counted: countedIdSet.has(row.campaignId),
       duplicateOf: duplicates.get(row.campaignId) ?? null,
       reportUrl: OFFICIAL_REPORT_URLS[row.campaignId] ?? null,
       dataDate: input.endDate,
     };
     }).sort((a, b) => (a.startDate?.getTime() ?? 0) - (b.startDate?.getTime() ?? 0)),
-    push: pushCampaign ? {
+    push: includePush && pushCampaign ? {
       reportKey: PUSH_REPORT_KEY,
       campaignName: pushCampaign.name,
       reportType: pushCampaign.mediaType,
@@ -247,6 +254,10 @@ export async function programmaticDashboard(input: { startDate: string; endDate:
     creatives: aggregateGroups("creatives"),
     sites: aggregateGroups("sites"),
     publishers: aggregateGroups("publishers"),
+    devices: aggregateGroups("devices"),
+    cities: aggregateGroups("cities"),
+    states: aggregateGroups("states"),
+    strategies: aggregateGroups("strategies"),
     quality: { duplicateSnapshots: duplicates.size, reachReliable: duplicates.size === 0 },
     warnings: duplicates.size ? [`A API Publya retornou investimento, impressões, cliques e custos idênticos para as duas campanhas Programática Display no mesmo período, enquanto o alcance variou entre chamadas. Os quatro relatórios permanecem visíveis, mas apenas uma ocorrência desse snapshot duplicado entra nos KPIs e o alcance consolidado fica indisponível.`] : [],
     methodology: "Dados de cinco relatórios B2B: PMAX, Meta e duas campanhas de Programática Display pela API Publya v2, além do Push pela RPC pública estruturada do relatório oficial. Investimento e cliques são somados; impressões e disparos permanecem separados por terem denominadores diferentes. Respostas idênticas entre campanhas não são somadas e nenhuma métrica ausente é estimada.",

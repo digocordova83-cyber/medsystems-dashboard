@@ -9,6 +9,7 @@ const mediaPlatformValues = ["google_ads", "meta_ads"] as const;
 const mediaRecordLevelValues = ["campaign", "ad"] as const;
 const attributionStatusValues = ["not_identified", "channel_signal", "identified"] as const;
 const attributionMethodValues = ["none", "utm_source", "utm_campaign", "identifier"] as const;
+const publyaGroupTypeValues = ["formats", "creatives", "sites", "publishers", "devices", "cities", "states", "regions", "channels", "strategies", "placements"] as const;
 
 export const users = mysqlTable("users", {
   id: int("id").autoincrement().primaryKey(),
@@ -179,6 +180,110 @@ export const mediaDailyPerformance = mysqlTable("mediaDailyPerformance", {
   uniqueIndex("media_daily_platform_account_date_campaign_ad_unique").on(table.platform, table.accountId, table.reportDate, table.campaignId, table.adGroupId, table.adId),
   index("media_daily_brand_date_index").on(table.brand, table.reportDate),
   index("media_daily_platform_date_index").on(table.platform, table.reportDate),
+]);
+
+export const publyaAccounts = mysqlTable("publyaAccounts", {
+  id: int("id").autoincrement().primaryKey(),
+  clientId: int("clientId").notNull().unique(),
+  email: varchar("email", { length: 320 }).notNull(),
+  permanentTokenCiphertext: text("permanentTokenCiphertext"),
+  status: mysqlEnum("status", integrationStatusValues).default("desconectada").notNull(),
+  scheduleCronTaskUid: varchar("scheduleCronTaskUid", { length: 65 }),
+  lastSyncAt: timestamp("lastSyncAt"),
+  lastDataDate: timestamp("lastDataDate"),
+  lastError: text("lastError"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, table => [
+  index("publya_account_schedule_task_index").on(table.scheduleCronTaskUid),
+]);
+
+export const publyaCampaigns = mysqlTable("publyaCampaigns", {
+  id: int("id").autoincrement().primaryKey(),
+  clientId: int("clientId").notNull(),
+  campaignId: int("campaignId").notNull(),
+  name: varchar("name", { length: 512 }).notNull(),
+  platformId: int("platformId"),
+  platformName: varchar("platformName", { length: 160 }),
+  startDate: timestamp("startDate"),
+  endDate: timestamp("endDate"),
+  campaignStatus: varchar("campaignStatus", { length: 64 }),
+  currency: varchar("currency", { length: 8 }).default("BRL").notNull(),
+  rawPayload: text("rawPayload").notNull(),
+  syncedAt: timestamp("syncedAt").defaultNow().notNull(),
+}, table => [
+  uniqueIndex("publya_campaign_client_campaign_unique").on(table.clientId, table.campaignId),
+  index("publya_campaign_client_dates_index").on(table.clientId, table.startDate, table.endDate),
+]);
+
+export const publyaCampaignDaily = mysqlTable("publyaCampaignDaily", {
+  id: int("id").autoincrement().primaryKey(),
+  clientId: int("clientId").notNull(),
+  campaignId: int("campaignId").notNull(),
+  reportDate: timestamp("reportDate").notNull(),
+  impressions: int("impressions").default(0).notNull(),
+  reach: int("reach").default(0).notNull(),
+  clicks: int("clicks").default(0).notNull(),
+  spend: double("spend").default(0).notNull(),
+  conversions: double("conversions").default(0).notNull(),
+  leads: double("leads").default(0).notNull(),
+  ctr: double("ctr").default(0).notNull(),
+  cpm: double("cpm").default(0).notNull(),
+  cpc: double("cpc").default(0).notNull(),
+  viewability: double("viewability").default(0).notNull(),
+  rawPayload: text("rawPayload").notNull(),
+  syncedAt: timestamp("syncedAt").defaultNow().notNull(),
+}, table => [
+  uniqueIndex("publya_daily_client_campaign_date_unique").on(table.clientId, table.campaignId, table.reportDate),
+  index("publya_daily_client_date_index").on(table.clientId, table.reportDate),
+]);
+
+export const publyaCampaignSnapshots = mysqlTable("publyaCampaignSnapshots", {
+  id: int("id").autoincrement().primaryKey(),
+  clientId: int("clientId").notNull(),
+  campaignId: int("campaignId").notNull(),
+  periodStart: timestamp("periodStart").notNull(),
+  periodEnd: timestamp("periodEnd").notNull(),
+  impressions: int("impressions").default(0).notNull(),
+  reach: int("reach").default(0).notNull(),
+  clicks: int("clicks").default(0).notNull(),
+  spend: double("spend").default(0).notNull(),
+  conversions: double("conversions").default(0).notNull(),
+  leads: double("leads").default(0).notNull(),
+  ctr: double("ctr").default(0).notNull(),
+  cpm: double("cpm").default(0).notNull(),
+  cpc: double("cpc").default(0).notNull(),
+  viewability: double("viewability").default(0).notNull(),
+  rawPayload: text("rawPayload").notNull(),
+  syncedAt: timestamp("syncedAt").defaultNow().notNull(),
+}, table => [
+  uniqueIndex("publya_snapshot_client_campaign_period_unique").on(table.clientId, table.campaignId, table.periodStart, table.periodEnd),
+  index("publya_snapshot_client_period_index").on(table.clientId, table.periodStart, table.periodEnd),
+]);
+
+export const publyaGroupPerformance = mysqlTable("publyaGroupPerformance", {
+  id: int("id").autoincrement().primaryKey(),
+  clientId: int("clientId").notNull(),
+  campaignId: int("campaignId").notNull(),
+  groupType: mysqlEnum("groupType", publyaGroupTypeValues).notNull(),
+  groupName: varchar("groupName", { length: 512 }).notNull(),
+  periodStart: timestamp("periodStart").notNull(),
+  periodEnd: timestamp("periodEnd").notNull(),
+  impressions: int("impressions").default(0).notNull(),
+  reach: int("reach").default(0).notNull(),
+  clicks: int("clicks").default(0).notNull(),
+  spend: double("spend").default(0).notNull(),
+  conversions: double("conversions").default(0).notNull(),
+  leads: double("leads").default(0).notNull(),
+  ctr: double("ctr").default(0).notNull(),
+  cpm: double("cpm").default(0).notNull(),
+  cpc: double("cpc").default(0).notNull(),
+  viewability: double("viewability").default(0).notNull(),
+  rawPayload: text("rawPayload").notNull(),
+  syncedAt: timestamp("syncedAt").defaultNow().notNull(),
+}, table => [
+  uniqueIndex("publya_group_client_campaign_type_name_period_unique").on(table.clientId, table.campaignId, table.groupType, table.groupName, table.periodStart, table.periodEnd),
+  index("publya_group_client_type_period_index").on(table.clientId, table.groupType, table.periodStart, table.periodEnd),
 ]);
 
 export const attributionAuditLinks = mysqlTable("attributionAuditLinks", {

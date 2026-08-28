@@ -1,11 +1,12 @@
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
-import { BarChart3, BookOpenCheck, BriefcaseBusiness, LayoutDashboard, LogOut, PanelLeft, ScrollText } from "lucide-react";
+import { BarChart3, BookOpenCheck, BriefcaseBusiness, LayoutDashboard, LogOut, PanelLeft, RadioTower, ScrollText } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const menuItems = [
   { icon: LayoutDashboard, label: "Overview", hash: "overview" },
   { icon: BarChart3, label: "Google Ads", hash: "google" },
   { icon: BarChart3, label: "Meta Ads", hash: "meta" },
+  { icon: RadioTower, label: "Programática", hash: "programmatic" },
   { icon: BriefcaseBusiness, label: "Negócios", hash: "bitrix" },
   { icon: BookOpenCheck, label: "Guia de dados", hash: "guide" },
 ];

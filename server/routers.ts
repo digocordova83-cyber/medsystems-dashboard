@@ -12,6 +12,7 @@ import { getUserByUsername, listDashboardAccessLogs, mediaDashboardAnalytics, re
 import { clearDashboardLoginFailures, isDashboardLoginBlocked, normalizeDashboardUsername, publicDashboardUser, registerDashboardLoginFailure, requestAuditMetadata, verifyDashboardPassword } from "./dashboardAuth";
 import { bitrixExportSnapshot } from "./spreadsheet/bitrixExportSnapshot";
 import { mediaChannelDashboard } from "./media/channelDashboard";
+import { publyaRouter } from "./publya/router";
 
 const accountInput = z.enum(RD_ACCOUNTS);
 const analyticsBrandInput = z.enum(["all", "medsystems", "beautysystems"]);
@@ -155,6 +156,7 @@ export const appRouter = router({
   spreadsheet: router({
     bitrixExportDashboard: dashboardProcedure.query(() => bitrixExportSnapshot),
   }),
+  publya: publyaRouter,
 });
 
 export type AppRouter = typeof appRouter;

@@ -2,13 +2,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { BitrixRdOpportunityDashboard } from "@/components/BitrixRdOpportunityDashboard";
 import { MediaChannelDashboard } from "@/components/MediaChannelDashboard";
+import { ProgrammaticDashboard } from "@/components/ProgrammaticDashboard";
 import { trpc } from "@/lib/trpc";
 import { ArrowDownRight, ArrowUpRight, BarChart3, ChevronRight, CircleAlert, DollarSign, Filter, Layers3, MousePointerClick, Target, TrendingUp } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 type Brand = "all" | "medsystems" | "beautysystems";
 type Channel = "all" | "google_ads" | "meta_ads";
-type Tab = "overview" | "google" | "meta" | "bitrix";
+type Tab = "overview" | "google" | "meta" | "programmatic" | "bitrix";
 type RevenueView = "pipeline" | "origin" | "sales" | "lost" | "discard";
 type DealStatus = "all" | "open" | "won" | "lost";
 type ReportingPeriod = "2026-07" | "2026-08";
@@ -42,6 +43,7 @@ export const DASHBOARD_TABS: { id: Tab; label: string }[] = [
   { id: "overview", label: "Overview" },
   { id: "google", label: "Google Ads" },
   { id: "meta", label: "Meta Ads" },
+  { id: "programmatic", label: "Programática" },
   { id: "bitrix", label: "Negócios" },
 ];
 export const SUPPORTED_REPORTING_PERIODS = ["2026-08", "2026-07"] as const;
@@ -138,12 +140,12 @@ export function RevenueAnalytics() {
   return <section className="overflow-hidden rounded-3xl border border-cyan-100/10 bg-[linear-gradient(135deg,rgba(12,35,55,.92),rgba(12,20,35,.88))] shadow-[0_30px_90px_rgba(0,0,0,.22)]">
     <div className="border-b border-white/10 px-5 py-6 lg:px-7">
       <div className="flex flex-col justify-between gap-6 xl:flex-row xl:items-end">
-        <div><div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_14px_rgb(103,232,249)]" /><p className="font-mono-ui text-[10px] uppercase tracking-[.2em] text-cyan-100/65">{tab === "bitrix" ? "CRM · funil de receita" : tab === "overview" ? "Mídia → Negócios · dados auditáveis" : "Aquisição paga · leitura gerencial"}</p></div><h2 className="mt-3 text-2xl font-extrabold tracking-[-.04em] text-white sm:text-3xl">{tab === "bitrix" ? <>Gestão de <span className="text-cyan-200">Negócios</span></> : tab === "google" ? <>Performance de <span className="text-cyan-200">Google Ads</span></> : tab === "meta" ? <>Performance de <span className="text-violet-200">Meta Ads</span></> : <>Performance de aquisição <span className="text-cyan-200">e negócios</span></>}</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">{tab === "bitrix" ? "Leads de Tráfego Pago, qualificação MQL/SQL, negócios e receita vinculados por evidência verificável." : tab === "overview" ? "Visão consolidada de mídia e CRM, mantendo indisponibilidades e limites de atribuição explícitos." : "Selecione datas, marca e campanha para atualizar gráficos, distribuição de verba e indicadores."}</p></div>
-        <div className="flex flex-wrap items-center gap-2"><StatusPill available>{tab === "bitrix" ? "CRM conectado" : "Dados de mídia conectados"}</StatusPill></div>
+        <div><div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_14px_rgb(103,232,249)]" /><p className="font-mono-ui text-[10px] uppercase tracking-[.2em] text-cyan-100/65">{tab === "bitrix" ? "CRM · funil de receita" : tab === "programmatic" ? "Publya · mídia programática" : tab === "overview" ? "Mídia → Negócios · dados auditáveis" : "Aquisição paga · leitura gerencial"}</p></div><h2 className="mt-3 text-2xl font-extrabold tracking-[-.04em] text-white sm:text-3xl">{tab === "bitrix" ? <>Gestão de <span className="text-cyan-200">Negócios</span></> : tab === "google" ? <>Performance de <span className="text-cyan-200">Google Ads</span></> : tab === "meta" ? <>Performance de <span className="text-violet-200">Meta Ads</span></> : tab === "programmatic" ? <>Performance de <span className="text-fuchsia-200">Programática</span></> : <>Performance de aquisição <span className="text-cyan-200">e negócios</span></>}</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">{tab === "bitrix" ? "Leads de Tráfego Pago, qualificação MQL/SQL, negócios e receita vinculados por evidência verificável." : tab === "programmatic" ? "Entrega programática por campanha, portal, formato e criativo, coletada exclusivamente pela API Publya." : tab === "overview" ? "Visão consolidada de mídia e CRM, mantendo indisponibilidades e limites de atribuição explícitos." : "Selecione datas, marca e campanha para atualizar gráficos, distribuição de verba e indicadores."}</p></div>
+        <div className="flex flex-wrap items-center gap-2"><StatusPill available>{tab === "bitrix" ? "CRM conectado" : tab === "programmatic" ? "API Publya" : "Dados de mídia conectados"}</StatusPill></div>
       </div>
     </div>
 
-    {tab === "bitrix" ? <div className="p-5 lg:p-7"><BitrixRdOpportunityDashboard /></div> : tab === "google" || tab === "meta" ? <div className="p-5 lg:p-7"><MediaChannelDashboard platform={tab === "google" ? "google_ads" : "meta_ads"} brand={brand} onBrandChange={setBrand} /></div> : dashboard.isLoading ? <div className="grid min-h-80 place-items-center"><div className="text-center"><BarChart3 className="mx-auto h-6 w-6 animate-pulse text-cyan-200" /><p className="mt-3 text-sm text-muted-foreground">Carregando métricas de mídia…</p></div></div> : dashboard.isError ? <DataState title="Não foi possível carregar as métricas" detail={dashboard.error.message || "Tente atualizar a página. Os dados de origem não foram alterados."} /> : !model || model.platforms.length === 0 ? <DataState title="Não há mídia para este recorte" detail="Não foram encontrados registros de Google Ads ou Meta Ads para a marca e canal selecionados." /> : <div className="p-5 lg:p-7">
+    {tab === "bitrix" ? <div className="p-5 lg:p-7"><BitrixRdOpportunityDashboard /></div> : tab === "programmatic" ? <div className="p-5 lg:p-7"><ProgrammaticDashboard /></div> : tab === "google" || tab === "meta" ? <div className="p-5 lg:p-7"><MediaChannelDashboard platform={tab === "google" ? "google_ads" : "meta_ads"} brand={brand} onBrandChange={setBrand} /></div> : dashboard.isLoading ? <div className="grid min-h-80 place-items-center"><div className="text-center"><BarChart3 className="mx-auto h-6 w-6 animate-pulse text-cyan-200" /><p className="mt-3 text-sm text-muted-foreground">Carregando métricas de mídia…</p></div></div> : dashboard.isError ? <DataState title="Não foi possível carregar as métricas" detail={dashboard.error.message || "Tente atualizar a página. Os dados de origem não foram alterados."} /> : !model || model.platforms.length === 0 ? <DataState title="Não há mídia para este recorte" detail="Não foram encontrados registros de Google Ads ou Meta Ads para a marca e canal selecionados." /> : <div className="p-5 lg:p-7">
       {tab === "overview" ? <Overview brand={brand} setBrand={setBrand} channel={channel} setChannel={setChannel} dealStatus={dealStatus} setDealStatus={setDealStatus} period={period} setPeriod={setPeriod} model={model} dealData={dealData} maxCampaignSpend={maxCampaignSpend} attribution={model.attribution} /> : null}
     </div>}
   </section>;

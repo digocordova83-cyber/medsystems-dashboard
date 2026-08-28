@@ -70,9 +70,11 @@ describe("integração Publya", () => {
     expect(publyaScheduleInternals.previousDayInSaoPaulo(new Date("2026-08-28T14:00:00.000Z"))).toEqual({ startDate: "2026-08-01", endDate: "2026-08-27" });
   });
 
-  it("entrega os quatro relatórios B2B sem inflar o snapshot DV360 duplicado", async () => {
+  it("entrega o overview de cinco relatórios sem inflar o snapshot DV360 duplicado", async () => {
     const data = await programmaticDashboard({ startDate: "2026-08-01", endDate: "2026-08-27" });
     expect(data.campaigns).toHaveLength(4);
+    expect(data.push?.reportType).toBe("Push Notification");
+    expect(data.reportOptions).toHaveLength(5);
     expect(data.campaigns.map(row => `${row.reportType}:${row.objective}`)).toEqual(expect.arrayContaining([
       "PMAX:Conversões",
       "Meta:Geração de Cadastros",
@@ -80,8 +82,25 @@ describe("integração Publya", () => {
       "Programática Display:Conversões",
     ]));
     expect(data.campaigns.filter(row => !row.counted)).toHaveLength(1);
-    expect(data.totals.spend).toBeCloseTo(22_194.18, 2);
-    expect(data.totals.impressions).toBe(699_353);
-    expect(data.totals.clicks).toBe(5_183);
+    const countedCampaigns = data.campaigns.filter(row => row.counted);
+    expect(data.totals.spend).toBeCloseTo(countedCampaigns.reduce((sum, row) => sum + row.spend, 0) + (data.push?.spend ?? 0), 6);
+    expect(data.totals.impressions).toBe(countedCampaigns.reduce((sum, row) => sum + row.impressions, 0));
+    expect(data.totals.sends).toBe(1_199);
+    expect(data.totals.clicks).toBe(countedCampaigns.reduce((sum, row) => sum + row.clicks, 0) + 5);
+    expect(data.totals.pushClicks).toBe(5);
+    expect(data.campaigns.every(row => Boolean(row.reportUrl))).toBe(true);
+  });
+
+  it("filtra Push e campanha individual sem misturar os resultados", async () => {
+    const push = await programmaticDashboard({ startDate: "2026-08-01", endDate: "2026-08-27", reportKey: "push:medsystems/b2b/xr50xt2cwdhc" });
+    expect(push.campaigns).toHaveLength(0);
+    expect(push.push?.sends).toBe(1_199);
+    expect(push.totals.spend).toBeCloseTo(1_185.2, 2);
+    expect(push.totals.clicks).toBe(5);
+
+    const pmax = await programmaticDashboard({ startDate: "2026-08-01", endDate: "2026-08-27", reportKey: "campaign:7058" });
+    expect(pmax.push).toBeNull();
+    expect(pmax.campaigns).toHaveLength(1);
+    expect(pmax.campaigns[0]?.reportType).toBe("PMAX");
   });
 });

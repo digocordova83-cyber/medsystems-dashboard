@@ -365,3 +365,10 @@
 - [x] Ajustar a aba Programática para listar os quatro relatórios com plataforma, objetivo, período, status e métricas separados.
 - [x] Recalcular os totais sem excluir PMAX/Meta e sem duplicar snapshots inconsistentes das duas campanhas DV360.
 - [x] Revisar desktop/mobile, executar testes e publicar a correção dos quatro relatórios.
+
+- [x] Validar o link Push Publya e identificar as métricas disponíveis para atualização D-1.
+- [x] Persistir a associação dos quatro links oficiais aos respectivos relatórios PMAX, Meta e Programática Display.
+- [x] Incorporar Push ao modelo de dados e à sincronização diária das 08h BRT sem estimar métricas ausentes.
+- [x] Criar overview geral combinando somente métricas comparáveis e filtro individual por Push/campanha/relatório.
+- [x] Exibir data de cobertura e status de atualização de cada fonte no overview.
+- [x] Revisar desktop/mobile, executar testes e publicar a versão completa.

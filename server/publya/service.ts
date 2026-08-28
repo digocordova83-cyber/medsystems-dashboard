@@ -5,6 +5,8 @@ import {
   publyaCampaignSnapshots,
   publyaCampaigns,
   publyaGroupPerformance,
+  publyaPushCampaigns,
+  publyaPushDaily,
 } from "../../drizzle/schema";
 import { getDb } from "../db";
 import { decryptSecret, encryptSecret } from "../rdstation/crypto";
@@ -13,6 +15,29 @@ import { PUBLYA_GROUP_TYPES, type PublyaCampaignDetail, type PublyaCampaignItem,
 const DEFAULT_API_BASE = "https://api.publya.com/kermit/leap";
 const DEFAULT_CLIENT_ID = 810;
 const DEFAULT_EMAIL = "rodrigo.cordova@bbro.com.br";
+const PUSH_RPC_URL = "https://uisjurawsrszjetgcckj.supabase.co/rest/v1/rpc/get_dashboard";
+const PUSH_PUBLIC_KEY = "sb_publishable_Ba7Pkp4fINeX_a2mn1XPRA_WiQ7kzDc";
+const PUSH_SOURCE = {
+  sourceKey: "medsystems/b2b/xr50xt2cwdhc",
+  client: "medsystems",
+  campaign: "b2b",
+  hash: "xr50xt2cwdhc",
+  reportUrl: "https://push.publya.com/medsystems/b2b/xr50xt2cwdhc",
+} as const;
+
+type PublyaPushPayload = {
+  campaign?: {
+    name?: string;
+    media_type?: string;
+    period_start?: string;
+    period_end?: string;
+    last_synced_at?: string;
+    contracted_sends?: number;
+    contracted_budget?: number;
+  };
+  totals?: { sends?: number; spend?: number; clicks?: number; ctr?: number; cpd?: number };
+  daily?: Array<{ date?: string; sends?: number; spend?: number; clicks?: number }>;
+};
 
 function apiConfig() {
   const clientId = Number(process.env.PUBLYA_CLIENT_ID ?? DEFAULT_CLIENT_ID);
@@ -35,6 +60,98 @@ function dateAtNoon(value?: string | null) {
 
 function periodBoundary(value: string, end = false) {
   return new Date(`${value}T${end ? "23:59:59" : "00:00:00"}-03:00`);
+}
+
+async function fetchPublyaPushDashboard() {
+  const response = await fetch(PUSH_RPC_URL, {
+    method: "POST",
+    headers: {
+      apikey: PUSH_PUBLIC_KEY,
+      Authorization: `Bearer ${PUSH_PUBLIC_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      p_client: PUSH_SOURCE.client,
+      p_campaign: PUSH_SOURCE.campaign,
+      p_hash: PUSH_SOURCE.hash,
+    }),
+    signal: AbortSignal.timeout(20_000),
+  });
+  if (!response.ok) throw new Error(`Publya Push respondeu HTTP ${response.status}.`);
+  return await response.json() as PublyaPushPayload;
+}
+
+async function syncPublyaPush(endDate: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  const { clientId } = apiConfig();
+  const payload = await fetchPublyaPushDashboard();
+  const campaign = payload.campaign ?? {};
+  let lastDataDate: Date | null = null;
+  let rows = 0;
+
+  for (const item of payload.daily ?? []) {
+    if (!item.date || !/^\d{4}-\d{2}-\d{2}$/.test(item.date) || item.date > endDate) continue;
+    const reportDate = dateAtNoon(item.date);
+    if (!reportDate) continue;
+    const sends = Math.round(numeric(item.sends));
+    const spend = numeric(item.spend);
+    const clicks = Math.round(numeric(item.clicks));
+    const ctr = sends > 0 ? (clicks / sends) * 100 : 0;
+    const cpd = sends > 0 ? spend / sends : 0;
+    await db.insert(publyaPushDaily).values({
+      clientId,
+      sourceKey: PUSH_SOURCE.sourceKey,
+      reportDate,
+      sends,
+      spend,
+      clicks,
+      ctr,
+      cpd,
+      rawPayload: JSON.stringify(item),
+      syncedAt: new Date(),
+    }).onDuplicateKeyUpdate({ set: {
+      sends,
+      spend,
+      clicks,
+      ctr,
+      cpd,
+      rawPayload: JSON.stringify(item),
+      syncedAt: new Date(),
+    } });
+    rows += 1;
+    if (!lastDataDate || reportDate > lastDataDate) lastDataDate = reportDate;
+  }
+
+  await db.insert(publyaPushCampaigns).values({
+    clientId,
+    sourceKey: PUSH_SOURCE.sourceKey,
+    name: campaign.name ? `${campaign.name} — Push Notification` : "B2B — Push Notification",
+    mediaType: campaign.media_type ?? "Push Notification",
+    periodStart: dateAtNoon(campaign.period_start),
+    periodEnd: dateAtNoon(campaign.period_end),
+    contractedBudget: numeric(campaign.contracted_budget),
+    contractedSends: Math.round(numeric(campaign.contracted_sends)),
+    reportUrl: PUSH_SOURCE.reportUrl,
+    sourceUpdatedAt: dateAtNoon(campaign.last_synced_at),
+    lastDataDate,
+    rawPayload: JSON.stringify({ campaign, totals: payload.totals ?? {} }),
+    syncedAt: new Date(),
+  }).onDuplicateKeyUpdate({ set: {
+    name: campaign.name ? `${campaign.name} — Push Notification` : "B2B — Push Notification",
+    mediaType: campaign.media_type ?? "Push Notification",
+    periodStart: dateAtNoon(campaign.period_start),
+    periodEnd: dateAtNoon(campaign.period_end),
+    contractedBudget: numeric(campaign.contracted_budget),
+    contractedSends: Math.round(numeric(campaign.contracted_sends)),
+    reportUrl: PUSH_SOURCE.reportUrl,
+    sourceUpdatedAt: dateAtNoon(campaign.last_synced_at),
+    lastDataDate,
+    rawPayload: JSON.stringify({ campaign, totals: payload.totals ?? {} }),
+    syncedAt: new Date(),
+  } });
+
+  return { rows, lastDataDate };
 }
 
 function normalizedMetrics(metrics?: PublyaMetricSet | null) {
@@ -204,8 +321,15 @@ export async function syncPublyaPeriod(startDate: string, endDate: string) {
       }
     }
 
+    const push = await syncPublyaPush(endDate);
+    if (push.lastDataDate && (!latestDataDate || push.lastDataDate > latestDataDate)) latestDataDate = push.lastDataDate;
+
     await db.update(publyaAccounts).set({ status: "pronta", lastSyncAt: new Date(), lastDataDate: latestDataDate, lastError: null }).where(eq(publyaAccounts.clientId, clientId));
-    return { campaigns: campaigns.length, lastDataDate: latestDataDate?.toISOString().slice(0, 10) ?? null };
+    return {
+      campaigns: campaigns.length,
+      pushRows: push.rows,
+      lastDataDate: latestDataDate?.toISOString().slice(0, 10) ?? null,
+    };
   } catch (error) {
     const message = error instanceof Error ? error.message : "Erro desconhecido na sincronização Publya.";
     await db.update(publyaAccounts).set({ status: "erro", lastError: message }).where(eq(publyaAccounts.clientId, clientId));
@@ -227,4 +351,4 @@ export async function publyaConnectionStatus() {
   };
 }
 
-export const publyaInternals = { normalizedMetrics, dailyRows, periodBoundary };
+export const publyaInternals = { normalizedMetrics, dailyRows, periodBoundary, fetchPublyaPushDashboard, syncPublyaPush };

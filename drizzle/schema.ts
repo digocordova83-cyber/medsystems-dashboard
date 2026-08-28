@@ -286,6 +286,43 @@ export const publyaGroupPerformance = mysqlTable("publyaGroupPerformance", {
   index("publya_group_client_type_period_index").on(table.clientId, table.groupType, table.periodStart, table.periodEnd),
 ]);
 
+export const publyaPushCampaigns = mysqlTable("publyaPushCampaigns", {
+  id: int("id").autoincrement().primaryKey(),
+  clientId: int("clientId").notNull(),
+  sourceKey: varchar("sourceKey", { length: 128 }).notNull(),
+  name: varchar("name", { length: 512 }).notNull(),
+  mediaType: varchar("mediaType", { length: 160 }).notNull(),
+  periodStart: timestamp("periodStart"),
+  periodEnd: timestamp("periodEnd"),
+  contractedBudget: double("contractedBudget").default(0).notNull(),
+  contractedSends: int("contractedSends").default(0).notNull(),
+  reportUrl: varchar("reportUrl", { length: 1024 }).notNull(),
+  sourceUpdatedAt: timestamp("sourceUpdatedAt"),
+  lastDataDate: timestamp("lastDataDate"),
+  rawPayload: text("rawPayload").notNull(),
+  syncedAt: timestamp("syncedAt").defaultNow().notNull(),
+}, table => [
+  uniqueIndex("publya_push_campaign_client_source_unique").on(table.clientId, table.sourceKey),
+  index("publya_push_campaign_dates_index").on(table.clientId, table.periodStart, table.periodEnd),
+]);
+
+export const publyaPushDaily = mysqlTable("publyaPushDaily", {
+  id: int("id").autoincrement().primaryKey(),
+  clientId: int("clientId").notNull(),
+  sourceKey: varchar("sourceKey", { length: 128 }).notNull(),
+  reportDate: timestamp("reportDate").notNull(),
+  sends: int("sends").default(0).notNull(),
+  spend: double("spend").default(0).notNull(),
+  clicks: int("clicks").default(0).notNull(),
+  ctr: double("ctr").default(0).notNull(),
+  cpd: double("cpd").default(0).notNull(),
+  rawPayload: text("rawPayload").notNull(),
+  syncedAt: timestamp("syncedAt").defaultNow().notNull(),
+}, table => [
+  uniqueIndex("publya_push_daily_client_source_date_unique").on(table.clientId, table.sourceKey, table.reportDate),
+  index("publya_push_daily_client_date_index").on(table.clientId, table.reportDate),
+]);
+
 export const attributionAuditLinks = mysqlTable("attributionAuditLinks", {
   id: int("id").autoincrement().primaryKey(),
   brand: mysqlEnum("brand", accountKeyValues).notNull(),

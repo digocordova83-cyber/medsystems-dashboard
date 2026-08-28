@@ -20,5 +20,10 @@ export const publyaRouter = router({
   status: dashboardAdminProcedure.query(() => publyaConnectionStatus()),
   exchangeToken: dashboardAdminProcedure.input(z.object({ temporaryToken: z.string().min(20).max(2048) })).mutation(({ input }) => exchangeAndStorePublyaToken(input.temporaryToken)),
   sync: dashboardAdminProcedure.input(z.object({ startDate: date, endDate: date })).mutation(({ input }) => syncPublyaPeriod(input.startDate, input.endDate)),
-  dashboard: dashboardProcedure.input(z.object({ startDate: date, endDate: date, campaignId: z.number().int().positive().optional() })).query(({ input }) => programmaticDashboard(input)),
+  dashboard: dashboardProcedure.input(z.object({
+    startDate: date,
+    endDate: date,
+    campaignId: z.number().int().positive().optional(),
+    reportKey: z.string().max(180).optional(),
+  })).query(({ input }) => programmaticDashboard(input)),
 });

@@ -1,0 +1,17 @@
+<design>
+  <size width="1280" height="720"></size>
+  
+  <color name="bg-page" value="#FFFFFF"/>
+  <color name="bg-tint" value="#F3F4F6"/>
+  <color name="ink-main" value="#111827"/>
+  <color name="ink-muted" value="#6B7280"/>
+  <color name="med-magenta" value="#D91159"/>
+  <color name="beauty-cyan" value="#00A3E0"/>
+  <color name="hairline" value="#E5E7EB"/>
+  
+  <font name="display" family="Inter" size="48"/>
+  <font name="heading" family="Inter" size="28"/>
+  <font name="metric" family="Inter" size="40"/>
+  <font name="body" family="Inter" size="18"/>
+  <font name="caption" family="Inter" size="12"/>
+</design>

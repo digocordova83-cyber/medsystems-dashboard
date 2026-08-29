@@ -1,0 +1,47 @@
+<slide id="programmatic_events">
+  <background color="paper"/>
+  <text id="programmatic-title" x="60" y="46" width="1120" height="48" font="heading" size="32" color="ink" wrap="false">Programática ativa eventos; Push amplia presença</text>
+  <text id="programmatic-section" x="60" y="98" width="760" height="22" font="caption" size="12" color="muted" wrap="false">PUBLYA · CORTE D-1 ATÉ 27/08/2026</text>
+  <shape id="programmatic-rule" type="line" x="60" y="126" width="1160" height="0" stroke="hairline" stroke-width="1"/>
+  <shape id="prog-spend-bg" type="rect" x="60" y="158" width="216" height="100" corner-radius="10" fill="#F5F3FF"/>
+  <text id="prog-spend-label" x="78" y="176" width="180" height="20" font="caption" size="12" color="#7C3AED" wrap="false">DV360 · INVESTIMENTO</text>
+  <text id="prog-spend-value" x="78" y="206" width="180" height="34" font="heading" size="25" color="ink" wrap="false">R$ 9.678</text>
+  <shape id="prog-reach-bg" type="rect" x="292" y="158" width="216" height="100" corner-radius="10" fill="#F3FCFB"/>
+  <text id="prog-reach-label" x="310" y="176" width="180" height="20" font="caption" size="12" color="turquoise-beauty" wrap="false">ALCANCE</text>
+  <text id="prog-reach-value" x="310" y="206" width="180" height="34" font="heading" size="25" color="ink" wrap="false">169.316</text>
+  <shape id="prog-view-bg" type="rect" x="524" y="158" width="216" height="100" corner-radius="10" fill="surface"/>
+  <text id="prog-view-label" x="542" y="176" width="180" height="20" font="caption" size="12" color="muted" wrap="false">VIEWABILITY</text>
+  <text id="prog-view-value" x="542" y="206" width="180" height="34" font="heading" size="25" color="ink" wrap="false">79,64%</text>
+  <shape id="push-send-bg" type="rect" x="756" y="158" width="216" height="100" corner-radius="10" fill="#FFF7FA"/>
+  <text id="push-send-label" x="774" y="176" width="180" height="20" font="caption" size="12" color="magenta-med" wrap="false">PUSH · DISPAROS</text>
+  <text id="push-send-value" x="774" y="206" width="180" height="34" font="heading" size="25" color="ink" wrap="false">1.199</text>
+  <shape id="push-ctr-bg" type="rect" x="988" y="158" width="216" height="100" corner-radius="10" fill="surface"/>
+  <text id="push-ctr-label" x="1006" y="176" width="180" height="20" font="caption" size="12" color="muted" wrap="false">PUSH · CTR / CPD</text>
+  <text id="push-ctr-value" x="1006" y="202" width="180" height="38" font="heading" size="23" color="ink" wrap="false">0,42% · R$ 0,99</text>
+  <text id="portals-title" x="60" y="292" width="340" height="28" font="body" size="18" color="ink" wrap="false"><strong>Portais com maior entrega</strong></text>
+  <table id="portals-table" x="60" y="328" width="340" height="194" columns="2,1" rows="42,auto,auto,auto" font="body" size="15" color="ink" padding="8 12" header-fill="surface" header-border="1 hairline" border-h="1 hairline">
+    <tr color="muted"><td>Portal</td><td align="right">Impressões</td></tr>
+    <tr><td><strong>UOL</strong></td><td align="right">112.269</td></tr>
+    <tr><td><strong>Notícias UOL</strong></td><td align="right">94.802</td></tr>
+    <tr><td><strong>Globo.com</strong></td><td align="right">54.083</td></tr>
+  </table>
+  <text id="formats-title" x="440" y="292" width="340" height="28" font="body" size="18" color="ink" wrap="false"><strong>Formatos com maior entrega</strong></text>
+  <table id="formats-table" x="440" y="328" width="340" height="194" columns="2,1" rows="42,auto,auto,auto" font="body" size="15" color="ink" padding="8 12" header-fill="surface" header-border="1 hairline" border-h="1 hairline">
+    <tr color="muted"><td>Formato</td><td align="right">Impressões</td></tr>
+    <tr><td><strong>300×250</strong></td><td align="right">247.914</td></tr>
+    <tr><td><strong>970×250</strong></td><td align="right">173.504</td></tr>
+    <tr><td><strong>728×90</strong></td><td align="right">155.544</td></tr>
+  </table>
+  <text id="events-title" x="842" y="292" width="350" height="28" font="body" size="18" color="ink" wrap="false"><strong>Ativações geolocalizadas</strong></text>
+  <shape id="events-line" type="line" x="874" y="344" width="0" height="164" stroke="hairline" stroke-width="3"/>
+  <shape id="quanta-node" type="ellipse" x="862" y="350" width="24" height="24" fill="magenta-med"/>
+  <text id="quanta-date" x="910" y="342" width="90" height="28" font="heading" size="22" color="magenta-med" wrap="false">27/08</text>
+  <text id="quanta-name" x="910" y="374" width="270" height="54" font="body" size="18" color="ink"><p><strong>Quanta Academy</strong></p><p size="15" color="muted">Display 100% geolocalizado</p></text>
+  <shape id="bot-node" type="ellipse" x="862" y="452" width="24" height="24" fill="turquoise-beauty"/>
+  <text id="bot-date" x="910" y="444" width="130" height="28" font="heading" size="22" color="turquoise-beauty" wrap="false">28–29/08</text>
+  <text id="bot-name" x="910" y="476" width="270" height="54" font="body" size="18" color="ink"><p><strong>BOT</strong></p><p size="15" color="muted">Display 100% geolocalizado</p></text>
+  <shape id="programmatic-note-bg" type="rect" x="60" y="586" width="1160" height="62" corner-radius="10" fill="#FFF7ED"/>
+  <text id="programmatic-note" x="84" y="599" width="1110" height="38" font="body" size="15" color="#92400E" line-height="1.25">Gerência informou R$ 62 mil em programática dos eventos. A API Publya registra R$ 9,7 mil em DV360 e R$ 1,2 mil em Push até 27/08; os escopos precisam ser reconciliados.</text>
+  <text id="programmatic-source" x="60" y="680" width="1040" height="18" font="caption" size="11" color="muted" wrap="false">Fonte: API Publya + relatório Push · Calendário de ativações fornecido pela gerência</text>
+  <text id="programmatic-page" x="1160" y="678" width="60" height="20" font="caption" size="12" color="muted" align="right" wrap="false">05</text>
+</slide>

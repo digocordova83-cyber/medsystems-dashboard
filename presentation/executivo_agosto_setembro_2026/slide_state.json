@@ -1,0 +1,84 @@
+{
+  "project_info": {
+    "title": "Performance Executiva — Agosto 2026",
+    "created": 1787944680.481,
+    "last_updated": 1787944982.72,
+    "total_slides": 7
+  },
+  "slides": [
+    {
+      "id": "cover",
+      "state": "edited",
+      "pageNum": 1
+    },
+    {
+      "id": "executive_summary",
+      "state": "edited",
+      "pageNum": 2
+    },
+    {
+      "id": "bu_comparison",
+      "state": "edited",
+      "pageNum": 3
+    },
+    {
+      "id": "funnel_quality",
+      "state": "edited",
+      "pageNum": 4
+    },
+    {
+      "id": "investment_efficiency",
+      "state": "edited",
+      "pageNum": 5
+    },
+    {
+      "id": "programmatic_events",
+      "state": "edited",
+      "pageNum": 6
+    },
+    {
+      "id": "september_priorities",
+      "state": "edited",
+      "pageNum": 7
+    }
+  ],
+  "outline": [
+    {
+      "id": "cover",
+      "title": "Performance Executiva — Agosto 2026",
+      "summary": "Capa com MedSystems, BeautySystems e BBRO & Co.; subtítulo sobre qualidade do funil, eficiência comercial e prioridades de setembro."
+    },
+    {
+      "id": "executive_summary",
+      "title": "Qualificação, não volume, explica o avanço",
+      "summary": "Visão consolidada com evolução de SQL, MQL→SQL, Lead→MQL, descartes e leitura executiva do ganho de eficiência."
+    },
+    {
+      "id": "bu_comparison",
+      "title": "Beauty entrega volume; Med lidera conversão",
+      "summary": "Comparação lado a lado de metas de leads, crescimento de SQL e conversão MQL→SQL por BU."
+    },
+    {
+      "id": "funnel_quality",
+      "title": "O funil ficou mais limpo e produtivo",
+      "summary": "Visualização do avanço nas taxas Lead→MQL e MQL→SQL, crescimento de SQL e queda dos descartes."
+    },
+    {
+      "id": "investment_efficiency",
+      "title": "R$ 168 mil exigem leitura por eficiência",
+      "summary": "Distribuição da verba por frente, crescimento de investimento versus leads e reconciliação da diferença de R$ 94."
+    },
+    {
+      "id": "programmatic_events",
+      "title": "Programática ativa eventos; Push amplia presença",
+      "summary": "Resultados auditáveis de DV360 e Push, portais e formatos líderes, ativações Quanta Academy e BOT e reconciliação com a verba informada.",
+      "image_plan": "/home/ubuntu/upload/IMG_5952.PNG - WhatsApp conversation screenshot showing the exact demands from Isa mentioned in the slide text"
+    },
+    {
+      "id": "september_priorities",
+      "title": "Setembro: quatro movimentos em sequência",
+      "summary": "Plano executivo com produtos prioritários por BU, B2C/Awareness, campanha antipirataria e novos protocolos.",
+      "image_plan": "Use a suitable image if needed"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+<slide id="executive_summary">
+  <background color="paper"/>
+  <text id="summary-title" x="60" y="46" width="1120" height="48" font="heading" size="32" color="ink" wrap="false">Qualificação, não volume, explica o avanço</text>
+  <text id="summary-section" x="60" y="98" width="600" height="22" font="caption" size="12" color="muted" wrap="false">VISÃO CONSOLIDADA · JULHO → AGOSTO 2026</text>
+  <shape id="summary-rule" type="line" x="60" y="126" width="1160" height="0" stroke="hairline" stroke-width="1"/>
+
+  <shape id="sql-kpi-bg" type="rect" x="60" y="158" width="280" height="168" corner-radius="12" fill="#FFF0F5"/>
+  <text id="sql-kpi-label" x="82" y="178" width="230" height="24" font="caption" size="13" color="magenta-med" wrap="false">SQL TOTAL</text>
+  <text id="sql-kpi-value" x="82" y="208" width="230" height="56" font="display" size="42" color="ink" wrap="false">27 → 98</text>
+  <text id="sql-kpi-note" x="82" y="274" width="230" height="28" font="body" size="18" color="magenta-med" wrap="false"><strong>+263%</strong></text>
+
+  <shape id="mql-kpi-bg" type="rect" x="355" y="158" width="280" height="168" corner-radius="12" fill="#F6F7F9"/>
+  <text id="mql-kpi-label" x="377" y="178" width="230" height="24" font="caption" size="13" color="muted" wrap="false">CONVERSÃO MQL→SQL</text>
+  <text id="mql-kpi-value" x="377" y="208" width="230" height="56" font="display" size="38" color="ink" wrap="false">3,1% → 9,5%</text>
+  <text id="mql-kpi-note" x="377" y="274" width="230" height="28" font="body" size="18" color="ink" wrap="false"><strong>3,1×</strong> maior</text>
+
+  <shape id="lead-kpi-bg" type="rect" x="650" y="158" width="280" height="168" corner-radius="12" fill="#EDFAF9"/>
+  <text id="lead-kpi-label" x="672" y="178" width="230" height="24" font="caption" size="13" color="turquoise-beauty" wrap="false">CONVERSÃO LEAD→MQL</text>
+  <text id="lead-kpi-value" x="672" y="208" width="230" height="56" font="display" size="38" color="ink" wrap="false">65,6% → 72,7%</text>
+  <text id="lead-kpi-note" x="672" y="274" width="230" height="28" font="body" size="18" color="turquoise-beauty" wrap="false"><strong>+7,1 p.p.</strong></text>
+
+  <shape id="discard-kpi-bg" type="rect" x="945" y="158" width="275" height="168" corner-radius="12" fill="#F6F7F9"/>
+  <text id="discard-kpi-label" x="967" y="178" width="230" height="24" font="caption" size="13" color="muted" wrap="false">DESCARTES</text>
+  <text id="discard-kpi-value" x="967" y="208" width="230" height="56" font="display" size="42" color="ink" wrap="false">−44%</text>
+  <text id="discard-kpi-note" x="967" y="274" width="230" height="36" font="body" size="17" color="muted">menos perdas na entrada</text>
+
+  <text id="summary-verdict-label" x="60" y="382" width="420" height="24" font="caption" size="13" color="magenta-med" wrap="false">VEREDITO EXECUTIVO</text>
+  <text id="summary-verdict" x="60" y="414" width="450" height="112" font="heading" size="29" color="ink" line-height="1.12">O ganho de SQL veio da eficiência de qualificação — não do volume de leads.</text>
+  <text id="summary-verdict-note" x="60" y="548" width="450" height="68" font="body" size="18" color="muted" line-height="1.35">A verba cresceu 48,6% e os leads 11,6%, enquanto SQL avançou 263%.</text>
+
+  <text id="growth-chart-title" x="570" y="376" width="620" height="28" font="body" size="18" color="ink" wrap="false"><strong>Variação versus período anterior</strong></text>
+  <chart id="growth-chart" type="bar" x="570" y="412" width="640" height="205" font="caption" text-size="13" text-color="muted" categories="Verba,Leads,SQL" color="#9CA3AF,turquoise-beauty,magenta-med" legend="none" data-labels="true" x-axis="true" y-axis="true" gridlines="v" y-min="0" y-max="300" gap-width="70">
+    <series name="Variação" values="48.6,11.6,263" label-expr="+{value:.1f}%"/>
+  </chart>
+
+  <text id="summary-source" x="60" y="680" width="920" height="18" font="caption" size="11" color="muted" wrap="false">Fonte: indicadores fornecidos pela gerência · Comparativo julho → agosto de 2026</text>
+  <text id="summary-page" x="1160" y="678" width="60" height="20" font="caption" size="12" color="muted" align="right" wrap="false">01</text>
+</slide>

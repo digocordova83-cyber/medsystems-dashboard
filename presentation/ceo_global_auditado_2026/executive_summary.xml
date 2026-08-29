@@ -1,0 +1,35 @@
+<slide id="executive_summary">
+  <background color="bg-page"/>
+  <text id="summary-title" x="60" y="38" width="1110" height="46" font="heading" size="30" color="ink-main" wrap="false">Mais MQL, menos SQL: o gargalo migrou</text>
+  <shape id="summary-title-rule" type="line" x="60" y="96" width="1160" height="0" stroke="hairline" stroke-width="1"/>
+
+  <text id="summary-kpi-leads-label" x="60" y="128" width="260" height="28" font="body" size="15" color="ink-muted" wrap="false">LEADS COMERCIAIS</text>
+  <text id="summary-kpi-leads-value" x="60" y="158" width="260" height="62" font="metric" size="46" color="ink-main" wrap="false"><strong>+10,2%</strong></text>
+  <text id="summary-kpi-leads-detail" x="60" y="222" width="260" height="30" font="body" size="17" color="ink-muted" wrap="false">882 → 972</text>
+
+  <text id="summary-kpi-mql-label" x="390" y="128" width="260" height="28" font="body" size="15" color="ink-muted" wrap="false">MQL</text>
+  <text id="summary-kpi-mql-value" x="390" y="158" width="260" height="62" font="metric" size="46" color="#047857" wrap="false"><strong>+24,2%</strong></text>
+  <text id="summary-kpi-mql-detail" x="390" y="222" width="260" height="30" font="body" size="17" color="ink-muted" wrap="false">636 → 790</text>
+
+  <text id="summary-kpi-sql-label" x="720" y="128" width="260" height="28" font="body" size="15" color="ink-muted" wrap="false">SQL</text>
+  <text id="summary-kpi-sql-value" x="720" y="158" width="260" height="62" font="metric" size="46" color="#B42318" wrap="false"><strong>−14,3%</strong></text>
+  <text id="summary-kpi-sql-detail" x="720" y="222" width="260" height="30" font="body" size="17" color="ink-muted" wrap="false">63 → 54</text>
+
+  <table id="summary-funnel-table" x="60" y="292" width="730" height="300" columns="3,1.4,1.4,1.6" rows="42,auto,auto,auto,auto,auto" font="body" size="16" color="ink-main" padding="8 10" header-fill="bg-tint" header-border="1 hairline" border-h="1 hairline">
+    <tr color="ink-muted"><td><strong>Etapa</strong></td><td><strong>Julho</strong></td><td><strong>Agosto</strong></td><td><strong>Variação</strong></td></tr>
+    <tr><td>Lead</td><td>882</td><td>972</td><td color="#047857"><strong>+10,2%</strong></td></tr>
+    <tr><td>MQL</td><td>636</td><td>790</td><td color="#047857"><strong>+24,2%</strong></td></tr>
+    <tr><td>SQL</td><td>63</td><td>54</td><td color="#B42318"><strong>−14,3%</strong></td></tr>
+    <tr><td>Negócio vinculado</td><td>45</td><td>29</td><td color="#B42318"><strong>−35,6%</strong></td></tr>
+    <tr><td>Descartes</td><td>225</td><td>133</td><td color="#047857"><strong>−40,9%</strong></td></tr>
+  </table>
+
+  <shape id="summary-decision-bg" type="rect" x="830" y="292" width="390" height="300" fill="bg-tint" corner-radius="14"/>
+  <text id="summary-decision-tag" x="860" y="324" width="330" height="26" font="body" size="14" color="med-magenta" wrap="false"><strong>DECISÃO EXECUTIVA</strong></text>
+  <text id="summary-decision-title" x="860" y="360" width="315" height="82" font="heading" size="27" color="ink-main" line-height="1.1"><p>Recuperar a passagem</p><p>MQL → SQL</p></text>
+  <text id="summary-decision-rate" x="860" y="458" width="315" height="50" font="metric" size="38" color="#B42318" wrap="false"><strong>9,9% → 6,8%</strong></text>
+  <text id="summary-decision-body" x="860" y="520" width="315" height="48" font="body" size="16" color="ink-muted" line-height="1.25">A entrada melhorou; a progressão comercial não acompanhou.</text>
+
+  <text id="summary-source" x="60" y="648" width="980" height="30" font="caption" size="12" color="ink-muted" wrap="false">Fonte: Bitrix24 · Tráfego Pago · 01–26/07 vs 01–26/08 · etapa atual ou negócio vinculado</text>
+  <text id="summary-bbro" x="1090" y="648" width="130" height="30" font="caption" size="12" color="ink-muted" align="right" wrap="false">BBRO</text>
+</slide>

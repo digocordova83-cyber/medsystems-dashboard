@@ -1,0 +1,27 @@
+<slide id="funnel_quality">
+  <background color="paper"/>
+  <text id="funnel-title" x="60" y="46" width="1120" height="48" font="heading" size="32" color="ink" wrap="false">O funil ficou mais limpo e produtivo</text>
+  <text id="funnel-section" x="60" y="98" width="600" height="22" font="caption" size="12" color="muted" wrap="false">QUALIDADE DE ENTRADA E CONVERSÃO COMERCIAL</text>
+  <shape id="funnel-rule" type="line" x="60" y="126" width="1160" height="0" stroke="hairline" stroke-width="1"/>
+
+  <text id="conversion-chart-title" x="60" y="166" width="560" height="28" font="body" size="18" color="ink" wrap="false"><strong>As duas taxas de conversão avançaram</strong></text>
+  <chart id="conversion-chart" type="column" x="60" y="204" width="560" height="286" font="caption" text-size="12" text-color="muted" categories="Lead→MQL,MQL→SQL" color="#9CA3AF,magenta-med" legend="bottom" data-labels="true" y-min="0" y-max="80" y-format="number" gridlines="h" gap-width="90">
+    <series name="Julho" values="65.6,3.1" label-expr="{value:.1f}%"/>
+    <series name="Agosto" values="72.7,9.5" label-expr="{value:.1f}%"/>
+  </chart>
+
+  <text id="sql-chart-title" x="660" y="166" width="560" height="28" font="body" size="18" color="ink" wrap="false"><strong>SQL mais que triplicou</strong></text>
+  <chart id="sql-chart" type="column" x="660" y="204" width="560" height="286" font="caption" text-size="12" text-color="muted" categories="Julho,Agosto" color="#9CA3AF,magenta-med" legend="none" data-labels="true" y-min="0" y-max="110" gridlines="h" gap-width="150">
+    <series name="SQL" values="27,98" label-expr="{value:.0f}"/>
+  </chart>
+
+  <shape id="funnel-insight-bg" type="rect" x="60" y="528" width="1160" height="108" corner-radius="12" fill="surface"/>
+  <text id="discard-label" x="86" y="548" width="220" height="22" font="caption" size="13" color="muted" wrap="false">DESCARTES</text>
+  <text id="discard-value" x="86" y="572" width="220" height="48" font="display" size="38" color="ink" wrap="false">−44%</text>
+  <shape id="insight-divider" type="line" x="334" y="548" width="0" height="66" stroke="hairline" stroke-width="1"/>
+  <text id="funnel-insight-title" x="366" y="546" width="800" height="30" font="heading" size="23" color="ink" wrap="false">A melhora ocorreu antes e depois do MQL.</text>
+  <text id="funnel-insight-body" x="366" y="582" width="800" height="38" font="body" size="17" color="muted" line-height="1.3">Entrada mais limpa reduziu perdas; qualificação mais eficiente multiplicou a entrega de SQL.</text>
+
+  <text id="funnel-source" x="60" y="680" width="920" height="18" font="caption" size="11" color="muted" wrap="false">Fonte: indicadores fornecidos pela gerência · Julho → agosto de 2026</text>
+  <text id="funnel-page" x="1160" y="678" width="60" height="20" font="caption" size="12" color="muted" align="right" wrap="false">03</text>
+</slide>

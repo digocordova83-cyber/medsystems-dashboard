@@ -1,0 +1,84 @@
+{
+  "project_info": {
+    "title": "Performance Executiva Brasil",
+    "created": 1788006151.629,
+    "last_updated": 1788006502.493,
+    "total_slides": 7
+  },
+  "slides": [
+    {
+      "id": "cover",
+      "state": "edited",
+      "pageNum": 1
+    },
+    {
+      "id": "executive_summary",
+      "state": "edited",
+      "pageNum": 2
+    },
+    {
+      "id": "bu_comparison",
+      "state": "edited",
+      "pageNum": 3
+    },
+    {
+      "id": "rd_to_crm",
+      "state": "edited",
+      "pageNum": 4
+    },
+    {
+      "id": "media_efficiency",
+      "state": "edited",
+      "pageNum": 5
+    },
+    {
+      "id": "publya_activation",
+      "state": "edited",
+      "pageNum": 6
+    },
+    {
+      "id": "september_priorities",
+      "state": "edited",
+      "pageNum": 7
+    }
+  ],
+  "outline": [
+    {
+      "id": "cover",
+      "title": "Performance Executiva Brasil",
+      "summary": "Capa minimalista com logos MedSystems, BeautySystems e BBRO; subtítulo sobre aquisição, funil e ativações B2B."
+    },
+    {
+      "id": "executive_summary",
+      "title": "Mais MQL, menos SQL: o gargalo migrou",
+      "summary": "Resumo executivo do funil consolidado no corte comum de 26 dias, destacando melhora da entrada e piora da progressão comercial."
+    },
+    {
+      "id": "bu_comparison",
+      "title": "Beauty qualifica; Med perde progressão",
+      "summary": "Comparação lado a lado das duas BUs com volumes, taxas e descartes auditados."
+    },
+    {
+      "id": "rd_to_crm",
+      "title": "RD cresce mais que o CRM",
+      "summary": "Comparação dos universos RD Station e Bitrix24, deixando explícito que não são somáveis e indicando o ponto de controle entre sistemas."
+    },
+    {
+      "id": "media_efficiency",
+      "title": "Escala de verba pressionou eficiência",
+      "summary": "Investimento e resultados de plataforma via Windsor.ai no mesmo período, com custo por resultado e variações por BU."
+    },
+    {
+      "id": "publya_activation",
+      "title": "Publya entregou escala B2B auditável",
+      "summary": "Resultados de PMAX, Meta, Display, Push, portais, formatos e ativações até 28/08, com ressalva de duplicidade DV360.",
+      "image_plan": "/home/ubuntu/upload/IMG_5952.PNG - WhatsApp conversation screenshot showing the exact demands from Isa mentioned in the slide text"
+    },
+    {
+      "id": "september_priorities",
+      "title": "Setembro: decisões e agenda de execução",
+      "summary": "Prioridades de produto, B2C/Awareness, antipirataria, novos protocolos e governança, explicitamente tratadas como planejamento da gestão.",
+      "image_plan": "Use a suitable image if needed"
+    }
+  ]
+}

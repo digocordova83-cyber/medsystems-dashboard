@@ -1,0 +1,32 @@
+<slide id="investment_efficiency">
+  <background color="paper"/>
+  <text id="investment-title" x="60" y="46" width="1120" height="48" font="heading" size="32" color="ink" wrap="false">R$ 168 mil exigem leitura por eficiência</text>
+  <text id="investment-section" x="60" y="98" width="700" height="22" font="caption" size="12" color="muted" wrap="false">INVESTIMENTO INFORMADO · COMPOSIÇÃO E RESULTADO</text>
+  <shape id="investment-rule" type="line" x="60" y="126" width="1160" height="0" stroke="hairline" stroke-width="1"/>
+
+  <text id="total-label" x="60" y="172" width="360" height="24" font="caption" size="13" color="muted" wrap="false">INVESTIMENTO TOTAL INFORMADO</text>
+  <text id="total-value" x="60" y="204" width="390" height="62" font="display" size="48" color="ink" wrap="false">R$ 168.030</text>
+  <shape id="reconcile-bg" type="rect" x="60" y="284" width="390" height="70" corner-radius="10" fill="#FFF7ED"/>
+  <text id="reconcile-label" x="80" y="300" width="350" height="20" font="caption" size="12" color="#B45309" wrap="false">RECONCILIAÇÃO</text>
+  <text id="reconcile-value" x="80" y="324" width="350" height="22" font="body" size="16" color="ink" wrap="false">Componentes somam R$ 167.936 · diferença R$ 94</text>
+
+  <text id="growth-label" x="60" y="386" width="360" height="24" font="caption" size="13" color="muted" wrap="false">VARIAÇÃO VERSUS PERÍODO ANTERIOR</text>
+  <text id="spend-growth" x="60" y="420" width="180" height="42" font="heading" size="28" color="ink" wrap="false">+48,6%</text>
+  <text id="spend-growth-label" x="60" y="462" width="180" height="22" font="body" size="16" color="muted" wrap="false">verba</text>
+  <text id="lead-growth" x="230" y="420" width="180" height="42" font="heading" size="28" color="turquoise-beauty" wrap="false">+11,6%</text>
+  <text id="lead-growth-label" x="230" y="462" width="180" height="22" font="body" size="16" color="muted" wrap="false">leads</text>
+  <text id="sql-growth" x="60" y="492" width="180" height="42" font="heading" size="28" color="magenta-med" wrap="false">+263%</text>
+  <text id="sql-growth-label" x="230" y="500" width="180" height="22" font="body" size="16" color="muted" wrap="false">SQL</text>
+
+  <text id="mix-title" x="500" y="172" width="680" height="28" font="body" size="18" color="ink" wrap="false"><strong>Distribuição informada por frente</strong></text>
+  <chart id="investment-mix-chart" type="bar" x="500" y="210" width="720" height="300" font="caption" text-size="12" text-color="muted" categories="Med Meta+Google,Beauty Meta+Google,Programática eventos,Keep It Real" color="magenta-med,turquoise-beauty,#7C3AED,#9CA3AF" legend="none" data-labels="true" x-axis="true" y-axis="true" y-format="thousands" gridlines="v" gap-width="70">
+    <series name="Investimento" values="54000,50000,62000,1936" label-expr="R$ {value:,.0f}"/>
+  </chart>
+
+  <shape id="investment-insight-bg" type="rect" x="60" y="548" width="1160" height="88" corner-radius="12" fill="surface"/>
+  <text id="investment-insight-title" x="84" y="566" width="1090" height="26" font="heading" size="22" color="ink" wrap="false">O ganho de SQL veio da eficiência de qualificação — não do volume de topo.</text>
+  <text id="investment-insight-body" x="84" y="600" width="1090" height="24" font="body" size="16" color="muted" wrap="false">Mais verba gerou crescimento moderado de leads, mas o funil transformou melhor a demanda em oportunidades comerciais.</text>
+
+  <text id="investment-source" x="60" y="680" width="1020" height="18" font="caption" size="11" color="muted" wrap="false">Fonte: valores fornecidos pela gerência · Reconciliação matemática dos componentes</text>
+  <text id="investment-page" x="1160" y="678" width="60" height="20" font="caption" size="12" color="muted" align="right" wrap="false">04</text>
+</slide>

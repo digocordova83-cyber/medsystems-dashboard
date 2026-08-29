@@ -1,0 +1,33 @@
+<slide id="media_efficiency">
+  <background color="bg-page"/>
+  <text id="media-title" x="60" y="38" width="1110" height="46" font="heading" size="30" color="ink-main" wrap="false">A escala de verba pressionou a eficiência</text>
+  <shape id="media-title-rule" type="line" x="60" y="96" width="1160" height="0" stroke="hairline" stroke-width="1"/>
+
+  <text id="media-spend-label" x="60" y="126" width="250" height="26" font="body" size="14" color="ink-muted" wrap="false">INVESTIMENTO</text>
+  <text id="media-spend-value" x="60" y="156" width="290" height="56" font="metric" size="43" color="ink-main" wrap="false"><strong>+48,6%</strong></text>
+  <text id="media-spend-detail" x="60" y="216" width="300" height="32" font="body" size="16" color="ink-muted" wrap="false">R$ 49,8 mil → R$ 74,1 mil</text>
+
+  <text id="media-results-label" x="390" y="126" width="250" height="26" font="body" size="14" color="ink-muted" wrap="false">RESULTADOS DE PLATAFORMA</text>
+  <text id="media-results-value" x="390" y="156" width="290" height="56" font="metric" size="43" color="#047857" wrap="false"><strong>+12,0%</strong></text>
+  <text id="media-results-detail" x="390" y="216" width="300" height="32" font="body" size="16" color="ink-muted" wrap="false">939 → 1.052</text>
+
+  <text id="media-cpr-label" x="720" y="126" width="250" height="26" font="body" size="14" color="ink-muted" wrap="false">CUSTO POR RESULTADO</text>
+  <text id="media-cpr-value" x="720" y="156" width="290" height="56" font="metric" size="43" color="#B42318" wrap="false"><strong>+32,6%</strong></text>
+  <text id="media-cpr-detail" x="720" y="216" width="330" height="32" font="body" size="16" color="ink-muted" wrap="false">R$ 53,09 → R$ 70,40</text>
+
+  <text id="media-spend-chart-title" x="60" y="276" width="520" height="28" font="body" size="17" color="ink-main" wrap="false"><strong>Investimento por BU (R$)</strong></text>
+  <chart id="media-spend-chart" type="column" x="60" y="312" width="520" height="282" font="body" text-size="13" text-color="ink-muted" categories="MedSystems,BeautySystems" color="#9CA3AF,ink-main" legend="bottom" data-labels="true" y-axis="false" gridlines="none" gap-width="170">
+    <series name="Julho" values="23561.74,26287.04" color="#9CA3AF" label-expr="R$ {value / 1000:.1f} mil"/>
+    <series name="Agosto" values="39061.41,35003.29" color="ink-main" label-expr="R$ {value / 1000:.1f} mil"/>
+  </chart>
+
+  <text id="media-cpr-chart-title" x="700" y="276" width="520" height="28" font="body" size="17" color="ink-main" wrap="false"><strong>Custo por resultado de plataforma (R$)</strong></text>
+  <chart id="media-cpr-chart" type="column" x="700" y="312" width="520" height="282" font="body" text-size="13" text-color="ink-muted" categories="MedSystems,BeautySystems" color="#9CA3AF,med-magenta" legend="bottom" data-labels="true" y-axis="false" gridlines="none" gap-width="170">
+    <series name="Julho" values="50.9994,55.1091" color="#9CA3AF" label-expr="R$ {value:.2f}"/>
+    <series name="Agosto" values="69.5043,71.4353" color="med-magenta" label-expr="R$ {value:.2f}"/>
+  </chart>
+
+  <text id="media-decision" x="60" y="608" width="1160" height="28" font="body" size="16" color="ink-main" align="center" wrap="false"><strong>Prioridade:</strong> recuperar eficiência antes de ampliar nova verba.</text>
+  <text id="media-source" x="60" y="664" width="1020" height="22" font="caption" size="12" color="ink-muted" wrap="false">Fonte: Windsor.ai · Meta/Google em BRL · nível campanha · chave canônica · 01–26/07 vs 01–26/08</text>
+  <text id="media-bbro" x="1090" y="664" width="130" height="22" font="caption" size="12" color="ink-muted" align="right" wrap="false">BBRO</text>
+</slide>

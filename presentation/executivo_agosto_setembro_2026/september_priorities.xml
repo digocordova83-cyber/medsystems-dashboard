@@ -1,0 +1,41 @@
+<slide id="september_priorities">
+  <background color="paper"/>
+  <text id="september-title" x="60" y="46" width="1120" height="48" font="heading" size="32" color="ink" wrap="false">Setembro: quatro movimentos em sequência</text>
+  <text id="september-section" x="60" y="98" width="760" height="22" font="caption" size="12" color="muted" wrap="false">PRIORIDADES, RESPONSABILIDADES E DEPENDÊNCIAS</text>
+  <shape id="september-rule" type="line" x="60" y="126" width="1160" height="0" stroke="hairline" stroke-width="1"/>
+
+  <shape id="products-panel" type="rect" x="60" y="158" width="560" height="244" corner-radius="12" fill="#FFF7FA"/>
+  <text id="products-number" x="84" y="176" width="42" height="34" font="display" size="28" color="magenta-med" wrap="false">1</text>
+  <text id="products-title" x="126" y="180" width="330" height="30" font="heading" size="22" color="ink" wrap="false">Produtos prioritários</text>
+  <text id="products-badge" x="466" y="182" width="126" height="24" font="caption" size="12" color="magenta-med" align="right" wrap="false">AÇÃO IMEDIATA</text>
+  <table id="products-table" x="84" y="224" width="512" height="152" columns="1,1" rows="32,auto" font="body" size="14" color="ink" padding="4 10" header-border="1 hairline" border-v="1 hairline">
+    <tr><td color="magenta-med"><strong>MedSystems</strong></td><td color="turquoise-beauty"><strong>BeautySystems</strong></td></tr>
+    <tr anchor="top"><td><p>Ultraformer MPT</p><p>Volnewmer</p><p>Chrome</p><p>Youlaser Prime</p><p>Volformer</p></td><td><p>Ultraformer MPT</p><p>Youlaser MT</p><p>Aquapure</p><p>Ultraformer III</p><p>Secret RF · Vectra</p></td></tr>
+  </table>
+
+  <shape id="awareness-panel" type="rect" x="650" y="158" width="570" height="244" corner-radius="12" fill="#F5F3FF"/>
+  <text id="awareness-number" x="674" y="176" width="42" height="34" font="display" size="28" color="#7C3AED" wrap="false">2</text>
+  <text id="awareness-title" x="716" y="180" width="340" height="30" font="heading" size="22" color="ink" wrap="false">B2C / Awareness</text>
+  <text id="awareness-date" x="1072" y="182" width="118" height="24" font="caption" size="12" color="#7C3AED" align="right" wrap="false">INÍCIO 02/09</text>
+  <text id="awareness-channels" x="674" y="228" width="510" height="34" font="body" size="18" color="ink"><strong>Media at Home · OOH · Programática</strong></text>
+  <shape id="awareness-divider" type="line" x="674" y="274" width="510" height="0" stroke="hairline" stroke-width="1"/>
+  <text id="awareness-owner" x="674" y="294" width="510" height="82" font="body" size="16" color="muted" line-height="1.35"><p><strong color="ink">OFF:</strong> desenvolvimento do conceito.</p><p><strong color="ink">BBRO:</strong> desdobramentos para formatos de mídia.</p><p>Conceito previsto para sexta-feira.</p></text>
+
+  <shape id="anti-panel" type="rect" x="60" y="424" width="560" height="164" corner-radius="12" fill="#FFF7ED"/>
+  <text id="anti-number" x="84" y="442" width="42" height="34" font="display" size="28" color="#D97706" wrap="false">3</text>
+  <text id="anti-title" x="126" y="446" width="310" height="30" font="heading" size="22" color="ink" wrap="false">Campanha antipirataria</text>
+  <text id="anti-budget" x="450" y="446" width="142" height="28" font="heading" size="20" color="#D97706" align="right" wrap="false">+ R$ 41 mil</text>
+  <text id="anti-body" x="84" y="492" width="512" height="76" font="body" size="16" color="muted" line-height="1.35"><p><strong color="ink">Públicos:</strong> médicos, especialistas e pacientes.</p><p><strong color="ink">Canais:</strong> Meta e Google.</p><p><strong color="ink">Dependência:</strong> briefing e materiais.</p></text>
+
+  <shape id="protocols-panel" type="rect" x="650" y="424" width="570" height="164" corner-radius="12" fill="#F3FCFB"/>
+  <text id="protocols-number" x="674" y="442" width="42" height="34" font="display" size="28" color="turquoise-beauty" wrap="false">4</text>
+  <text id="protocols-title" x="716" y="446" width="330" height="30" font="heading" size="22" color="ink" wrap="false">Novos protocolos</text>
+  <text id="protocols-timing" x="1038" y="448" width="152" height="24" font="caption" size="12" color="turquoise-beauty" align="right" wrap="false">APÓS PRIORIDADES</text>
+  <text id="protocols-body" x="674" y="494" width="510" height="72" font="body" size="17" color="ink" line-height="1.4"><p><strong>Aquaformer:</strong> Aquapure + Volformer</p><p><strong>Aquanewmer:</strong> Aquapure + Volnewmer</p></text>
+
+  <shape id="sequence-bg" type="rect" x="60" y="606" width="1160" height="52" corner-radius="10" fill="ink"/>
+  <text id="sequence-text" x="84" y="621" width="1112" height="24" font="body" size="15" color="paper" align="center" wrap="false">Criativos → Produtos prioritários → B2C/Awareness → Antipirataria → Novos protocolos</text>
+
+  <text id="september-source" x="60" y="680" width="980" height="18" font="caption" size="11" color="muted" wrap="false">Fonte: prioridades, responsáveis e dependências fornecidos pela gerência</text>
+  <text id="september-page" x="1160" y="678" width="60" height="20" font="caption" size="12" color="muted" align="right" wrap="false">06</text>
+</slide>

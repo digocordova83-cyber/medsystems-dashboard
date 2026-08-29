@@ -1,0 +1,38 @@
+<slide id="publya_activation">
+  <background color="bg-page"/>
+  <text id="publya-title" x="60" y="38" width="1110" height="46" font="heading" size="30" color="ink-main" wrap="false">Publya entregou escala — com limites de reconciliação</text>
+  <shape id="publya-title-rule" type="line" x="60" y="96" width="1160" height="0" stroke="hairline" stroke-width="1"/>
+  <text id="publya-cut" x="60" y="112" width="700" height="24" font="caption" size="13" color="ink-muted" wrap="false">Cinco relatórios B2B · dados até 28/08/2026</text>
+
+  <text id="publya-chart-title" x="60" y="154" width="520" height="28" font="body" size="17" color="ink-main" wrap="false"><strong>Investimento canônico por frente</strong></text>
+  <chart id="publya-spend-chart" type="bar" x="60" y="190" width="520" height="300" font="body" text-size="13" text-color="ink-muted" categories="PMAX,Meta,Display Geo,Push" color="beauty-cyan,med-magenta,ink-main,#9CA3AF" legend="none" data-labels="true" x-axis="false" gridlines="none" gap-width="105">
+    <series values="5695.59,14294.83,9883.19,3611.28" label-expr="R$ {value / 1000:.1f} mil"/>
+  </chart>
+
+  <shape id="publya-total-rule" type="line" x="650" y="150" width="560" height="0" stroke="hairline" stroke-width="1"/>
+  <text id="publya-total-label" x="650" y="168" width="270" height="24" font="body" size="14" color="ink-muted" wrap="false">SPEND CANÔNICO PUBLYA</text>
+  <text id="publya-total-value" x="650" y="198" width="470" height="52" font="metric" size="38" color="ink-main" wrap="false"><strong>R$ 33.484,89</strong></text>
+  <text id="publya-total-note" x="650" y="250" width="500" height="38" font="body" size="15" color="ink-muted">Não somar ao Windsor sem conciliar a sobreposição de PMAX e Meta.</text>
+
+  <text id="publya-meta-label" x="650" y="314" width="220" height="24" font="body" size="14" color="ink-muted" wrap="false">META</text>
+  <text id="publya-meta-value" x="650" y="342" width="250" height="44" font="metric" size="31" color="med-magenta" wrap="false"><strong>45 leads</strong></text>
+  <text id="publya-meta-detail" x="650" y="388" width="260" height="25" font="body" size="15" color="ink-muted" wrap="false">CPL R$ 317,66</text>
+
+  <text id="publya-display-label" x="930" y="314" width="240" height="24" font="body" size="14" color="ink-muted" wrap="false">DISPLAY GEO</text>
+  <text id="publya-display-value" x="930" y="342" width="250" height="44" font="metric" size="31" color="ink-main" wrap="false"><strong>623.669</strong></text>
+  <text id="publya-display-detail" x="930" y="388" width="260" height="25" font="body" size="15" color="ink-muted" wrap="false">impressões · viewability 79,63%</text>
+
+  <text id="publya-push-label" x="650" y="438" width="220" height="24" font="body" size="14" color="ink-muted" wrap="false">PUSH</text>
+  <text id="publya-push-value" x="650" y="466" width="250" height="44" font="metric" size="31" color="beauty-cyan" wrap="false"><strong>3.651 disparos</strong></text>
+  <text id="publya-push-detail" x="930" y="468" width="270" height="40" font="body" size="15" color="ink-muted"><p>15 cliques</p><p>CTR 0,411%</p></text>
+
+  <shape id="publya-ranking-rule" type="line" x="60" y="516" width="1160" height="0" stroke="hairline" stroke-width="1"/>
+  <text id="publya-sites" x="60" y="532" width="560" height="46" font="body" size="15" color="ink-main"><strong>Portais:</strong> UOL 113.177 · Notícias UOL 95.415 · Globo 54.453 impressões</text>
+  <text id="publya-formats" x="650" y="532" width="570" height="46" font="body" size="15" color="ink-main"><strong>Formatos:</strong> 300×250 250.001 · 970×250 174.419 · 728×90 156.820</text>
+
+  <shape id="publya-warning-bg" type="rect" x="60" y="592" width="1160" height="56" fill="bg-tint" corner-radius="8"/>
+  <text id="publya-warning" x="82" y="607" width="1090" height="30" font="body" size="14" color="ink-muted" autofit="shrink">Ativações planejadas: Quanta Academy 27/08; BOT 28–29/08. Na API aparecem como DHL Real Time. Um snapshot DV360 duplicado é exibido, mas entra uma única vez; Reach consolidado permanece indisponível.</text>
+
+  <text id="publya-source" x="60" y="676" width="1030" height="20" font="caption" size="12" color="ink-muted" wrap="false">Fonte: Publya API v2 e Push RPC · deduplicação canônica · PMAX/Meta podem sobrepor Windsor</text>
+  <text id="publya-bbro" x="1090" y="676" width="130" height="20" font="caption" size="12" color="ink-muted" align="right" wrap="false">BBRO</text>
+</slide>

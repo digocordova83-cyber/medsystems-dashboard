@@ -379,3 +379,32 @@
 - [x] Personalizar Push com disparos, cliques, CTR, custo por disparo e evolução diária.
 - [x] Manter overview geral com métricas comparáveis e tornar títulos, KPIs, gráficos e rankings dinâmicos conforme o filtro.
 - [x] Executar testes, validar desktop/mobile e publicar a personalização por frente.
+
+- [x] Detectar diariamente leads Bitrix24 sem marca estruturada e agrupá-los por pipeline, campanha, origem e período.
+- [x] Classificar ocorrências como `mapeamento pendente`, sem inferir marca automaticamente; destacar o pipeline `20889` e a campanha `medical-dsb-conversao-lead-ads`.
+- [x] Decisão do usuário: não persistir fila ou histórico de resolução; usar somente o resumo diário simples.
+- [x] Integrar a verificação ao Heartbeat D-1 existente das 08h BRT, sem criar um segundo job.
+- [x] Decisão do usuário: não criar fila administrativa de mapeamentos nesta etapa.
+- [x] Decisão do usuário: não criar alerta separado; incluir os resultados somente no resumo D-1.
+- [x] Validar a execução D-1 por consulta agregada e confirmar a rotina ativa das 08h BRT.
+
+- [x] Validar os números fornecidos pela gerência para MedSystems, BeautySystems, consolidado e verba, registrando a origem de cada indicador.
+- [x] Consolidar programática, Push e ativações Quanta Academy/BOT com dados auditáveis do dashboard.
+- [x] Preparar PPT executivo com comparação de leads, SQL, conversões, descartes, verba e eficiência.
+- [x] Inserir logos do cliente e da BBRO com qualidade adequada e layout executivo.
+- [x] Criar slide final com prioridades de setembro: produtos, B2C/Awareness, antipirataria e novos protocolos.
+- [x] Revisar o deck, apresentar e entregar a versão final em PPTX/PDF.
+
+- [x] Auditar cada número do PPT executivo contra RD Station, Bitrix24, Windsor.ai e Publya, registrando fonte, período e regra de cálculo.
+- [x] Remover ou isolar qualquer valor fornecido pela gerência que não possa ser reconciliado com as fontes integradas.
+- [x] Atualizar todas as fontes até o último corte D-1 disponível e registrar exceções de cobertura.
+- [x] Recalcular leads, MQL, SQL, descartes, conversões, investimento e eficiência por BU com critérios únicos e reproduzíveis.
+- [x] Refazer a narrativa para um CEO global, com conclusões objetivas, riscos, decisões e prioridades de setembro.
+- [x] Revisar o layout executivo, validar os números slide a slide e entregar uma nova versão em PPTX/PDF.
+
+- [x] Auditar o Heartbeat diário das 08h BRT e confirmar corte D-1 até 23h59 de Brasília para RD Station, Bitrix24 e Windsor.ai.
+- [x] Garantir que a mídia permaneça restrita às quatro contas oficiais em BRL, com upsert e leitura pela chave canônica no nível campanha.
+- [x] Alinhar a verificação de leads sem marca ao universo exato da aba Negócios e à regra de campanha UTM/payload RD.
+- [x] Separar no resumo diário casos novos D-1 e acumulado mensal, agrupados por pipeline, campanha e origem, sem dados pessoais.
+- [x] Destacar pipeline 20889 / Consumíveis e campanha medical-dsb-conversao-lead-ads como mapeamento pendente de DSB e BU.
+- [x] Validar agendamento, execução, datas máximas, investimentos por marca e exceções; publicar a rotina atualizada.

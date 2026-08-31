@@ -456,3 +456,6 @@
 - [x] Atualizar o slide de agosto com as quatro métricas exigidas, período comum e fontes explícitas.
 - [x] Manter os números de meta somente quando houver fonte e regra de cálculo documentadas.
 - [x] Revisar e entregar a versão executiva atualizada.
+
+- [x] Ajustar o acesso da cliente `isadora` para login em minúsculas e senha protegida, preservando todos os demais usuários.
+- [x] Validar o login da cliente `isadora`, a função de cliente e a integridade da lista de usuários existente.

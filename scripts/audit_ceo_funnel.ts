@@ -75,8 +75,8 @@ async function period(startDate: string, endDate: string) {
 async function main() {
   const output = {
     generatedAt: new Date().toISOString(),
-    july: await period("2026-07-01", "2026-07-26"),
-    august: await period("2026-08-01", "2026-08-26"),
+    july: await period("2026-07-01", "2026-07-30"),
+    august: await period("2026-08-01", "2026-08-30"),
   };
   await writeFile("/tmp/ceo_funnel_audit.json", JSON.stringify(output, null, 2), "utf8");
   console.log("Auditoria concluída: /tmp/ceo_funnel_audit.json");

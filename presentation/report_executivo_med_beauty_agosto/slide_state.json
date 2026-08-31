@@ -1,0 +1,53 @@
+{
+  "project_info": {
+    "title": "Report executivo MedSystems + BeautySystems",
+    "created": 1788095983.167,
+    "last_updated": 1788148211.792,
+    "total_slides": 4
+  },
+  "slides": [
+    {
+      "id": "cover",
+      "state": "edited",
+      "pageNum": 1
+    },
+    {
+      "id": "august_results",
+      "state": "edited",
+      "pageNum": 2
+    },
+    {
+      "id": "programmatic_layers",
+      "state": "edited",
+      "pageNum": 3
+    },
+    {
+      "id": "september_actions",
+      "state": "edited",
+      "pageNum": 4
+    }
+  ],
+  "outline": [
+    {
+      "id": "cover",
+      "title": "Report executivo MedSystems + BeautySystems",
+      "summary": "Capa minimalista com referência a agosto de 2026 e logos MedSystems, BeautySystems e BBRO."
+    },
+    {
+      "id": "august_results",
+      "title": "Agosto ampliou demanda e qualidade de entrada",
+      "summary": "Síntese didática e positiva dos investimentos, resultados de plataforma, funil, RD Station, programática e Push com cortes e fontes explícitos."
+    },
+    {
+      "id": "programmatic_layers",
+      "title": "Programática: camadas complementares de demanda",
+      "summary": "Explica didaticamente como conversão, geolocalização, awareness e Push se complementam, com resultados atualizados da Publya e Keep It Real identificado no Windsor.",
+      "image_plan": "Sem imagem externa; usar diagrama de camadas, métricas auditadas e rankings de portais e formatos."
+    },
+    {
+      "id": "september_actions",
+      "title": "Setembro: escalar com rastreabilidade",
+      "summary": "Prioridades do próximo mês e mensagem executiva sobre integração e classificação no CRM, acompanhadas das soluções em andamento."
+    }
+  ]
+}

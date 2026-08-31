@@ -408,3 +408,51 @@
 - [x] Separar no resumo diário casos novos D-1 e acumulado mensal, agrupados por pipeline, campanha e origem, sem dados pessoais.
 - [x] Destacar pipeline 20889 / Consumíveis e campanha medical-dsb-conversao-lead-ads como mapeamento pendente de DSB e BU.
 - [x] Validar agendamento, execução, datas máximas, investimentos por marca e exceções; publicar a rotina atualizada.
+
+- [x] Reduzir o relatório a três slides com o título `Report executivo MedSystems + BeautySystems` e referência discreta a agosto.
+- [x] Apresentar investimento, linhas de negócio e avanços positivos de impacto, cliques e leads usando somente dados auditados.
+- [x] Explicar didaticamente que a mensuração comercial ainda depende da integração e classificação no CRM, sem atribuir culpa sem evidência.
+- [x] Mostrar as soluções em andamento para reconciliação RD→Bitrix, classificação de marca e monitoramento diário.
+- [x] Reservar o último slide para as prioridades e entregas do próximo mês.
+- [x] Revisar o deck para audiência executiva, validar os números e entregar a versão final em PPTX/PDF.
+- [x] Incluir na execução de 31/08/2026 às 08h BRT um lembrete para alinhar o relatório didático com a Luiza e compartilhá-lo no grupo MedSystems.
+
+- [x] Validar a quantidade real de leads adicionais em agosto versus julho antes de substituir qualquer referência a “+40”.
+- [x] Explicar a distribuição do investimento e a relação entre mídia, impacto, cliques e leads em linguagem não técnica.
+- [x] Incluir cronologia das campanhas ativadas entre 25 e 27/08 e registrar a premissa operacional de 7–15 dias úteis para maturação.
+- [x] Atualizar somente o slide de agosto, preservando o slide de setembro aprovado.
+- [x] Revisar e entregar novamente o relatório de três slides.
+
+- [x] Reconciliar por BU o investimento de Google, Meta e Programática no mesmo período de comparação.
+- [x] Recalcular leads, MQL, conversão MQL→SQL, CPL e crescimento de julho para agosto por MedSystems e BeautySystems.
+- [x] Validar o investimento Keep It Real em fonte auditável antes de incluí-lo; se não houver fonte, registrar como indisponível.
+- [x] Reestruturar o relatório final com uma tabela executiva por BU e metodologia de cálculo explícita.
+- [x] Revisar os três slides e entregar a versão reconciliada em PPTX/PDF.
+
+- [x] Consultar no Windsor.ai campanhas com `keep-it-real-` nas contas oficiais MedSystems e BeautySystems.
+- [x] Reconciliar investimento e resultados Keep It Real por conta, canal e período, sem inferir campanhas ausentes.
+- [x] Estruturar um slide exclusivo de Programática por camadas: conversão, awareness, geolocalização, Push e ativações de eventos.
+- [x] Explicar didaticamente a função de cada camada e como os investimentos se complementam.
+- [x] Preservar a estrutura do slide 2 e inserir o novo slide separadamente.
+- [x] Revisar e entregar a apresentação atualizada em PPTX/PDF.
+
+- [x] Atualizar até hoje Windsor.ai, Bitrix24/RD Station, Publya e Keep It Real, registrando o horário de extração.
+- [x] Separar nos cálculos e slides dados fechados D-1 de valores parciais do dia corrente.
+- [x] Recalcular investimento, leads, MQL, conversão, CPL e crescimento por BU no maior corte comparável disponível.
+- [x] Atualizar o slide exclusivo de Programática com as camadas e os valores mais recentes.
+- [x] Revisar e entregar a apresentação com os novos cortes e ressalvas de atualização.
+
+- [x] Revalidar a regra RD para identificar mídia paga por UTM comprovada ou página/formulário de mídia.
+- [x] Calcular contatos únicos de agosto por MedSystems e BeautySystems, separando UTM, página e sobreposição.
+- [x] Validar a deduplicação por contato e entregar o total auditável com período e critérios explícitos.
+
+- [x] Atualizar contatos e eventos RD Station até o D-1 de 30/08/2026 nas duas contas.
+- [x] Recalcular julho e agosto com o critério de contato único por UTM paga ou página/formulário comprovadamente de mídia.
+- [x] Atualizar no report o volume de leads, crescimento e CPL derivados desse critério, preservando as demais métricas por fonte.
+- [x] Revisar e entregar a nova versão da apresentação com corte e metodologia explícitos.
+
+- [x] Atualizar o corte das fontes e reconciliar valor gasto, leads, MQL e crescimento de julho para agosto por BU e consolidado.
+- [x] Comparar os números informados pela gestão com RD Station, Bitrix24, Windsor.ai e Publya e remover divergências não comprovadas.
+- [x] Atualizar o slide de agosto com as quatro métricas exigidas, período comum e fontes explícitas.
+- [x] Manter os números de meta somente quando houver fonte e regra de cálculo documentadas.
+- [x] Revisar e entregar a versão executiva atualizada.

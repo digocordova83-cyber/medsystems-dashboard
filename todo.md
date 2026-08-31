@@ -459,3 +459,8 @@
 
 - [x] Ajustar o acesso da cliente `isadora` para login em minúsculas e senha protegida, preservando todos os demais usuários.
 - [x] Validar o login da cliente `isadora`, a função de cliente e a integridade da lista de usuários existente.
+
+- [x] Calcular a divisão dos R$ 100 mil entre MedSystems e BeautySystems conforme as proporções atuais de Google e Meta.
+- [x] Estruturar no Excel os blocos de R$ 58.836 e R$ 41 mil, com canais, objetivos, percentuais e premissas explícitas.
+- [x] Criar resumo executivo, plano detalhado, premissas editáveis e gráficos do plano de mídia.
+- [x] Validar fórmulas, totais, formatação e entregar a planilha final.

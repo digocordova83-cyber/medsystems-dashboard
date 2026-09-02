@@ -544,3 +544,9 @@
 - [x] Alterar o KPI oficial do funil de ID de lead para contato único conciliado, mantendo 86 conversões e 75 pessoas como métricas distintas.
 - [x] Atualizar a conciliação diária e a interface para que a deduplicação por contato seja a única diferença entre fonte e Bitrix24.
 - [x] Validar MedSystems 41→35 e BeautySystems 45→40 no recorte de 01/09, executar testes e publicar.
+
+- [x] Mapear campos históricos de leads, contatos e negócios Bitrix24 para julho e agosto de 2026, incluindo origem, UTMs, funil, descarte e fechamento.
+- [x] Extrair e reconciliar os registros históricos com uma linha por ID de lead, preservando IDs técnicos e removendo PII desnecessária.
+- [x] Gerar workbook profissional com Overview, base detalhada, negócios vinculados e dicionário/metodologia.
+- [x] Validar período, totais, fórmulas, filtros, legibilidade e ausência de PII; documentar a cobertura histórica real.
+- [x] Preparar a entrega final do arquivo Excel, com resumo de cobertura e limitações auditáveis.

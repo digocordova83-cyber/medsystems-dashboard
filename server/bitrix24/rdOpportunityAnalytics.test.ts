@@ -68,6 +68,22 @@ describe("buildRdOpportunityManagerDashboard", () => {
     expect(result.filterOptions.pipelines).toEqual([expect.objectContaining({ value: "15391", count: 1 })]);
   });
 
+  it("conta IDs Bitrix24 uma vez e separa pessoas associadas a múltiplos leads", () => {
+    const referenceRows = [{ accountKey: "medsystems" as const, identityHash: "identity-a", rdContactUuid: "rd-med-dup" }];
+    const result = buildRdOpportunityManagerDashboard({
+      rows: [
+        row(71, { ...paid, UF_CRM_1739195085: "15391", STATUS_ID: "NEW", rd_contact_uuid: "rd-med-dup", UTM_CAMPAIGN: "campanha-dup" }),
+        row(72, { ...paid, UF_CRM_1739195085: "15391", STATUS_ID: "IN_PROCESS", rd_contact_uuid: "rd-med-dup", UTM_CAMPAIGN: "campanha-dup" }),
+      ],
+      referenceRows,
+      filters,
+      period: { start: "2026-08-01", end: "2026-08-25" },
+    });
+    expect(result.totals).toMatchObject({ leads: 2, uniqueBitrixLeadIds: 2 });
+    expect(result.duplicates).toMatchObject({ peopleWithMultipleLeadIds: 1, leadIdsInDuplicateGroups: 2, extraLeadIds: 1 });
+    expect(result.duplicates.byBrand).toEqual([{ label: "Medsystems", count: 1 }]);
+  });
+
   it("valida o intervalo configurável no fuso de São Paulo", () => {
     expect(validateBusinessDateRange("2026-08-01", "2026-08-25").endExclusive.toISOString()).toBe("2026-08-26T03:00:00.000Z");
     expect(() => validateBusinessDateRange("2026-08-25", "2026-08-01")).toThrow("data inicial");

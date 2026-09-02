@@ -10,6 +10,7 @@ import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 import { registerRdStationCallback } from "../rdstation/callback";
 import { registerPublyaScheduledRoutes } from "../publya/scheduled";
+import { registerPaidMediaReconciliationScheduledRoutes } from "../leads/scheduled";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -40,6 +41,7 @@ async function startServer() {
   registerOAuthRoutes(app);
   registerRdStationCallback(app);
   registerPublyaScheduledRoutes(app);
+  registerPaidMediaReconciliationScheduledRoutes(app);
   // tRPC API
   app.use(
     "/api/trpc",

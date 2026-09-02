@@ -521,3 +521,15 @@
 - [x] Resolver os casos ambíguos usando nome normalizado combinado com telefone, além de e-mail e UUID.
 - [x] Quantificar por BU os matches no mesmo dia, em outras datas, duplicados e não localizados.
 - [x] Atualizar a conclusão auditável e informar se os 86 registros existem no Bitrix24.
+
+- [ ] Documentar como regra canônica que o funil de mídia paga conta IDs únicos de lead Bitrix24 após evidência de mídia e match de identidade.
+- [ ] Revisar e registrar os campos/filtros Bitrix24 usados para título, origem paga, pipeline/marca, data, etapa e vínculos de negócio.
+- [ ] Manter conversões da fonte, pessoas únicas, IDs Bitrix24 e duplicidades como métricas separadas em todos os relatórios.
+- [ ] Aplicar a mesma regra em qualquer período consultado e na execução diária D-1, sem depender de um CSV específico.
+
+- [ ] Formalizar o ID único do lead Bitrix24 como unidade oficial do funil e documentar a diferença para conversões e pessoas.
+- [ ] Criar estrutura persistente para registrar a conciliação diária D-1 e os casos com múltiplos IDs de lead.
+- [ ] Implementar serviço idempotente de conciliação RD/Bitrix por e-mail, telefone, nome + telefone e UUID, sem retornar PII ao navegador.
+- [ ] Integrar a conciliação ao fluxo diário das 08h BRT após as cargas RD e Bitrix24.
+- [ ] Adicionar ao dashboard o KPI de leads únicos Bitrix24 e uma visão agregada das duplicidades por BU, campanha e método de match.
+- [ ] Validar o recorte de 01/09, os testes, o agendamento, a responsividade e publicar a nova versão.

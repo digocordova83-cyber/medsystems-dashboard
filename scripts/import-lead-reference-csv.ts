@@ -2,6 +2,7 @@ import { createHmac } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import mysql from "mysql2/promise";
 import { normalizeIdentityEmail, normalizeIdentityPhone } from "../server/db";
+import { normalizeIdentityName } from "../server/leads/paidMediaEvidence";
 
 type AccountKey = "medsystems" | "beautysystems";
 type Channel = "meta_ads" | "google_ads" | "unknown";
@@ -93,6 +94,7 @@ try {
     const convertedAt = new Date(String(row.converted_at ?? ""));
     const email = normalizeIdentityEmail(row.lead_email);
     const phone = normalizeIdentityPhone(row.lead_phone);
+    const name = normalizeIdentityName(row.lead_name);
     if (!brand || Number.isNaN(convertedAt.valueOf()) || (!email && !phone)) { summary.skippedRows += 1; continue; }
 
     const emailCandidates = email ? contactsByEmail.get(`${brand}:${email}`) ?? [] : [];
@@ -121,10 +123,10 @@ try {
 
     await db.execute(
       `INSERT INTO leadReferenceEvents
-        (source, sourceRecordHash, accountKey, sourceClientSlug, convertedAt, identityHash, emailHash, phoneHash, channel, utmSource, utmCampaign, conversionEvent, rdContactUuid, rdMatchMethod, rdEventConfirmed)
-       VALUES ('supabase_export', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)
-       ON DUPLICATE KEY UPDATE accountKey=VALUES(accountKey), sourceClientSlug=VALUES(sourceClientSlug), convertedAt=VALUES(convertedAt), identityHash=VALUES(identityHash), emailHash=VALUES(emailHash), phoneHash=VALUES(phoneHash), channel=VALUES(channel), utmSource=VALUES(utmSource), utmCampaign=VALUES(utmCampaign), conversionEvent=VALUES(conversionEvent), rdContactUuid=VALUES(rdContactUuid), rdMatchMethod=VALUES(rdMatchMethod)`,
-      [sourceRecordHash, brand, clean(row.client_slug)!, convertedAt, identityHash, email ? digest(email) : null, phone ? digest(phone) : null, normalizedChannel, normalizedSource, normalizedCampaign, normalizedEvent, rdContactUuid, rdMatchMethod],
+        (source, sourceRecordHash, accountKey, sourceClientSlug, convertedAt, identityHash, emailHash, phoneHash, namePhoneHash, channel, utmSource, utmCampaign, conversionEvent, rdContactUuid, rdMatchMethod, rdEventConfirmed)
+       VALUES ('supabase_export', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)
+       ON DUPLICATE KEY UPDATE accountKey=VALUES(accountKey), sourceClientSlug=VALUES(sourceClientSlug), convertedAt=VALUES(convertedAt), identityHash=VALUES(identityHash), emailHash=VALUES(emailHash), phoneHash=VALUES(phoneHash), namePhoneHash=VALUES(namePhoneHash), channel=VALUES(channel), utmSource=VALUES(utmSource), utmCampaign=VALUES(utmCampaign), conversionEvent=VALUES(conversionEvent), rdContactUuid=VALUES(rdContactUuid), rdMatchMethod=VALUES(rdMatchMethod)`,
+      [sourceRecordHash, brand, clean(row.client_slug)!, convertedAt, identityHash, email ? digest(email) : null, phone ? digest(phone) : null, name && phone ? digest(`${name}|${phone}`) : null, normalizedChannel, normalizedSource, normalizedCampaign, normalizedEvent, rdContactUuid, rdMatchMethod],
     );
     summary.importedRows += 1;
     summary.byBrand[brand] += 1;

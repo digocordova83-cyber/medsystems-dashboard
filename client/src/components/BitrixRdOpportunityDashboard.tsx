@@ -80,7 +80,7 @@ export function BitrixRdOpportunityDashboard() {
       </div>
 
       <div className="mt-7 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
-        <HeroKpi icon={Megaphone} label="Leads no Bitrix24" value={integer(data.totals.leads)} helper={data.sourceRule} tone="cyan" />
+        <HeroKpi icon={Megaphone} label="IDs únicos de lead" value={integer(data.totals.uniqueBitrixLeadIds)} helper="KPI oficial do funil · ID do lead Bitrix24" tone="cyan" />
         <HeroKpi icon={Target} label="MQL · Qualificados" value={integer(data.totals.mql)} helper={`${ratio(data.totals.mql, data.totals.leads)} dos leads`} tone="violet" />
         <HeroKpi icon={TrendingUp} label="SQL · Oportunidades" value={integer(data.totals.sql)} helper={`${ratio(data.totals.sql, data.totals.mql)} dos MQLs`} tone="amber" />
         <HeroKpi icon={BriefcaseBusiness} label="Negócios" value={integer(data.totals.dealCount)} helper={`${integer(data.totals.dealLeads)} leads vinculados`} tone="emerald" />
@@ -121,6 +121,8 @@ export function BitrixRdOpportunityDashboard() {
         </div>
       </section>
 
+      <DuplicatePanel duplicates={data.duplicates} />
+
       <section className="grid gap-5 xl:grid-cols-[1.35fr_.65fr]">
         <TrendPanel rows={data.byDay} />
         <CoveragePanel coverage={data.coverage} total={data.totals.leads} />
@@ -157,6 +159,26 @@ function PanelHeader({ eyebrow, title, detail }: { eyebrow: string; title: strin
 const toneStyles = { cyan: "bg-cyan-300/10 text-cyan-200", violet: "bg-violet-300/10 text-violet-200", amber: "bg-amber-300/10 text-amber-200", emerald: "bg-emerald-300/10 text-emerald-200" };
 function HeroKpi({ icon: Icon, label, value, helper, tone }: { icon: typeof Target; label: string; value: string; helper: string; tone: keyof typeof toneStyles }) { return <article className="rounded-2xl border border-white/10 bg-black/25 p-4 backdrop-blur-sm"><div className="flex items-start justify-between gap-3"><div><p className="font-mono-ui text-[9px] uppercase tracking-[.14em] text-slate-500">{label}</p><p className="mt-2 text-2xl font-black tracking-[-.035em] text-white">{value}</p></div><span className={`grid h-9 w-9 place-items-center rounded-xl ${toneStyles[tone]}`}><Icon className="h-4 w-4" /></span></div><p className="mt-3 truncate text-xs text-slate-500" title={helper}>{helper}</p></article>; }
 function SmallKpi({ label, value, helper, accent = "cyan" }: { label: string; value: string; helper: string; accent?: "cyan" | "emerald" | "rose" | "amber" }) { const color = { cyan: "text-cyan-200", emerald: "text-emerald-200", rose: "text-rose-200", amber: "text-amber-200" }[accent]; return <article className="rounded-xl border border-white/8 bg-white/[.025] p-4"><p className="text-[10px] uppercase tracking-[.12em] text-slate-500">{label}</p><p className={`mt-2 text-2xl font-black ${color}`}>{value}</p><p className="mt-1 text-xs text-slate-500">{helper}</p></article>; }
+
+function DuplicatePanel({ duplicates }: { duplicates: { peopleWithMultipleLeadIds: number; leadIdsInDuplicateGroups: number; extraLeadIds: number; byBrand: { label: string; count: number }[]; byCampaign: { label: string; count: number }[]; byMatchMethod: { label: string; count: number }[] } }) {
+  const blocks = [
+    { title: "Por BU", rows: duplicates.byBrand },
+    { title: "Por campanha", rows: duplicates.byCampaign },
+    { title: "Por método de match", rows: duplicates.byMatchMethod },
+  ];
+  return <section className="rounded-2xl border border-rose-200/15 bg-rose-200/[.025] p-5 sm:p-6">
+    <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
+      <PanelHeader eyebrow="Qualidade do CRM" title="Pessoas associadas a múltiplos IDs de lead" detail="Duplicidades são monitoradas separadamente e não alteram a unidade oficial do funil: cada ID Bitrix24 é contado uma única vez." />
+      <Badge variant="outline" className="w-fit border-rose-200/20 bg-rose-200/[.05] text-rose-100">Auditoria sem PII</Badge>
+    </div>
+    <div className="mt-5 grid gap-3 sm:grid-cols-3">
+      <SmallKpi label="Pessoas com múltiplos IDs" value={integer(duplicates.peopleWithMultipleLeadIds)} helper="Identidades conciliadas com mais de um lead" accent="rose" />
+      <SmallKpi label="IDs nos grupos" value={integer(duplicates.leadIdsInDuplicateGroups)} helper="IDs Bitrix24 envolvidos" accent="amber" />
+      <SmallKpi label="IDs excedentes" value={integer(duplicates.extraLeadIds)} helper="Acima de um ID por pessoa" accent="rose" />
+    </div>
+    <div className="mt-5 grid gap-3 lg:grid-cols-3">{blocks.map(block => <article key={block.title} className="rounded-xl border border-white/8 bg-black/15 p-4"><p className="text-xs font-semibold text-white">{block.title}</p><div className="mt-3 space-y-2">{block.rows.length ? block.rows.slice(0, 6).map(row => <div key={row.label} className="flex items-center justify-between gap-3 text-xs"><span className="truncate text-slate-400" title={row.label}>{row.label}</span><span className="font-mono-ui text-rose-100">{integer(row.count)}</span></div>) : <p className="text-xs text-slate-600">Nenhuma duplicidade no recorte.</p>}</div></article>)}</div>
+  </section>;
+}
 
 function FunnelView({ stages }: { stages: { key: string; label: string; count: number; conversionFromPrevious: number; conversionFromLead: number; rule: string }[] }) {
   const colors = ["from-cyan-300 to-cyan-500", "from-sky-400 to-blue-500", "from-violet-400 to-violet-600", "from-amber-300 to-orange-500", "from-emerald-300 to-emerald-500"];

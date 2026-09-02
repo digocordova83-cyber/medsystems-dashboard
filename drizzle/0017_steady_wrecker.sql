@@ -1,0 +1,1 @@
+ALTER TABLE `leadReferenceEvents` ADD `namePhoneHash` varchar(64);

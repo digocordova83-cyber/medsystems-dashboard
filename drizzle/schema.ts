@@ -114,6 +114,7 @@ export const leadReferenceEvents = mysqlTable("leadReferenceEvents", {
   identityHash: varchar("identityHash", { length: 64 }).notNull(),
   emailHash: varchar("emailHash", { length: 64 }),
   phoneHash: varchar("phoneHash", { length: 64 }),
+  namePhoneHash: varchar("namePhoneHash", { length: 64 }),
   channel: mysqlEnum("channel", leadReferenceChannelValues).default("unknown").notNull(),
   utmSource: varchar("utmSource", { length: 160 }),
   utmCampaign: varchar("utmCampaign", { length: 512 }),
@@ -142,6 +143,40 @@ export const leadReferenceBenchmarks = mysqlTable("leadReferenceBenchmarks", {
 }, table => [
   uniqueIndex("lead_reference_benchmark_unique").on(table.businessDate, table.accountKey, table.sourceLabel),
   index("lead_reference_benchmark_date_index").on(table.businessDate),
+]);
+
+export const paidMediaReconciliationJobs = mysqlTable("paidMediaReconciliationJobs", {
+  id: int("id").autoincrement().primaryKey(),
+  jobKey: varchar("jobKey", { length: 64 }).notNull(),
+  scheduleCronTaskUid: varchar("scheduleCronTaskUid", { length: 65 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, table => [
+  uniqueIndex("paid_media_reconciliation_job_key_unique").on(table.jobKey),
+  index("paid_media_reconciliation_task_uid_index").on(table.scheduleCronTaskUid),
+]);
+
+export const paidMediaReconciliationDaily = mysqlTable("paidMediaReconciliationDaily", {
+  id: int("id").autoincrement().primaryKey(),
+  businessDate: varchar("businessDate", { length: 10 }).notNull(),
+  accountKey: mysqlEnum("accountKey", accountKeyValues).notNull(),
+  uniqueBitrixLeadIds: int("uniqueBitrixLeadIds").default(0).notNull(),
+  mqlLeadIds: int("mqlLeadIds").default(0).notNull(),
+  sqlLeadIds: int("sqlLeadIds").default(0).notNull(),
+  leadIdsWithDeals: int("leadIdsWithDeals").default(0).notNull(),
+  reconciledByIdentity: int("reconciledByIdentity").default(0).notNull(),
+  recoveredOutsidePaidField: int("recoveredOutsidePaidField").default(0).notNull(),
+  peopleWithMultipleLeadIds: int("peopleWithMultipleLeadIds").default(0).notNull(),
+  leadIdsInDuplicateGroups: int("leadIdsInDuplicateGroups").default(0).notNull(),
+  extraLeadIds: int("extraLeadIds").default(0).notNull(),
+  ruleVersion: varchar("ruleVersion", { length: 32 }).default("bitrix_lead_id_v1").notNull(),
+  status: varchar("status", { length: 32 }).default("completed").notNull(),
+  summary: text("summary").notNull(),
+  reconciledAt: timestamp("reconciledAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, table => [
+  uniqueIndex("paid_media_reconciliation_date_brand_unique").on(table.businessDate, table.accountKey),
+  index("paid_media_reconciliation_date_index").on(table.businessDate),
 ]);
 
 export const rdStationJulyLeadViews = mysqlTable("rdStationJulyLeadViews", {

@@ -533,3 +533,8 @@
 - [x] Integrar a conciliação ao fluxo diário das 08h BRT após as cargas RD e Bitrix24, com snapshot às 08h30 BRT.
 - [x] Adicionar ao dashboard o KPI de leads únicos Bitrix24 e uma visão agregada das duplicidades por BU, campanha e método de match.
 - [x] Validar o recorte de 01/09, os testes, o agendamento, a responsividade e publicar a nova versão.
+
+- [x] Validar as colunas, o recorte e as BUs do CSV reenviado antes do cruzamento com o RD Station.
+- [x] Cruzar os registros com contatos RD por UUID, e-mail e telefone normalizado nas duas contas.
+- [x] Confirmar as conversões correspondentes no RD e separar repetições da mesma pessoa.
+- [x] Informar matches e ausências por MedSystems e BeautySystems sem expor PII.

@@ -511,3 +511,8 @@
 - [x] Resolver a marca do registro reconciliado pela BU da referência quando a marca/pipeline do Bitrix24 estiver ausente ou divergente, preservando a origem original para auditoria.
 - [x] Recalcular Pipeline / marca no CRM, funil, filtros e atribuições exclusivamente com registros Bitrix24 conciliados.
 - [x] Validar os novos totais contra a referência de 01/09, executar testes e publicar a correção.
+
+- [x] Auditar quantas linhas e quantas pessoas únicas do CSV de 01/09 possuem match no Bitrix24 por e-mail, telefone ou UUID do RD Station.
+- [x] Separar os matches encontrados em 01/09, em outras datas e em múltiplos registros do CRM.
+- [x] Informar os volumes por MedSystems e BeautySystems, preservando PII fora das saídas.
+- [x] Documentar a diferença entre linhas do CSV, pessoas únicas e registros Bitrix24 encontrados.

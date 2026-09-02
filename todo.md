@@ -503,4 +503,4 @@
 - [x] Identificar se a falha ocorre na consulta principal Bitrix24, na consulta-base de pipelines ou na conciliação de leads.
 - [x] Tornar as consultas auxiliares da conciliação não bloqueantes para que uma falha parcial não derrube o funil comercial.
 - [x] Melhorar a mensagem de erro para não exibir falha técnica de parsing JSON ao usuário final.
-- [ ] Validar a correção no domínio publicado, executar testes e salvar nova versão.
+- [x] Validar a correção no domínio publicado, executar testes e salvar nova versão.

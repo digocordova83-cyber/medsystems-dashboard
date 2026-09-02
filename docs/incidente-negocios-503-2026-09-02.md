@@ -22,6 +22,18 @@ A análise de recursos do navegador mostrou que o componente `RevenueAnalytics` 
 
 Na medição final, após a autenticação, foram observadas somente `bitrix24.rdOpportunityDashboard` e `leads.reconciliation` no lote da aba Negócios. O lote concluiu em aproximadamente 1,0 segundo e transferiu cerca de 23 KB; as consultas legadas do Overview deixaram de ser disparadas.
 
+A segunda correção foi publicada no domínio oficial. A sessão existente foi validada e a aba Negócios iniciou diretamente, sem exibir o erro 503/parsing. A conclusão do carregamento e as requisições efetivamente disparadas em produção ainda foram verificadas na sequência.
+
+A primeira medição no domínio oficial, feita sobre a sessão já aberta antes da conclusão do deploy, ainda mostrou o lote legado com consultas do Overview. Como a navegação ocorreu na mesma URL de uma aplicação já carregada, foi necessário forçar uma recarga completa para garantir o uso do novo bundle antes da validação definitiva.
+
+A recarga completa foi executada após a confirmação de que o deploy estava disponível no domínio oficial. As medições seguintes consideram somente essa nova sessão do bundle publicado.
+
+O navegador foi reaberto diretamente em `#bitrix` após a recarga, preservando a sessão cliente e iniciando a consulta da aba Negócios no bundle atualizado.
+
+## Validação definitiva em produção
+
+Após recarga completa, a aba Negócios carregou no domínio oficial sem 503 e exibiu o funil, a conciliação 86/75/50, os cartões por BU e os filtros do CRM. O navegador registrou somente `auth.me` e o lote `bitrix24.rdOpportunityDashboard,leads.reconciliation`; o lote analítico concluiu em aproximadamente 5,6 segundos em produção. Nenhuma consulta legada do Overview foi disparada.
+
 ## Validação
 
 Foram aprovados dez testes focados, a checagem TypeScript, o build de produção e a checagem de integridade do diff. A aba Negócios voltou a carregar no ambiente de prévia com 50 registros Bitrix24 e o bloco de conciliação 86/75/50, sem a consulta Bitrix duplicada.

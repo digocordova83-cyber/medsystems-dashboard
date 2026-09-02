@@ -516,3 +516,8 @@
 - [x] Separar os matches encontrados em 01/09, em outras datas e em múltiplos registros do CRM.
 - [x] Informar os volumes por MedSystems e BeautySystems, preservando PII fora das saídas.
 - [x] Documentar a diferença entre linhas do CSV, pessoas únicas e registros Bitrix24 encontrados.
+
+- [x] Validar as colunas e o recorte temporal do CSV reenviado sem expor PII.
+- [x] Resolver os casos ambíguos usando nome normalizado combinado com telefone, além de e-mail e UUID.
+- [x] Quantificar por BU os matches no mesmo dia, em outras datas, duplicados e não localizados.
+- [x] Atualizar a conclusão auditável e informar se os 86 registros existem no Bitrix24.

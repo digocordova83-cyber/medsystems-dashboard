@@ -1,29 +1,25 @@
-# Auditoria de existência do CSV no Bitrix24 — 01/09/2026
-
-## Pergunta
-
-Os leads da base de referência de 01/09/2026 existem no Bitrix24?
-
-## Resposta auditável
-
-A maior parte possui correspondência comprovada no Bitrix24, mas não é tecnicamente correto afirmar que 100% está confirmada com as chaves atuais. O cruzamento usa e-mail normalizado, UUID do contato RD e telefone quando ele identifica uma única pessoa na referência. Telefone compartilhado entre identidades diferentes foi mantido como ambíguo, sem atribuição automática.
-
-| Recorte | Linhas do CSV | Pessoas únicas | Linhas com match comprovado | Pessoas com match comprovado | Linhas ambíguas | Pessoas ambíguas |
-|---|---:|---:|---:|---:|---:|---:|
-| MedSystems | 41 | 35 | 24 | 22 | 17 | 13 |
-| BeautySystems | 45 | 40 | 44 | 39 | 1 | 1 |
-| Consolidado | 86 | 75 | 68 | 61 | 18 | 14 |
-
-Todos os 68 matches comprovados possuem ao menos um lead criado no Bitrix24 em 01/09/2026 no horário de Brasília. Não houve caso comprovado encontrado exclusivamente em outra data.
-
-## Duplicidades do CRM
-
-Entre as 68 linhas confirmadas, 19 encontram mais de um lead Bitrix24 para a mesma identidade. Por isso, quantidade de linhas do CSV, pessoas únicas e registros do CRM não são equivalentes e não devem ser somadas ou comparadas como se fossem a mesma métrica.
-
-## Limitação
-
-As 18 linhas restantes apresentam apenas coincidência por telefone compartilhado. Esse sinal é insuficiente para afirmar que o registro pertence à mesma pessoa sem nome, e-mail, UUID ou outra chave individual adicional. A base original anexada não está mais disponível no filesystem da sessão para testar nome combinado com telefone; os hashes persistidos preservam a privacidade, mas não permitem reconstruir o nome.
+# Auditoria final de existência do CSV no Bitrix24 — 01/09/2026
 
 ## Conclusão
 
-Está comprovado que 68 das 86 linhas — equivalentes a 61 das 75 pessoas únicas — existem no Bitrix24. Os 18 casos restantes são ambíguos, não necessariamente ausentes. BeautySystems está quase integralmente confirmada; a incerteza está concentrada em MedSystems.
+Com o CSV original reenviado, foi possível resolver os casos antes ambíguos por meio da combinação de nome normalizado com telefone, além de e-mail. As 86 linhas do CSV encontram ao menos um lead criado no Bitrix24 em 01/09/2026 no horário de Brasília.
+
+| Recorte | Linhas do CSV | Pessoas únicas | Linhas com match no Bitrix24 | Pessoas com match | Leads Bitrix24 distintos no dia |
+|---|---:|---:|---:|---:|---:|
+| MedSystems | 41 | 35 | 41 | 35 | 39 |
+| BeautySystems | 45 | 40 | 45 | 40 | 43 |
+| Consolidado | 86 | 75 | 86 | 75 | 52 |
+
+## Interpretação
+
+Todos os registros da base possuem correspondência no Bitrix24, mas 86 linhas de conversão não equivalem a 86 leads únicos no CRM. A base contém 75 pessoas únicas, e essas pessoas estão associadas a 52 IDs distintos de lead criados no Bitrix24 no mesmo dia. Treze linhas do CSV encontram mais de um lead Bitrix24 para a mesma identidade.
+
+Em MedSystems, as 41 linhas correspondem a 35 pessoas e 39 IDs distintos de lead no dia. Esse resultado reproduz o número 39 informado pelo gestor quando a unidade de contagem é o ID do lead Bitrix24. Em BeautySystems, as 45 linhas correspondem a 40 pessoas e 43 IDs distintos de lead no dia; portanto, o número 45 informado pelo gestor corresponde às linhas de conversão da fonte, não a IDs únicos do CRM.
+
+## Regra recomendada
+
+Para analisar o funil dentro do Bitrix24, a unidade correta é o ID único do lead no CRM. Para analisar geração de mídia, a unidade deve ser explicitada como conversão ou pessoa única. As três métricas devem permanecer separadas para evitar que duplicidades de conversão ou múltiplos leads para a mesma identidade sejam interpretados como falha de integração.
+
+## Privacidade
+
+O processamento ocorreu localmente. O documento registra apenas agregados; nomes, e-mails e telefones não foram incluídos nas saídas.

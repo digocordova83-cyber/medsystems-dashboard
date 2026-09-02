@@ -470,3 +470,17 @@
 - [x] Atualizar os cinco relatórios Publya/Push até 01/09/2026 sem duplicar snapshots de Display.
 - [x] Validar a data máxima, os totais D-1, o acumulado mensal e as exceções de cobertura de cada fonte.
 - [x] Revisar testes, publicar o dashboard e enviar o resumo da atualização, incluindo leads de 01/09.
+
+- [ ] Mapear as dependências de hospedagem, dados, autenticação e integrações que precisam ser portadas para a BBRO.
+- [ ] Definir a arquitetura externa e o substituto seguro da rotina diária D-1, incluindo execução, logs e alertas.
+- [ ] Preparar configuração de produção, variáveis de ambiente, banco de dados, domínio e plano de reversão para a migração.
+- [ ] Executar homologação e corte para a hospedagem BBRO sem interrupção do dashboard ou das atualizações.
+
+- [x] Investigar a divergência de 01/09 entre os 39 leads MedSystems e 45 BeautySystems informados pelo gestor e o volume auditado no dashboard.
+- [x] Reconstituir a contagem por fonte, janela horária, UTM, página/formulário, importação e contatos únicos, sem expor PII.
+- [ ] Documentar a causa verificável, decidir se há ajuste de regra e atualizar o dashboard somente após validação do filtro que reduz MedSystems de 41 para 39.
+
+- [x] Inspecionar a base enviada de MedSystems e BeautySystems, preservando PII fora de saídas e documentos.
+- [x] Construir um de-para por chaves disponíveis, marca, origem, UTM, página/formulário e data de conversão.
+- [x] Comparar os totais da base com RD Station, Bitrix24 e métricas de plataforma, identificando divergências verificáveis.
+- [ ] Definir e implementar o padrão de contagem de leads correto no dashboard após validação com a base de referência.

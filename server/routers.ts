@@ -13,6 +13,7 @@ import { clearDashboardLoginFailures, isDashboardLoginBlocked, normalizeDashboar
 import { bitrixExportSnapshot } from "./spreadsheet/bitrixExportSnapshot";
 import { mediaChannelDashboard } from "./media/channelDashboard";
 import { publyaRouter } from "./publya/router";
+import { leadReconciliationDashboard } from "./leads/reconciliation";
 
 const accountInput = z.enum(RD_ACCOUNTS);
 const analyticsBrandInput = z.enum(["all", "medsystems", "beautysystems"]);
@@ -152,6 +153,19 @@ export const appRouter = router({
       endDate: dashboardDateInput.default("2026-08-19"),
       campaignId: z.string().max(128).optional(),
     })).query(({ input }) => mediaChannelDashboard(input)),
+  }),
+  leads: router({
+    reconciliation: dashboardProcedure.input(z.object({
+      startDate: dashboardDateInput.default("2026-09-01"),
+      endDate: dashboardDateInput.default("2026-09-01"),
+      brand: analyticsBrandInput.default("all"),
+      channel: z.enum(["all", "meta_ads", "google_ads", "unknown"]).default("all"),
+    }).optional()).query(({ input }) => leadReconciliationDashboard({
+      startDate: input?.startDate ?? "2026-09-01",
+      endDate: input?.endDate ?? "2026-09-01",
+      brand: input?.brand ?? "all",
+      channel: input?.channel ?? "all",
+    })),
   }),
   spreadsheet: router({
     bitrixExportDashboard: dashboardProcedure.query(() => bitrixExportSnapshot),

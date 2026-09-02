@@ -483,4 +483,10 @@
 - [x] Inspecionar a base enviada de MedSystems e BeautySystems, preservando PII fora de saídas e documentos.
 - [x] Construir um de-para por chaves disponíveis, marca, origem, UTM, página/formulário e data de conversão.
 - [x] Comparar os totais da base com RD Station, Bitrix24 e métricas de plataforma, identificando divergências verificáveis.
-- [ ] Definir e implementar o padrão de contagem de leads correto no dashboard após validação com a base de referência.
+- [x] Definir e implementar o padrão de contagem de leads correto no dashboard após validação com a base de referência.
+
+- [x] Criar uma estrutura persistente e auditável para importar os registros da base de referência sem depender do arquivo CSV em produção.
+- [x] Implementar o de-para de `client_slug`, canal e data em America/Sao_Paulo, preservando origem desconhecida e divergências de BU.
+- [x] Adicionar ao dashboard uma visão de conciliação com volume da fonte, contatos únicos, origem identificada, desconhecida e comparação com o gestor.
+- [x] Incluir filtros por data, BU e canal, com detalhamento agregado por campanha e evento de conversão.
+- [x] Cobrir as novas regras com testes Vitest e validar a interface em desktop e mobile antes da publicação.

@@ -10,6 +10,8 @@ const mediaRecordLevelValues = ["campaign", "ad"] as const;
 const attributionStatusValues = ["not_identified", "channel_signal", "identified"] as const;
 const attributionMethodValues = ["none", "utm_source", "utm_campaign", "identifier"] as const;
 const publyaGroupTypeValues = ["formats", "creatives", "sites", "publishers", "devices", "cities", "states", "regions", "channels", "strategies", "placements"] as const;
+const leadReferenceSourceValues = ["supabase_export"] as const;
+const leadReferenceChannelValues = ["meta_ads", "google_ads", "unknown"] as const;
 
 export const users = mysqlTable("users", {
   id: int("id").autoincrement().primaryKey(),
@@ -101,6 +103,46 @@ export const rdStationSyncRuns = mysqlTable("rdStationSyncRuns", {
   periodEnd: timestamp("periodEnd").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
+
+export const leadReferenceEvents = mysqlTable("leadReferenceEvents", {
+  id: int("id").autoincrement().primaryKey(),
+  source: mysqlEnum("source", leadReferenceSourceValues).default("supabase_export").notNull(),
+  sourceRecordHash: varchar("sourceRecordHash", { length: 64 }).notNull(),
+  accountKey: mysqlEnum("accountKey", accountKeyValues).notNull(),
+  sourceClientSlug: varchar("sourceClientSlug", { length: 128 }).notNull(),
+  convertedAt: timestamp("convertedAt").notNull(),
+  identityHash: varchar("identityHash", { length: 64 }).notNull(),
+  emailHash: varchar("emailHash", { length: 64 }),
+  phoneHash: varchar("phoneHash", { length: 64 }),
+  channel: mysqlEnum("channel", leadReferenceChannelValues).default("unknown").notNull(),
+  utmSource: varchar("utmSource", { length: 160 }),
+  utmCampaign: varchar("utmCampaign", { length: 512 }),
+  conversionEvent: varchar("conversionEvent", { length: 512 }),
+  rdContactUuid: varchar("rdContactUuid", { length: 128 }),
+  rdMatchMethod: varchar("rdMatchMethod", { length: 32 }),
+  rdEventConfirmed: int("rdEventConfirmed").default(0).notNull(),
+  importedAt: timestamp("importedAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, table => [
+  uniqueIndex("lead_reference_source_record_unique").on(table.source, table.sourceRecordHash),
+  index("lead_reference_date_brand_index").on(table.convertedAt, table.accountKey),
+  index("lead_reference_channel_date_index").on(table.channel, table.convertedAt),
+  index("lead_reference_identity_index").on(table.accountKey, table.identityHash),
+]);
+
+export const leadReferenceBenchmarks = mysqlTable("leadReferenceBenchmarks", {
+  id: int("id").autoincrement().primaryKey(),
+  businessDate: varchar("businessDate", { length: 10 }).notNull(),
+  accountKey: mysqlEnum("accountKey", accountKeyValues).notNull(),
+  sourceLabel: varchar("sourceLabel", { length: 160 }).notNull(),
+  reportedLeads: int("reportedLeads").notNull(),
+  note: text("note"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, table => [
+  uniqueIndex("lead_reference_benchmark_unique").on(table.businessDate, table.accountKey, table.sourceLabel),
+  index("lead_reference_benchmark_date_index").on(table.businessDate),
+]);
 
 export const rdStationJulyLeadViews = mysqlTable("rdStationJulyLeadViews", {
   id: int("id").autoincrement().primaryKey(),

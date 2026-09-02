@@ -490,3 +490,9 @@
 - [x] Adicionar ao dashboard uma visão de conciliação com volume da fonte, contatos únicos, origem identificada, desconhecida e comparação com o gestor.
 - [x] Incluir filtros por data, BU e canal, com detalhamento agregado por campanha e evento de conversão.
 - [x] Cobrir as novas regras com testes Vitest e validar a interface em desktop e mobile antes da publicação.
+
+- [x] Identificar e documentar que os números 50/41/9 da aba Negócios representam registros Bitrix24, não o volume reconciliado da fonte de leads.
+- [x] Integrar na aba Negócios os volumes reconciliados de 86 total, 41 MedSystems e 45 BeautySystems no recorte de 01/09.
+- [x] Exibir lado a lado fonte de leads, volume no Bitrix24 e diferença de integração, sem substituir métricas de fontes distintas.
+- [x] Ajustar os rótulos do filtro de pipeline/marca para explicitar que suas contagens são do Bitrix24.
+- [x] Validar a correção com testes, build e revisão visual antes de publicar.

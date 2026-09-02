@@ -18,6 +18,6 @@ A base local continha 68 das 86 conversões correspondentes. As 18 restantes for
 
 ## Interpretação
 
-Para medir resposta dos ativos de mídia, o total correto desta fonte é **86 conversões**. Para medir pessoas, o total correto é **75 contatos únicos**. Para o funil comercial, a unidade oficial continua sendo o **ID único do lead Bitrix24**, conforme o padrão canônico do dashboard. Essas três unidades não devem ser somadas nem apresentadas como equivalentes.
+Para medir resposta dos ativos de mídia, o total correto desta fonte é **86 conversões**. Para medir o topo do funil comercial, a unidade oficial é **75 contatos únicos conciliados no Bitrix24**. Os IDs de lead do CRM permanecem como vínculos operacionais e indicador de duplicidade, não como uma quarta contagem de leads. Essas unidades não devem ser somadas nem apresentadas como equivalentes.
 
 Nenhum nome, e-mail, telefone, UUID ou linha individual está incluído neste documento.

@@ -7,6 +7,7 @@ export type PaidMediaEventRow = {
   accountKey: PaidMediaAccountKey;
   contactUuid: string;
   rawPayload: string;
+  eventCreatedAt?: Date | null;
 };
 export type PaidMediaContactRow = {
   accountKey: PaidMediaAccountKey;
@@ -23,6 +24,7 @@ export type PaidMediaReferenceIdentity = {
   namePhoneHash: string | null;
   rdContactUuid: string;
   evidence: "paid_utm" | "paid_page_or_form";
+  convertedAt: Date | null;
 };
 
 function parseEvent(rawPayload: string) {
@@ -92,23 +94,30 @@ export function buildPaidMediaReferenceIdentities(input: {
     paidKeysByAccount.set(event.accountKey, keys);
   }
 
-  const evidenceByContact = new Map<string, "paid_utm" | "paid_page_or_form">();
+  const evidenceByContact = new Map<string, { evidence: "paid_utm" | "paid_page_or_form"; convertedAt: Date | null }>();
+  const recordEvidence = (contactKey: string, evidence: "paid_utm" | "paid_page_or_form", convertedAt?: Date | null) => {
+    const current = evidenceByContact.get(contactKey);
+    const candidateDate = convertedAt instanceof Date ? convertedAt : null;
+    const earliestDate = !current?.convertedAt ? candidateDate : !candidateDate || current.convertedAt <= candidateDate ? current.convertedAt : candidateDate;
+    const strongestEvidence = current?.evidence === "paid_utm" || evidence === "paid_utm" ? "paid_utm" : "paid_page_or_form";
+    evidenceByContact.set(contactKey, { evidence: strongestEvidence, convertedAt: earliestDate });
+  };
   for (const event of usableEvents) {
     const contactKey = `${event.accountKey}:${event.contactUuid}`;
     if (paidUtmEvidence(event.rawPayload)) {
-      evidenceByContact.set(contactKey, "paid_utm");
+      recordEvidence(contactKey, "paid_utm", event.eventCreatedAt);
       continue;
     }
     const accountKeys = paidKeysByAccount.get(event.accountKey) ?? new Set<string>();
     if (Array.from(paidMediaEvidenceKeys(event.rawPayload)).some(key => accountKeys.has(key))) {
-      evidenceByContact.set(contactKey, "paid_page_or_form");
+      recordEvidence(contactKey, "paid_page_or_form", event.eventCreatedAt);
     }
   }
 
   const references: PaidMediaReferenceIdentity[] = [];
   for (const contact of input.contacts) {
-    const evidence = evidenceByContact.get(`${contact.accountKey}:${contact.contactUuid}`);
-    if (!evidence) continue;
+    const evidenceRecord = evidenceByContact.get(`${contact.accountKey}:${contact.contactUuid}`);
+    if (!evidenceRecord) continue;
     const email = normalizeIdentityEmail(contact.email);
     const phone = normalizeIdentityPhone(contact.phone);
     const name = normalizeIdentityName(contact.name);
@@ -120,7 +129,8 @@ export function buildPaidMediaReferenceIdentities(input: {
       phoneHash: phone ? digest(input.identitySecret, phone) : null,
       namePhoneHash: name && phone ? digest(input.identitySecret, `${name}|${phone}`) : null,
       rdContactUuid: contact.contactUuid,
-      evidence,
+      evidence: evidenceRecord.evidence,
+      convertedAt: evidenceRecord.convertedAt,
     });
   }
   return references;

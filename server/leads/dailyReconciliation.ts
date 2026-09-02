@@ -12,7 +12,7 @@ const PIPELINE_BY_ACCOUNT = { medsystems: "15391", beautysystems: "15395" } as c
 export async function reconcilePaidMediaBusinessDate(businessDate: string) {
   const db = await getDb();
   if (!db) throw new Error("Banco de dados indisponível.");
-  const results = [] as Array<{ accountKey: keyof typeof PIPELINE_BY_ACCOUNT; uniqueBitrixLeadIds: number; peopleWithMultipleLeadIds: number; extraLeadIds: number }>;
+  const results = [] as Array<{ accountKey: keyof typeof PIPELINE_BY_ACCOUNT; uniqueContacts: number; uniqueBitrixLeadIds: number; peopleWithMultipleLeadIds: number; extraLeadIds: number }>;
 
   for (const accountKey of ["medsystems", "beautysystems"] as const) {
     const dashboard = await medsystemsBitrixRdOpportunityDashboard({
@@ -29,6 +29,10 @@ export async function reconcilePaidMediaBusinessDate(businessDate: string) {
     const row = {
       businessDate,
       accountKey,
+      uniqueContacts: dashboard.totals.leads,
+      mqlContacts: dashboard.totals.mql,
+      sqlContacts: dashboard.totals.sql,
+      contactsWithDeals: dashboard.totals.dealLeads,
       uniqueBitrixLeadIds: dashboard.totals.uniqueBitrixLeadIds,
       mqlLeadIds: dashboard.totals.mql,
       sqlLeadIds: dashboard.totals.sql,
@@ -38,15 +42,15 @@ export async function reconcilePaidMediaBusinessDate(businessDate: string) {
       peopleWithMultipleLeadIds: dashboard.duplicates.peopleWithMultipleLeadIds,
       leadIdsInDuplicateGroups: dashboard.duplicates.leadIdsInDuplicateGroups,
       extraLeadIds: dashboard.duplicates.extraLeadIds,
-      ruleVersion: "bitrix_lead_id_v1",
+      ruleVersion: "bitrix_unique_contact_v2",
       status: "completed",
       summary,
       reconciledAt: new Date(),
     };
     await db.insert(paidMediaReconciliationDaily).values(row).onDuplicateKeyUpdate({ set: { ...row, updatedAt: new Date() } });
-    results.push({ accountKey, uniqueBitrixLeadIds: row.uniqueBitrixLeadIds, peopleWithMultipleLeadIds: row.peopleWithMultipleLeadIds, extraLeadIds: row.extraLeadIds });
+    results.push({ accountKey, uniqueContacts: row.uniqueContacts, uniqueBitrixLeadIds: row.uniqueBitrixLeadIds, peopleWithMultipleLeadIds: row.peopleWithMultipleLeadIds, extraLeadIds: row.extraLeadIds });
   }
-  return { businessDate, ruleVersion: "bitrix_lead_id_v1", results };
+  return { businessDate, ruleVersion: "bitrix_unique_contact_v2", results };
 }
 
 export function previousBusinessDayInSaoPaulo(now = new Date()) {

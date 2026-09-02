@@ -522,19 +522,25 @@
 - [x] Quantificar por BU os matches no mesmo dia, em outras datas, duplicados e não localizados.
 - [x] Atualizar a conclusão auditável e informar se os 86 registros existem no Bitrix24.
 
-- [x] Documentar como regra canônica que o funil de mídia paga conta IDs únicos de lead Bitrix24 após evidência de mídia e match de identidade.
+- [x] Etapa intermediária concluída e supersedida: documentar a leitura por IDs únicos de lead Bitrix24 antes da decisão final por contato único.
 - [x] Revisar e registrar os campos/filtros Bitrix24 usados para título, origem paga, pipeline/marca, data, etapa e vínculos de negócio.
 - [x] Manter conversões da fonte, pessoas únicas, IDs Bitrix24 e duplicidades como métricas separadas em todos os relatórios.
 - [x] Aplicar a mesma regra em qualquer período consultado e na execução diária D-1, sem depender de um CSV específico.
 
-- [x] Formalizar o ID único do lead Bitrix24 como unidade oficial do funil e documentar a diferença para conversões e pessoas.
+- [x] Etapa intermediária concluída e supersedida: formalizar o ID Bitrix24 antes da decisão final de usar contato único como unidade oficial.
 - [x] Criar estrutura persistente para registrar a conciliação diária D-1 e os casos com múltiplos IDs de lead.
 - [x] Implementar serviço idempotente de conciliação RD/Bitrix por e-mail, telefone, nome + telefone e UUID, sem retornar PII ao navegador.
 - [x] Integrar a conciliação ao fluxo diário das 08h BRT após as cargas RD e Bitrix24, com snapshot às 08h30 BRT.
-- [x] Adicionar ao dashboard o KPI de leads únicos Bitrix24 e uma visão agregada das duplicidades por BU, campanha e método de match.
+- [x] Etapa intermediária concluída e supersedida: adicionar KPI por ID Bitrix24 antes de migrá-lo para contato único, mantendo os IDs apenas como contexto de duplicidade.
 - [x] Validar o recorte de 01/09, os testes, o agendamento, a responsividade e publicar a nova versão.
 
 - [x] Validar as colunas, o recorte e as BUs do CSV reenviado antes do cruzamento com o RD Station.
 - [x] Cruzar os registros com contatos RD por UUID, e-mail e telefone normalizado nas duas contas.
 - [x] Confirmar as conversões correspondentes no RD e separar repetições da mesma pessoa.
 - [x] Informar matches e ausências por MedSystems e BeautySystems sem expor PII.
+
+- [x] Mapear, nos 86 registros do CSV encontrados no Bitrix24, o comportamento de título, origem, pipeline, data, etapa, campanha e campos de identidade.
+- [x] Definir o universo Bitrix24 pela correspondência com o padrão do CSV, sem usar título, origem, pipeline ou data como filtros excludentes isolados.
+- [x] Alterar o KPI oficial do funil de ID de lead para contato único conciliado, mantendo 86 conversões e 75 pessoas como métricas distintas.
+- [x] Atualizar a conciliação diária e a interface para que a deduplicação por contato seja a única diferença entre fonte e Bitrix24.
+- [x] Validar MedSystems 41→35 e BeautySystems 45→40 no recorte de 01/09, executar testes e publicar.

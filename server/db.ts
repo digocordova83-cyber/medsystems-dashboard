@@ -214,10 +214,15 @@ export async function setAccountSyncStatus(accountKey: RdAccountKey, status: "de
   await db.update(rdStationAccounts).set({ status, lastError: error, ...(lastSyncAt ? { lastSyncAt } : {}) }).where(eq(rdStationAccounts.accountKey, accountKey));
 }
 
-export async function createSyncRun(accountKey: RdAccountKey, scope: "contatos" | "conversoes") {
+export async function createSyncRun(
+  accountKey: RdAccountKey,
+  scope: "contatos" | "conversoes",
+  periodStart: Date = JULY_2026.start,
+  periodEnd: Date = JULY_2026.end,
+) {
   const db = await getDb();
   if (!db) throw new Error("Banco de dados indisponível.");
-  const result = await db.insert(rdStationSyncRuns).values({ accountKey, scope, periodStart: JULY_2026.start, periodEnd: JULY_2026.end });
+  const result = await db.insert(rdStationSyncRuns).values({ accountKey, scope, periodStart, periodEnd });
   return { id: Number(result[0].insertId) };
 }
 

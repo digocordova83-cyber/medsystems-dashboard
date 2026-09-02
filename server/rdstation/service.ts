@@ -33,8 +33,12 @@ const augustMonthEnd = new Date("2026-09-01T03:00:00.000Z");
 const AUGUST_2026_END = currentDayStartBrt < augustMonthEnd ? currentDayStartBrt : augustMonthEnd;
 
 export function isInAugustThroughD1(value: string) {
+  return isInConversionWindow(value, AUGUST_2026_START, AUGUST_2026_END);
+}
+
+export function isInConversionWindow(value: string, start: Date, end: Date) {
   const date = new Date(value);
-  return !Number.isNaN(date.valueOf()) && date >= AUGUST_2026_START && date < AUGUST_2026_END;
+  return !Number.isNaN(date.valueOf()) && date >= start && date < end;
 }
 
 type TokenPayload = {
@@ -287,10 +291,19 @@ export async function syncNextJulyConversionBatch(accountKey: RdAccountKey) {
   }
 }
 
-export async function syncAugustConversionBatch(accountKey: RdAccountKey, afterId = 0, limit = EVENT_BATCH_SIZE) {
+export async function syncConversionBatchForPeriod(
+  accountKey: RdAccountKey,
+  periodStart: Date,
+  periodEnd: Date,
+  afterId = 0,
+  limit = EVENT_BATCH_SIZE,
+) {
+  if (Number.isNaN(periodStart.valueOf()) || Number.isNaN(periodEnd.valueOf()) || periodStart >= periodEnd) {
+    throw new Error("O período de conversões RD é inválido.");
+  }
   await setAccountSyncStatus(accountKey, "sincronizando", null);
-  const run = await createSyncRun(accountKey, "conversoes");
-  const contacts = await getContactsForEventWindow(accountKey, AUGUST_2026_START, AUGUST_2026_END, afterId, limit);
+  const run = await createSyncRun(accountKey, "conversoes", periodStart, periodEnd);
+  const contacts = await getContactsForEventWindow(accountKey, periodStart, periodEnd, afterId, limit);
   let eventsStored = 0;
   try {
     const syncContact = async (contact: (typeof contacts)[number]) => {
@@ -301,7 +314,11 @@ export async function syncAugustConversionBatch(accountKey: RdAccountKey, afterI
           `/platform/contacts/${encodeURIComponent(contact.contactUuid)}/events?event_type=CONVERSION&order=created_at:asc&page=${page}`,
         );
         const events = Array.isArray(payload) ? payload : (Array.isArray(payload.events) ? payload.events : []);
-        selectedEvents.push(...events.filter((event: Record<string, unknown>) => isInAugustThroughD1(String(event.event_timestamp ?? event.created_at ?? ""))));
+        selectedEvents.push(...events.filter((event: Record<string, unknown>) => isInConversionWindow(
+          String(event.event_timestamp ?? event.created_at ?? ""),
+          periodStart,
+          periodEnd,
+        )));
         if (events.length < 10) break;
       }
       await upsertConversionEvents(accountKey, contact.contactUuid, selectedEvents);
@@ -320,6 +337,10 @@ export async function syncAugustConversionBatch(accountKey: RdAccountKey, afterI
     await setAccountSyncStatus(accountKey, "erro", error instanceof Error ? error.message : "Erro desconhecido");
     throw error;
   }
+}
+
+export async function syncAugustConversionBatch(accountKey: RdAccountKey, afterId = 0, limit = EVENT_BATCH_SIZE) {
+  return syncConversionBatchForPeriod(accountKey, AUGUST_2026_START, AUGUST_2026_END, afterId, limit);
 }
 
 export async function syncDirectJulyViewBatch(accountKey: RdAccountKey, viewType: "primeira" | "ultima", limit = 20) {

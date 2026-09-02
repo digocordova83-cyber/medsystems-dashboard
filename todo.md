@@ -464,3 +464,9 @@
 - [x] Estruturar no Excel os blocos de R$ 58.836 e R$ 41 mil, com canais, objetivos, percentuais e premissas explícitas.
 - [x] Criar resumo executivo, plano detalhado, premissas editáveis e gráficos do plano de mídia.
 - [x] Validar fórmulas, totais, formatação e entregar a planilha final.
+
+- [x] Atualizar RD Station e Bitrix24 até 01/09/2026, preservando as regras atuais de marca, mídia paga e deduplicação.
+- [x] Atualizar Google Ads e Meta Ads nas quatro contas oficiais até 01/09/2026 com reconciliação canônica e ROAS quando houver receita atribuída válida.
+- [x] Atualizar os cinco relatórios Publya/Push até 01/09/2026 sem duplicar snapshots de Display.
+- [x] Validar a data máxima, os totais D-1, o acumulado mensal e as exceções de cobertura de cada fonte.
+- [x] Revisar testes, publicar o dashboard e enviar o resumo da atualização, incluindo leads de 01/09.

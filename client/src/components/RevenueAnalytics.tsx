@@ -5,12 +5,13 @@ import { MediaChannelDashboard } from "@/components/MediaChannelDashboard";
 import { ProgrammaticDashboard } from "@/components/ProgrammaticDashboard";
 import { LeadReconciliationDashboard } from "@/components/LeadReconciliationDashboard";
 import { trpc } from "@/lib/trpc";
+import { dashboardTabFromHash, type DashboardTab } from "@shared/dashboardTab";
 import { ArrowDownRight, ArrowUpRight, BarChart3, ChevronRight, CircleAlert, DollarSign, Filter, Layers3, MousePointerClick, Target, TrendingUp } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 type Brand = "all" | "medsystems" | "beautysystems";
 type Channel = "all" | "google_ads" | "meta_ads";
-type Tab = "overview" | "google" | "meta" | "programmatic" | "leads" | "bitrix";
+type Tab = DashboardTab;
 type RevenueView = "pipeline" | "origin" | "sales" | "lost" | "discard";
 type DealStatus = "all" | "open" | "won" | "lost";
 type ReportingPeriod = "2026-07" | "2026-08";
@@ -91,7 +92,7 @@ export function RevenueAnalytics() {
   const [channel, setChannel] = useState<Channel>("all");
   const [dealStatus, setDealStatus] = useState<DealStatus>("all");
   const [period, setPeriod] = useState<ReportingPeriod>("2026-08");
-  const [tab, setTab] = useState<Tab>("overview");
+  const [tab, setTab] = useState<Tab>(() => dashboardTabFromHash(window.location.hash));
   useEffect(() => {
     const updateFromHash = () => {
       const requested = window.location.hash.replace("#", "") as Tab;

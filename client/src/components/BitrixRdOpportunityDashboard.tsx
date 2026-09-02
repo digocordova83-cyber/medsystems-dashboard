@@ -26,6 +26,9 @@ const pct = (value: number) => `${(value || 0).toFixed(1).replace(".", ",")}%`;
 const ratio = (value: number, total: number) => total ? `${((value / total) * 100).toFixed(1).replace(".", ",")}%` : "0,0%";
 const brl = (value: number) => new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).format(value || 0);
 const compactBrl = (value: number) => new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", notation: "compact", maximumFractionDigits: 1 }).format(value || 0);
+const friendlyBusinessError = (detail: string) => /service unavailable|unexpected token|valid json/i.test(detail)
+  ? "O serviço ficou temporariamente indisponível. Aguarde alguns segundos e tente novamente."
+  : detail;
 
 function yesterdayInSaoPaulo() {
   const date = new Date(Date.now() - 86_400_000);
@@ -45,10 +48,6 @@ export function BitrixRdOpportunityDashboard() {
     { startDate, endDate, ...filters },
     { retry: 1, staleTime: 5 * 60_000, refetchOnWindowFocus: false },
   );
-  const bitrixBaseline = trpc.bitrix24.rdOpportunityDashboard.useQuery(
-    { startDate, endDate, ...DEFAULT_FILTERS },
-    { retry: 1, staleTime: 5 * 60_000, refetchOnWindowFocus: false },
-  );
   const leadReference = trpc.leads.reconciliation.useQuery(
     { startDate, endDate, brand: "all", channel: "all" },
     { retry: 1, staleTime: 5 * 60_000, refetchOnWindowFocus: false },
@@ -57,11 +56,11 @@ export function BitrixRdOpportunityDashboard() {
   const activeFilterCount = Object.values(filters).filter(value => value !== "all").length;
 
   if (query.isLoading && !data) return <LoadingState />;
-  if (query.isError) return <ErrorState detail={query.error.message || "A consulta gerencial não respondeu."} onRetry={() => query.refetch()} />;
+  if (query.isError) return <ErrorState detail={friendlyBusinessError(query.error.message || "A consulta gerencial não respondeu.")} onRetry={() => query.refetch()} />;
   if (!data) return <EmptyState title="Visão gerencial indisponível" detail="Não houve retorno para o recorte selecionado." />;
 
   const options = (key: string) => (data.filterOptions[key] ?? []) as FilterOption[];
-  const baselinePipelines = ((bitrixBaseline.data?.filterOptions.pipelines ?? []) as FilterOption[]);
+  const baselinePipelines = options("pipelines");
   const leadBridge = leadReference.data ? buildLeadBridge(leadReference.data.byBrand, baselinePipelines) : null;
   const filteredAttribution = data.attribution.filter(row => !utmSearch || [row.source, row.medium, row.campaign, row.adset, row.creative].join(" ").toLocaleLowerCase("pt-BR").includes(utmSearch.toLocaleLowerCase("pt-BR")));
   const applyDates = () => { if (draftStart <= draftEnd) { setStartDate(draftStart); setEndDate(draftEnd); } };
@@ -96,7 +95,7 @@ export function BitrixRdOpportunityDashboard() {
       </div>
     </section>
 
-    <LeadSourceBridge data={leadBridge} loading={leadReference.isLoading || bitrixBaseline.isLoading} onOpenLeads={() => { window.location.hash = "#leads"; }} />
+    <LeadSourceBridge data={leadBridge} loading={leadReference.isLoading} onOpenLeads={() => { window.location.hash = "#leads"; }} />
 
     <section className="rounded-2xl border border-white/10 bg-black/20 p-4 sm:p-5">
       <div className="flex flex-col justify-between gap-3 lg:flex-row lg:items-end">

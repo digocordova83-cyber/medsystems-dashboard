@@ -498,3 +498,9 @@
 - [x] Validar a correção com testes, build e revisão visual antes de publicar.
 
 - [x] Registrar que a migração para a hospedagem BBRO foi adiada pelo usuário e não deve ser executada no escopo atual.
+
+- [x] Investigar o erro 503 `Service Unavailable` que impede o carregamento da aba Negócios em produção.
+- [x] Identificar se a falha ocorre na consulta principal Bitrix24, na consulta-base de pipelines ou na conciliação de leads.
+- [x] Tornar as consultas auxiliares da conciliação não bloqueantes para que uma falha parcial não derrube o funil comercial.
+- [x] Melhorar a mensagem de erro para não exibir falha técnica de parsing JSON ao usuário final.
+- [ ] Validar a correção no domínio publicado, executar testes e salvar nova versão.

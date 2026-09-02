@@ -13,8 +13,9 @@ export default function Home() {
   const [activeHash, setActiveHash] = useState("overview");
   useEffect(() => {
     const syncHash = () => {
-      const visibleHashes = user?.role === "admin" ? ["overview", "google", "meta", "programmatic", "leads", "bitrix", "guide", "access"] : ["overview", "google", "meta", "programmatic", "leads", "bitrix", "guide"];
-      const requested = window.location.hash.replace("#", "") || "overview";
+      const visibleHashes = user?.role === "admin" ? ["overview", "google", "meta", "programmatic", "bitrix", "guide", "access"] : ["overview", "google", "meta", "programmatic", "bitrix", "guide"];
+      const rawRequested = window.location.hash.replace("#", "") || "overview";
+      const requested = rawRequested === "leads" ? "bitrix" : rawRequested;
       const normalized = visibleHashes.includes(requested) ? requested : "overview";
       if (window.location.hash.replace("#", "") !== normalized) window.location.hash = normalized;
       setActiveHash(normalized);

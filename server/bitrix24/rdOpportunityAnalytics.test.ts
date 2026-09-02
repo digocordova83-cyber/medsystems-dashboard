@@ -56,6 +56,18 @@ describe("buildRdOpportunityManagerDashboard", () => {
     expect(result.coverage.source).toBe(0);
   });
 
+  it("inclui no CRM um lead fora de Tráfego Pago quando há match inequívoco e aplica a BU da referência", () => {
+    const matched = row(7, { UF_CRM_1744808620: "Tráfego Orgânico", UF_CRM_1739195085: "15395", STATUS_ID: "IN_PROCESS", rd_contact_uuid: "rd-med-001" });
+    const result = buildRdOpportunityManagerDashboard({
+      rows: [matched],
+      referenceRows: [{ accountKey: "medsystems", identityHash: "hash", rdContactUuid: "rd-med-001" }],
+      filters,
+      period: { start: "2026-08-01", end: "2026-08-25" },
+    });
+    expect(result.totals).toMatchObject({ leads: 1, reconciledByIdentity: 1, reconciledOutsidePaidField: 1 });
+    expect(result.filterOptions.pipelines).toEqual([expect.objectContaining({ value: "15391", count: 1 })]);
+  });
+
   it("valida o intervalo configurável no fuso de São Paulo", () => {
     expect(validateBusinessDateRange("2026-08-01", "2026-08-25").endExclusive.toISOString()).toBe("2026-08-26T03:00:00.000Z");
     expect(() => validateBusinessDateRange("2026-08-25", "2026-08-01")).toThrow("data inicial");

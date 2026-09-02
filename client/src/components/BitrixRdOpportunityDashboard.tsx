@@ -1,9 +1,8 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
-import { buildLeadBridge } from "@shared/leadBridge";
 import {
-  ArrowDownRight, ArrowRight, BadgeDollarSign, BarChart3, BriefcaseBusiness, CalendarDays,
+  ArrowDownRight, BadgeDollarSign, BarChart3, BriefcaseBusiness, CalendarDays,
   CheckCircle2, ChevronRight, CircleDollarSign, Filter, Layers3, Megaphone,
   MousePointerClick, Search, Sparkles, Target, TrendingUp, UserRound, Workflow, X,
 } from "lucide-react";
@@ -11,7 +10,6 @@ import { useMemo, useState } from "react";
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 type FilterOption = { value: string; label: string; count: number };
-type LeadBridgeData = ReturnType<typeof buildLeadBridge>;
 type Filters = {
   pipeline: string; responsible: string; source: string; stage: string; position: string;
   product: string; campaign: string; adset: string; creative: string;
@@ -48,10 +46,6 @@ export function BitrixRdOpportunityDashboard() {
     { startDate, endDate, ...filters },
     { retry: 1, staleTime: 5 * 60_000, refetchOnWindowFocus: false },
   );
-  const leadReference = trpc.leads.reconciliation.useQuery(
-    { startDate, endDate, brand: "all", channel: "all" },
-    { retry: 1, staleTime: 5 * 60_000, refetchOnWindowFocus: false },
-  );
   const data = query.data;
   const activeFilterCount = Object.values(filters).filter(value => value !== "all").length;
 
@@ -61,7 +55,6 @@ export function BitrixRdOpportunityDashboard() {
 
   const options = (key: string) => (data.filterOptions[key] ?? []) as FilterOption[];
   const baselinePipelines = options("pipelines");
-  const leadBridge = leadReference.data ? buildLeadBridge(leadReference.data.byBrand, baselinePipelines) : null;
   const filteredAttribution = data.attribution.filter(row => !utmSearch || [row.source, row.medium, row.campaign, row.adset, row.creative].join(" ").toLocaleLowerCase("pt-BR").includes(utmSearch.toLocaleLowerCase("pt-BR")));
   const applyDates = () => { if (draftStart <= draftEnd) { setStartDate(draftStart); setEndDate(draftEnd); } };
   const updateFilter = (key: keyof Filters, value: string) => setFilters(current => ({ ...current, [key]: value }));
@@ -95,11 +88,9 @@ export function BitrixRdOpportunityDashboard() {
       </div>
     </section>
 
-    <LeadSourceBridge data={leadBridge} loading={leadReference.isLoading} onOpenLeads={() => { window.location.hash = "#leads"; }} />
-
     <section className="rounded-2xl border border-white/10 bg-black/20 p-4 sm:p-5">
       <div className="flex flex-col justify-between gap-3 lg:flex-row lg:items-end">
-        <PanelHeader eyebrow="Filtro principal · Bitrix24" title="Pipeline / marca no CRM" detail="As contagens 50/41/9 abaixo representam somente registros encontrados no Bitrix24 e recalculam o funil comercial." />
+        <PanelHeader eyebrow="Filtro principal · Bitrix24 conciliado" title="Pipeline / marca no CRM" detail={`As contagens abaixo representam somente entidades do Bitrix24. O universo combina o campo Tráfego Pago com match seguro de identidade; ${integer(data.totals.reconciledOutsidePaidField)} registro(s) foram recuperados fora da classificação paga original.`} />
         {activeFilterCount ? <Button variant="outline" size="sm" className="w-fit border-white/10 bg-black/10 text-slate-300" onClick={() => setFilters(DEFAULT_FILTERS)}><X className="mr-2 h-3.5 w-3.5" />Limpar {activeFilterCount} filtros</Button> : null}
       </div>
       <div className="mt-4 flex flex-wrap gap-2">
@@ -151,7 +142,7 @@ export function BitrixRdOpportunityDashboard() {
 
       <section className="rounded-2xl border border-amber-200/15 bg-amber-200/[.035] p-5">
         <div className="flex items-start gap-3"><Sparkles className="mt-0.5 h-5 w-5 shrink-0 text-amber-200" /><div><p className="font-mono-ui text-[10px] uppercase tracking-[.16em] text-amber-100/70">Metodologia auditável</p><h4 className="mt-1 font-bold text-white">Como MQL, SQL e atribuição são calculados</h4></div></div>
-        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4"><MethodCard label="MQL" text={data.methodology.mql} /><MethodCard label="SQL" text={data.methodology.sql} /><MethodCard label="Negócio" text={data.methodology.deal} /><MethodCard label="UTMs" text={data.methodology.attribution} /></div>
+        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-5"><MethodCard label="Conciliação" text={data.methodology.reconciliation} /><MethodCard label="MQL" text={data.methodology.mql} /><MethodCard label="SQL" text={data.methodology.sql} /><MethodCard label="Negócio" text={data.methodology.deal} /><MethodCard label="UTMs" text={data.methodology.attribution} /></div>
         <p className="mt-4 border-t border-amber-100/10 pt-4 text-xs leading-5 text-amber-50/60">Limite atual: {data.methodology.limitation}</p>
       </section>
     </>}
@@ -159,26 +150,6 @@ export function BitrixRdOpportunityDashboard() {
 }
 
 function DateField({ label, value, onChange, min, max }: { label: string; value: string; onChange: (value: string) => void; min?: string; max?: string }) { const open = (event: React.MouseEvent<HTMLLabelElement>) => { if ((event.target as HTMLElement).tagName === "INPUT") return; event.preventDefault(); const input = event.currentTarget.querySelector("input"); input?.focus(); input?.showPicker?.(); }; return <label onClick={open} className="cursor-pointer"><span className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-white/55">{label}</span><input aria-label={label} type="date" value={value} min={min} max={max} onClick={event => event.currentTarget.showPicker?.()} onChange={event => onChange(event.target.value)} className="dashboard-date-input mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#08131f] px-3 text-sm text-white outline-none focus:ring-2 focus:ring-cyan-200/35" /></label>; }
-function LeadSourceBridge({ data, loading, onOpenLeads }: { data: LeadBridgeData | null; loading: boolean; onOpenLeads: () => void }) {
-  if (loading) return <section className="rounded-2xl border border-cyan-200/10 bg-cyan-200/[.03] p-5 text-sm text-slate-400">Conciliando fonte de leads e Bitrix24…</section>;
-  if (!data || data.totals.sourceVolume === 0) return <section className="rounded-2xl border border-white/10 bg-black/20 p-5"><PanelHeader eyebrow="Fonte de leads × Bitrix24" title="Sem base de referência neste período" detail="As contagens do pipeline abaixo permanecem disponíveis e representam exclusivamente o CRM. A conciliação será exibida quando houver uma base de referência importada para o recorte." /></section>;
-  const brandLabel = { medsystems: "MedSystems", beautysystems: "BeautySystems" } as const;
-  const grossDifference = data.totals.sourceVolume - data.totals.bitrixVolume;
-  return <section className="overflow-hidden rounded-2xl border border-cyan-200/15 bg-[linear-gradient(135deg,rgba(34,211,238,.065),rgba(139,92,246,.045),rgba(0,0,0,.12))]">
-    <div className="flex flex-col justify-between gap-4 border-b border-white/10 p-5 lg:flex-row lg:items-end">
-      <PanelHeader eyebrow="Conciliação de leads" title="Fonte de referência × pessoas × CRM" detail="A fonte mede conversões; pessoas usam identidade normalizada; o Bitrix24 mostra somente os registros comerciais encontrados no CRM. As métricas não são substituídas nem somadas." />
-      <Button variant="outline" className="w-fit border-cyan-200/20 bg-cyan-200/[.05] text-cyan-50 hover:bg-cyan-200/[.1]" onClick={onOpenLeads}>Abrir análise completa <ArrowRight className="ml-2 h-4 w-4" /></Button>
-    </div>
-    <div className="grid gap-3 p-5 sm:grid-cols-2 xl:grid-cols-4">
-      <SmallKpi label="Conversões na fonte" value={integer(data.totals.sourceVolume)} helper="Volume bruto da base de referência" />
-      <SmallKpi label="Contatos únicos" value={integer(data.totals.uniqueContacts)} helper="BU + identidade normalizada" accent="emerald" />
-      <SmallKpi label="Registros no Bitrix24" value={integer(data.totals.bitrixVolume)} helper="Mesmo período · universo do CRM" accent="amber" />
-      <SmallKpi label="Diferença bruta" value={`${grossDifference > 0 ? "+" : ""}${integer(grossDifference)}`} helper="Não equivale a falha sem match individual" accent="rose" />
-    </div>
-    <div className="grid gap-3 border-t border-white/10 p-5 lg:grid-cols-2">{data.rows.map(row => <article key={row.accountKey} className="rounded-xl border border-white/8 bg-black/15 p-4"><div className="flex items-center justify-between gap-3"><div><p className="font-semibold text-white">{brandLabel[row.accountKey]}</p><p className="mt-1 text-[10px] text-slate-500">Contagens separadas por fonte</p></div>{row.managerReported === row.sourceVolume ? <Badge variant="outline" className="border-emerald-200/20 text-emerald-100">Gestor conciliado</Badge> : <Badge variant="outline" className="border-amber-200/20 text-amber-100">Revisão pendente</Badge>}</div><div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4"><MetricMini label="Fonte" value={row.sourceVolume} /><MetricMini label="Pessoas" value={row.uniqueContacts} /><MetricMini label="Gestor" value={row.managerReported} /><MetricMini label="Bitrix24" value={row.bitrixVolume} /></div></article>)}</div>
-  </section>;
-}
-function MetricMini({ label, value }: { label: string; value: number | null }) { return <div className="rounded-lg bg-white/[.025] p-3"><p className="text-[9px] uppercase tracking-[.12em] text-slate-600">{label}</p><p className="mt-1 font-mono-ui text-lg text-white">{value === null ? "N/D" : integer(value)}</p></div>; }
 function PipelinePill({ active, label, count, onClick }: { active: boolean; label: string; count: number; onClick: () => void }) { return <button onClick={onClick} className={`group inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-sm transition-all duration-200 active:scale-[.97] ${active ? "border-cyan-200/40 bg-cyan-200/15 text-cyan-50 shadow-[0_0_24px_rgba(34,211,238,.12)]" : "border-white/10 bg-white/[.025] text-slate-400 hover:border-white/20 hover:text-white"}`}><span className="max-w-[220px] truncate">{label}</span><span className={`rounded-full px-2 py-0.5 font-mono-ui text-[10px] ${active ? "bg-cyan-100 text-slate-950" : "bg-white/8 text-slate-300"}`}>{integer(count)}</span></button>; }
 function FilterSelect({ label, value, options, onChange }: { label: string; value: string; options: FilterOption[]; onChange: (value: string) => void }) { return <label><span className="font-mono-ui text-[9px] uppercase tracking-[.12em] text-slate-500">{label}</span><select aria-label={`Filtrar por ${label}`} value={value} onChange={event => onChange(event.target.value)} className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#08131f] px-3 text-sm text-white outline-none focus:ring-2 focus:ring-cyan-200/30"><option value="all">Todos · {integer(options.reduce((sum, item) => sum + item.count, 0))}</option>{options.map(item => <option key={item.value} value={item.value}>{item.label} · {integer(item.count)}</option>)}</select></label>; }
 function PanelHeader({ eyebrow, title, detail }: { eyebrow: string; title: string; detail: string }) { return <div><p className="font-mono-ui text-[10px] uppercase tracking-[.15em] text-cyan-100/55">{eyebrow}</p><h3 className="mt-1 text-lg font-bold text-white">{title}</h3><p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">{detail}</p></div>; }

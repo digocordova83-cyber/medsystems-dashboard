@@ -4,7 +4,7 @@ import { dashboardTabFromHash } from "../shared/dashboardTab";
 describe("dashboardTabFromHash", () => {
   it("inicia diretamente na aba solicitada sem montar Overview antes", () => {
     expect(dashboardTabFromHash("#bitrix")).toBe("bitrix");
-    expect(dashboardTabFromHash("#leads")).toBe("leads");
+    expect(dashboardTabFromHash("#leads")).toBe("bitrix");
   });
 
   it("usa Overview somente para hashes ausentes ou inválidos", () => {

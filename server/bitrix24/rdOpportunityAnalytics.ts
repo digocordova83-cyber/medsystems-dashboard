@@ -1,6 +1,7 @@
-import { and, eq, gte, like, lt } from "drizzle-orm";
-import { bitrix24Entities } from "../../drizzle/schema";
-import { getDb } from "../db";
+import { createHmac } from "node:crypto";
+import { and, eq, gte, inArray, lt } from "drizzle-orm";
+import { bitrix24Entities, leadReferenceEvents } from "../../drizzle/schema";
+import { getDb, normalizeIdentityEmail, normalizeIdentityPhone } from "../db";
 
 export const PAID_TRAFFIC_FIELD = "UF_CRM_1744808620";
 export const PAID_TRAFFIC_VALUE = "Tráfego Pago";
@@ -37,8 +38,10 @@ export type RdOpportunityFilters = {
   creative: string;
 };
 
-export type RdOpportunityRawLead = { bitrixId: number; createdAtBitrix: Date; stageOrStatus: string | null; rawPayload: string };
+export type RdOpportunityRawLead = { bitrixId: number; createdAtBitrix: Date; stageOrStatus: string | null; rawPayload: string; email?: string | null; phone?: string | null };
 export type RdOpportunityRawDeal = { rawPayload: string };
+export type RdOpportunityRawContact = { bitrixId: number; email: string | null; phone: string | null; rawPayload: string };
+export type RdOpportunityReferenceIdentity = { accountKey: "medsystems" | "beautysystems"; identityHash: string; rdContactUuid: string | null };
 type CountRow = { label: string; count: number };
 type OptionRow = { value: string; label: string; count: number };
 
@@ -98,6 +101,49 @@ function dayKey(date: Date) { return date.toLocaleDateString("en-CA", { timeZone
 function numberValue(value: unknown) { const parsed = Number(value ?? 0); return Number.isFinite(parsed) ? parsed : 0; }
 function rate(value: number, total: number) { return total ? (value / total) * 100 : 0; }
 
+const RECONCILED_PIPELINE_BY_BRAND = { medsystems: "15391", beautysystems: "15395" } as const;
+type ReconciledBrand = keyof typeof RECONCILED_PIPELINE_BY_BRAND;
+
+function multiValues(value: unknown) {
+  if (Array.isArray(value)) return value.flatMap(item => typeof item === "object" && item ? [String((item as any).VALUE ?? "")] : [String(item ?? "")]).filter(Boolean);
+  return value == null ? [] : [String(value)];
+}
+
+function digestIdentity(secret: string, value: string) {
+  return createHmac("sha256", secret).update(value).digest("hex");
+}
+
+function referenceBrandForLead(input: {
+  row: RdOpportunityRawLead;
+  raw: Record<string, any>;
+  linkedContact?: RdOpportunityRawContact;
+  references: RdOpportunityReferenceIdentity[];
+  identitySecret: string;
+  originalBrand: ReconciledBrand | null;
+}) {
+  if (!input.references.length) return null;
+  const uuidBrands = new Set(input.references.filter(reference => reference.rdContactUuid && input.row.rawPayload.includes(reference.rdContactUuid)).map(reference => reference.accountKey));
+  if (uuidBrands.size === 1) return Array.from(uuidBrands)[0]!;
+
+  const contactRaw = input.linkedContact ? parsePayload(input.linkedContact.rawPayload) : {};
+  const emails = [input.row.email, ...multiValues(input.raw.EMAIL), input.linkedContact?.email, ...multiValues(contactRaw.EMAIL)]
+    .map(normalizeIdentityEmail).filter(Boolean) as string[];
+  const phones = [input.row.phone, ...multiValues(input.raw.PHONE), input.linkedContact?.phone, ...multiValues(contactRaw.PHONE)]
+    .map(value => normalizeIdentityPhone(String(value ?? ""))).filter(Boolean) as string[];
+  const referenceHashes = new Map<ReconciledBrand, Set<string>>([
+    ["medsystems", new Set(input.references.filter(row => row.accountKey === "medsystems").map(row => row.identityHash))],
+    ["beautysystems", new Set(input.references.filter(row => row.accountKey === "beautysystems").map(row => row.identityHash))],
+  ]);
+  const matchedBrands = new Set<ReconciledBrand>();
+  for (const brand of ["medsystems", "beautysystems"] as const) {
+    const hashes = referenceHashes.get(brand)!;
+    if (emails.some(email => hashes.has(digestIdentity(input.identitySecret, `${brand}|email:${email}`)))) matchedBrands.add(brand);
+    if (phones.some(phone => hashes.has(digestIdentity(input.identitySecret, `${brand}|phone:${phone}`)))) matchedBrands.add(brand);
+  }
+  if (input.originalBrand && matchedBrands.has(input.originalBrand)) return input.originalBrand;
+  return matchedBrands.size === 1 ? Array.from(matchedBrands)[0]! : null;
+}
+
 export function validateBusinessDateRange(startDate: string, endDate: string) {
   const valid = /^\d{4}-\d{2}-\d{2}$/;
   if (!valid.test(startDate) || !valid.test(endDate)) throw new Error("Informe as datas no formato AAAA-MM-DD.");
@@ -111,12 +157,16 @@ export function validateBusinessDateRange(startDate: string, endDate: string) {
 export function buildRdOpportunityManagerDashboard(input: {
   rows: RdOpportunityRawLead[];
   dealRows?: RdOpportunityRawDeal[];
+  contactRows?: RdOpportunityRawContact[];
+  referenceRows?: RdOpportunityReferenceIdentity[];
+  identitySecret?: string;
   filters: RdOpportunityFilters;
   period: { start: string; end: string };
 }) {
   const parsedDeals = (input.dealRows ?? []).map(row => parsePayload(row.rawPayload));
   const dealsByLead = new Map<string, Record<string, any>[]>();
   const dealsByContact = new Map<string, Record<string, any>[]>();
+  const contactsById = new Map((input.contactRows ?? []).map(contact => [String(contact.bitrixId), contact]));
   for (const deal of parsedDeals) {
     const leadId = cleanText(deal.LEAD_ID, "");
     const contactId = cleanText(deal.CONTACT_ID, "");
@@ -133,13 +183,24 @@ export function buildRdOpportunityManagerDashboard(input: {
 
   const base = input.rows.flatMap(row => {
     const raw = parsePayload(row.rawPayload);
-    if (cleanText(raw[PAID_TRAFFIC_FIELD], "").toLocaleLowerCase("pt-BR") !== PAID_TRAFFIC_VALUE.toLocaleLowerCase("pt-BR")) return [];
-    const pipelineId = cleanText(raw.UF_CRM_1739195085, "unknown");
+    const paidFieldMatch = cleanText(raw[PAID_TRAFFIC_FIELD], "").toLocaleLowerCase("pt-BR") === PAID_TRAFFIC_VALUE.toLocaleLowerCase("pt-BR");
+    const originalPipelineId = cleanText(raw.UF_CRM_1739195085, "unknown");
+    const originalBrand: ReconciledBrand | null = originalPipelineId === "15391" ? "medsystems" : originalPipelineId === "15395" ? "beautysystems" : null;
+    const rawContactId = cleanText(raw.CONTACT_ID, "");
+    const contactId = rawContactId === "0" ? "" : rawContactId;
+    const reconciledBrand = referenceBrandForLead({
+      row,
+      raw,
+      linkedContact: contactId ? contactsById.get(contactId) : undefined,
+      references: input.referenceRows ?? [],
+      identitySecret: input.identitySecret ?? "",
+      originalBrand,
+    });
+    if (!paidFieldMatch && !reconciledBrand) return [];
+    const pipelineId = reconciledBrand ? RECONCILED_PIPELINE_BY_BRAND[reconciledBrand] : originalPipelineId;
     const responsibleId = cleanText(raw.ASSIGNED_BY_ID, "unknown");
     const stageId = cleanText(raw.STATUS_ID ?? row.stageOrStatus, "unknown");
     const fields = attributionFields(raw);
-    const rawContactId = cleanText(raw.CONTACT_ID, "");
-    const contactId = rawContactId === "0" ? "" : rawContactId;
     const linkedDealCandidates = [...(dealsByLead.get(String(row.bitrixId)) ?? []), ...(contactId ? dealsByContact.get(contactId) ?? [] : [])];
     const seenDeals = new Set<string>();
     const linkedDeals = linkedDealCandidates.filter((deal, index) => {
@@ -152,7 +213,7 @@ export function buildRdOpportunityManagerDashboard(input: {
       row, raw, linkedDeals, pipelineId, pipelineLabel: PIPELINE_LABELS[pipelineId] ?? (pipelineId === "unknown" ? "Não identificado" : `Pipeline #${pipelineId}`),
       responsibleId, responsibleLabel: RESPONSIBLE_LABELS[responsibleId] ?? (responsibleId === "unknown" ? "Não identificado" : `Responsável #${responsibleId}`),
       stageId, stageLabel: STATUS_LABELS[stageId] ?? (stageId === "unknown" ? "Não identificado" : `Etapa #${stageId}`),
-      positionLabel: cleanText(raw.POST), productLabel: cleanText(raw.UF_CRM_1738950946), ...fields,
+      positionLabel: cleanText(raw.POST), productLabel: cleanText(raw.UF_CRM_1738950946), paidFieldMatch, reconciledByIdentity: Boolean(reconciledBrand), ...fields,
     };
     for (const [map, value, label] of [
       [optionMaps.pipelines, item.pipelineId, item.pipelineLabel], [optionMaps.responsibles, item.responsibleId, item.responsibleLabel],
@@ -220,7 +281,7 @@ export function buildRdOpportunityManagerDashboard(input: {
 
   const leads = eligible.length;
   const funnel = [
-    { key: "lead", label: "Leads", count: leads, conversionFromPrevious: 100, conversionFromLead: 100, rule: "Fonte estruturada = Tráfego Pago" },
+    { key: "lead", label: "Leads", count: leads, conversionFromPrevious: 100, conversionFromLead: 100, rule: "Registro Bitrix24 com Tráfego Pago ou match de identidade na referência" },
     { key: "mql", label: "MQL · Qualificados", count: mql, conversionFromPrevious: rate(mql, leads), conversionFromLead: rate(mql, leads), rule: "Primeiro Contato ou etapa posterior; também inclui lead com negócio vinculado" },
     { key: "sql", label: "SQL · Oportunidades", count: sql, conversionFromPrevious: rate(sql, mql), conversionFromLead: rate(sql, leads), rule: "Relacionamento, Converter Lead ou Convertido; também inclui lead com negócio vinculado" },
     { key: "deal", label: "Negócios", count: dealLeads, conversionFromPrevious: rate(dealLeads, sql), conversionFromLead: rate(dealLeads, leads), rule: "Lead com negócio vinculado por LEAD_ID ou CONTACT_ID" },
@@ -228,11 +289,11 @@ export function buildRdOpportunityManagerDashboard(input: {
   ];
 
   return {
-    sourceRule: `${PAID_TRAFFIC_FIELD} = ${PAID_TRAFFIC_VALUE}`,
+    sourceRule: `${PAID_TRAFFIC_FIELD} = ${PAID_TRAFFIC_VALUE} ou match de identidade`,
     period: input.period,
     selectedFilters: input.filters,
     filterOptions: Object.fromEntries(Object.entries(optionMaps).map(([key, map]) => [key, optionRows(map)])),
-    totals: { leads, mql, sql, dealLeads, wonLeadCount, dealCount, wonDeals, openDeals, lostDeals, totalDealValue, wonValue, discardedLeads: eligible.filter(item => LOST_STATUSES.has(item.stageId)).length },
+    totals: { leads, mql, sql, dealLeads, wonLeadCount, dealCount, wonDeals, openDeals, lostDeals, totalDealValue, wonValue, discardedLeads: eligible.filter(item => LOST_STATUSES.has(item.stageId)).length, reconciledByIdentity: eligible.filter(item => item.reconciledByIdentity).length, reconciledOutsidePaidField: eligible.filter(item => item.reconciledByIdentity && !item.paidFieldMatch).length },
     funnel,
     coverage,
     byDay: Array.from(daily, ([date, values]) => ({ date, ...values })).sort((a, b) => a.date.localeCompare(b.date)),
@@ -244,6 +305,7 @@ export function buildRdOpportunityManagerDashboard(input: {
       sql: "Etapa atual em Relacionamento, Converter Lead ou Convertido; ou negócio vinculado.",
       deal: "Vínculo por LEAD_ID e, quando disponível, CONTACT_ID.",
       attribution: "UTMs diretas do lead; fallback para o payload RD Station embutido. Nesta operação, UTM content representa conjunto/grupo e UTM term representa criativo; ausências aparecem como Não identificado.",
+      reconciliation: "O universo inclui somente entidades do Bitrix24. Além do campo Tráfego Pago, um lead pode entrar por match seguro de UUID RD, e-mail ou telefone normalizado com a referência do período; a BU conciliada prevalece apenas quando o match é inequívoco.",
       limitation: "O funil usa a etapa atual e vínculos persistidos. Sem histórico de transição completo, descartados que passaram por etapas anteriores não são retroativamente reclassificados.",
     },
   };
@@ -259,17 +321,25 @@ export async function rdOpportunityManagerDashboard(input: {
 }) {
   const db = await getDb();
   if (!db) throw new Error("Banco de dados indisponível.");
-  const [rows, dealRows] = await Promise.all([
-    db.select({ bitrixId: bitrix24Entities.bitrixId, createdAtBitrix: bitrix24Entities.createdAtBitrix, stageOrStatus: bitrix24Entities.stageOrStatus, rawPayload: bitrix24Entities.rawPayload })
+  const [rows, dealRows, referenceRows] = await Promise.all([
+    db.select({ bitrixId: bitrix24Entities.bitrixId, createdAtBitrix: bitrix24Entities.createdAtBitrix, stageOrStatus: bitrix24Entities.stageOrStatus, rawPayload: bitrix24Entities.rawPayload, email: bitrix24Entities.email, phone: bitrix24Entities.phone })
       .from(bitrix24Entities).where(and(
         eq(bitrix24Entities.portal, input.portal),
         eq(bitrix24Entities.entityType, "lead"),
         gte(bitrix24Entities.createdAtBitrix, input.start),
         lt(bitrix24Entities.createdAtBitrix, input.end),
-        like(bitrix24Entities.rawPayload, `%"${PAID_TRAFFIC_FIELD}":"${PAID_TRAFFIC_VALUE}"%`),
       )),
     db.select({ rawPayload: bitrix24Entities.rawPayload }).from(bitrix24Entities)
       .where(and(eq(bitrix24Entities.portal, input.portal), eq(bitrix24Entities.entityType, "deal"))),
+    db.select({ accountKey: leadReferenceEvents.accountKey, identityHash: leadReferenceEvents.identityHash, rdContactUuid: leadReferenceEvents.rdContactUuid }).from(leadReferenceEvents)
+      .where(and(gte(leadReferenceEvents.convertedAt, input.start), lt(leadReferenceEvents.convertedAt, input.end))),
   ]);
-  return buildRdOpportunityManagerDashboard({ rows, dealRows, filters: input.filters, period: { start: input.startDate, end: input.endDate } });
+  const contactIds = Array.from(new Set(rows.map(row => {
+    const raw = parsePayload(row.rawPayload);
+    const value = cleanText(raw.CONTACT_ID, "");
+    return value && value !== "0" ? Number(value) : null;
+  }).filter((value): value is number => Number.isFinite(value))));
+  const contactRows = contactIds.length ? await db.select({ bitrixId: bitrix24Entities.bitrixId, email: bitrix24Entities.email, phone: bitrix24Entities.phone, rawPayload: bitrix24Entities.rawPayload })
+    .from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, input.portal), eq(bitrix24Entities.entityType, "contact"), inArray(bitrix24Entities.bitrixId, contactIds))) : [];
+  return buildRdOpportunityManagerDashboard({ rows, dealRows, contactRows, referenceRows, identitySecret: process.env.JWT_SECRET ?? "", filters: input.filters, period: { start: input.startDate, end: input.endDate } });
 }

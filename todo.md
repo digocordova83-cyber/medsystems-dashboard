@@ -504,3 +504,10 @@
 - [x] Tornar as consultas auxiliares da conciliação não bloqueantes para que uma falha parcial não derrube o funil comercial.
 - [x] Melhorar a mensagem de erro para não exibir falha técnica de parsing JSON ao usuário final.
 - [x] Validar a correção no domínio publicado, executar testes e salvar nova versão.
+
+- [x] Remover da aba Negócios o bloco separado `Fonte de referência × pessoas × CRM` e o botão de análise completa.
+- [x] Cruzar os hashes de identidade da base de referência com leads e contatos do Bitrix24 no mesmo período.
+- [x] Incluir no universo do funil os registros encontrados por identidade mesmo quando a origem do Bitrix24 estiver classificada de outra forma.
+- [x] Resolver a marca do registro reconciliado pela BU da referência quando a marca/pipeline do Bitrix24 estiver ausente ou divergente, preservando a origem original para auditoria.
+- [x] Recalcular Pipeline / marca no CRM, funil, filtros e atribuições exclusivamente com registros Bitrix24 conciliados.
+- [x] Validar os novos totais contra a referência de 01/09, executar testes e publicar a correção.

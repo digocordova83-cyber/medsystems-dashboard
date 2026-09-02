@@ -471,14 +471,14 @@
 - [x] Validar a data máxima, os totais D-1, o acumulado mensal e as exceções de cobertura de cada fonte.
 - [x] Revisar testes, publicar o dashboard e enviar o resumo da atualização, incluindo leads de 01/09.
 
-- [ ] Mapear as dependências de hospedagem, dados, autenticação e integrações que precisam ser portadas para a BBRO.
-- [ ] Definir a arquitetura externa e o substituto seguro da rotina diária D-1, incluindo execução, logs e alertas.
-- [ ] Preparar configuração de produção, variáveis de ambiente, banco de dados, domínio e plano de reversão para a migração.
-- [ ] Executar homologação e corte para a hospedagem BBRO sem interrupção do dashboard ou das atualizações.
+- [x] Escopo adiado pelo usuário em 02/09/2026: não mapear agora as dependências de hospedagem, dados, autenticação e integrações para a BBRO.
+- [x] Escopo adiado pelo usuário em 02/09/2026: não definir agora a arquitetura externa nem substituir a rotina diária D-1.
+- [x] Escopo adiado pelo usuário em 02/09/2026: não preparar agora configuração de produção, banco, domínio ou plano de reversão externo.
+- [x] Escopo adiado pelo usuário em 02/09/2026: não executar agora homologação ou corte para a hospedagem BBRO.
 
 - [x] Investigar a divergência de 01/09 entre os 39 leads MedSystems e 45 BeautySystems informados pelo gestor e o volume auditado no dashboard.
 - [x] Reconstituir a contagem por fonte, janela horária, UTM, página/formulário, importação e contatos únicos, sem expor PII.
-- [ ] Documentar a causa verificável, decidir se há ajuste de regra e atualizar o dashboard somente após validação do filtro que reduz MedSystems de 41 para 39.
+- [x] Documentar a divergência e aplicar a decisão segura: manter MedSystems em 41 na fonte, exibir 39 como número informado pelo gestor e não excluir dois registros sem filtro comprovado.
 
 - [x] Inspecionar a base enviada de MedSystems e BeautySystems, preservando PII fora de saídas e documentos.
 - [x] Construir um de-para por chaves disponíveis, marca, origem, UTM, página/formulário e data de conversão.
@@ -496,3 +496,5 @@
 - [x] Exibir lado a lado fonte de leads, volume no Bitrix24 e diferença de integração, sem substituir métricas de fontes distintas.
 - [x] Ajustar os rótulos do filtro de pipeline/marca para explicitar que suas contagens são do Bitrix24.
 - [x] Validar a correção com testes, build e revisão visual antes de publicar.
+
+- [x] Registrar que a migração para a hospedagem BBRO foi adiada pelo usuário e não deve ser executada no escopo atual.

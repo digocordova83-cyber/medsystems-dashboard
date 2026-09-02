@@ -4,6 +4,4 @@ Após a sincronização do Bitrix24, executar a verificação simples de leads c
 
 Entregar resumo diário com status, datas sincronizadas, investimento Google/Meta por marca, seção Leads sem marca e exceções.
 
-Somente na execução de 31/08/2026: incluir no início do resumo um lembrete para falar com a Luiza e compartilhar no grupo MedSystems o relatório didático “Report executivo MedSystems + BeautySystems”. Não tentar publicar em WhatsApp automaticamente; apenas registrar o lembrete no resultado da execução.
-
 Padrão permanente de conciliação de leads de mídia paga: após concluir as cargas de RD Station e Bitrix24, reconciliar o D-1 usando evidência paga do RD (UTM paga, plataforma de anúncios com campanha, utm_id ou página/formulário comprovadamente usado por mídia no mesmo período e conta). Executar o de-para por UUID RD, e-mail, nome completo + telefone ou telefone normalizado. O KPI oficial do funil é o número de IDs únicos de lead Bitrix24; conversões da fonte, pessoas e duplicidades permanecem métricas separadas. Persistir snapshot agregado por BU com a versão `bitrix_lead_id_v1`, sem PII, e listar separadamente pessoas associadas a múltiplos IDs por BU, campanha e método de match.

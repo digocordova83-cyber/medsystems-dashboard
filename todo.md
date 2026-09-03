@@ -550,3 +550,7 @@
 - [x] Gerar workbook profissional com Overview, base detalhada, negócios vinculados e dicionário/metodologia.
 - [x] Validar período, totais, fórmulas, filtros, legibilidade e ausência de PII; documentar a cobertura histórica real.
 - [x] Preparar a entrega final do arquivo Excel, com resumo de cobertura e limitações auditáveis.
+
+- [x] Confirmar o perfil e as permissões atuais do usuário `rodrigo` como referência para o novo acesso.
+- [x] Criar o usuário `daniel` com senha protegida e as mesmas permissões administrativas de `rodrigo`.
+- [x] Validar o cadastro e o acesso do usuário `daniel` sem expor senha ou hash; 7 testes de autenticação aprovados e scripts temporários removidos.

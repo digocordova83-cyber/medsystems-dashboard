@@ -554,3 +554,10 @@
 - [x] Confirmar o perfil e as permissões atuais do usuário `rodrigo` como referência para o novo acesso.
 - [x] Criar o usuário `daniel` com senha protegida e as mesmas permissões administrativas de `rodrigo`.
 - [x] Validar o cadastro e o acesso do usuário `daniel` sem expor senha ou hash; 7 testes de autenticação aprovados e scripts temporários removidos.
+
+- [x] Auditar a rotina diária das 08h BRT e a conciliação posterior, comparando código, contrato, jobs ativos e ordem das cargas.
+- [x] Confirmar o corte D-1, as quatro contas oficiais em BRL, a chave canônica de campanha, upsert e seleção da versão mais recente.
+- [x] Confirmar a verificação de leads sem marca com pipeline 20889/Consumíveis e campanha `medical-dsb-conversao-lead-ads` como mapeamento pendente; 0 novos e 0 no acumulado de 01–02/09.
+- [x] Confirmar o snapshot `bitrix_unique_contact_v2`, contato único como KPI e auditoria separada de IDs Bitrix24 duplicados sem PII.
+- [x] Corrigir somente divergências comprovadas, executar testes e validar os agendamentos ativos; Heartbeat movido para 09h BRT e 27 testes aprovados.
+- [x] Preparar o relatório operacional final, incluindo limitações, defasagens de fonte e a nova sequência 08h/09h BRT.

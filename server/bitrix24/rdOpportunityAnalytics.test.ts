@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { buildRdOpportunityManagerDashboard, validateBusinessDateRange } from "./rdOpportunityAnalytics";
+import { createHmac } from "node:crypto";
+import { buildRdOpportunityManagerDashboard, rdOpportunityCandidateRows, validateBusinessDateRange } from "./rdOpportunityAnalytics";
 
 const filters = {
   pipeline: "all", responsible: "all", source: "all", stage: "all", position: "all", product: "all",
@@ -89,6 +90,29 @@ describe("buildRdOpportunityManagerDashboard", () => {
     expect(result.funnel[0]).toMatchObject({ count: 1 });
     expect(result.duplicates).toMatchObject({ peopleWithMultipleLeadIds: 1, leadIdsInDuplicateGroups: 2, extraLeadIds: 1 });
     expect(result.duplicates.byBrand).toEqual([{ label: "Medsystems", count: 1 }]);
+  });
+
+  it("pré-seleciona somente leads com identidade source-first, inclusive por contato vinculado", () => {
+    const secret = "segredo-de-teste";
+    const digest = (value: string) => createHmac("sha256", secret).update(value).digest("hex");
+    const references = [
+      { accountKey: "medsystems" as const, identityHash: "uuid-id", rdContactUuid: "rd-uuid" },
+      { accountKey: "medsystems" as const, identityHash: "email-id", emailHash: digest("email@teste.com"), rdContactUuid: null },
+      { accountKey: "beautysystems" as const, identityHash: "contact-id", phoneHash: digest("5511999990000"), rdContactUuid: null },
+    ];
+    const candidates = rdOpportunityCandidateRows({
+      rows: [
+        row(81, { rd_contact_uuid: "rd-uuid", UF_CRM_1739195085: "15391" }),
+        { ...row(82, { UF_CRM_1739195085: "15391" }), email: "email@teste.com" },
+        row(83, { CONTACT_ID: "901", UF_CRM_1739195085: "15395" }),
+        row(84, { UF_CRM_1744808620: "Tráfego Pago", UF_CRM_1739195085: "15391" }),
+      ],
+      dealRows: [deal({ ID: "301", LEAD_ID: "83", CONTACT_ID: "901" })],
+      contactRows: [{ bitrixId: 901, fullName: "Contato Teste", email: null, phone: "+55 (11) 99999-0000", rawPayload: "{}" }],
+      referenceRows: references,
+      identitySecret: secret,
+    });
+    expect(candidates.map(candidate => candidate.bitrixId)).toEqual([81, 82, 83]);
   });
 
   it("valida o intervalo configurável no fuso de São Paulo", () => {

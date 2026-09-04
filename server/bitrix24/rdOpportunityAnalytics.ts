@@ -1,5 +1,5 @@
 import { createHmac } from "node:crypto";
-import { and, eq, gte, inArray, lt } from "drizzle-orm";
+import { and, asc, eq, gt, gte, inArray, lt, sql } from "drizzle-orm";
 import { bitrix24Entities, leadReferenceEvents, rdStationContacts, rdStationConversionEvents } from "../../drizzle/schema";
 import { getDb, normalizeIdentityEmail, normalizeIdentityPhone } from "../db";
 import { buildPaidMediaReferenceIdentities, normalizeIdentityName } from "../leads/paidMediaEvidence";
@@ -172,6 +172,41 @@ export function validateBusinessDateRange(startDate: string, endDate: string) {
   const endExclusive = new Date(`${endDate}T00:00:00-03:00`);
   endExclusive.setDate(endExclusive.getDate() + 1);
   return { start, endExclusive };
+}
+
+export function rdOpportunityCandidateRows(input: {
+  rows: RdOpportunityRawLead[];
+  dealRows?: RdOpportunityRawDeal[];
+  contactRows?: RdOpportunityRawContact[];
+  referenceRows: RdOpportunityReferenceIdentity[];
+  identitySecret: string;
+}) {
+  const dealsByLead = new Map<string, Record<string, any>[]>();
+  for (const row of input.dealRows ?? []) {
+    const deal = parsePayload(row.rawPayload);
+    const leadId = cleanText(deal.LEAD_ID, "");
+    if (leadId) dealsByLead.set(leadId, [...(dealsByLead.get(leadId) ?? []), deal]);
+  }
+  const contactsById = new Map((input.contactRows ?? []).map(contact => [String(contact.bitrixId), contact]));
+  return input.rows.filter(row => {
+    const raw = parsePayload(row.rawPayload);
+    const originalPipelineId = cleanText(raw.UF_CRM_1739195085, "unknown");
+    const originalBrand: ReconciledBrand | null = originalPipelineId === "15391" ? "medsystems" : originalPipelineId === "15395" ? "beautysystems" : null;
+    const directContactId = cleanText(raw.CONTACT_ID, "");
+    const linkedContactIds = Array.from(new Set([
+      directContactId === "0" ? "" : directContactId,
+      ...(dealsByLead.get(String(row.bitrixId)) ?? []).map(deal => cleanText(deal.CONTACT_ID, "")),
+    ].filter(value => value && value !== "0")));
+    const linkedContacts = linkedContactIds.map(id => contactsById.get(id)).filter((contact): contact is RdOpportunityRawContact => Boolean(contact));
+    return referenceMatchesForLead({
+      row,
+      raw,
+      linkedContacts,
+      references: input.referenceRows,
+      identitySecret: input.identitySecret,
+      originalBrand,
+    }).length > 0;
+  });
 }
 
 export function buildRdOpportunityManagerDashboard(input: {
@@ -387,25 +422,35 @@ export function buildRdOpportunityManagerDashboard(input: {
   };
 }
 
-export async function rdOpportunityManagerDashboard(input: {
+type RdOpportunityDataset = {
+  rows: RdOpportunityRawLead[];
+  dealRows: RdOpportunityRawDeal[];
+  contactRows: RdOpportunityRawContact[];
+  referenceRows: RdOpportunityReferenceIdentity[];
+  identitySecret: string;
+};
+
+const LEAD_SCAN_PAGE_SIZE = 250;
+const LOOKUP_CHUNK_SIZE = 200;
+
+async function loadRdOpportunityDataset(input: {
   portal: string;
   start: Date;
   end: Date;
-  startDate: string;
-  endDate: string;
-  filters: RdOpportunityFilters;
-}) {
+}): Promise<RdOpportunityDataset> {
   const db = await getDb();
   if (!db) throw new Error("Banco de dados indisponível.");
-  const [rows, dealRows, historicalReferenceRows, rdEvents] = await Promise.all([
-    db.select({ bitrixId: bitrix24Entities.bitrixId, createdAtBitrix: bitrix24Entities.createdAtBitrix, stageOrStatus: bitrix24Entities.stageOrStatus, rawPayload: bitrix24Entities.rawPayload, fullName: bitrix24Entities.fullName, email: bitrix24Entities.email, phone: bitrix24Entities.phone })
-      .from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, input.portal), eq(bitrix24Entities.entityType, "lead"))),
-    db.select({ rawPayload: bitrix24Entities.rawPayload }).from(bitrix24Entities)
-      .where(and(eq(bitrix24Entities.portal, input.portal), eq(bitrix24Entities.entityType, "deal"))),
+  const database = db;
+  const [historicalReferenceRows, rdEvents, dealLinks] = await Promise.all([
     db.select({ accountKey: leadReferenceEvents.accountKey, identityHash: leadReferenceEvents.identityHash, emailHash: leadReferenceEvents.emailHash, phoneHash: leadReferenceEvents.phoneHash, namePhoneHash: leadReferenceEvents.namePhoneHash, rdContactUuid: leadReferenceEvents.rdContactUuid, convertedAt: leadReferenceEvents.convertedAt }).from(leadReferenceEvents)
       .where(and(gte(leadReferenceEvents.convertedAt, input.start), lt(leadReferenceEvents.convertedAt, input.end))),
     db.select({ accountKey: rdStationConversionEvents.accountKey, contactUuid: rdStationConversionEvents.contactUuid, rawPayload: rdStationConversionEvents.rawPayload, eventCreatedAt: rdStationConversionEvents.eventCreatedAt })
       .from(rdStationConversionEvents).where(and(gte(rdStationConversionEvents.eventCreatedAt, input.start), lt(rdStationConversionEvents.eventCreatedAt, input.end))),
+    db.select({
+      bitrixId: bitrix24Entities.bitrixId,
+      leadId: sql<string | null>`json_unquote(json_extract(${bitrix24Entities.rawPayload}, '$.LEAD_ID'))`,
+      contactId: sql<string | null>`json_unquote(json_extract(${bitrix24Entities.rawPayload}, '$.CONTACT_ID'))`,
+    }).from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, input.portal), eq(bitrix24Entities.entityType, "deal"))),
   ]);
   const rdContactUuids = Array.from(new Set(rdEvents.map(event => event.contactUuid)));
   const rdContacts = rdContactUuids.length ? await db.select({ accountKey: rdStationContacts.accountKey, contactUuid: rdStationContacts.contactUuid, name: rdStationContacts.name, email: rdStationContacts.email, phone: rdStationContacts.phone })
@@ -414,12 +459,97 @@ export async function rdOpportunityManagerDashboard(input: {
   const periodReferences = historicalReferenceRows.length ? historicalReferenceRows : dynamicReferences;
   const referenceRows = Array.from(new Map(periodReferences
     .map(reference => [`${reference.accountKey}:${reference.identityHash}`, reference])).values());
-  const contactIds = Array.from(new Set(rows.map(row => {
-    const raw = parsePayload(row.rawPayload);
-    const value = cleanText(raw.CONTACT_ID, "");
-    return value && value !== "0" ? Number(value) : null;
-  }).filter((value): value is number => Number.isFinite(value))));
-  const contactRows = contactIds.length ? await db.select({ bitrixId: bitrix24Entities.bitrixId, fullName: bitrix24Entities.fullName, email: bitrix24Entities.email, phone: bitrix24Entities.phone, rawPayload: bitrix24Entities.rawPayload })
-    .from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, input.portal), eq(bitrix24Entities.entityType, "contact"), inArray(bitrix24Entities.bitrixId, contactIds))) : [];
-  return buildRdOpportunityManagerDashboard({ rows, dealRows, contactRows, referenceRows, identitySecret: process.env.JWT_SECRET ?? "", filters: input.filters, period: { start: input.startDate, end: input.endDate } });
+  const identitySecret = process.env.JWT_SECRET ?? "";
+  if (!referenceRows.length) return { rows: [], dealRows: [], contactRows: [], referenceRows, identitySecret };
+
+  const dealsByLead = new Map<string, typeof dealLinks>();
+  for (const deal of dealLinks) {
+    const leadId = cleanText(deal.leadId, "");
+    if (leadId) dealsByLead.set(leadId, [...(dealsByLead.get(leadId) ?? []), deal]);
+  }
+  const contactCache = new Map<string, RdOpportunityRawContact>();
+  const candidateContacts = new Map<string, RdOpportunityRawContact>();
+  const candidateLeadIds = new Set<number>();
+  const candidateContactIds = new Set<number>();
+  const rows: RdOpportunityRawLead[] = [];
+
+  async function loadContacts(ids: number[]) {
+    const missing = Array.from(new Set(ids)).filter(id => !contactCache.has(String(id)));
+    for (let index = 0; index < missing.length; index += LOOKUP_CHUNK_SIZE) {
+      const chunk = missing.slice(index, index + LOOKUP_CHUNK_SIZE);
+      if (!chunk.length) continue;
+      const contacts = await database.select({ bitrixId: bitrix24Entities.bitrixId, fullName: bitrix24Entities.fullName, email: bitrix24Entities.email, phone: bitrix24Entities.phone, rawPayload: bitrix24Entities.rawPayload })
+        .from(bitrix24Entities).where(and(eq(bitrix24Entities.portal, input.portal), eq(bitrix24Entities.entityType, "contact"), inArray(bitrix24Entities.bitrixId, chunk)));
+      for (const contact of contacts) contactCache.set(String(contact.bitrixId), contact);
+    }
+  }
+
+  let cursor = 0;
+  while (true) {
+    const page = await db.select({ bitrixId: bitrix24Entities.bitrixId, createdAtBitrix: bitrix24Entities.createdAtBitrix, stageOrStatus: bitrix24Entities.stageOrStatus, rawPayload: bitrix24Entities.rawPayload, fullName: bitrix24Entities.fullName, email: bitrix24Entities.email, phone: bitrix24Entities.phone })
+      .from(bitrix24Entities)
+      .where(and(eq(bitrix24Entities.portal, input.portal), eq(bitrix24Entities.entityType, "lead"), gt(bitrix24Entities.bitrixId, cursor)))
+      .orderBy(asc(bitrix24Entities.bitrixId)).limit(LEAD_SCAN_PAGE_SIZE);
+    if (!page.length) break;
+    const pageContactIds = Array.from(new Set(page.flatMap(row => {
+      const raw = parsePayload(row.rawPayload);
+      return [cleanText(raw.CONTACT_ID, ""), ...(dealsByLead.get(String(row.bitrixId)) ?? []).map(deal => cleanText(deal.contactId, ""))]
+        .map(Number).filter(id => Number.isInteger(id) && id > 0);
+    })));
+    await loadContacts(pageContactIds);
+    const pageContacts = pageContactIds.map(id => contactCache.get(String(id))).filter((contact): contact is RdOpportunityRawContact => Boolean(contact));
+    const linkRows = page.flatMap(row => (dealsByLead.get(String(row.bitrixId)) ?? []).map(deal => ({ rawPayload: JSON.stringify({ ID: deal.bitrixId, LEAD_ID: deal.leadId, CONTACT_ID: deal.contactId }) })));
+    const candidates = rdOpportunityCandidateRows({ rows: page, dealRows: linkRows, contactRows: pageContacts, referenceRows, identitySecret });
+    for (const row of candidates) {
+      rows.push(row);
+      candidateLeadIds.add(row.bitrixId);
+      const raw = parsePayload(row.rawPayload);
+      const linkedIds = [cleanText(raw.CONTACT_ID, ""), ...(dealsByLead.get(String(row.bitrixId)) ?? []).map(deal => cleanText(deal.contactId, ""))]
+        .map(Number).filter(id => Number.isInteger(id) && id > 0);
+      for (const id of linkedIds) {
+        candidateContactIds.add(id);
+        const contact = contactCache.get(String(id));
+        if (contact) candidateContacts.set(String(id), contact);
+      }
+    }
+    cursor = page[page.length - 1]!.bitrixId;
+    if (page.length < LEAD_SCAN_PAGE_SIZE) break;
+  }
+
+  const relevantDealIds = dealLinks.filter(deal => candidateLeadIds.has(Number(deal.leadId)) || candidateContactIds.has(Number(deal.contactId))).map(deal => deal.bitrixId);
+  const dealRows: RdOpportunityRawDeal[] = [];
+  for (let index = 0; index < relevantDealIds.length; index += LOOKUP_CHUNK_SIZE) {
+    const chunk = relevantDealIds.slice(index, index + LOOKUP_CHUNK_SIZE);
+    if (!chunk.length) continue;
+    dealRows.push(...await db.select({ rawPayload: bitrix24Entities.rawPayload }).from(bitrix24Entities)
+      .where(and(eq(bitrix24Entities.portal, input.portal), eq(bitrix24Entities.entityType, "deal"), inArray(bitrix24Entities.bitrixId, chunk))));
+  }
+  return { rows, dealRows, contactRows: Array.from(candidateContacts.values()), referenceRows, identitySecret };
+}
+
+export async function rdOpportunityManagerDashboard(input: {
+  portal: string;
+  start: Date;
+  end: Date;
+  startDate: string;
+  endDate: string;
+  filters: RdOpportunityFilters;
+}) {
+  const dataset = await loadRdOpportunityDataset(input);
+  return buildRdOpportunityManagerDashboard({ ...dataset, filters: input.filters, period: { start: input.startDate, end: input.endDate } });
+}
+
+export async function rdOpportunityManagerDashboardsByAccount(input: {
+  portal: string;
+  start: Date;
+  end: Date;
+  startDate: string;
+  endDate: string;
+  filters: RdOpportunityFilters;
+}) {
+  const dataset = await loadRdOpportunityDataset(input);
+  return {
+    medsystems: buildRdOpportunityManagerDashboard({ ...dataset, filters: { ...input.filters, pipeline: "15391" }, period: { start: input.startDate, end: input.endDate } }),
+    beautysystems: buildRdOpportunityManagerDashboard({ ...dataset, filters: { ...input.filters, pipeline: "15395" }, period: { start: input.startDate, end: input.endDate } }),
+  };
 }

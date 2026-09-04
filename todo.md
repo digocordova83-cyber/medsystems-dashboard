@@ -561,3 +561,8 @@
 - [x] Confirmar o snapshot `bitrix_unique_contact_v2`, contato único como KPI e auditoria separada de IDs Bitrix24 duplicados sem PII.
 - [x] Corrigir somente divergências comprovadas, executar testes e validar os agendamentos ativos; Heartbeat movido para 09h BRT e 27 testes aprovados.
 - [x] Preparar o relatório operacional final, incluindo limitações, defasagens de fonte e a nova sequência 08h/09h BRT.
+
+- [x] Corrigir a causa do OOM/HTTP 503 do Heartbeat `paid-media-reconciliation`, sem alterar a regra source-first ou criar outro agendamento.
+- [x] Reduzir a leitura Bitrix24 do snapshot diário ao conjunto de leads candidatos às identidades D-1, preservando contatos e negócios vinculados.
+- [ ] Adicionar testes de regressão para o caminho de reconciliação otimizado e validar o callback publicado; 28 testes aprovados e validação publicada pendente.
+- [ ] Confirmar execução bem-sucedida do job único das 09h BRT e reportar o resultado sem PII.

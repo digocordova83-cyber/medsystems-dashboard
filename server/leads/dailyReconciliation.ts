@@ -1,25 +1,26 @@
 import { paidMediaReconciliationDaily } from "../../drizzle/schema";
 import { getDb } from "../db";
-import { medsystemsBitrixRdOpportunityDashboard } from "../bitrix24/service";
+import { medsystemsBitrixRdOpportunityDashboardsByAccount } from "../bitrix24/service";
 
 const DEFAULT_FILTERS = {
   pipeline: "all", responsible: "all", source: "all", stage: "all", position: "all",
   product: "all", campaign: "all", adset: "all", creative: "all",
 };
 
-const PIPELINE_BY_ACCOUNT = { medsystems: "15391", beautysystems: "15395" } as const;
+const ACCOUNT_KEYS = ["medsystems", "beautysystems"] as const;
 
 export async function reconcilePaidMediaBusinessDate(businessDate: string) {
   const db = await getDb();
   if (!db) throw new Error("Banco de dados indisponível.");
-  const results = [] as Array<{ accountKey: keyof typeof PIPELINE_BY_ACCOUNT; uniqueContacts: number; uniqueBitrixLeadIds: number; peopleWithMultipleLeadIds: number; extraLeadIds: number }>;
+  const results = [] as Array<{ accountKey: typeof ACCOUNT_KEYS[number]; uniqueContacts: number; uniqueBitrixLeadIds: number; peopleWithMultipleLeadIds: number; extraLeadIds: number }>;
+  const dashboards = await medsystemsBitrixRdOpportunityDashboardsByAccount({
+    startDate: businessDate,
+    endDate: businessDate,
+    filters: DEFAULT_FILTERS,
+  });
 
-  for (const accountKey of ["medsystems", "beautysystems"] as const) {
-    const dashboard = await medsystemsBitrixRdOpportunityDashboard({
-      startDate: businessDate,
-      endDate: businessDate,
-      filters: { ...DEFAULT_FILTERS, pipeline: PIPELINE_BY_ACCOUNT[accountKey] },
-    });
+  for (const accountKey of ACCOUNT_KEYS) {
+    const dashboard = dashboards[accountKey];
     const summary = JSON.stringify({
       sourceRule: dashboard.sourceRule,
       period: dashboard.period,

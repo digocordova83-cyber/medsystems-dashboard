@@ -564,5 +564,11 @@
 
 - [x] Corrigir a causa do OOM/HTTP 503 do Heartbeat `paid-media-reconciliation`, sem alterar a regra source-first ou criar outro agendamento.
 - [x] Reduzir a leitura Bitrix24 do snapshot diário ao conjunto de leads candidatos às identidades D-1, preservando contatos e negócios vinculados.
-- [ ] Adicionar testes de regressão para o caminho de reconciliação otimizado e validar o callback publicado; 28 testes aprovados e validação publicada pendente.
-- [ ] Confirmar execução bem-sucedida do job único das 09h BRT e reportar o resultado sem PII.
+- [x] Adicionar testes de regressão para o caminho de reconciliação otimizado e validar o callback publicado; 28 testes aprovados e callback HTTP 200 em aproximadamente 5 segundos.
+- [x] Confirmar execução bem-sucedida do job único das 09h BRT e reportar o resultado sem PII; cron restaurado para `0 0 12 * * *` UTC.
+
+- [x] Atualizar RD Station e Bitrix24 com corte D-1 de 03/09/2026 e persistir o snapshot `bitrix_unique_contact_v2` após as cargas.
+- [x] Atualizar Google Ads nas duas contas oficiais pelo Windsor.ai com upsert canônico e validar ausência de duplicação por campanha.
+- [x] Registrar Meta Ads como não atualizado em 03/09 por expiração da autorização da fonte no Windsor.ai, preservando 02/09 como última data válida e sem imputar zeros.
+- [x] Validar leads sem marca no D-1 e no acumulado de setembro; ambos ficaram em zero.
+- [x] Preparar o resumo diário sem PII com cobertura, investimentos, leads, funil e exceções.

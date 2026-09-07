@@ -572,3 +572,15 @@
 - [x] Registrar Meta Ads como não atualizado em 03/09 por expiração da autorização da fonte no Windsor.ai, preservando 02/09 como última data válida e sem imputar zeros.
 - [x] Validar leads sem marca no D-1 e no acumulado de setembro; ambos ficaram em zero.
 - [x] Preparar o resumo diário sem PII com cobertura, investimentos, leads, funil e exceções.
+
+- [x] Escopo de 04/09 supersedido pela atualização acumulada concluída até 06/09/2026, preservando regras de marca, funil e atribuição.
+- [x] Escopo de mídia de 04/09 supersedido pela carga Windsor acumulada concluída até 06/09 nas quatro contas oficiais.
+- [x] Validar chave canônica, leads sem marca D-1/MTD e snapshot `bitrix_unique_contact_v2` sem PII; validação concluída até 06/09.
+- [x] Entregar o resumo diário originalmente previsto para 05/09; supersedido pelo resumo acumulado de 07/09 com corte em 06/09.
+- [x] Corrigir a reconciliação de registros Bitrix24 para usar a data original de criação convertida ao fuso de Brasília e remover somente IDs ausentes após paginação integral validada.
+
+- [x] Atualizar RD Station e Bitrix24 no acumulado de 01–06/09/2026, com 434 leads, 334 contatos e 100 negócios retornados pelo CRM.
+- [x] Atualizar Google Ads e Meta Ads de 01–06/09 nas quatro contas oficiais, com 156 chaves canônicas únicas e R$ 22.675,66 investidos.
+- [x] Persistir o snapshot de 06/09 e recalcular o acumulado sem somar contatos repetidos: 44 contatos pagos D-1 e 75 contatos pagos MTD.
+- [x] Validar leads sem marca em 06/09 e no acumulado de setembro; ambos ficaram em zero.
+- [x] Preparar resumo diário e mensal sem PII, incluindo a execução prematura do callback das 09h como exceção operacional.

@@ -426,14 +426,29 @@ export async function bitrixReferencedContactIds(input: { portal: string; start:
   return Array.from(ids);
 }
 
+export function saoPauloBusinessDate(value: Date | string) {
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.valueOf())) throw new Error("Data Bitrix24 inválida para normalização em Brasília.");
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Sao_Paulo",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
+}
+
 export async function reconcileBitrixEntities(input: { portal: string; entityType: BitrixEntityType; periodStart: Date; periodEnd: Date; bitrixIds: number[] }) {
   const db = await getDb();
   if (!db || !input.bitrixIds.length) return 0;
+  const periodStartDay = saoPauloBusinessDate(input.periodStart);
+  const periodEndDay = saoPauloBusinessDate(input.periodEnd);
+  const rawCreatedAt = sql`JSON_UNQUOTE(JSON_EXTRACT(${bitrix24Entities.rawPayload}, '$.DATE_CREATE'))`;
+  const createdAtBrt = sql`CONVERT_TZ(STR_TO_DATE(LEFT(${rawCreatedAt}, 19), '%Y-%m-%dT%H:%i:%s'), RIGHT(${rawCreatedAt}, 6), '-03:00')`;
   const result = await db.delete(bitrix24Entities).where(and(
     eq(bitrix24Entities.portal, input.portal),
     eq(bitrix24Entities.entityType, input.entityType),
-    gte(bitrix24Entities.createdAtBitrix, input.periodStart),
-    lt(bitrix24Entities.createdAtBitrix, input.periodEnd),
+    sql`${createdAtBrt} >= ${`${periodStartDay} 00:00:00`}`,
+    sql`${createdAtBrt} < ${`${periodEndDay} 00:00:00`}`,
     notInArray(bitrix24Entities.bitrixId, input.bitrixIds),
   ));
   return Number(result[0].affectedRows ?? 0);

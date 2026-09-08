@@ -1,0 +1,41 @@
+<slide id="readout_actions">
+  <background color="paper"/>
+  <shape id="readout-top-rule" type="rect" x="0" y="0" width="1280" height="3" fill="brand"/>
+  <text id="readout-title" x="54" y="34" width="1120" height="44" font="heading" size="30" color="ink" wrap="false">Setembro: acompanhar ritmo, verba e qualidade</text>
+  <text id="readout-cut" x="54" y="82" width="1120" height="22" font="caption" size="13" color="muted" wrap="false">Leitura executiva com base auditada até 07/09/2026 · corte D-1</text>
+
+  <shape id="readout-verdict" type="rect" x="54" y="116" width="1172" height="56" fill="brand"/>
+  <text id="readout-verdict-text" x="78" y="132" width="1124" height="26" font="body" size="18" color="paper" wrap="false"><strong>Campanhas em entrega; a projeção deve ser acompanhada como ritmo de execução, não como resultado garantido.</strong></text>
+
+  <shape id="readout-left-panel" type="rect" x="54" y="204" width="690" height="384" fill="surface"/>
+  <text id="readout-left-title" x="78" y="228" width="350" height="28" font="body" size="20" color="ink" wrap="false"><strong>O que já é possível afirmar</strong></text>
+  <shape id="readout-left-line-one" type="line" x="78" y="276" width="642" height="0" stroke="hairline" stroke-width="1"/>
+  <text id="readout-d1-label" x="78" y="296" width="240" height="18" font="caption" size="12" color="muted" wrap="false">LEADS DO DIA ANTERIOR · 07/09</text>
+  <text id="readout-d1-value" x="78" y="324" width="290" height="40" font="heading" size="30" color="brand" wrap="false"><strong>40 contatos únicos pagos</strong></text>
+  <text id="readout-d1-detail" x="78" y="370" width="540" height="20" font="caption" size="13" color="muted" wrap="false">10 MedSystems · 30 BeautySystems · 10 MQLs · 8 SQLs</text>
+  <shape id="readout-left-line-two" type="line" x="78" y="410" width="642" height="0" stroke="hairline" stroke-width="1"/>
+  <text id="readout-delivery-label" x="78" y="430" width="240" height="18" font="caption" size="12" color="muted" wrap="false">STATUS DE CAMPANHAS</text>
+  <text id="readout-delivery-value" x="78" y="458" width="260" height="36" font="heading" size="29" color="accent" wrap="false"><strong>32 com entrega</strong></text>
+  <text id="readout-delivery-detail" x="78" y="502" width="570" height="20" font="caption" size="13" color="muted" wrap="false">10 em Google Ads e 22 em Meta Ads, todas com investimento no D-1.</text>
+  <shape id="readout-left-line-three" type="line" x="78" y="536" width="642" height="0" stroke="hairline" stroke-width="1"/>
+  <text id="readout-proj-label" x="78" y="552" width="550" height="20" font="caption" size="13" color="muted" wrap="false">PROJEÇÃO LINEAR DE CONTATOS ÚNICOS · MED 150 · BEAUTY 171</text>
+
+  <shape id="readout-right-panel" type="rect" x="768" y="204" width="458" height="384" fill="surface"/>
+  <text id="readout-right-title" x="794" y="228" width="360" height="28" font="body" size="20" color="ink" wrap="false"><strong>Ritual semanal de acompanhamento</strong></text>
+  <shape id="readout-step-one-dot" type="ellipse" x="794" y="286" width="28" height="28" fill="brand"/>
+  <text id="readout-step-one-num" x="794" y="289" width="28" height="20" font="caption" size="12" color="paper" align="center" wrap="false"><strong>1</strong></text>
+  <text id="readout-step-one" x="840" y="278" width="350" height="50" font="body" size="16" color="ink" line-height="1.25"><p><strong>Conferir ritmo de verba:</strong> Med R$ 62,6 mil e Beauty R$ 50,9 mil são projeções de ritmo, não orçamento aprovado.</p></text>
+  <shape id="readout-right-line-one" type="line" x="794" y="350" width="400" height="0" stroke="hairline" stroke-width="1"/>
+  <shape id="readout-step-two-dot" type="ellipse" x="794" y="376" width="28" height="28" fill="brand"/>
+  <text id="readout-step-two-num" x="794" y="379" width="28" height="20" font="caption" size="12" color="paper" align="center" wrap="false"><strong>2</strong></text>
+  <text id="readout-step-two" x="840" y="368" width="350" height="50" font="body" size="16" color="ink" line-height="1.25"><p><strong>Separar as leituras:</strong> Meta leads + Google conversões não substituem o KPI de contatos únicos conciliados.</p></text>
+  <shape id="readout-right-line-two" type="line" x="794" y="440" width="400" height="0" stroke="hairline" stroke-width="1"/>
+  <shape id="readout-step-three-dot" type="ellipse" x="794" y="466" width="28" height="28" fill="brand"/>
+  <text id="readout-step-three-num" x="794" y="469" width="28" height="20" font="caption" size="12" color="paper" align="center" wrap="false"><strong>3</strong></text>
+  <text id="readout-step-three" x="840" y="458" width="350" height="58" font="body" size="16" color="ink" line-height="1.25"><p><strong>Revisar semanalmente:</strong> investimento, CPL, campanhas de maior verba e avanço para MQL/SQL.</p></text>
+  <shape id="readout-pending" type="rect" x="794" y="538" width="400" height="28" fill="paper"/>
+  <text id="readout-pending-text" x="806" y="544" width="376" height="18" font="caption" size="11" color="muted" align="center" wrap="false">DSB / pipeline 20889 permanece como mapeamento pendente.</text>
+
+  <text id="readout-source" x="54" y="674" width="1090" height="20" font="caption" size="11" color="muted" wrap="false">Fontes: Windsor.ai, RD Station e Bitrix24 · projeção linear de 7 para 30 dias · sem dados pessoais</text>
+  <text id="readout-page" x="1170" y="674" width="56" height="20" font="caption" size="11" color="muted" align="right" wrap="false">4 / 4</text>
+</slide>

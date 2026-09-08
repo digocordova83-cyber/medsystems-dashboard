@@ -604,3 +604,8 @@
 - [x] Validar nas fontes e documentos auditados os números fechados de agosto antes de atualizar qualquer métrica.
 - [x] Alterar somente textos e valores necessários nos quatro slides, preservando exatamente posições, dimensões, cores, fontes, logos e estrutura.
 - [x] Validar e reapresentar o deck completo com fechamento em 31/08/2026.
+
+- [ ] Mapear campanhas ativas, investimento, resultados e cobertura de setembro por MedSystems e BeautySystems.
+- [ ] Calcular projeção de leads até o fim de setembro com premissas explícitas e dados reais até o último D-1.
+- [ ] Produzir um PDF no formato Report Lu com campanhas, verba, resultados e projeção por BU.
+- [ ] Validar visualmente o PDF, documentar metodologia, salvar a versão e entregar o arquivo.

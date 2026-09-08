@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "title": "Campanhas, verba e projeção — setembro",
+    "created": 1788888321.497,
+    "last_updated": 1788888485.135,
+    "total_slides": 4
+  },
+  "slides": [
+    {
+      "id": "cover",
+      "state": "edited",
+      "pageNum": 1
+    },
+    {
+      "id": "campaigns_spend",
+      "state": "edited",
+      "pageNum": 2
+    },
+    {
+      "id": "lead_projection",
+      "state": "edited",
+      "pageNum": 3
+    },
+    {
+      "id": "readout_actions",
+      "state": "edited",
+      "pageNum": 4
+    }
+  ],
+  "outline": [
+    {
+      "id": "cover",
+      "title": "Campanhas, verba e projeção — setembro",
+      "summary": "Capa minimalista para o status de setembro, com corte auditado em 07/09 e identificação das marcas.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "campaigns_spend",
+      "title": "Todas as campanhas têm entrega",
+      "summary": "Status de entrega de Google e Meta por BU, investimento realizado, ações de plataforma e principais campanhas do período.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "lead_projection",
+      "title": "Ritmo atual projeta 321 contatos únicos",
+      "summary": "Projeção linear até 30/09, separando contatos únicos conciliados do volume de ações de plataforma e explicitando a premissa.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "readout_actions",
+      "title": "O que acompanhar na sequência",
+      "summary": "Leitura executiva do ritmo de campanha, controle de verba e próximos pontos de acompanhamento, sem confundir projeção com realizado.",
+      "image_plan": "Use a suitable image if needed"
+    }
+  ]
+}

@@ -605,7 +605,7 @@
 - [x] Alterar somente textos e valores necessários nos quatro slides, preservando exatamente posições, dimensões, cores, fontes, logos e estrutura.
 - [x] Validar e reapresentar o deck completo com fechamento em 31/08/2026.
 
-- [ ] Mapear campanhas ativas, investimento, resultados e cobertura de setembro por MedSystems e BeautySystems.
-- [ ] Calcular projeção de leads até o fim de setembro com premissas explícitas e dados reais até o último D-1.
-- [ ] Produzir um PDF no formato Report Lu com campanhas, verba, resultados e projeção por BU.
-- [ ] Validar visualmente o PDF, documentar metodologia, salvar a versão e entregar o arquivo.
+- [x] Mapear campanhas ativas, investimento, resultados e cobertura de setembro por MedSystems e BeautySystems.
+- [x] Calcular projeção de leads até o fim de setembro com premissas explícitas e dados reais até o último D-1.
+- [x] Produzir um PDF no formato Report Lu com campanhas, verba, resultados e projeção por BU.
+- [x] Validar visualmente o PDF, documentar metodologia, salvar a versão e entregar o arquivo.

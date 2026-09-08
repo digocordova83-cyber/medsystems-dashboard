@@ -599,3 +599,8 @@
 - [x] Atualizar a capa em uma única reescrita completa para comunicar agosto fechado, sem alterar estrutura ou identidade de marca.
 - [x] Registrar o modelo visual e editorial como `Report Lu` na memória compartilhada do projeto para reutilização futura.
 - [x] Validar a apresentação completa e reapresentar todos os quatro slides na ordem original.
+
+- [x] Auditar todos os textos, datas e métricas dos quatro slides do Report Lu para identificar referências anteriores a 31/08/2026.
+- [x] Validar nas fontes e documentos auditados os números fechados de agosto antes de atualizar qualquer métrica.
+- [x] Alterar somente textos e valores necessários nos quatro slides, preservando exatamente posições, dimensões, cores, fontes, logos e estrutura.
+- [x] Validar e reapresentar o deck completo com fechamento em 31/08/2026.

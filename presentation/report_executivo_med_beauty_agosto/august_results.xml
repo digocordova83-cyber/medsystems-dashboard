@@ -2,54 +2,54 @@
   <background color="paper"/>
   <shape id="aug-top-rule" type="rect" x="0" y="0" width="1280" height="3" fill="brand"/>
   <text id="aug-title" x="54" y="34" width="1120" height="44" font="heading" size="30" color="ink" wrap="false">Agosto por BU: investimento, leads e eficiência</text>
-  <text id="aug-cut" x="54" y="82" width="1120" height="22" font="caption" size="13" color="muted" wrap="false">Comparação: 01–30/07 × 01–30/08 · D-1 fechado em 30/08 · valores em BRL</text>
+  <text id="aug-cut" x="54" y="82" width="1120" height="22" font="caption" size="13" color="muted" wrap="false">Comparação: 01–31/07 × 01–31/08 · agosto fechado em 31/08 · valores em BRL</text>
 
   <shape id="aug-med-bg" type="rect" x="54" y="118" width="572" height="332" fill="mist"/>
   <image id="aug-med-logo" src="https://private-us-east-1.manuscdn.com/sessionFile/rgGvj8Y3QTEv0iFZldHMVK/sandbox/slides_resource_i9etstqbu0ojv7addzu2o-b34775c9-e2b-prod-azure-central-us_1788139494929_na1fn_L2hvbWUvdWJ1bnR1L3dlYmRldi1zdGF0aWMtYXNzZXRzL21lZHN5c3RlbXMtbG9naW4tbG9nbw.png?x-oss-process=image/resize,w_1560,h_1560/format,webp&amp;Expires=1790812800&amp;Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvcmdHdmo4WTNRVEV2MGlGWmxkSE1WSy9zYW5kYm94L3NsaWRlc19yZXNvdXJjZV9pOWV0c3RxYnUwb2p2N2FkZHp1Mm8tYjM0Nzc1YzktZTJiLXByb2QtYXp1cmUtY2VudHJhbC11c18xNzg4MTM5NDk0OTI5X25hMWZuX0wyaHZiV1V2ZFdKMWJuUjFMM2RsWW1SbGRpMXpkR0YwYVdNdFlYTnpaWFJ6TDIxbFpITjVjM1JsYlhNdGJHOW5hVzR0Ykc5bmJ3LnBuZz94LW9zcy1wcm9jZXNzPWltYWdlL3Jlc2l6ZSx3XzE1NjAsaF8xNTYwL2Zvcm1hdCx3ZWJwIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkwODEyODAwfX19XX0_&amp;Key-Pair-Id=K2QY5QTL8JSY6C&amp;Signature=MEQCIGwvrPbleQuLcAWHejd1fs23t6WTgSzWcmyLc~yiDvnOAiAFblc1~xkjtcKhqCyal7PbIhKT7~Vp1VE3gEZb8PQQfw__" x="76" y="138" width="138" height="50" fit="contain"/>
-  <text id="aug-med-growth" x="386" y="146" width="212" height="34" font="heading" size="23" color="muted" align="right" wrap="false"><strong>+76,9% leads</strong></text>
+  <text id="aug-med-growth" x="386" y="146" width="212" height="34" font="heading" size="23" color="muted" align="right" wrap="false"><strong>+80,0% leads</strong></text>
   <text id="aug-med-spend-label" x="76" y="212" width="210" height="20" font="caption" size="12" color="muted" wrap="false">INVESTIMENTO GOOGLE + META</text>
-  <text id="aug-med-spend" x="76" y="238" width="270" height="38" font="heading" size="30" color="ink" wrap="false"><strong>R$ 48.372,21</strong></text>
-  <text id="aug-med-breakdown" x="76" y="282" width="300" height="22" font="caption" size="13" color="muted" wrap="false">Google R$ 9.235,22 · Meta R$ 39.136,99</text>
+  <text id="aug-med-spend" x="76" y="238" width="270" height="38" font="heading" size="30" color="ink" wrap="false"><strong>R$ 50.698,91</strong></text>
+  <text id="aug-med-breakdown" x="76" y="282" width="300" height="22" font="caption" size="13" color="muted" wrap="false">Google R$ 9.710,92 · Meta R$ 40.987,99</text>
   <shape id="aug-med-divider" type="line" x="76" y="324" width="522" height="0" stroke="hairline" stroke-width="1"/>
   <text id="aug-med-leads-label" x="76" y="344" width="140" height="20" font="caption" size="12" color="muted" wrap="false">LEADS RD</text>
-  <text id="aug-med-leads" x="76" y="370" width="140" height="34" font="heading" size="27" color="ink" wrap="false"><strong>1.019</strong></text>
+  <text id="aug-med-leads" x="76" y="370" width="140" height="34" font="heading" size="27" color="ink" wrap="false"><strong>1.053</strong></text>
   <text id="aug-med-mql-label" x="220" y="344" width="140" height="20" font="caption" size="12" color="muted" wrap="false">MQL</text>
-  <text id="aug-med-mql" x="220" y="370" width="140" height="34" font="heading" size="27" color="ink" wrap="false"><strong>162</strong></text>
+  <text id="aug-med-mql" x="220" y="370" width="140" height="34" font="heading" size="27" color="ink" wrap="false"><strong>447</strong></text>
   <text id="aug-med-conv-label" x="364" y="344" width="112" height="20" font="caption" size="12" color="muted" wrap="false">MQL → SQL</text>
-  <text id="aug-med-conv" x="364" y="370" width="112" height="34" font="heading" size="25" color="ink" wrap="false"><strong>9,26%</strong></text>
+  <text id="aug-med-conv" x="364" y="370" width="112" height="34" font="heading" size="25" color="ink" wrap="false"><strong>22,37%</strong></text>
   <text id="aug-med-cpl-label" x="488" y="344" width="110" height="20" font="caption" size="12" color="muted" align="right" wrap="false">CPL RD</text>
-  <text id="aug-med-cpl" x="458" y="370" width="140" height="34" font="heading" size="24" color="ink" align="right" wrap="false"><strong>R$ 47,47</strong></text>
-  <text id="aug-med-base" x="76" y="416" width="522" height="20" font="caption" size="12" color="muted" wrap="false">Julho: 576 leads RD · variação de +443 leads (+76,9%)</text>
+  <text id="aug-med-cpl" x="458" y="370" width="140" height="34" font="heading" size="24" color="ink" align="right" wrap="false"><strong>R$ 48,15</strong></text>
+  <text id="aug-med-base" x="76" y="416" width="522" height="20" font="caption" size="12" color="muted" wrap="false">Julho: 585 leads RD · variação de +468 leads (+80,0%)</text>
 
   <shape id="aug-beauty-bg" type="rect" x="646" y="118" width="580" height="332" fill="mist"/>
-  <image id="aug-beauty-logo" src="https://private-us-east-1.manuscdn.com/sessionFile/rgGvj8Y3QTEv0iFZldHMVK/sandbox/slides_resource_i9etstqbu0ojv7addzu2o-b34775c9-e2b-prod-azure-central-us_1788139494929_na1fn_L2hvbWUvdWJ1bnR1L3dlYmRldi1zdGF0aWMtYXNzZXRzL2JlYXV0eXN5c3RlbXMtbG9naW4tbG9nbw.png?x-oss-process=image/resize,w_1560,h_1560/format,webp&amp;Expires=1790812800&amp;Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvcmdHdmo4WTNRVEV2MGlGWmxkSE1WSy9zYW5kYm94L3NsaWRlc19yZXNvdXJjZV9pOWV0c3RxYnUwb2p2N2FkZHp1Mm8tYjM0Nzc1YzktZTJiLXByb2QtYXp1cmUtY2VudHJhbC11c18xNzg4MTM5NDk0OTI5X25hMWZuX0wyaHZiV1V2ZFdKMWJuUjFMM2RsWW1SbGRpMXpkR0YwYVdNdFlYTnpaWFJ6TDJKbFlYVjBlWE41YzNSbGJYTXRiRzluYVc0dGJHOW5idy5wbmc~eC1vc3MtcHJvY2Vzcz1pbWFnZS9yZXNpemUsd18xNTYwLGhfMTU2MC9mb3JtYXQsd2VicCIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc5MDgxMjgwMH19fV19&amp;Key-Pair-Id=K2QY5QTL8JSY6C&amp;Signature=MEUCIQDfSOt79cYI7gPJFwgepvZD0BOyX63fajNvDNRuo65HhgIgaOlegz-7Ed7dYFUK6Ny~VfpcrHkyuo~mgX8gQ0deGU0_" x="668" y="138" width="138" height="50" fit="contain"/>
-  <text id="aug-beauty-growth" x="1000" y="146" width="198" height="34" font="heading" size="23" color="muted" align="right" wrap="false"><strong>+35,1% leads</strong></text>
+  <image id="aug-beauty-logo" src="https://private-us-east-1.manuscdn.com/sessionFile/rgGvj8Y3QTEv0iFZldHMVK/sandbox/slides_resource_i9etstqbu0ojv7addzu2o-b34775c9-e2b-prod-azure-central-us_1788139494929_na1fn_L2hvbWUvdWJ1bnR1L3dlYmRldi1zdGF0aWMtYXNzZXRzL2JlYXV0eXN5c3RlbXMtbG9naW4tbG9nbw.png?x-oss-process=image/resize,w_1560,h_1560/format,webp&amp;Expires=1790812800&amp;Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvcmdHdmo4WTNRVEV2MGlGWmxkSE1WSy9zYW5kYm94L3NsaWRlc19yZXNvdXJjZV9pOWV0c3RxYnUwb2p2N2FkZHp1Mm8tYjM0Nzc1YzktZTJiLXByb2QtYXp1cmUtY2VudHJhbC11c18xNzg4MTM5NDk0OTI5X25hMWZuX0wyaHZiV1V2ZFdKMWJuUjFMM2RsWW1SbGRpMXpkR0YwYVdNdFlYTnpaWFJ6TDJKbFlYVjBlWE41YzNSbGJYTXRiRzluYVc0dGJHOW5idy5wbmc~eC1vc3MtcHJvY2Vzcy9pbWFnZS9yZXNpemUsd18xNTYwLGhfMTU2MC9mb3JtYXQsd2VicCIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc5MDgxMjgwMH19fV19&amp;Key-Pair-Id=K2QY5QTL8JSY6C&amp;Signature=MEUCIQDfSOt79cYI7gPJFwgepvZD0BOyX63fajNvDNRuo65HhgIgaOlegz-7Ed7dYFUK6Ny~VfpcrHkyuo~mgX8gQ0deGU0_" x="668" y="138" width="138" height="50" fit="contain"/>
+  <text id="aug-beauty-growth" x="1000" y="146" width="198" height="34" font="heading" size="23" color="muted" align="right" wrap="false"><strong>+40,1% leads</strong></text>
   <text id="aug-beauty-spend-label" x="668" y="212" width="220" height="20" font="caption" size="12" color="muted" wrap="false">INVESTIMENTO GOOGLE + META</text>
-  <text id="aug-beauty-spend" x="668" y="238" width="270" height="38" font="heading" size="30" color="ink" wrap="false"><strong>R$ 42.211,49</strong></text>
-  <text id="aug-beauty-breakdown" x="668" y="282" width="310" height="22" font="caption" size="13" color="muted" wrap="false">Google R$ 8.454,26 · Meta R$ 33.757,23</text>
+  <text id="aug-beauty-spend" x="668" y="238" width="270" height="38" font="heading" size="30" color="ink" wrap="false"><strong>R$ 44.143,38</strong></text>
+  <text id="aug-beauty-breakdown" x="668" y="282" width="310" height="22" font="caption" size="13" color="muted" wrap="false">Google R$ 8.826,17 · Meta R$ 35.317,21</text>
   <shape id="aug-beauty-divider" type="line" x="668" y="324" width="530" height="0" stroke="hairline" stroke-width="1"/>
   <text id="aug-beauty-leads-label" x="668" y="344" width="140" height="20" font="caption" size="12" color="muted" wrap="false">LEADS RD</text>
-  <text id="aug-beauty-leads" x="668" y="370" width="140" height="34" font="heading" size="27" color="ink" wrap="false"><strong>854</strong></text>
+  <text id="aug-beauty-leads" x="668" y="370" width="140" height="34" font="heading" size="27" color="ink" wrap="false"><strong>898</strong></text>
   <text id="aug-beauty-mql-label" x="812" y="344" width="140" height="20" font="caption" size="12" color="muted" wrap="false">MQL</text>
-  <text id="aug-beauty-mql" x="812" y="370" width="140" height="34" font="heading" size="27" color="ink" wrap="false"><strong>636</strong></text>
+  <text id="aug-beauty-mql" x="812" y="370" width="140" height="34" font="heading" size="27" color="ink" wrap="false"><strong>743</strong></text>
   <text id="aug-beauty-conv-label" x="956" y="344" width="112" height="20" font="caption" size="12" color="muted" wrap="false">MQL → SQL</text>
-  <text id="aug-beauty-conv" x="956" y="370" width="112" height="34" font="heading" size="25" color="ink" wrap="false"><strong>6,60%</strong></text>
+  <text id="aug-beauty-conv" x="956" y="370" width="112" height="34" font="heading" size="25" color="ink" wrap="false"><strong>8,08%</strong></text>
   <text id="aug-beauty-cpl-label" x="1080" y="344" width="118" height="20" font="caption" size="12" color="muted" align="right" wrap="false">CPL RD</text>
-  <text id="aug-beauty-cpl" x="1070" y="370" width="128" height="34" font="heading" size="25" color="ink" align="right" wrap="false"><strong>R$ 49,43</strong></text>
-  <text id="aug-beauty-base" x="668" y="416" width="530" height="20" font="caption" size="12" color="muted" wrap="false">Julho: 632 leads RD · variação de +222 leads (+35,1%)</text>
+  <text id="aug-beauty-cpl" x="1070" y="370" width="128" height="34" font="heading" size="25" color="ink" align="right" wrap="false"><strong>R$ 49,16</strong></text>
+  <text id="aug-beauty-base" x="668" y="416" width="530" height="20" font="caption" size="12" color="muted" wrap="false">Julho: 641 leads RD · variação de +257 leads (+40,1%)</text>
 
   <shape id="aug-total-bg" type="rect" x="54" y="472" width="1172" height="92" fill="brand"/>
   <text id="aug-total-title" x="76" y="490" width="150" height="22" font="caption" size="12" color="paper" wrap="false">CONSOLIDADO</text>
-  <text id="aug-total-spend" x="76" y="520" width="230" height="30" font="body" size="19" color="paper" wrap="false"><strong>R$ 90.583,70</strong> mídia</text>
-  <text id="aug-total-leads" x="330" y="520" width="150" height="30" font="body" size="19" color="paper" wrap="false"><strong>1.873</strong> leads RD</text>
-  <text id="aug-total-mql" x="500" y="520" width="150" height="30" font="body" size="19" color="paper" wrap="false"><strong>800</strong> MQL</text>
-  <text id="aug-total-conv" x="676" y="520" width="200" height="30" font="body" size="19" color="paper" wrap="false"><strong>7,13%</strong> MQL→SQL</text>
-  <text id="aug-total-growth" x="900" y="520" width="160" height="30" font="body" size="19" color="paper" wrap="false"><strong>+55,0%</strong> leads</text>
-  <text id="aug-total-cpl" x="1060" y="520" width="140" height="30" font="body" size="19" color="paper" align="right" wrap="false"><strong>R$ 48,36</strong> CPL</text>
+  <text id="aug-total-spend" x="76" y="520" width="230" height="30" font="body" size="19" color="paper" wrap="false"><strong>R$ 94.842,28</strong> mídia</text>
+  <text id="aug-total-leads" x="330" y="520" width="150" height="30" font="body" size="19" color="paper" wrap="false"><strong>1.951</strong> leads RD</text>
+  <text id="aug-total-mql" x="500" y="520" width="150" height="30" font="body" size="19" color="paper" wrap="false"><strong>1.190</strong> MQL</text>
+  <text id="aug-total-conv" x="676" y="520" width="200" height="30" font="body" size="19" color="paper" wrap="false"><strong>13,45%</strong> MQL→SQL</text>
+  <text id="aug-total-growth" x="900" y="520" width="160" height="30" font="body" size="19" color="paper" wrap="false"><strong>+59,1%</strong> leads</text>
+  <text id="aug-total-cpl" x="1060" y="520" width="140" height="30" font="body" size="19" color="paper" align="right" wrap="false"><strong>R$ 48,61</strong> CPL</text>
 
   <shape id="aug-unallocated-bg" type="rect" x="54" y="588" width="1172" height="58" fill="mist"/>
-  <text id="aug-unallocated" x="74" y="600" width="1132" height="38" font="body" size="14" color="ink" autofit="shrink"><strong>Programática B2B:</strong> R$ 54.764,49 até 30/08, apresentada separadamente. <strong>Keep It Real:</strong> R$ 2.951,76 no Meta MedSystems e já incluído no total da BU.</text>
+  <text id="aug-unallocated" x="74" y="600" width="1132" height="38" font="body" size="14" color="ink" autofit="shrink"><strong>Programática B2B:</strong> R$ 58.189,48 no fechamento; Push disponível até 29/08. <strong>Keep It Real:</strong> R$ 3.249,43 no Meta MedSystems e já incluído no total da BU.</text>
 
-  <text id="aug-source" x="54" y="674" width="1090" height="20" font="caption" size="11" color="muted" wrap="false">Leads: RD (contato único com UTM paga ou página/formulário comprovadamente usado por mídia) · MQL/SQL: Bitrix24 · Investimento: Windsor.ai · CPL = Google + Meta ÷ leads RD</text>
+  <text id="aug-source" x="54" y="674" width="1090" height="20" font="caption" size="11" color="muted" wrap="false">Leads: RD pago até 31/08 · MQL/SQL: etapa atual no Bitrix24 da coorte de agosto · Investimento: Windsor.ai · CPL = Google + Meta ÷ leads RD</text>
   <text id="aug-slide-num" x="1170" y="674" width="56" height="20" font="caption" size="11" color="muted" align="right" wrap="false">2 / 4</text>
 </slide>

@@ -2,35 +2,35 @@
   <background color="paper"/>
   <shape id="prog-top-rule" type="rect" x="0" y="0" width="1280" height="3" fill="brand"/>
   <text id="prog-title" x="54" y="34" width="1120" height="44" font="heading" size="30" color="ink" wrap="false">Programática: camadas complementares de demanda</text>
-  <text id="prog-cut" x="54" y="82" width="1120" height="22" font="caption" size="13" color="muted" wrap="false">Publya e Push até 30/08 · Keep It Real via Windsor.ai até 30/08 · dia 30 parcial</text>
+  <text id="prog-cut" x="54" y="82" width="1120" height="22" font="caption" size="13" color="muted" wrap="false">Publya e Windsor.ai até 31/08 · Push até 29/08, última data disponível</text>
 
   <shape id="prog-conv-card" type="rect" x="54" y="122" width="736" height="94" fill="mist"/>
   <shape id="prog-conv-accent" type="rect" x="54" y="122" width="6" height="94" fill="brand"/>
   <icon id="prog-conv-icon" name="target" x="76" y="151" width="34" height="34" color="brand"/>
   <text id="prog-conv-title" x="126" y="136" width="250" height="24" font="heading" size="18" color="ink" wrap="false">Conversão</text>
-  <text id="prog-conv-spend" x="126" y="166" width="260" height="30" font="heading" size="24" color="brand" wrap="false"><strong>R$ 40.487,63</strong></text>
-  <text id="prog-conv-detail" x="400" y="138" width="362" height="60" font="body" size="15" color="ink" autofit="shrink"><p><strong>PMAX:</strong> 5 conversões e 12.340 cliques</p><p><strong>Meta B2B:</strong> 82 leads e 1.573 cliques</p></text>
+  <text id="prog-conv-spend" x="126" y="166" width="260" height="30" font="heading" size="24" color="brand" wrap="false"><strong>R$ 40.829,54</strong></text>
+  <text id="prog-conv-detail" x="400" y="138" width="362" height="60" font="body" size="15" color="ink" autofit="shrink"><p><strong>PMAX:</strong> 5 conversões e 12.354 cliques</p><p><strong>Meta B2B:</strong> 82 leads e 1.590 cliques</p></text>
 
   <shape id="prog-geo-card" type="rect" x="54" y="230" width="736" height="94" fill="mist"/>
   <shape id="prog-geo-accent" type="rect" x="54" y="230" width="6" height="94" fill="accent"/>
   <icon id="prog-geo-icon" name="map-pin" x="76" y="259" width="34" height="34" color="accent"/>
   <text id="prog-geo-title" x="126" y="244" width="250" height="24" font="heading" size="18" color="ink" wrap="false">Geolocalização e alcance</text>
-  <text id="prog-geo-spend" x="126" y="274" width="260" height="30" font="heading" size="24" color="accent" wrap="false"><strong>R$ 10.665,59</strong></text>
+  <text id="prog-geo-spend" x="126" y="274" width="260" height="30" font="heading" size="24" color="accent" wrap="false"><strong>R$ 10.665,58</strong></text>
   <text id="prog-geo-detail" x="400" y="246" width="362" height="60" font="body" size="15" color="ink" autofit="shrink"><p><strong>669.098</strong> impressões qualificadas</p><p><strong>79,67%</strong> de viewability · presença nos eventos</p></text>
 
   <shape id="prog-push-card" type="rect" x="54" y="338" width="736" height="94" fill="mist"/>
   <shape id="prog-push-accent" type="rect" x="54" y="338" width="6" height="94" fill="brand"/>
   <icon id="prog-push-icon" name="send" x="76" y="367" width="34" height="34" color="brand"/>
   <text id="prog-push-title" x="126" y="352" width="250" height="24" font="heading" size="18" color="ink" wrap="false">Push e ativação</text>
-  <text id="prog-push-spend" x="126" y="382" width="260" height="30" font="heading" size="24" color="brand" wrap="false"><strong>R$ 3.611,28</strong></text>
-  <text id="prog-push-detail" x="400" y="354" width="362" height="60" font="body" size="15" color="ink" autofit="shrink"><p><strong>3.651</strong> disparos · <strong>15</strong> cliques</p><p>Proximidade com Quanta Academy e BOT</p></text>
+  <text id="prog-push-spend" x="126" y="382" width="260" height="30" font="heading" size="24" color="brand" wrap="false"><strong>R$ 6.694,36</strong></text>
+  <text id="prog-push-detail" x="400" y="354" width="362" height="60" font="body" size="15" color="ink" autofit="shrink"><p><strong>6.768</strong> disparos · <strong>28</strong> cliques</p><p>CTR 0,41% · Quanta Academy e BOT</p></text>
 
   <shape id="prog-awareness-card" type="rect" x="54" y="446" width="736" height="94" fill="mist"/>
   <shape id="prog-awareness-accent" type="rect" x="54" y="446" width="6" height="94" fill="accent"/>
   <icon id="prog-awareness-icon" name="megaphone" x="76" y="475" width="34" height="34" color="accent"/>
   <text id="prog-awareness-title" x="126" y="460" width="250" height="24" font="heading" size="18" color="ink" wrap="false">Awareness — Keep It Real</text>
-  <text id="prog-awareness-spend" x="126" y="490" width="260" height="30" font="heading" size="24" color="accent" wrap="false"><strong>R$ 2.951,76</strong></text>
-  <text id="prog-awareness-detail" x="400" y="462" width="362" height="60" font="body" size="15" color="ink" autofit="shrink"><p><strong>1,37 mi</strong> impressões · <strong>1.663</strong> cliques</p><p>Reconhecimento 71,5% · engajamento 28,5%</p></text>
+  <text id="prog-awareness-spend" x="126" y="490" width="260" height="30" font="heading" size="24" color="accent" wrap="false"><strong>R$ 3.249,43</strong></text>
+  <text id="prog-awareness-detail" x="400" y="462" width="362" height="60" font="body" size="15" color="ink" autofit="shrink"><p><strong>1,44 mi</strong> impressões · <strong>1.778</strong> cliques</p><p>Reconhecimento 68,1% · engajamento 31,9%</p></text>
 
   <shape id="prog-right-bg" type="rect" x="820" y="122" width="406" height="418" fill="mist"/>
   <text id="prog-right-title" x="844" y="142" width="358" height="28" font="heading" size="20" color="ink" wrap="false">Por que as camadas importam</text>
@@ -52,6 +52,6 @@
   <shape id="prog-message-bg" type="rect" x="54" y="570" width="1172" height="76" fill="brand"/>
   <text id="prog-message" x="82" y="588" width="1116" height="42" font="heading" size="20" color="paper" align="center" anchor="middle" autofit="shrink">A estratégia combina <strong>presença + contexto + captura + ativação</strong>; avaliar somente o último clique subestima o papel das camadas superiores.</text>
 
-  <text id="prog-source" x="54" y="674" width="1090" height="20" font="caption" size="11" color="muted" wrap="false">Fontes: Publya e Windsor.ai · snapshot Display duplicado excluído · Keep It Real já incluído no Meta MedSystems do slide 2</text>
+  <text id="prog-source" x="54" y="674" width="1090" height="20" font="caption" size="11" color="muted" wrap="false">Fontes: Publya até 31/08; Push até 29/08; Windsor.ai até 31/08 · snapshot Display duplicado excluído · Keep It Real já incluído no slide 2</text>
   <text id="prog-slide-num" x="1170" y="674" width="56" height="20" font="caption" size="11" color="muted" align="right" wrap="false">3 / 4</text>
 </slide>

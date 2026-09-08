@@ -609,3 +609,8 @@
 - [x] Calcular projeção de leads até o fim de setembro com premissas explícitas e dados reais até o último D-1.
 - [x] Produzir um PDF no formato Report Lu com campanhas, verba, resultados e projeção por BU.
 - [x] Validar visualmente o PDF, documentar metodologia, salvar a versão e entregar o arquivo.
+
+- [x] Atualizar o Report Lu com os leads RD informados: 179 MedSystems e 212 BeautySystems, mantendo a definição visível no material.
+- [x] Validar a cobertura e a verba de programática disponível para o período, sem usar snapshots sobrepostos ou estimar gasto ausente.
+- [x] Calcular CPL por BU com investimento Google + Meta e leads RD informados, deixando premissas e limitações explícitas.
+- [x] Atualizar, validar, exportar e entregar o PDF revisado no formato Report Lu.

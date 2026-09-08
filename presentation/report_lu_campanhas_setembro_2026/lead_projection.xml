@@ -1,38 +1,38 @@
 <slide id="lead_projection">
   <background color="paper"/>
   <shape id="projection-top-rule" type="rect" x="0" y="0" width="1280" height="3" fill="brand"/>
-  <text id="projection-title" x="54" y="34" width="1120" height="44" font="heading" size="30" color="ink" wrap="false">Ritmo atual projeta 321 contatos únicos pagos</text>
-  <text id="projection-cut" x="54" y="82" width="1120" height="22" font="caption" size="13" color="muted" wrap="false">Projeção linear: realizado de 01–07/09 aplicado a 30 dias de calendário · não é meta nem garantia</text>
+  <text id="projection-title" x="54" y="34" width="1120" height="44" font="heading" size="30" color="ink" wrap="false">Ritmo RD projeta 1.676 leads para setembro</text>
+  <text id="projection-cut" x="54" y="82" width="1120" height="22" font="caption" size="13" color="muted" wrap="false">Projeção linear: leads RD informados de 01–07/09 aplicados a 30 dias · não é meta nem garantia</text>
 
   <shape id="projection-metric-panel" type="rect" x="54" y="118" width="404" height="392" fill="surface"/>
-  <text id="projection-panel-label" x="78" y="144" width="280" height="20" font="caption" size="12" color="muted" wrap="false">KPI OFICIAL · CONTATOS ÚNICOS CONCILIADOS</text>
-  <text id="projection-panel-sub" x="78" y="170" width="300" height="20" font="caption" size="13" color="muted" wrap="false">RD com evidência paga + Bitrix24</text>
+  <text id="projection-panel-label" x="78" y="144" width="280" height="20" font="caption" size="12" color="muted" wrap="false">LEADS RD · VISÃO DO DASHBOARD</text>
+  <text id="projection-panel-sub" x="78" y="170" width="300" height="20" font="caption" size="13" color="muted" wrap="false">Valores informados pela gestão em 08/09</text>
   <shape id="projection-med-rule" type="rect" x="78" y="216" width="78" height="5" fill="brand"/>
   <text id="projection-med-label" x="78" y="236" width="210" height="24" font="body" size="18" color="ink" wrap="false"><strong>MedSystems</strong></text>
-  <text id="projection-med-value" x="78" y="266" width="240" height="52" font="display" size="46" color="brand" wrap="false"><strong>150</strong></text>
-  <text id="projection-med-detail" x="78" y="322" width="300" height="20" font="caption" size="13" color="muted" wrap="false">35 realizados até 07/09 · projeção 30/09</text>
+  <text id="projection-med-value" x="78" y="266" width="240" height="52" font="display" size="46" color="brand" wrap="false"><strong>767</strong></text>
+  <text id="projection-med-detail" x="78" y="322" width="300" height="20" font="caption" size="13" color="muted" wrap="false">179 realizados até 07/09 · projeção 30/09</text>
   <shape id="projection-beauty-rule" type="rect" x="78" y="370" width="78" height="5" fill="accent"/>
   <text id="projection-beauty-label" x="78" y="390" width="220" height="24" font="body" size="18" color="ink" wrap="false"><strong>BeautySystems</strong></text>
-  <text id="projection-beauty-value" x="78" y="420" width="240" height="52" font="display" size="46" color="accent" wrap="false"><strong>171</strong></text>
-  <text id="projection-beauty-detail" x="78" y="476" width="300" height="20" font="caption" size="13" color="muted" wrap="false">40 realizados até 07/09 · projeção 30/09</text>
+  <text id="projection-beauty-value" x="78" y="420" width="240" height="52" font="display" size="46" color="accent" wrap="false"><strong>909</strong></text>
+  <text id="projection-beauty-detail" x="78" y="476" width="300" height="20" font="caption" size="13" color="muted" wrap="false">212 realizados até 07/09 · projeção 30/09</text>
 
   <shape id="projection-chart-panel" type="rect" x="486" y="118" width="740" height="392" fill="surface"/>
-  <text id="projection-chart-title" x="514" y="142" width="580" height="28" font="body" size="19" color="ink" wrap="false"><strong>Contatos únicos: realizado e projeção linear</strong></text>
+  <text id="projection-chart-title" x="514" y="142" width="580" height="28" font="body" size="19" color="ink" wrap="false"><strong>Leads RD: realizado e projeção linear</strong></text>
   <text id="projection-chart-sub" x="514" y="174" width="620" height="20" font="caption" size="13" color="muted" wrap="false">A projeção preserva o ritmo médio diário do período já observado.</text>
-  <chart id="projection-chart" type="line" x="514" y="210" width="666" height="250" font="caption" text-size="12" text-color="muted" categories="07/09,30/09" color="brand,accent" legend="bottom" data-labels="true" x-axis="true" y-axis="true" y-min="0" y-max="200" gridlines="h" gridline-color="hairline" marker="true" marker-size="7" line-width="3">
-    <series name="MedSystems" values="35,150" label-expr="{value:.0f}"/>
-    <series name="BeautySystems" values="40,171" label-expr="{value:.0f}"/>
+  <chart id="projection-chart" type="line" x="514" y="210" width="666" height="250" font="caption" text-size="12" text-color="muted" categories="07/09,30/09" color="brand,accent" legend="bottom" data-labels="true" x-axis="true" y-axis="true" y-min="0" y-max="1000" gridlines="h" gridline-color="hairline" marker="true" marker-size="7" line-width="3">
+    <series name="MedSystems" values="179,767" label-expr="{value:.0f}"/>
+    <series name="BeautySystems" values="212,909" label-expr="{value:.0f}"/>
   </chart>
 
   <shape id="projection-synthesis" type="rect" x="54" y="534" width="1172" height="100" fill="brand"/>
   <text id="projection-spend-label" x="76" y="552" width="260" height="18" font="caption" size="12" color="paper" wrap="false">VERBA PROJETADA GOOGLE + META</text>
   <text id="projection-spend-total" x="76" y="580" width="300" height="32" font="heading" size="25" color="paper" wrap="false"><strong>R$ 113.421,72</strong></text>
   <shape id="projection-synthesis-divider-one" type="line" x="410" y="552" width="0" height="58" stroke="#FFFFFF80" stroke-width="1"/>
-  <text id="projection-platform-label" x="442" y="552" width="280" height="18" font="caption" size="12" color="paper" wrap="false">AÇÕES DE LEAD/CONVERSÃO DA PLATAFORMA</text>
-  <text id="projection-platform-total" x="442" y="580" width="250" height="32" font="heading" size="25" color="paper" wrap="false"><strong>1.243</strong></text>
+  <text id="projection-platform-label" x="442" y="552" width="280" height="18" font="caption" size="12" color="paper" wrap="false">CPL GOOGLE + META</text>
+  <text id="projection-platform-total" x="442" y="580" width="280" height="32" font="heading" size="25" color="paper" wrap="false"><strong>R$ 67,68</strong></text>
   <shape id="projection-synthesis-divider-two" type="line" x="756" y="552" width="0" height="58" stroke="#FFFFFF80" stroke-width="1"/>
-  <text id="projection-assumption" x="788" y="552" width="390" height="58" font="body" size="16" color="paper" line-height="1.25"><p><strong>Premissa:</strong> campanhas, verba, CPL e critérios de atribuição mantidos.</p></text>
+  <text id="projection-assumption" x="788" y="552" width="390" height="58" font="body" size="16" color="paper" line-height="1.25"><p><strong>Programática:</strong> 2 campanhas ativas, 24 conversões; verba N/D e fora do CPL.</p></text>
 
-  <text id="projection-source" x="54" y="674" width="1090" height="20" font="caption" size="11" color="muted" wrap="false">Fonte: Windsor.ai, RD Station e Bitrix24 · cálculo: volume MTD ÷ 7 dias × 30 dias · projeções arredondadas para inteiros</text>
+  <text id="projection-source" x="54" y="674" width="1090" height="20" font="caption" size="11" color="muted" wrap="false">Fontes: leads RD informados, Windsor.ai e Publya · cálculo: volume MTD ÷ 7 dias × 30 · projeções arredondadas</text>
   <text id="projection-page" x="1170" y="674" width="56" height="20" font="caption" size="11" color="muted" align="right" wrap="false">3 / 4</text>
 </slide>

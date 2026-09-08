@@ -1,7 +1,7 @@
 <slide id="campaigns_spend">
   <background color="paper"/>
   <shape id="campaigns-top-rule" type="rect" x="0" y="0" width="1280" height="3" fill="brand"/>
-  <text id="campaigns-title" x="54" y="34" width="1120" height="44" font="heading" size="30" color="ink" wrap="false">Todas as campanhas têm entrega no período</text>
+  <text id="campaigns-title" x="54" y="34" width="1120" height="44" font="heading" size="30" color="ink" wrap="false">Campanhas em entrega, verba e CPL por BU</text>
   <text id="campaigns-cut" x="54" y="82" width="1120" height="22" font="caption" size="13" color="muted" wrap="false">Setembro em andamento · 01–07/09/2026 · corte D-1 · valores em BRL</text>
 
   <shape id="med-card" type="rect" x="54" y="118" width="572" height="334" fill="surface"/>
@@ -13,10 +13,10 @@
   <shape id="med-divider" type="line" x="76" y="316" width="522" height="0" stroke="hairline" stroke-width="1"/>
   <text id="med-actions-label" x="76" y="334" width="145" height="20" font="caption" size="12" color="muted" wrap="false">AÇÕES PLATAFORMA</text>
   <text id="med-actions" x="76" y="360" width="130" height="32" font="heading" size="26" color="ink" wrap="false"><strong>161</strong></text>
-  <text id="med-contacts-label" x="234" y="334" width="170" height="20" font="caption" size="12" color="muted" wrap="false">CONTATOS ÚNICOS</text>
-  <text id="med-contacts" x="234" y="360" width="110" height="32" font="heading" size="26" color="ink" wrap="false"><strong>35</strong></text>
-  <text id="med-d1-label" x="410" y="334" width="188" height="20" font="caption" size="12" color="muted" align="right" wrap="false">VERBA NO D-1</text>
-  <text id="med-d1-spend" x="410" y="360" width="188" height="32" font="heading" size="24" color="ink" align="right" wrap="false"><strong>R$ 2.001,59</strong></text>
+  <text id="med-contacts-label" x="234" y="334" width="170" height="20" font="caption" size="12" color="muted" wrap="false">LEADS RD</text>
+  <text id="med-contacts" x="234" y="360" width="110" height="32" font="heading" size="26" color="ink" wrap="false"><strong>179</strong></text>
+  <text id="med-d1-label" x="410" y="334" width="188" height="20" font="caption" size="12" color="muted" align="right" wrap="false">CPL GOOGLE + META</text>
+  <text id="med-d1-spend" x="410" y="360" width="188" height="32" font="heading" size="24" color="ink" align="right" wrap="false"><strong>R$ 81,54</strong></text>
   <text id="med-highlight" x="76" y="412" width="520" height="22" font="caption" size="12" color="muted" wrap="false">Destaques: MPT Meta R$ 2.753,91 / 44 ações · Volnewmer Search 28 ações</text>
 
   <shape id="beauty-card" type="rect" x="646" y="118" width="580" height="334" fill="surface"/>
@@ -28,19 +28,19 @@
   <shape id="beauty-divider" type="line" x="668" y="316" width="530" height="0" stroke="hairline" stroke-width="1"/>
   <text id="beauty-actions-label" x="668" y="334" width="145" height="20" font="caption" size="12" color="muted" wrap="false">AÇÕES PLATAFORMA</text>
   <text id="beauty-actions" x="668" y="360" width="130" height="32" font="heading" size="26" color="ink" wrap="false"><strong>129</strong></text>
-  <text id="beauty-contacts-label" x="826" y="334" width="170" height="20" font="caption" size="12" color="muted" wrap="false">CONTATOS ÚNICOS</text>
-  <text id="beauty-contacts" x="826" y="360" width="110" height="32" font="heading" size="26" color="ink" wrap="false"><strong>40</strong></text>
-  <text id="beauty-d1-label" x="1010" y="334" width="188" height="20" font="caption" size="12" color="muted" align="right" wrap="false">VERBA NO D-1</text>
-  <text id="beauty-d1-spend" x="1010" y="360" width="188" height="32" font="heading" size="24" color="ink" align="right" wrap="false"><strong>R$ 1.787,82</strong></text>
+  <text id="beauty-contacts-label" x="826" y="334" width="170" height="20" font="caption" size="12" color="muted" wrap="false">LEADS RD</text>
+  <text id="beauty-contacts" x="826" y="360" width="110" height="32" font="heading" size="26" color="ink" wrap="false"><strong>212</strong></text>
+  <text id="beauty-d1-label" x="1010" y="334" width="188" height="20" font="caption" size="12" color="muted" align="right" wrap="false">CPL GOOGLE + META</text>
+  <text id="beauty-d1-spend" x="1010" y="360" width="188" height="32" font="heading" size="24" color="ink" align="right" wrap="false"><strong>R$ 55,98</strong></text>
   <text id="beauty-highlight" x="668" y="412" width="530" height="22" font="caption" size="12" color="muted" wrap="false">Destaques: MPT Lead Ads R$ 2.307,98 / 40 ações · Vectra Meta 25 ações</text>
 
   <shape id="campaigns-synthesis" type="rect" x="54" y="474" width="1172" height="142" fill="brand"/>
   <text id="campaigns-synthesis-label" x="76" y="494" width="180" height="18" font="caption" size="12" color="paper" wrap="false">SÍNTESE DE ENTREGA</text>
   <text id="campaigns-synthesis-main" x="76" y="524" width="630" height="34" font="heading" size="25" color="paper" wrap="false"><strong>32 campanhas com investimento no período e no D-1</strong></text>
-  <text id="campaigns-synthesis-sub" x="76" y="568" width="900" height="22" font="body" size="16" color="paper" wrap="false">R$ 26.465,07 investidos · 290 ações de plataforma · 75 contatos únicos pagos conciliados</text>
+  <text id="campaigns-synthesis-sub" x="76" y="568" width="900" height="22" font="body" size="16" color="paper" wrap="false">R$ 26.465,07 investidos · 391 leads RD · CPL consolidado de R$ 67,68</text>
   <shape id="campaigns-synthesis-divider" type="line" x="890" y="496" width="0" height="86" stroke="#FFFFFF80" stroke-width="1"/>
-  <text id="campaigns-synthesis-side" x="920" y="514" width="270" height="60" font="body" size="16" color="paper" align="right" line-height="1.25"><p><strong>Leitura correta:</strong></p><p>ações de plataforma ≠ contatos únicos</p></text>
+  <text id="campaigns-synthesis-side" x="920" y="514" width="270" height="60" font="body" size="16" color="paper" align="right" line-height="1.25"><p><strong>Programática:</strong></p><p>2 campanhas ativas · verba N/D</p></text>
 
-  <text id="campaigns-source" x="54" y="674" width="1090" height="20" font="caption" size="11" color="muted" wrap="false">Fonte: Windsor.ai · status = campanha com investimento observado em 01–07/09 e no D-1 · contatos únicos: RD Station + Bitrix24</text>
+  <text id="campaigns-source" x="54" y="674" width="1090" height="20" font="caption" size="11" color="muted" wrap="false">Fontes: Windsor.ai e dashboard RD informado · CPL = verba Google + Meta ÷ leads RD · programática: Publya, custo N/D</text>
   <text id="campaigns-page" x="1170" y="674" width="56" height="20" font="caption" size="11" color="muted" align="right" wrap="false">2 / 4</text>
 </slide>

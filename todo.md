@@ -584,3 +584,9 @@
 - [x] Persistir o snapshot de 06/09 e recalcular o acumulado sem somar contatos repetidos: 44 contatos pagos D-1 e 75 contatos pagos MTD.
 - [x] Validar leads sem marca em 06/09 e no acumulado de setembro; ambos ficaram em zero.
 - [x] Preparar resumo diário e mensal sem PII, incluindo a execução prematura do callback das 09h como exceção operacional.
+
+- [x] Auditar a execução automática e a cobertura de RD Station, Bitrix24, Google Ads e Meta Ads para o corte D-1 de 07/09/2026.
+- [x] Atualizar somente as fontes incompletas, preservando upsert, quatro contas oficiais e granularidade de campanha.
+- [x] Persistir o snapshot `bitrix_unique_contact_v2` de 07/09 e recalcular o acumulado de setembro sem somar snapshots diários.
+- [x] Validar leads sem marca no D-1 e no acumulado mensal, mantendo pipeline 20889/DSB como mapeamento pendente; ambos ficaram em zero.
+- [x] Executar testes, publicar e entregar o resumo diário sem PII, com investimento por BU e exceções de cobertura; 31 testes, TypeScript e build aprovados.

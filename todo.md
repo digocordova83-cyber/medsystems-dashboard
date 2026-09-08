@@ -594,3 +594,8 @@
 - [x] Revalidar a cobertura de RD Station, Bitrix24, Google Ads, Meta Ads e snapshot no corte D-1 de 07/09/2026.
 - [x] Atualizar somente eventuais lacunas, preservando upsert e impedindo duplicação de campanhas, contatos e snapshots; nenhuma nova carga foi necessária.
 - [x] Confirmar leads do dia anterior, investimento por BU, leads sem marca e exceções; publicar e entregar o resumo diário.
+
+- [x] Analisar a capa real `cover.xml`, o outline e os demais slides do Report Executivo para preservar o sistema visual existente.
+- [x] Atualizar a capa em uma única reescrita completa para comunicar agosto fechado, sem alterar estrutura ou identidade de marca.
+- [x] Registrar o modelo visual e editorial como `Report Lu` na memória compartilhada do projeto para reutilização futura.
+- [x] Validar a apresentação completa e reapresentar todos os quatro slides na ordem original.

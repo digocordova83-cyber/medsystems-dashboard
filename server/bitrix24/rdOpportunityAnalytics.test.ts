@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { createHmac } from "node:crypto";
-import { buildRdOpportunityManagerDashboard, rdOpportunityCandidateRows, validateBusinessDateRange } from "./rdOpportunityAnalytics";
+import { buildRdOpportunityManagerDashboard, mergePaidMediaReferenceIdentities, rdOpportunityCandidateRows, validateBusinessDateRange } from "./rdOpportunityAnalytics";
 
 const filters = {
   pipeline: "all", responsible: "all", source: "all", stage: "all", position: "all", product: "all",
@@ -113,6 +113,20 @@ describe("buildRdOpportunityManagerDashboard", () => {
       identitySecret: secret,
     });
     expect(candidates.map(candidate => candidate.bitrixId)).toEqual([81, 82, 83]);
+  });
+
+  it("mescla referências históricas e evidência RD dinâmica sem ocultar identidades do período", () => {
+    const historical = [{ accountKey: "medsystems" as const, identityHash: "historico", rdContactUuid: "rd-historico", convertedAt: new Date("2026-09-01T12:00:00-03:00") }];
+    const dynamic = [
+      { accountKey: "medsystems" as const, identityHash: "historico", rdContactUuid: "rd-historico", convertedAt: new Date("2026-09-01T14:00:00-03:00") },
+      { accountKey: "beautysystems" as const, identityHash: "dinamico", rdContactUuid: "rd-dinamico", convertedAt: new Date("2026-09-07T12:00:00-03:00") },
+    ];
+    const merged = mergePaidMediaReferenceIdentities(historical, dynamic);
+    expect(merged).toHaveLength(2);
+    expect(merged).toEqual(expect.arrayContaining([
+      expect.objectContaining({ accountKey: "medsystems", identityHash: "historico", convertedAt: new Date("2026-09-01T17:00:00.000Z") }),
+      expect.objectContaining({ accountKey: "beautysystems", identityHash: "dinamico" }),
+    ]));
   });
 
   it("valida o intervalo configurável no fuso de São Paulo", () => {

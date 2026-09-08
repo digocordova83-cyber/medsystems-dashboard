@@ -54,6 +54,15 @@ export type RdOpportunityReferenceIdentity = {
 type CountRow = { label: string; count: number };
 type OptionRow = { value: string; label: string; count: number };
 
+export function mergePaidMediaReferenceIdentities(
+  historical: RdOpportunityReferenceIdentity[],
+  dynamic: RdOpportunityReferenceIdentity[],
+) {
+  return Array.from(new Map(
+    [...historical, ...dynamic].map(reference => [`${reference.accountKey}:${reference.identityHash}`, reference]),
+  ).values());
+}
+
 function cleanText(value: unknown, fallback = "Não identificado") {
   const text = String(value ?? "").replace(/\s+/g, " ").trim();
   if (!text || ["undefined", "null", "unknown", "n/a"].includes(text.toLowerCase())) return fallback;
@@ -456,9 +465,10 @@ async function loadRdOpportunityDataset(input: {
   const rdContacts = rdContactUuids.length ? await db.select({ accountKey: rdStationContacts.accountKey, contactUuid: rdStationContacts.contactUuid, name: rdStationContacts.name, email: rdStationContacts.email, phone: rdStationContacts.phone })
     .from(rdStationContacts).where(inArray(rdStationContacts.contactUuid, rdContactUuids)) : [];
   const dynamicReferences = buildPaidMediaReferenceIdentities({ events: rdEvents, contacts: rdContacts, identitySecret: process.env.JWT_SECRET ?? "" });
-  const periodReferences = historicalReferenceRows.length ? historicalReferenceRows : dynamicReferences;
-  const referenceRows = Array.from(new Map(periodReferences
-    .map(reference => [`${reference.accountKey}:${reference.identityHash}`, reference])).values());
+  const referenceRows = mergePaidMediaReferenceIdentities(
+    historicalReferenceRows as RdOpportunityReferenceIdentity[],
+    dynamicReferences,
+  );
   const identitySecret = process.env.JWT_SECRET ?? "";
   if (!referenceRows.length) return { rows: [], dealRows: [], contactRows: [], referenceRows, identitySecret };
 

@@ -621,3 +621,8 @@
 
 - [x] Diagnosticar e corrigir a referência do logo BeautySystems na capa do Report Lu sem alterar o layout.
 - [x] Validar visualmente o logo corrigido, reexportar e reenviar o PDF final.
+
+- [x] Mapear critérios vigentes de BU, pipelines e período para a revisão de leads Bitrix24.
+- [x] Auditar leads Bitrix24 por pipeline, marca, origem, data e duplicidade técnica sem PII.
+- [x] Confrontar a classificação do Bitrix24 com a referência RD source-first e documentar divergências por BU.
+- [x] Corrigir somente mapeamentos comprovados, validar o dashboard e publicar o diagnóstico por BU.

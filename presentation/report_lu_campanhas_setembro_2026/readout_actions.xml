@@ -37,5 +37,5 @@
   <text id="readout-pending-text" x="806" y="544" width="376" height="18" font="caption" size="11" color="muted" align="center" wrap="false">DSB / pipeline 20889 permanece como mapeamento pendente.</text>
 
   <text id="readout-source" x="54" y="674" width="1090" height="20" font="caption" size="11" color="muted" wrap="false">Fontes: dashboard RD informado, Windsor.ai e Publya · projeção linear de 7 para 30 dias · sem dados pessoais</text>
-  <text id="readout-page" x="1170" y="674" width="56" height="20" font="caption" size="11" color="muted" align="right" wrap="false">4 / 4</text>
+  <text id="readout-page" x="1170" y="674" width="56" height="20" font="caption" size="11" color="muted" align="right" wrap="false">5 / 5</text>
 </slide>

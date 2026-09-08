@@ -1,0 +1,39 @@
+<slide id="programmatic_detail">
+  <background color="paper"/>
+  <shape id="programmatic-top-rule" type="rect" x="0" y="0" width="1280" height="3" fill="brand"/>
+  <text id="programmatic-title" x="54" y="34" width="1120" height="42" font="heading" size="30" color="ink" wrap="false">Programática: entrega ativa, verba pendente</text>
+  <text id="programmatic-cut" x="54" y="82" width="1120" height="22" font="caption" size="13" color="muted" wrap="false">Publya · 02–07/09/2026 · última data disponível: 07/09 · valores em BRL</text>
+
+  <shape id="programmatic-card-status" type="rect" x="54" y="118" width="356" height="178" fill="surface"/>
+  <text id="programmatic-card-status-label" x="78" y="142" width="240" height="20" font="caption" size="12" color="muted" wrap="false">STATUS</text>
+  <text id="programmatic-card-status-value" x="78" y="174" width="308" height="38" font="heading" size="27" color="brand" wrap="false"><strong>2 campanhas ativas</strong></text>
+  <text id="programmatic-card-status-detail" x="78" y="226" width="292" height="42" font="caption" size="14" color="muted" line-height="1.25"><p>B2B Setembro · Meta e Google Ads</p><p>Período previsto: 02–30/09</p></text>
+
+  <shape id="programmatic-card-delivery" type="rect" x="438" y="118" width="356" height="178" fill="surface"/>
+  <text id="programmatic-card-delivery-label" x="462" y="142" width="240" height="20" font="caption" size="12" color="muted" wrap="false">ENTREGA REGISTRADA</text>
+  <text id="programmatic-card-delivery-value" x="462" y="174" width="308" height="38" font="heading" size="27" color="brand" wrap="false"><strong>9.425 impressões</strong></text>
+  <text id="programmatic-card-delivery-detail" x="462" y="226" width="292" height="42" font="caption" size="14" color="muted" line-height="1.25"><p>227 cliques em Google Ads</p><p>Dados disponíveis em 6 dias</p></text>
+
+  <shape id="programmatic-card-result" type="rect" x="822" y="118" width="404" height="178" fill="surface"/>
+  <text id="programmatic-card-result-label" x="846" y="142" width="240" height="20" font="caption" size="12" color="muted" wrap="false">RESULTADO DISPONÍVEL</text>
+  <text id="programmatic-card-result-value" x="846" y="174" width="332" height="38" font="heading" size="27" color="accent" wrap="false"><strong>24 conversões</strong></text>
+  <text id="programmatic-card-result-detail" x="846" y="226" width="332" height="42" font="caption" size="14" color="muted" line-height="1.25"><p>23 em Meta · 1 em Google</p><p>Leads da fonte: 0</p></text>
+
+  <shape id="programmatic-channel-panel" type="rect" x="54" y="342" width="692" height="260" fill="surface"/>
+  <text id="programmatic-channel-title" x="78" y="366" width="510" height="30" font="body" size="20" color="ink" wrap="false"><strong>Leitura por canal</strong></text>
+  <table id="programmatic-channel-table" x="78" y="418" width="644" height="122" columns="2,2,5" rows="38,42,42" font="body" size="14" color="ink" padding="8 10" header-fill="paper" header-border="1 hairline" border-h="1 hairline">
+    <tr color="muted"><td><strong>CANAL</strong></td><td><strong>STATUS</strong></td><td><strong>RESULTADO DISPONÍVEL</strong></td></tr>
+    <tr><td><strong>Meta</strong></td><td color="accent">Ativa</td><td>23 conversões · impressões e cliques N/D</td></tr>
+    <tr><td><strong>Google Ads</strong></td><td color="accent">Ativa</td><td>9.425 impressões · 227 cliques · 1 conversão</td></tr>
+  </table>
+
+  <shape id="programmatic-finance-panel" type="rect" x="770" y="342" width="456" height="260" fill="brand"/>
+  <text id="programmatic-finance-label" x="798" y="372" width="356" height="20" font="caption" size="12" color="paper" wrap="false">COBERTURA FINANCEIRA</text>
+  <text id="programmatic-finance-value" x="798" y="404" width="356" height="42" font="heading" size="31" color="paper" wrap="false"><strong>Verba: N/D</strong></text>
+  <text id="programmatic-finance-detail" x="798" y="466" width="370" height="58" font="body" size="16" color="paper" line-height="1.3"><p>A Publya retornou custo zerado nos agregados. Isso não é tratado como verba realizada.</p></text>
+  <shape id="programmatic-finance-line" type="line" x="798" y="542" width="370" height="0" stroke="#FFFFFF80" stroke-width="1"/>
+  <text id="programmatic-finance-footnote" x="798" y="552" width="370" height="18" font="caption" size="12" color="paper" wrap="false">CPL / CPA programático: N/D · fora do CPL Google + Meta</text>
+
+  <text id="programmatic-source" x="54" y="674" width="1090" height="20" font="caption" size="11" color="muted" wrap="false">Fonte: dashboard Programática / Publya · dados por campanha · sem dados pessoais</text>
+  <text id="programmatic-page" x="1170" y="674" width="56" height="20" font="caption" size="11" color="muted" align="right" wrap="false">3 / 5</text>
+</slide>

@@ -614,3 +614,7 @@
 - [x] Validar a cobertura e a verba de programática disponível para o período, sem usar snapshots sobrepostos ou estimar gasto ausente.
 - [x] Calcular CPL por BU com investimento Google + Meta e leads RD informados, deixando premissas e limitações explícitas.
 - [x] Atualizar, validar, exportar e entregar o PDF revisado no formato Report Lu.
+
+- [x] Validar no dashboard/Publya as métricas e a cobertura de programática que entrarão na lâmina exclusiva: 2 campanhas ativas, dados até 07/09, 9.425 impressões, 227 cliques e 24 conversões; verba financeira N/D.
+- [x] Adicionar uma lâmina exclusiva de Programática ao Report Lu, mantendo o modelo visual e sem inventar verba indisponível.
+- [x] Validar o deck, exportar o PDF atualizado e entregar a versão revisada.

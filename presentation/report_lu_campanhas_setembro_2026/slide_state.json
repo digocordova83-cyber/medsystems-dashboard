@@ -2,8 +2,8 @@
   "project_info": {
     "title": "Campanhas, verba e projeção — setembro",
     "created": 1788888321.497,
-    "last_updated": 1788897052.557,
-    "total_slides": 4
+    "last_updated": 1788897885.209,
+    "total_slides": 5
   },
   "slides": [
     {
@@ -17,14 +17,19 @@
       "pageNum": 2
     },
     {
-      "id": "lead_projection",
+      "id": "programmatic_detail",
       "state": "edited",
       "pageNum": 3
     },
     {
-      "id": "readout_actions",
+      "id": "lead_projection",
       "state": "edited",
       "pageNum": 4
+    },
+    {
+      "id": "readout_actions",
+      "state": "edited",
+      "pageNum": 5
     }
   ],
   "outline": [
@@ -39,6 +44,12 @@
       "title": "Todas as campanhas têm entrega",
       "summary": "Status de entrega de Google e Meta por BU, investimento realizado, ações de plataforma e principais campanhas do período.",
       "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "programmatic_detail",
+      "title": "Programática — status e cobertura",
+      "summary": "Lâmina exclusiva com as duas campanhas ativas na Publya, resultados disponíveis até 07/09 e ressalva explícita de verba financeira indisponível.",
+      "image_plan": "Sem imagem adicional: usar dados reais do dashboard/Publya com cartões, métricas e gráfico vetorial no padrão visual Report Lu."
     },
     {
       "id": "lead_projection",

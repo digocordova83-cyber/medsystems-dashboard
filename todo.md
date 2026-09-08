@@ -618,3 +618,6 @@
 - [x] Validar no dashboard/Publya as métricas e a cobertura de programática que entrarão na lâmina exclusiva: 2 campanhas ativas, dados até 07/09, 9.425 impressões, 227 cliques e 24 conversões; verba financeira N/D.
 - [x] Adicionar uma lâmina exclusiva de Programática ao Report Lu, mantendo o modelo visual e sem inventar verba indisponível.
 - [x] Validar o deck, exportar o PDF atualizado e entregar a versão revisada.
+
+- [x] Diagnosticar e corrigir a referência do logo BeautySystems na capa do Report Lu sem alterar o layout.
+- [x] Validar visualmente o logo corrigido, reexportar e reenviar o PDF final.

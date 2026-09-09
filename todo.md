@@ -682,3 +682,6 @@
 - [x] Reconstruir o funil para mostrar etapas atuais dos leads e negócios ganhos de forma coerente, sem narrativa de match com RD Station.
 - [x] Simplificar a lâmina de negócios ganhos para apresentar apenas volumes e valores reais por BU.
 - [x] Validar, publicar e entregar novamente o report parcial corrigido.
+- [x] Remover todos os logos da capa do Report parcial de setembro.
+- [x] Reequilibrar a composição da capa sem adicionar novos elementos de marca.
+- [x] Validar, publicar e entregar a apresentação com a capa sem logos.

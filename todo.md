@@ -669,3 +669,6 @@
 - [x] Separar `Convertidos` de `SQL` na visão dos 418 leads Bitrix24 com `RD Station = sim`, sem dupla contagem.
 - [x] Recalcular SQL e Convertidos por BU diretamente pelos status atuais do Bitrix24.
 - [x] Atualizar, validar, publicar e entregar a lâmina de pipeline revisada.
+- [x] Apurar negócios ganhos reais vinculados aos 418 leads Bitrix24 com `RD Station = sim` por `LEAD_ID` e contato convertido.
+- [x] Separar ganhos do período de setembro, ganhos históricos e vínculos sem segurança suficiente, por BU.
+- [x] Atualizar a apresentação com 19 negócios ganhos auditáveis no período — 13 MedSystems e 6 BeautySystems —, validar, publicar e entregar o documento revisado.

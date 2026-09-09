@@ -697,3 +697,11 @@
 - [x] Redesenhar o slide 5 dividido por MedSystems e BeautySystems, sem valores de negócios ganhos.
 - [x] Manter volumes e valores de negócios ganhos exclusivamente no slide 6.
 - [x] Atualizar, validar, publicar e entregar a versão final do report em PDF/PPTX.
+- [x] Mapear todas as métricas e componentes do dashboard que ainda usam a regra source-first por contato único.
+- [x] Alterar o universo de leads do dashboard para registros Bitrix24 com `RD Station = sim`, sem filtros de título, origem, UTM ou match externo.
+- [x] Definir BU somente pelos pipelines 15391 MedSystems e 15395 BeautySystems, mantendo os demais em `Não atribuído`.
+- [x] Preservar investimento em Google/Meta, programática e negócios ganhos em suas fontes próprias, sem misturar critérios de inclusão.
+- [x] Atualizar os textos metodológicos, KPIs, gráficos, tabelas e filtros afetados na interface.
+- [x] Adicionar e executar testes Vitest para a nova regra Bitrix-only.
+- [x] Validar no navegador os totais de referência de 01–08/09: 173 MedSystems, 244 BeautySystems e 25 não atribuídos.
+- [x] Salvar, publicar e entregar o dashboard atualizado.

@@ -8,6 +8,7 @@ const DEFAULT_FILTERS = {
 };
 
 const ACCOUNT_KEYS = ["medsystems", "beautysystems"] as const;
+const RULE_VERSION = "bitrix_rd_station_flag_v1";
 
 export async function reconcilePaidMediaBusinessDate(businessDate: string) {
   const db = await getDb();
@@ -43,7 +44,7 @@ export async function reconcilePaidMediaBusinessDate(businessDate: string) {
       peopleWithMultipleLeadIds: dashboard.duplicates.peopleWithMultipleLeadIds,
       leadIdsInDuplicateGroups: dashboard.duplicates.leadIdsInDuplicateGroups,
       extraLeadIds: dashboard.duplicates.extraLeadIds,
-      ruleVersion: "bitrix_unique_contact_v2",
+      ruleVersion: RULE_VERSION,
       status: "completed",
       summary,
       reconciledAt: new Date(),
@@ -51,7 +52,7 @@ export async function reconcilePaidMediaBusinessDate(businessDate: string) {
     await db.insert(paidMediaReconciliationDaily).values(row).onDuplicateKeyUpdate({ set: { ...row, updatedAt: new Date() } });
     results.push({ accountKey, uniqueContacts: row.uniqueContacts, uniqueBitrixLeadIds: row.uniqueBitrixLeadIds, peopleWithMultipleLeadIds: row.peopleWithMultipleLeadIds, extraLeadIds: row.extraLeadIds });
   }
-  return { businessDate, ruleVersion: "bitrix_unique_contact_v2", results };
+  return { businessDate, ruleVersion: RULE_VERSION, results };
 }
 
 export function previousBusinessDayInSaoPaulo(now = new Date()) {

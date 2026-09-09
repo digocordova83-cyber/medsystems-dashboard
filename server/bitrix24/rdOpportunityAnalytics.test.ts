@@ -1,136 +1,129 @@
 import { describe, expect, it } from "vitest";
-import { createHmac } from "node:crypto";
-import { buildRdOpportunityManagerDashboard, mergePaidMediaReferenceIdentities, rdOpportunityCandidateRows, validateBusinessDateRange } from "./rdOpportunityAnalytics";
+import { buildRdOpportunityManagerDashboard, rdOpportunityCandidateRows, validateBusinessDateRange } from "./rdOpportunityAnalytics";
 
 const filters = {
-  pipeline: "all", responsible: "all", source: "all", stage: "all", position: "all", product: "all",
-  campaign: "all", adset: "all", creative: "all",
+  pipeline: "all",
+  responsible: "all",
+  source: "all",
+  stage: "all",
+  position: "all",
+  product: "all",
+  campaign: "all",
+  adset: "all",
+  creative: "all",
 };
-const paid = { UF_CRM_1744808620: "Tráfego Pago" };
-const row = (bitrixId: number, payload: Record<string, unknown>, day = "2026-08-03T12:00:00-03:00") => ({ bitrixId, createdAtBitrix: new Date(day), stageOrStatus: String(payload.STATUS_ID ?? "NEW"), rawPayload: JSON.stringify(payload) });
+const rd = { UF_CRM_1738950899: "1" };
+const row = (bitrixId: number, payload: Record<string, unknown>, day = "2026-09-03T12:00:00-03:00") => ({
+  bitrixId,
+  createdAtBitrix: new Date(day),
+  stageOrStatus: String(payload.STATUS_ID ?? "NEW"),
+  rawPayload: JSON.stringify(payload),
+});
 const deal = (payload: Record<string, unknown>) => ({ rawPayload: JSON.stringify(payload) });
 
 describe("buildRdOpportunityManagerDashboard", () => {
   const rows = [
-    row(1, { ...paid, TITLE: "Lead A", rd_contact_uuid: "rd-a", UF_CRM_1739195085: "15391", ASSIGNED_BY_ID: "5521", STATUS_ID: "NEW", UTM_SOURCE: "google", UTM_MEDIUM: "cpc", UTM_CAMPAIGN: "med-search", UTM_TERM: "grupo-a", UTM_CONTENT: "criativo-a", POST: "Sócio", UF_CRM_1738950946: "Ultraformer" }),
-    row(2, { ...paid, TITLE: "Lead B", rd_contact_uuid: "rd-b", UF_CRM_1739195085: "15395", ASSIGNED_BY_ID: "38111", STATUS_ID: "IN_PROCESS", UTM_SOURCE: "meta", UTM_MEDIUM: "paid_social", UTM_CAMPAIGN: "beauty-leads", UTM_TERM: "publico-b", UTM_CONTENT: "video-b" }, "2026-08-04T12:00:00-03:00"),
-    row(3, { ...paid, TITLE: "Lead C", rd_contact_uuid: "rd-c", UF_CRM_1739195085: "15391", STATUS_ID: "UC_HZQN9I", UTM_SOURCE: "google", UTM_CAMPAIGN: "med-search" }),
-    row(4, { TITLE: "Lead orgânico", UF_CRM_1744808620: "Orgânico", STATUS_ID: "CONVERTED" }),
-  ];
-  const referenceRows = [
-    { accountKey: "medsystems" as const, identityHash: "identity-a", rdContactUuid: "rd-a" },
-    { accountKey: "beautysystems" as const, identityHash: "identity-b", rdContactUuid: "rd-b" },
-    { accountKey: "medsystems" as const, identityHash: "identity-c", rdContactUuid: "rd-c" },
+    row(1, { ...rd, TITLE: "Lead A", UF_CRM_1739195085: "15391", ASSIGNED_BY_ID: "5521", STATUS_ID: "NEW", UTM_SOURCE: "google", UTM_MEDIUM: "cpc", UTM_CAMPAIGN: "med-search", UTM_TERM: "grupo-a", UTM_CONTENT: "criativo-a", POST: "Sócio", UF_CRM_1738950946: "Ultraformer" }),
+    row(2, { ...rd, TITLE: "Lead B", UF_CRM_1739195085: "15395", ASSIGNED_BY_ID: "38111", STATUS_ID: "IN_PROCESS", UTM_SOURCE: "meta", UTM_MEDIUM: "paid_social", UTM_CAMPAIGN: "beauty-leads", UTM_TERM: "publico-b", UTM_CONTENT: "video-b" }, "2026-09-04T12:00:00-03:00"),
+    row(3, { ...rd, TITLE: "Lead C", UF_CRM_1739195085: "15391", STATUS_ID: "UC_HZQN9I", UTM_SOURCE: "google", UTM_CAMPAIGN: "med-search" }),
+    row(4, { TITLE: "Sem flag", UF_CRM_1739195085: "15391", STATUS_ID: "CONVERTED" }),
   ];
 
-  it("usa a referência de origem como universo e não depende do título ou do campo pago", () => {
-    const result = buildRdOpportunityManagerDashboard({ rows, referenceRows, filters, period: { start: "2026-08-01", end: "2026-08-25" } });
-    expect(result.totals.leads).toBe(3);
-    expect(result.sourceRule).toContain("fonte conciliada");
-    expect(result.filterOptions.pipelines).toEqual(expect.arrayContaining([expect.objectContaining({ value: "15391", count: 2 }), expect.objectContaining({ value: "15395", count: 1 })]));
+  it("usa exclusivamente RD Station = sim e preserva uma unidade por ID técnico", () => {
+    const result = buildRdOpportunityManagerDashboard({ rows, filters, period: { start: "2026-09-01", end: "2026-09-08" } });
+    expect(result.totals).toMatchObject({ leads: 3, uniqueBitrixLeadIds: 3, uniqueContacts: 3 });
+    expect(result.sourceRule).toContain("RD Station = sim");
+    expect(result.filterOptions.pipelines).toEqual(expect.arrayContaining([
+      expect.objectContaining({ value: "15391", count: 2 }),
+      expect.objectContaining({ value: "15395", count: 1 }),
+    ]));
   });
 
-  it("calcula MQL, SQL, negócios, ganhos e valores com vínculo auditável", () => {
+  it("calcula MQL e SQL pelo status atual e negócios ganhos de forma independente", () => {
     const result = buildRdOpportunityManagerDashboard({
       rows,
-      referenceRows,
       dealRows: [
-        deal({ ID: "101", LEAD_ID: "1", STAGE_SEMANTIC_ID: "P", OPPORTUNITY: "9000" }),
-        deal({ ID: "102", LEAD_ID: "3", STAGE_SEMANTIC_ID: "S", OPPORTUNITY: "15000" }),
+        deal({ ID: "101", CATEGORY_ID: "42", STAGE_SEMANTIC_ID: "S", OPPORTUNITY: "9000" }),
+        deal({ ID: "102", CATEGORY_ID: "57", STAGE_SEMANTIC_ID: "S", OPPORTUNITY: "15000" }),
+        deal({ ID: "103", CATEGORY_ID: "44", STAGE_SEMANTIC_ID: "S", OPPORTUNITY: "30000" }),
       ],
       filters,
-      period: { start: "2026-08-01", end: "2026-08-25" },
+      period: { start: "2026-09-01", end: "2026-09-08" },
     });
-    expect(result.totals).toMatchObject({ leads: 3, mql: 3, sql: 2, dealLeads: 2, dealCount: 2, wonDeals: 1, totalDealValue: 24000, wonValue: 15000 });
-    expect(result.funnel.map(stage => stage.count)).toEqual([3, 3, 2, 2, 1]);
+    expect(result.totals).toMatchObject({ leads: 3, mql: 2, sql: 1, wonDeals: 2, totalDealValue: 24000, wonValue: 24000 });
+    expect(result.funnel.map(stage => stage.count)).toEqual([3, 2, 1]);
+    expect(result.commercialWinsByBu).toEqual({
+      medsystems: { count: 1, value: 9000 },
+      beautysystems: { count: 1, value: 15000 },
+    });
   });
 
-  it("cruza filtros de pipeline, campanha, conjunto e criativo", () => {
-    const result = buildRdOpportunityManagerDashboard({ rows, referenceRows, filters: { ...filters, pipeline: "15395", source: "meta", campaign: "beauty-leads", adset: "video-b", creative: "publico-b" }, period: { start: "2026-08-01", end: "2026-08-25" } });
+  it("aplica BU somente pelo pipeline e mantém filtros de dimensão", () => {
+    const result = buildRdOpportunityManagerDashboard({
+      rows,
+      filters: { ...filters, pipeline: "15395", source: "meta", campaign: "beauty-leads", adset: "video-b", creative: "publico-b" },
+      period: { start: "2026-09-01", end: "2026-09-08" },
+    });
     expect(result.totals.leads).toBe(1);
     expect(result.campaigns).toEqual([{ label: "beauty-leads", count: 1 }]);
   });
 
+  it("mantém leads sem pipeline na categoria não atribuída", () => {
+    const result = buildRdOpportunityManagerDashboard({
+      rows: [row(5, { ...rd, STATUS_ID: "NEW" })],
+      filters,
+      period: { start: "2026-09-01", end: "2026-09-08" },
+    });
+    expect(result.totals).toMatchObject({ leads: 1, unassignedLeads: 1 });
+    expect(result.filterOptions.pipelines).toEqual([expect.objectContaining({ value: "unknown", label: "Não identificado", count: 1 })]);
+  });
+
   it("usa o payload RD embutido como fallback quando as UTMs diretas estão vazias", () => {
     const embedded = JSON.stringify({ last_conversion: { content: { traffic_source: "utm_source=Facebook%20Ads&utm_medium=cpc&utm_campaign=campanha-x&utm_term=conjunto-x&utm_content=criativo-x" }, conversion_origin: { source: "Facebook Ads", medium: "cpc", campaign: "campanha-x" } } });
-    const result = buildRdOpportunityManagerDashboard({ rows: [row(5, { ...paid, rd_contact_uuid: "rd-embedded", STATUS_ID: "NEW", UTM_SOURCE: "undefined", UTM_MEDIUM: "undefined", UF_CRM_1778601092663: embedded })], referenceRows: [{ accountKey: "medsystems", identityHash: "embedded", rdContactUuid: "rd-embedded" }], filters, period: { start: "2026-08-01", end: "2026-08-25" } });
+    const result = buildRdOpportunityManagerDashboard({
+      rows: [row(6, { ...rd, STATUS_ID: "NEW", UTM_SOURCE: "undefined", UTM_MEDIUM: "undefined", UF_CRM_1778601092663: embedded })],
+      filters,
+      period: { start: "2026-09-01", end: "2026-09-08" },
+    });
     expect(result.attribution[0]).toMatchObject({ source: "Facebook Ads", medium: "cpc", campaign: "campanha-x", adset: "criativo-x", creative: "conjunto-x" });
   });
 
   it("mantém valores ausentes como Não identificado", () => {
-    const result = buildRdOpportunityManagerDashboard({ rows: [row(6, { ...paid, rd_contact_uuid: "rd-missing", STATUS_ID: "NEW", UTM_SOURCE: "undefined" })], referenceRows: [{ accountKey: "medsystems", identityHash: "missing", rdContactUuid: "rd-missing" }], filters, period: { start: "2026-08-01", end: "2026-08-25" } });
+    const result = buildRdOpportunityManagerDashboard({
+      rows: [row(7, { ...rd, STATUS_ID: "NEW", UTM_SOURCE: "undefined" })],
+      filters,
+      period: { start: "2026-09-01", end: "2026-09-08" },
+    });
     expect(result.attribution[0].source).toBe("Não identificado");
     expect(result.coverage.source).toBe(0);
   });
 
-  it("inclui no CRM um lead fora de Tráfego Pago quando há match inequívoco e aplica a BU da referência", () => {
-    const matched = row(7, { UF_CRM_1744808620: "Tráfego Orgânico", UF_CRM_1739195085: "15395", STATUS_ID: "IN_PROCESS", rd_contact_uuid: "rd-med-001" });
-    const result = buildRdOpportunityManagerDashboard({
-      rows: [matched],
-      referenceRows: [{ accountKey: "medsystems", identityHash: "hash", rdContactUuid: "rd-med-001" }],
-      filters,
-      period: { start: "2026-08-01", end: "2026-08-25" },
-    });
-    expect(result.totals).toMatchObject({ leads: 1, reconciledByIdentity: 1, reconciledOutsidePaidField: 1 });
-    expect(result.filterOptions.pipelines).toEqual([expect.objectContaining({ value: "15391", count: 1 })]);
-  });
-
-  it("conta a pessoa uma vez e separa os múltiplos IDs Bitrix24 como duplicidade", () => {
-    const referenceRows = [{ accountKey: "medsystems" as const, identityHash: "identity-a", rdContactUuid: "rd-med-dup" }];
+  it("não deduplica dois IDs técnicos mesmo quando os campos de contato coincidem", () => {
     const result = buildRdOpportunityManagerDashboard({
       rows: [
-        row(71, { ...paid, UF_CRM_1739195085: "15391", STATUS_ID: "NEW", rd_contact_uuid: "rd-med-dup", UTM_CAMPAIGN: "campanha-dup" }),
-        row(72, { ...paid, UF_CRM_1739195085: "15391", STATUS_ID: "IN_PROCESS", rd_contact_uuid: "rd-med-dup", UTM_CAMPAIGN: "campanha-dup" }),
+        { ...row(71, { ...rd, UF_CRM_1739195085: "15391", STATUS_ID: "NEW" }), email: "mesmo@teste.com" },
+        { ...row(72, { ...rd, UF_CRM_1739195085: "15391", STATUS_ID: "IN_PROCESS" }), email: "mesmo@teste.com" },
       ],
-      referenceRows,
       filters,
-      period: { start: "2026-08-01", end: "2026-08-25" },
+      period: { start: "2026-09-01", end: "2026-09-08" },
     });
-    expect(result.totals).toMatchObject({ leads: 1, uniqueContacts: 1, uniqueBitrixLeadIds: 2 });
-    expect(result.funnel[0]).toMatchObject({ count: 1 });
-    expect(result.duplicates).toMatchObject({ peopleWithMultipleLeadIds: 1, leadIdsInDuplicateGroups: 2, extraLeadIds: 1 });
-    expect(result.duplicates.byBrand).toEqual([{ label: "Medsystems", count: 1 }]);
+    expect(result.totals).toMatchObject({ leads: 2, uniqueBitrixLeadIds: 2 });
+    expect(result.duplicates).toMatchObject({ peopleWithMultipleLeadIds: 0, leadIdsInDuplicateGroups: 0, extraLeadIds: 0 });
   });
 
-  it("pré-seleciona somente leads com identidade source-first, inclusive por contato vinculado", () => {
-    const secret = "segredo-de-teste";
-    const digest = (value: string) => createHmac("sha256", secret).update(value).digest("hex");
-    const references = [
-      { accountKey: "medsystems" as const, identityHash: "uuid-id", rdContactUuid: "rd-uuid" },
-      { accountKey: "medsystems" as const, identityHash: "email-id", emailHash: digest("email@teste.com"), rdContactUuid: null },
-      { accountKey: "beautysystems" as const, identityHash: "contact-id", phoneHash: digest("5511999990000"), rdContactUuid: null },
-    ];
+  it("pré-seleciona somente leads com o campo oficial RD Station = sim", () => {
     const candidates = rdOpportunityCandidateRows({
       rows: [
-        row(81, { rd_contact_uuid: "rd-uuid", UF_CRM_1739195085: "15391" }),
-        { ...row(82, { UF_CRM_1739195085: "15391" }), email: "email@teste.com" },
-        row(83, { CONTACT_ID: "901", UF_CRM_1739195085: "15395" }),
-        row(84, { UF_CRM_1744808620: "Tráfego Pago", UF_CRM_1739195085: "15391" }),
+        row(81, { ...rd, UF_CRM_1739195085: "15391" }),
+        row(82, { UF_CRM_1739195085: "15391" }),
+        row(83, { ...rd, UF_CRM_1739195085: "20889" }),
       ],
-      dealRows: [deal({ ID: "301", LEAD_ID: "83", CONTACT_ID: "901" })],
-      contactRows: [{ bitrixId: 901, fullName: "Contato Teste", email: null, phone: "+55 (11) 99999-0000", rawPayload: "{}" }],
-      referenceRows: references,
-      identitySecret: secret,
     });
-    expect(candidates.map(candidate => candidate.bitrixId)).toEqual([81, 82, 83]);
-  });
-
-  it("mescla referências históricas e evidência RD dinâmica sem ocultar identidades do período", () => {
-    const historical = [{ accountKey: "medsystems" as const, identityHash: "historico", rdContactUuid: "rd-historico", convertedAt: new Date("2026-09-01T12:00:00-03:00") }];
-    const dynamic = [
-      { accountKey: "medsystems" as const, identityHash: "historico", rdContactUuid: "rd-historico", convertedAt: new Date("2026-09-01T14:00:00-03:00") },
-      { accountKey: "beautysystems" as const, identityHash: "dinamico", rdContactUuid: "rd-dinamico", convertedAt: new Date("2026-09-07T12:00:00-03:00") },
-    ];
-    const merged = mergePaidMediaReferenceIdentities(historical, dynamic);
-    expect(merged).toHaveLength(2);
-    expect(merged).toEqual(expect.arrayContaining([
-      expect.objectContaining({ accountKey: "medsystems", identityHash: "historico", convertedAt: new Date("2026-09-01T17:00:00.000Z") }),
-      expect.objectContaining({ accountKey: "beautysystems", identityHash: "dinamico" }),
-    ]));
+    expect(candidates.map(candidate => candidate.bitrixId)).toEqual([81, 83]);
   });
 
   it("valida o intervalo configurável no fuso de São Paulo", () => {
-    expect(validateBusinessDateRange("2026-08-01", "2026-08-25").endExclusive.toISOString()).toBe("2026-08-26T03:00:00.000Z");
-    expect(() => validateBusinessDateRange("2026-08-25", "2026-08-01")).toThrow("data inicial");
+    expect(validateBusinessDateRange("2026-09-01", "2026-09-08").endExclusive.toISOString()).toBe("2026-09-09T03:00:00.000Z");
+    expect(() => validateBusinessDateRange("2026-09-08", "2026-09-01")).toThrow("data inicial");
   });
 });

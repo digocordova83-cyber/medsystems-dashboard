@@ -4,20 +4,20 @@
 
   <text id="slide-kicker" x="64" y="52" width="440" height="20" font="caption" size="12" color="accent" wrap="false"><strong>INVESTIMENTO E EFICIÊNCIA · 01–07/09</strong></text>
   <text id="slide-title" x="64" y="78" width="960" height="42" font="heading" size="32" color="ink" wrap="false">R$ 26,5 mil investidos em Google + Meta</text>
-  <text id="slide-subtitle" x="64" y="126" width="1080" height="24" font="body" size="16" color="muted" wrap="false">CPL calculado sobre leads com RD Station = sim e BU reconhecida · Programática fora por custo financeiro indisponível</text>
+  <text id="slide-subtitle" x="64" y="126" width="1080" height="24" font="body" size="16" color="muted" wrap="false">CPL calculado sobre leads Bitrix24 com RD Station = sim e BU reconhecida · Programática fora por custo N/D</text>
 
   <shape id="med-panel" type="rect" x="64" y="168" width="552" height="288" fill="surface"/>
   <text id="med-title" x="90" y="192" width="470" height="28" font="body" size="18" color="ink" wrap="false"><strong>MedSystems</strong></text>
   <shape id="med-divider" type="line" x="90" y="230" width="500" height="0" stroke="hairline" stroke-width="1"/>
   <text id="med-spend-label" x="90" y="252" width="220" height="16" font="caption" size="11" color="muted" wrap="false">INVESTIMENTO GOOGLE + META</text>
   <text id="med-spend" x="90" y="273" width="240" height="42" font="metric" size="34" color="brand" wrap="false"><strong>R$ 14.596</strong></text>
-  <text id="med-leads-label" x="365" y="252" width="180" height="16" font="caption" size="11" color="muted" wrap="false">LEADS ATRIBUÍDOS</text>
-  <text id="med-leads" x="365" y="273" width="160" height="42" font="metric" size="34" color="ink" wrap="false"><strong>163</strong></text>
+  <text id="med-leads-label" x="365" y="252" width="180" height="16" font="caption" size="11" color="muted" wrap="false">LEADS BITRIX24</text>
+  <text id="med-leads" x="365" y="273" width="160" height="42" font="metric" size="34" color="ink" wrap="false"><strong>161</strong></text>
   <shape id="med-metric-divider" type="line" x="90" y="334" width="500" height="0" stroke="hairline" stroke-width="1"/>
   <text id="med-cpl-total-label" x="90" y="354" width="230" height="16" font="caption" size="11" color="muted" wrap="false">CPL GERAL DE MARKETING</text>
-  <text id="med-cpl-total" x="90" y="374" width="230" height="34" font="heading" size="27" color="accent" wrap="false"><strong>R$ 89,55</strong></text>
+  <text id="med-cpl-total" x="90" y="374" width="230" height="34" font="heading" size="27" color="accent" wrap="false"><strong>R$ 90,66</strong></text>
   <text id="med-cpl-paid-label" x="365" y="354" width="180" height="16" font="caption" size="11" color="muted" wrap="false">CPL MÍDIA PAGA</text>
-  <text id="med-cpl-paid" x="365" y="374" width="180" height="34" font="heading" size="27" color="brand" wrap="false"><strong>R$ 187,13</strong></text>
+  <text id="med-cpl-paid" x="365" y="374" width="180" height="34" font="heading" size="27" color="brand" wrap="false"><strong>R$ 189,56</strong></text>
   <text id="med-campaigns" x="90" y="422" width="480" height="20" font="caption" size="12" color="muted" wrap="false">16 campanhas com entrega · 5 Google Ads + 11 Meta Ads</text>
 
   <shape id="beauty-panel" type="rect" x="648" y="168" width="552" height="288" fill="surface"/>
@@ -25,13 +25,13 @@
   <shape id="beauty-divider" type="line" x="674" y="230" width="500" height="0" stroke="hairline" stroke-width="1"/>
   <text id="beauty-spend-label" x="674" y="252" width="220" height="16" font="caption" size="11" color="muted" wrap="false">INVESTIMENTO GOOGLE + META</text>
   <text id="beauty-spend" x="674" y="273" width="240" height="42" font="metric" size="34" color="brand" wrap="false"><strong>R$ 11.869</strong></text>
-  <text id="beauty-leads-label" x="949" y="252" width="180" height="16" font="caption" size="11" color="muted" wrap="false">LEADS ATRIBUÍDOS</text>
-  <text id="beauty-leads" x="949" y="273" width="160" height="42" font="metric" size="34" color="ink" wrap="false"><strong>243</strong></text>
+  <text id="beauty-leads-label" x="949" y="252" width="180" height="16" font="caption" size="11" color="muted" wrap="false">LEADS BITRIX24</text>
+  <text id="beauty-leads" x="949" y="273" width="160" height="42" font="metric" size="34" color="ink" wrap="false"><strong>236</strong></text>
   <shape id="beauty-metric-divider" type="line" x="674" y="334" width="500" height="0" stroke="hairline" stroke-width="1"/>
   <text id="beauty-cpl-total-label" x="674" y="354" width="230" height="16" font="caption" size="11" color="muted" wrap="false">CPL GERAL DE MARKETING</text>
-  <text id="beauty-cpl-total" x="674" y="374" width="230" height="34" font="heading" size="27" color="accent" wrap="false"><strong>R$ 48,84</strong></text>
+  <text id="beauty-cpl-total" x="674" y="374" width="230" height="34" font="heading" size="27" color="accent" wrap="false"><strong>R$ 50,29</strong></text>
   <text id="beauty-cpl-paid-label" x="949" y="354" width="180" height="16" font="caption" size="11" color="muted" wrap="false">CPL MÍDIA PAGA</text>
-  <text id="beauty-cpl-paid" x="949" y="374" width="180" height="34" font="heading" size="27" color="brand" wrap="false"><strong>R$ 60,25</strong></text>
+  <text id="beauty-cpl-paid" x="949" y="374" width="180" height="34" font="heading" size="27" color="brand" wrap="false"><strong>R$ 61,50</strong></text>
   <text id="beauty-campaigns" x="674" y="422" width="480" height="20" font="caption" size="12" color="muted" wrap="false">16 campanhas com entrega · 5 Google Ads + 11 Meta Ads</text>
 
   <shape id="programmatic-band" type="rect" x="64" y="484" width="1126" height="66" fill="#FFF7ED"/>
@@ -40,8 +40,8 @@
   <text id="programmatic-note" x="550" y="505" width="610" height="30" font="caption" size="13" color="muted" line-height="1.18"><p>Verba financeira Publya: <strong>N/D</strong>. Não entra no investimento nem nos CPLs desta página.</p></text>
 
   <shape id="definition-band" type="rect" x="64" y="568" width="1126" height="48" fill="#EFF6FF"/>
-  <text id="definition-text" x="84" y="580" width="1084" height="24" font="caption" size="12" color="ink" wrap="false"><strong>CPL geral:</strong> Google + Meta ÷ todos atribuídos. <strong> CPL pago:</strong> Google + Meta ÷ mídia paga. <strong>25 sem BU:</strong> excluídos.</text>
+  <text id="definition-text" x="84" y="580" width="1084" height="24" font="caption" size="12" color="ink" wrap="false"><strong>CPL geral:</strong> Google + Meta ÷ todos atribuídos. <strong> CPL pago:</strong> Google + Meta ÷ mídia paga. <strong>21 sem BU:</strong> excluídos.</text>
 
-  <text id="source-note" x="64" y="650" width="1000" height="22" font="caption" size="12" color="muted" wrap="false">Fontes: Windsor.ai e Bitrix24 · RD Station = sim · valores em BRL · investimento acumulado até 07/09</text>
+  <text id="source-note" x="64" y="650" width="1000" height="22" font="caption" size="12" color="muted" wrap="false">Leads: exclusivamente Bitrix24 · RD Station = sim · investimento: Windsor.ai · valores em BRL · até 07/09</text>
   <text id="page-number" x="1170" y="650" width="46" height="22" font="caption" size="12" color="muted" align="right" wrap="false">04</text>
 </slide>

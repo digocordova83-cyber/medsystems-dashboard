@@ -3,8 +3,8 @@
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="4" fill="brand"/>
 
   <text id="slide-kicker" x="64" y="52" width="360" height="20" font="caption" size="12" color="accent" wrap="false"><strong>PACING DE META · SETEMBRO</strong></text>
-  <text id="slide-title" x="64" y="78" width="970" height="42" font="heading" size="32" color="ink" wrap="false">Pacing consolidado alcança 82% do ritmo necessário</text>
-  <text id="slide-subtitle" x="64" y="126" width="1050" height="24" font="body" size="16" color="muted" wrap="false">7 de 30 dias de calendário · realizado com RD Station = sim e BU reconhecida versus meta proporcional</text>
+  <text id="slide-title" x="64" y="78" width="970" height="42" font="heading" size="32" color="ink" wrap="false">Pacing consolidado alcança 80% do ritmo necessário</text>
+  <text id="slide-subtitle" x="64" y="126" width="1050" height="24" font="body" size="16" color="muted" wrap="false">7 de 30 dias de calendário · realizado exclusivamente no Bitrix24 com RD Station = sim e BU reconhecida</text>
 
   <shape id="target-card" type="rect" x="64" y="166" width="254" height="68" fill="surface"/>
   <text id="target-label" x="82" y="177" width="218" height="16" font="caption" size="11" color="muted" wrap="false">META TOTAL SETEMBRO</text>
@@ -16,31 +16,31 @@
 
   <shape id="actual-card" type="rect" x="604" y="166" width="254" height="68" fill="surface"/>
   <text id="actual-label" x="622" y="177" width="218" height="16" font="caption" size="11" color="muted" wrap="false">REALIZADO ATRIBUÍDO</text>
-  <text id="actual-value" x="622" y="197" width="218" height="30" font="metric" size="28" color="brand" wrap="false"><strong>406</strong></text>
+  <text id="actual-value" x="622" y="197" width="218" height="30" font="metric" size="28" color="brand" wrap="false"><strong>397</strong></text>
 
   <shape id="pace-card" type="rect" x="874" y="166" width="316" height="68" fill="surface"/>
   <text id="pace-label" x="892" y="177" width="280" height="16" font="caption" size="11" color="muted" wrap="false">RITMO VERSUS CALENDÁRIO</text>
-  <text id="pace-value" x="892" y="197" width="280" height="30" font="metric" size="28" color="#C2410C" wrap="false"><strong>81,7%</strong> <span size="13" color="muted">· -91 leads</span></text>
+  <text id="pace-value" x="892" y="197" width="280" height="30" font="metric" size="28" color="#C2410C" wrap="false"><strong>79,9%</strong> <span size="13" color="muted">· -100 leads</span></text>
 
   <text id="comparison-title" x="64" y="260" width="590" height="22" font="body" size="16" color="ink" wrap="false"><strong>Meta, ritmo e projeção por BU</strong></text>
   <table id="pacing-table" x="64" y="292" width="704" height="228" columns="3,2,2,2,2,2" rows="38,50,50,50" font="caption" size="12" color="ink" padding="8 10" header-fill="brand" header-border="1 brand" border-h="1 solid hairline">
     <tr color="paper"><td><strong>BU</strong></td><td align="right"><strong>Meta</strong></td><td align="right"><strong>Esperado</strong></td><td align="right"><strong>Realizado</strong></td><td align="right"><strong>Pacing</strong></td><td align="right"><strong>Projeção</strong></td></tr>
-    <tr><td>MedSystems</td><td align="right">680</td><td align="right">159</td><td align="right"><strong color="brand">163</strong></td><td align="right" color="#15803D">102,5%</td><td align="right">699 <span color="muted">(+19)</span></td></tr>
-    <tr fill="#F9FAFB"><td>BeautySystems</td><td align="right">1.450</td><td align="right">338</td><td align="right"><strong color="brand">243</strong></td><td align="right" color="#C2410C">71,9%</td><td align="right">1.041 <span color="muted">(-409)</span></td></tr>
-    <tr fill="#EFF6FF"><td><strong>Total</strong></td><td align="right"><strong>2.130</strong></td><td align="right"><strong>497</strong></td><td align="right"><strong color="brand">406</strong></td><td align="right" color="#C2410C"><strong>81,7%</strong></td><td align="right"><strong>1.740</strong> <span color="muted">(-390)</span></td></tr>
+    <tr><td>MedSystems</td><td align="right">680</td><td align="right">159</td><td align="right"><strong color="brand">161</strong></td><td align="right" color="#15803D">101,5%</td><td align="right">690 <span color="muted">(+10)</span></td></tr>
+    <tr fill="#F9FAFB"><td>BeautySystems</td><td align="right">1.450</td><td align="right">338</td><td align="right"><strong color="brand">236</strong></td><td align="right" color="#C2410C">69,8%</td><td align="right">1.011 <span color="muted">(-439)</span></td></tr>
+    <tr fill="#EFF6FF"><td><strong>Total</strong></td><td align="right"><strong>2.130</strong></td><td align="right"><strong>497</strong></td><td align="right"><strong color="brand">397</strong></td><td align="right" color="#C2410C"><strong>79,9%</strong></td><td align="right"><strong>1.701</strong> <span color="muted">(-429)</span></td></tr>
   </table>
 
   <text id="chart-title" x="804" y="260" width="360" height="22" font="body" size="16" color="ink" wrap="false"><strong>Realizado versus ritmo esperado</strong></text>
   <chart id="pacing-chart" type="bar" x="796" y="292" width="394" height="228" font="caption" size="12" categories="MedSystems,BeautySystems" color="brand,accent" legend="bottom" data-labels="true" y-axis="true" y-max="380" gridlines="v" gap-width="65">
-    <series name="Realizado" values="163,243" label-expr="{value:.0f}"/>
+    <series name="Realizado" values="161,236" label-expr="{value:.0f}"/>
     <series name="Esperado até 07/09" values="159,338" label-expr="{value:.0f}"/>
   </chart>
 
   <shape id="component-band" type="rect" x="64" y="554" width="1126" height="62" fill="surface"/>
-  <text id="med-component" x="84" y="568" width="510" height="36" font="caption" size="13" color="ink" line-height="1.25"><p><strong color="brand">MedSystems:</strong> mídia 78/84 (93%) · outras 85/28 (304%) · eventos 0/47</p></text>
+  <text id="med-component" x="84" y="568" width="510" height="36" font="caption" size="13" color="ink" line-height="1.25"><p><strong color="brand">MedSystems:</strong> mídia 77/84 (92%) · outras 22/28 (79%) · eventos 62/47 (133%)</p></text>
   <shape id="component-divider" type="line" x="620" y="566" width="0" height="38" stroke="hairline" stroke-width="1"/>
-  <text id="beauty-component" x="646" y="568" width="520" height="36" font="caption" size="13" color="ink" line-height="1.25"><p><strong color="brand">BeautySystems:</strong> mídia 197/275 (72%) · outras 46/51 (90%) · eventos 0/12</p></text>
+  <text id="beauty-component" x="646" y="568" width="520" height="36" font="caption" size="13" color="ink" line-height="1.25"><p><strong color="brand">BeautySystems:</strong> mídia 193/275 (70%) · outras 43/51 (84%) · eventos 0/12</p></text>
 
-  <text id="method-note" x="64" y="650" width="1050" height="22" font="caption" size="12" color="muted" wrap="false">Projeção linear: realizado × 30/7. Meta total inclui mídia, outras origens e eventos. 25 leads sem BU ficam fora do pacing.</text>
+  <text id="method-note" x="64" y="650" width="1050" height="22" font="caption" size="12" color="muted" wrap="false">Projeção linear: realizado × 30/7. Meta total inclui mídia, outras origens e eventos. 21 leads sem BU ficam fora do pacing.</text>
   <text id="page-number" x="1170" y="650" width="46" height="22" font="caption" size="12" color="muted" align="right" wrap="false">03</text>
 </slide>

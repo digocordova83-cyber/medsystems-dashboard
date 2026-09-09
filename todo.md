@@ -647,3 +647,10 @@
 - [x] Recalcular leads e canais com pipeline 15391 = MedSystems, 15395 = BeautySystems e 20889 separado como não atribuído.
 - [x] Atualizar pacing, projeção e CPL por BU com o universo corrigido e investimento até 07/09/2026.
 - [x] Atualizar e validar o Report Lu, destacando os 25 leads não atribuídos sem inferir BU.
+
+- [x] Descartar no novo relatório todos os critérios anteriores de fonte, título, UTM e evidência RD externa, mantendo somente o campo Bitrix24 `RD Station = sim`.
+- [x] Extrair integralmente os 418 registros Bitrix24 de 01–07/09/2026 com `UF_CRM_1738950899 = 1`, sem filtros adicionais.
+- [x] Recalcular pipelines/BU, não atribuídos e canais usando exclusivamente os próprios campos do Bitrix24: 161 MedSystems, 236 BeautySystems e 21 não atribuídos.
+- [x] Recalcular pacing e CPL por BU com o universo Bitrix-only; usar investimento externo somente como numerador financeiro explicitamente rotulado.
+- [x] Refazer o Report Lu com 418 leads Bitrix24 RD Station = sim, 397 atribuídos às BUs e 21 não atribuídos.
+- [x] Validar, publicar e entregar o Report Lu corrigido, disponível para download em PDF ou PPTX.

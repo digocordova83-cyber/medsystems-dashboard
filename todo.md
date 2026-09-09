@@ -626,3 +626,13 @@
 - [x] Auditar leads Bitrix24 por pipeline, marca, origem, data e duplicidade técnica sem PII.
 - [x] Confrontar a classificação do Bitrix24 com a referência RD source-first e documentar divergências por BU.
 - [x] Corrigir somente mapeamentos comprovados, validar o dashboard e publicar o diagnóstico por BU.
+
+- [x] Definir e documentar o universo de leads de marketing Bitrix24 até o último D-1 por BU e canal.
+- [x] Apurar volumes por canal, investimento acumulado e CPL de mídia paga por BU sem misturar métricas de fonte.
+- [x] Criar um Report Lu com lâmina exclusiva de canais de lead Bitrix24 e indicadores de CPL por BU.
+- [x] Validar o deck e entregar o relatório sem PII.
+
+- [x] Formalizar as metas de setembro por BU e componente: mídia paga, outras origens, eventos e nova meta estimada.
+- [x] Calcular realizado, ritmo esperado, pacing, desvio e projeção de setembro por BU sem misturar a unidade de leads Bitrix24.
+- [x] Atualizar o Report Lu com lâmina detalhada de canais e leitura de pacing contra as metas fornecidas.
+- [x] Validar, exportar e entregar o PDF final atualizado, sem PII.

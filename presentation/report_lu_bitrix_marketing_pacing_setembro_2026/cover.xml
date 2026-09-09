@@ -1,0 +1,26 @@
+<slide id="cover">
+  <background color="paper"/>
+  <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="4" fill="brand"/>
+
+  <shape id="eyebrow-rule" type="rect" x="64" y="126" width="64" height="4" fill="accent"/>
+  <text id="eyebrow" x="144" y="112" width="570" height="28" font="caption" size="13" color="brand" wrap="false"><strong>REPORT LU · BITRIX24 · SETEMBRO 2026</strong></text>
+  <text id="title" x="64" y="174" width="700" height="136" font="display" size="52" color="ink" line-height="1.04"><p>Leads de marketing</p><p>MedSystems + BeautySystems</p></text>
+  <text id="subtitle" x="68" y="330" width="680" height="48" font="body" size="22" color="muted" wrap="false">Canais, pacing de meta, verba e CPL por BU</text>
+  <shape id="title-accent" type="rect" x="68" y="406" width="116" height="6" fill="accent"/>
+  <text id="period" x="68" y="442" width="600" height="24" font="caption" size="13" color="muted" wrap="false">Base Bitrix24 · 01–07/09/2026 · corte D-1 em Brasília</text>
+
+  <shape id="brand-panel" type="rect" x="790" y="94" width="426" height="512" fill="surface"/>
+  <text id="status-label" x="826" y="132" width="354" height="24" font="caption" size="12" color="accent" align="center" wrap="false"><strong>MÊS EM ANDAMENTO</strong></text>
+  <text id="month" x="826" y="174" width="354" height="58" font="display" size="44" color="brand" align="center" wrap="false"><strong>Setembro</strong></text>
+  <text id="year" x="826" y="234" width="354" height="38" font="heading" size="27" color="muted" align="center" wrap="false">2026</text>
+  <shape id="panel-divider" type="line" x="830" y="302" width="346" height="0" stroke="hairline" stroke-width="1"/>
+  <image id="med-logo" src="https://private-us-east-1.manuscdn.com/sessionFile/rgGvj8Y3QTEv0iFZldHMVK/sandbox/slides_resource_i9etstqbu0ojv7addzu2o-b34775c9-e2b-prod-azure-central-us_1788139494929_na1fn_L2hvbWUvdWJ1bnR1L3dlYmRldi1zdGF0aWMtYXNzZXRzL21lZHN5c3RlbXMtbG9naW4tbG9nbw.png?x-oss-process=image/resize,w_1560,h_1560/format,webp&amp;Expires=1790812800&amp;Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvcmdHdmo4WTNRVEV2MGlGWmxkSE1WSy9zYW5kYm94L3NsaWRlc19yZXNvdXJjZV9pOWV0c3RxYnUwb2p2N2FkZHp1Mm8tYjM0Nzc1YzktZTJiLXByb2QtYXp1cmUtY2VudHJhbC11c18xNzg4MTM5NDk0OTI5X25hMWZuX0wyaHZiV1V2ZFdKMWJuUjFMM2RsWW1SbGRpMXpkR0YwYVdNdFlYTnpaWFJ6TDIxbFpITjVjM1JsYlhNdGJHOW5hVzR0Ykc5bmJ3LnBuZz94LW9zcy1wcm9jZXNzPWltYWdlL3Jlc2l6ZSx3XzE1NjAsaF8xNTYwL2Zvcm1hdCx3ZWJwIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkwODEyODAwfX19XX0_&amp;Key-Pair-Id=K2QY5QTL8JSY6C&amp;Signature=MEQCIGwvrPbleQuLcAWHejd1fs23t6WTgSzWcmyLc~yiDvnOAiAFblc1~xkjtcKhqCyal7PbIhKT7~Vp1VE3gEZb8PQQfw__" x="824" y="342" width="150" height="68" fit="contain"/>
+  <text id="plus" x="978" y="352" width="42" height="44" font="heading" size="26" color="hairline" align="center" wrap="false">+</text>
+  <image id="beauty-logo" src="https://private-us-east-1.manuscdn.com/sessionFile/rgGvj8Y3QTEv0iFZldHMVK/sandbox/slides_resource_i277kuuovoikeojkxop67-3a25d948-e2b-prod-aws-us-east-1_1788912568919_na1fn_L2hvbWUvdWJ1bnR1L3dlYmRldi1zdGF0aWMtYXNzZXRzL2JlYXV0eXN5c3RlbXMtbG9nby10cmFuc3BhcmVudA.png?x-oss-process=image/resize,w_1560,h_1560/format,webp&Expires=1790812800&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvcmdHdmo4WTNRVEV2MGlGWmxkSE1WSy9zYW5kYm94L3NsaWRlc19yZXNvdXJjZV9pMjc3a3V1b3ZvaWtlb2preG9wNjctM2EyNWQ5NDgtZTJiLXByb2QtYXdzLXVzLWVhc3QtMV8xNzg4OTEyNTY4OTE5X25hMWZuX0wyaHZiV1V2ZFdKMWJuUjFMM2RsWW1SbGRpMXpkR0YwYVdNdFlYTnpaWFJ6TDJKbFlYVjBlWE41YzNSbGJYTXRiRzluYnkxMGNtRnVjM0JoY21WdWRBLnBuZz94LW9zcy1wcm9jZXNzPWltYWdlL3Jlc2l6ZSx3XzE1NjAsaF8xNTYwL2Zvcm1hdCx3ZWJwIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkwODEyODAwfX19XX0_&Key-Pair-Id=K2QY5QTL8JSY6C&Signature=MEUCIQCB14ii~fSt1t8ZR5ZbsM6wv6YZk4QRuGM5Rj~QZO~CGAIgeGRKPKcmYPGrkjTs5kr36hu1ilEY5V5ExlyKqgoHC7I_" x="1028" y="342" width="150" height="68" fit="contain"/>
+  <shape id="panel-divider-bottom" type="line" x="830" y="444" width="346" height="0" stroke="hairline" stroke-width="1"/>
+  <text id="prepared-label" x="830" y="478" width="346" height="20" font="caption" size="11" color="muted" align="center" wrap="false">PREPARADO POR BBRO</text>
+  <text id="panel-note" x="830" y="532" width="346" height="42" font="caption" size="13" color="muted" align="center" line-height="1.25"><p>Leitura gerencial baseada</p><p>no CRM e na mídia canônica</p></text>
+
+  <text id="footer" x="64" y="650" width="700" height="22" font="caption" size="12" color="muted" wrap="false">Acompanhamento executivo · setembro em andamento</text>
+  <text id="page-number" x="1170" y="650" width="46" height="22" font="caption" size="12" color="muted" align="right" wrap="false">01</text>
+</slide>

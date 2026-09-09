@@ -677,3 +677,8 @@
 - [x] Refazer a lâmina de funil usando exatamente as etapas oficiais do Bitrix24, separadas por BU e sem substituir nomes do CRM por MQL/SAL/SQL.
 - [x] Revisar a redação do plano de mídia para dar clareza ao ritmo de entrega de BeautySystems e MedSystems.
 - [x] Validar, publicar e entregar o novo report parcial em PDF/PPTX.
+- [x] Obter novamente versões oficiais dos logos MedSystems, BeautySystems e BBRO e reaplicá-las na capa.
+- [x] Remover `Histórico Lead Convertidos` de todas as leituras executivas do funil.
+- [x] Reconstruir o funil para mostrar etapas atuais dos leads e negócios ganhos de forma coerente, sem narrativa de match com RD Station.
+- [x] Simplificar a lâmina de negócios ganhos para apresentar apenas volumes e valores reais por BU.
+- [x] Validar, publicar e entregar novamente o report parcial corrigido.

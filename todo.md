@@ -672,3 +672,8 @@
 - [x] Apurar negócios ganhos reais vinculados aos 418 leads Bitrix24 com `RD Station = sim` por `LEAD_ID` e contato convertido.
 - [x] Separar ganhos do período de setembro, ganhos históricos e vínculos sem segurança suficiente, por BU.
 - [x] Atualizar a apresentação com 19 negócios ganhos auditáveis no período — 13 MedSystems e 6 BeautySystems —, validar, publicar e entregar o documento revisado.
+- [x] Renomear e reposicionar a apresentação como `Report parcial de resultados — setembro`, com corte e caráter parcial explícitos.
+- [x] Atualizar a capa com os logos MedSystems, BeautySystems e BBRO em alta legibilidade.
+- [x] Refazer a lâmina de funil usando exatamente as etapas oficiais do Bitrix24, separadas por BU e sem substituir nomes do CRM por MQL/SAL/SQL.
+- [x] Revisar a redação do plano de mídia para dar clareza ao ritmo de entrega de BeautySystems e MedSystems.
+- [x] Validar, publicar e entregar o novo report parcial em PDF/PPTX.

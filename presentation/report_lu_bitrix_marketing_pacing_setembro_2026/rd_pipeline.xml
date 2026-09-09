@@ -2,53 +2,74 @@
   <background color="paper"/>
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
   <shape id="header-accent" type="rect" x="64" y="50" width="6" height="66" fill="accent" corner-radius="3"/>
-  <text id="slide-kicker" x="84" y="50" width="540" height="20" font="caption" size="12" color="accent" wrap="false"><strong>PIPELINE BITRIX24 · RD STATION = SIM</strong></text>
-  <text id="slide-title" x="84" y="76" width="1010" height="42" font="heading" size="32" color="ink" wrap="false"><strong>36% em MQL; 5% já convertidos</strong></text>
-  <text id="slide-subtitle" x="84" y="124" width="1080" height="24" font="body" size="15" color="muted" wrap="false">Etapa atual, não cumulativa · Convertido é status do lead · 6 negócios abertos e 0 fechados no corte</text>
+  <text id="slide-kicker" x="84" y="50" width="560" height="20" font="caption" size="12" color="accent" wrap="false"><strong>FUNIL OFICIAL DO CRM · RD STATION = SIM</strong></text>
+  <text id="slide-title" x="84" y="76" width="1030" height="42" font="heading" size="32" color="ink" wrap="false"><strong>277 leads estão em SDR ou Primeiro Contato</strong></text>
+  <text id="slide-subtitle" x="84" y="124" width="1080" height="24" font="body" size="15" color="muted" wrap="false">Etapa atual, não cumulativa · nomenclatura reproduzida exatamente do Bitrix24</text>
 
-  <shape id="sdr-card" type="rect" x="64" y="168" width="150" height="84" fill="#EFF6FF" corner-radius="14" shadow="true"/>
-  <text id="sdr-label" x="78" y="181" width="122" height="18" font="caption" size="10" color="brand" wrap="false"><strong>SDR / ENTRADA</strong></text>
-  <text id="sdr-value" x="78" y="204" width="122" height="34" font="metric" size="26" color="ink" wrap="false"><strong>125</strong> <span size="11" color="muted">29,9%</span></text>
+  <shape id="stage-sdr" type="rect" x="64" y="170" width="148" height="102" fill="#EFF6FF" corner-radius="14" shadow="true"/>
+  <text id="stage-sdr-label" x="76" y="184" width="124" height="28" font="caption" size="10" color="brand" align="center" wrap="false"><strong>SDR</strong></text>
+  <text id="stage-sdr-value" x="76" y="216" width="124" height="40" font="metric" size="30" color="ink" align="center" wrap="false"><strong>125</strong></text>
 
-  <shape id="mql-card" type="rect" x="225" y="168" width="150" height="84" fill="#E0F2FE" corner-radius="14" shadow="true"/>
-  <text id="mql-label" x="239" y="181" width="122" height="18" font="caption" size="10" color="#0369A1" wrap="false"><strong>MQL</strong></text>
-  <text id="mql-value" x="239" y="204" width="122" height="34" font="metric" size="26" color="ink" wrap="false"><strong>152</strong> <span size="11" color="muted">36,3%</span></text>
+  <shape id="flow-arrow-1" type="chevron" x="216" y="207" width="20" height="28" fill="#BFDBFE" head-ratio="0.5"/>
+  <shape id="stage-first" type="rect" x="240" y="170" width="148" height="102" fill="#E0F2FE" corner-radius="14" shadow="true"/>
+  <text id="stage-first-label" x="252" y="184" width="124" height="28" font="caption" size="10" color="#0369A1" align="center" wrap="false"><strong>Primeiro Contato</strong></text>
+  <text id="stage-first-value" x="252" y="216" width="124" height="40" font="metric" size="30" color="ink" align="center" wrap="false"><strong>152</strong></text>
 
-  <shape id="sal-card" type="rect" x="386" y="168" width="150" height="84" fill="#ECFEFF" corner-radius="14" shadow="true"/>
-  <text id="sal-label" x="400" y="181" width="122" height="18" font="caption" size="10" color="#0E7490" wrap="false"><strong>SAL</strong></text>
-  <text id="sal-value" x="400" y="204" width="122" height="34" font="metric" size="26" color="ink" wrap="false"><strong>19</strong> <span size="11" color="muted">4,5%</span></text>
+  <shape id="flow-arrow-2" type="chevron" x="392" y="207" width="20" height="28" fill="#BAE6FD" head-ratio="0.5"/>
+  <shape id="stage-second" type="rect" x="416" y="170" width="132" height="102" fill="#ECFEFF" corner-radius="14" shadow="true"/>
+  <text id="stage-second-label" x="426" y="184" width="112" height="28" font="caption" size="9" color="#0E7490" align="center" wrap="false"><strong>Segundo Contato</strong></text>
+  <text id="stage-second-value" x="426" y="216" width="112" height="40" font="metric" size="30" color="ink" align="center" wrap="false"><strong>14</strong></text>
 
-  <shape id="sql-card" type="rect" x="547" y="168" width="150" height="84" fill="#ECFDF5" corner-radius="14" shadow="true"/>
-  <text id="sql-label" x="561" y="181" width="122" height="18" font="caption" size="10" color="#047857" wrap="false"><strong>SQL</strong></text>
-  <text id="sql-value" x="561" y="204" width="122" height="34" font="metric" size="26" color="ink" wrap="false"><strong>14</strong> <span size="11" color="muted">3,3%</span></text>
+  <shape id="flow-arrow-3" type="chevron" x="552" y="207" width="20" height="28" fill="#A5F3FC" head-ratio="0.5"/>
+  <shape id="stage-third" type="rect" x="576" y="170" width="132" height="102" fill="#ECFDF5" corner-radius="14" shadow="true"/>
+  <text id="stage-third-label" x="586" y="184" width="112" height="28" font="caption" size="9" color="#047857" align="center" wrap="false"><strong>Terceiro Contato</strong></text>
+  <text id="stage-third-value" x="586" y="216" width="112" height="40" font="metric" size="30" color="ink" align="center" wrap="false"><strong>5</strong></text>
 
-  <shape id="converted-card" type="rect" x="708" y="168" width="150" height="84" fill="#D1FAE5" corner-radius="14" shadow="true"/>
-  <text id="converted-label" x="722" y="181" width="122" height="18" font="caption" size="10" color="#047857" wrap="false"><strong>CONVERTIDOS</strong></text>
-  <text id="converted-value" x="722" y="204" width="122" height="34" font="metric" size="26" color="#047857" wrap="false"><strong>22</strong> <span size="11" color="muted">5,2%</span></text>
+  <shape id="flow-arrow-4" type="chevron" x="712" y="207" width="20" height="28" fill="#A7F3D0" head-ratio="0.5"/>
+  <shape id="stage-relationship" type="rect" x="736" y="170" width="140" height="102" fill="#D1FAE5" corner-radius="14" shadow="true"/>
+  <text id="stage-relationship-label" x="746" y="184" width="120" height="28" font="caption" size="9" color="#047857" align="center" wrap="false"><strong>Relacionamento</strong></text>
+  <text id="stage-relationship-value" x="746" y="216" width="120" height="40" font="metric" size="30" color="ink" align="center" wrap="false"><strong>14</strong></text>
 
-  <shape id="discard-card" type="rect" x="869" y="168" width="150" height="84" fill="#FEF2F2" corner-radius="14" shadow="true"/>
-  <text id="discard-label" x="883" y="181" width="122" height="18" font="caption" size="10" color="#B91C1C" wrap="false"><strong>DESCARTADOS</strong></text>
-  <text id="discard-value" x="883" y="204" width="122" height="34" font="metric" size="26" color="#B91C1C" wrap="false"><strong>44</strong> <span size="11" color="muted">10,5%</span></text>
+  <shape id="flow-arrow-5" type="chevron" x="880" y="207" width="20" height="28" fill="#6EE7B7" head-ratio="0.5"/>
+  <shape id="stage-convert" type="rect" x="904" y="170" width="132" height="102" fill="#F0FDF4" corner-radius="14" shadow="true"/>
+  <text id="stage-convert-label" x="914" y="184" width="112" height="28" font="caption" size="9" color="#15803D" align="center" wrap="false"><strong>Converter Lead</strong></text>
+  <text id="stage-convert-value" x="914" y="216" width="112" height="40" font="metric" size="30" color="muted" align="center" wrap="false"><strong>0</strong></text>
 
-  <shape id="event-card" type="rect" x="1030" y="168" width="160" height="84" fill="#F8FAFC" corner-radius="14" shadow="true"/>
-  <text id="event-label" x="1044" y="181" width="132" height="18" font="caption" size="9" color="#475569" wrap="false"><strong>EVENTOS / TRIAGEM</strong></text>
-  <text id="event-value" x="1044" y="204" width="132" height="34" font="metric" size="26" color="ink" wrap="false"><strong>42</strong> <span size="11" color="muted">10,0%</span></text>
+  <shape id="flow-arrow-6" type="chevron" x="1040" y="207" width="20" height="28" fill="#34D399" head-ratio="0.5"/>
+  <shape id="stage-converted" type="rect" x="1064" y="170" width="126" height="102" fill="#DCFCE7" corner-radius="14" shadow="true"/>
+  <text id="stage-converted-label" x="1072" y="180" width="110" height="36" font="caption" size="8.5" color="#047857" align="center"><strong>Histórico Lead Convertidos</strong></text>
+  <text id="stage-converted-value" x="1074" y="216" width="106" height="40" font="metric" size="30" color="#047857" align="center" wrap="false"><strong>22</strong></text>
 
-  <text id="table-title" x="64" y="276" width="540" height="20" font="body" size="16" color="ink" wrap="false"><strong>Distribuição atual por BU</strong></text>
-  <table id="pipeline-table" x="64" y="306" width="1126" height="160" columns="2.2,0.8,0.8,0.8,0.8,1.1,1.1,1.2,0.9,1.3,1.0" rows="40,40,40,40" font="caption" size="9" color="ink" padding="5 5" header-fill="#071B46" header-border="1 #071B46" border-h="1 solid hairline" border-v="1 solid #E5E7EB" border-outer="1 solid hairline">
-    <tr color="paper"><td><strong>BU</strong></td><td align="right"><strong>SDR</strong></td><td align="right"><strong>MQL</strong></td><td align="right"><strong>SAL</strong></td><td align="right"><strong>SQL</strong></td><td align="right"><strong>Convert.</strong></td><td align="right"><strong>Desc.</strong></td><td align="right"><strong>Eventos</strong></td><td align="right"><strong>Total</strong></td><td align="right"><strong>Neg. abertos</strong></td><td align="right"><strong>Fechados</strong></td></tr>
-    <tr fill="#F8FBFF"><td><strong>MedSystems</strong></td><td align="right">33</td><td align="right">39</td><td align="right">10</td><td align="right">1</td><td align="right"><strong color="#047857">4</strong></td><td align="right">32</td><td align="right">42</td><td align="right"><strong>161</strong></td><td align="right"><strong color="brand">4</strong></td><td align="right"><strong>0</strong></td></tr>
-    <tr fill="#FFFCFB"><td><strong>BeautySystems</strong></td><td align="right">87</td><td align="right">113</td><td align="right">9</td><td align="right">13</td><td align="right"><strong color="#047857">2</strong></td><td align="right">12</td><td align="right">0</td><td align="right"><strong>236</strong></td><td align="right"><strong color="brand">2</strong></td><td align="right"><strong>0</strong></td></tr>
-    <tr fill="#FFF7ED"><td><strong>Não atribuído</strong></td><td align="right">5</td><td align="right">0</td><td align="right">0</td><td align="right">0</td><td align="right"><strong color="#047857">16</strong></td><td align="right">0</td><td align="right">0</td><td align="right"><strong>21</strong></td><td align="right">0</td><td align="right">0</td></tr>
+  <shape id="events-branch" type="rect" x="64" y="310" width="350" height="72" fill="#FFFBEB" corner-radius="14" stroke="#FDE68A" stroke-width="1"/>
+  <icon id="events-icon" name="calendar-days" x="84" y="329" width="30" height="30" color="#D97706"/>
+  <text id="events-label" x="128" y="320" width="180" height="22" font="caption" size="10" color="#92400E" wrap="false"><strong>LEADS DE EVENTOS</strong></text>
+  <text id="events-value" x="128" y="344" width="180" height="28" font="metric" size="24" color="ink" wrap="false"><strong>42</strong> <span size="11" color="muted">todos MedSystems</span></text>
+
+  <shape id="discard-branch" type="rect" x="434" y="310" width="350" height="72" fill="#FEF2F2" corner-radius="14" stroke="#FECACA" stroke-width="1"/>
+  <icon id="discard-icon" name="circle-x" x="454" y="329" width="30" height="30" color="#DC2626"/>
+  <text id="discard-label" x="498" y="320" width="170" height="22" font="caption" size="10" color="#991B1B" wrap="false"><strong>LEAD DESCARTADO</strong></text>
+  <text id="discard-value" x="498" y="344" width="170" height="28" font="metric" size="24" color="#B91C1C" wrap="false"><strong>41</strong></text>
+
+  <shape id="discard-mkt-branch" type="rect" x="804" y="310" width="386" height="72" fill="#FFF7ED" corner-radius="14" stroke="#FED7AA" stroke-width="1"/>
+  <icon id="discard-mkt-icon" name="filter-x" x="824" y="329" width="30" height="30" color="#EA580C"/>
+  <text id="discard-mkt-label" x="868" y="320" width="220" height="22" font="caption" size="10" color="#9A3412" wrap="false"><strong>LEAD DESCARTADO P/ MKT</strong></text>
+  <text id="discard-mkt-value" x="868" y="344" width="170" height="28" font="metric" size="24" color="#C2410C" wrap="false"><strong>3</strong></text>
+
+  <text id="table-title" x="64" y="404" width="700" height="20" font="body" size="15" color="ink" wrap="false"><strong>Etapa atual por BU — nomes oficiais do Bitrix24</strong></text>
+  <table id="crm-stage-table" x="64" y="432" width="1126" height="190" columns="3.3,1,1,1,1" rows="18,18,18,18,18,18,18,18,18,18,18" font="caption" size="8.5" color="ink" padding="3 8" header-fill="#071B46" header-border="1 #071B46" border-h="1 solid hairline" border-v="1 solid #E5E7EB" border-outer="1 solid hairline">
+    <tr color="paper"><td><strong>Etapa do CRM</strong></td><td align="right"><strong>Med</strong></td><td align="right"><strong>Beauty</strong></td><td align="right"><strong>Sem BU</strong></td><td align="right"><strong>Total</strong></td></tr>
+    <tr fill="#F8FBFF"><td><strong>SDR</strong></td><td align="right">33</td><td align="right">87</td><td align="right">5</td><td align="right"><strong>125</strong></td></tr>
+    <tr><td><strong>Leads de EVENTOS</strong></td><td align="right">42</td><td align="right">0</td><td align="right">0</td><td align="right"><strong>42</strong></td></tr>
+    <tr fill="#F8FBFF"><td><strong>Primeiro Contato</strong></td><td align="right">39</td><td align="right">113</td><td align="right">0</td><td align="right"><strong>152</strong></td></tr>
+    <tr><td><strong>Segundo Contato</strong></td><td align="right">8</td><td align="right">6</td><td align="right">0</td><td align="right"><strong>14</strong></td></tr>
+    <tr fill="#F8FBFF"><td><strong>Terceiro Contato</strong></td><td align="right">2</td><td align="right">3</td><td align="right">0</td><td align="right"><strong>5</strong></td></tr>
+    <tr><td><strong>Relacionamento</strong></td><td align="right">1</td><td align="right">13</td><td align="right">0</td><td align="right"><strong>14</strong></td></tr>
+    <tr fill="#F8FBFF"><td><strong>Converter Lead</strong></td><td align="right">0</td><td align="right">0</td><td align="right">0</td><td align="right"><strong>0</strong></td></tr>
+    <tr><td><strong>Histórico Lead Convertidos</strong></td><td align="right">4</td><td align="right">2</td><td align="right">16</td><td align="right"><strong color="#047857">22</strong></td></tr>
+    <tr fill="#FEF2F2"><td><strong>Lead Descartado</strong></td><td align="right">29</td><td align="right">12</td><td align="right">0</td><td align="right"><strong color="#B91C1C">41</strong></td></tr>
+    <tr fill="#FFF7ED"><td><strong>Lead Descartado p/ MKT</strong></td><td align="right">3</td><td align="right">0</td><td align="right">0</td><td align="right"><strong color="#C2410C">3</strong></td></tr>
   </table>
 
-  <shape id="method-panel" type="rect" x="64" y="490" width="1126" height="126" fill="#F8FAFC" corner-radius="16"/>
-  <icon id="method-icon" name="git-branch" x="88" y="514" width="30" height="30" color="brand"/>
-  <text id="method-title" x="136" y="506" width="480" height="22" font="body" size="15" color="ink" wrap="false"><strong>Como as etapas foram consolidadas</strong></text>
-  <text id="method-left" x="136" y="536" width="486" height="64" font="caption" size="11" color="muted" line-height="1.25"><p><strong color="ink">MQL:</strong> Primeiro Contato. <strong color="ink">SAL:</strong> Segundo + Terceiro Contato.</p><p><strong color="ink">SQL:</strong> Relacionamento / Converter Lead. <strong color="#047857">Convertidos:</strong> status CONVERTED.</p></text>
-  <shape id="method-divider" type="line" x="646" y="510" width="0" height="86" stroke="hairline" stroke-width="1"/>
-  <text id="method-right" x="674" y="506" width="486" height="94" font="caption" size="11" color="muted" line-height="1.25"><p><strong color="ink">Descartados:</strong> Lead Descartado + Lead Descartado p/ MKT.</p><p><strong color="ink">Fechado:</strong> negócio ganho vinculado diretamente por LEAD_ID; convertido não significa venda fechada.</p><p>Leitura da etapa atual; não representa histórico de transição.</p></text>
-
-  <text id="source-note" x="64" y="650" width="1030" height="20" font="caption" size="11" color="muted" wrap="false">Fonte: Bitrix24 · RD Station = sim · 418 IDs únicos · corte 01–07/09/2026</text>
+  <text id="source-note" x="64" y="650" width="1030" height="20" font="caption" size="11" color="muted" wrap="false">Fonte: Bitrix24 · etapa atual STATUS_ID · RD Station = sim · 418 IDs únicos · corte 01–07/09/2026</text>
   <text id="page-number" x="1132" y="648" width="58" height="22" font="caption" size="11" color="muted" align="right" wrap="false">05 / 08</text>
 </slide>

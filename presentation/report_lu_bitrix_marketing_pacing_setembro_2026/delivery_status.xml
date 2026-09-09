@@ -1,0 +1,46 @@
+<slide id="delivery_status">
+  <background color="paper"/>
+  <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
+  <shape id="header-accent" type="rect" x="40" y="34" width="6" height="64" fill="accent" corner-radius="3"/>
+  <text id="slide-kicker" x="60" y="34" width="500" height="18" font="caption" size="11" color="accent" wrap="false"><strong>STATUS DAS ENTREGAS · SETEMBRO</strong></text>
+  <text id="slide-title" x="60" y="58" width="890" height="38" font="heading" size="29" color="ink" wrap="false"><strong>Cronograma de entregas e dependências de setembro</strong></text>
+  <text id="slide-subtitle" x="60" y="102" width="900" height="20" font="caption" size="11" color="muted" wrap="false">Tabela reconstruída a partir do material recebido; textos e previsões preservados.</text>
+
+  <shape id="legend-final-dot" type="ellipse" x="58" y="132" width="11" height="11" fill="#00B050"/>
+  <text id="legend-final" x="76" y="126" width="94" height="22" font="caption" size="9" color="ink" anchor="middle" wrap="false">Finalização</text>
+  <shape id="legend-dev-dot" type="ellipse" x="180" y="132" width="11" height="11" fill="#FFD800"/>
+  <text id="legend-dev" x="198" y="126" width="124" height="22" font="caption" size="9" color="ink" anchor="middle" wrap="false">Em desenvolvimento</text>
+  <shape id="legend-third-dot" type="ellipse" x="338" y="132" width="11" height="11" fill="#FF7A00"/>
+  <text id="legend-third" x="356" y="126" width="130" height="22" font="caption" size="9" color="ink" anchor="middle" wrap="false">Aguardando terceiros</text>
+  <shape id="legend-late-dot" type="ellipse" x="502" y="132" width="11" height="11" fill="#E30613"/>
+  <text id="legend-late" x="520" y="126" width="80" height="22" font="caption" size="9" color="ink" anchor="middle" wrap="false">Em atraso</text>
+  <shape id="legend-start-dot" type="ellipse" x="616" y="132" width="11" height="11" fill="#0F6CE5"/>
+  <text id="legend-start" x="634" y="126" width="74" height="22" font="caption" size="9" color="ink" anchor="middle" wrap="false">A iniciar</text>
+  <shape id="legend-brief-dot" type="ellipse" x="724" y="132" width="11" height="11" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5"/>
+  <text id="legend-brief" x="742" y="126" width="124" height="22" font="caption" size="9" color="ink" anchor="middle" wrap="false">Aguardando briefing</text>
+  <text id="legend-date" x="1020" y="126" width="220" height="22" font="caption" size="9" color="muted" align="right" anchor="middle" wrap="false">Atualização recebida em 08/09</text>
+
+  <table id="delivery-table" x="40" y="158" width="1200" height="472" columns="1.5,2.0,4.2,4.1,1.8" rows="32,29.333,29.333,29.333,29.333,29.333,29.333,29.333,29.333,29.333,29.333,29.333,29.333,29.333,29.333,29.338" font="caption" size="8.5" color="ink" line-height="1.0" padding="3 7" header-fill="#071B46" header-border="1 #071B46" border-h="1 solid #D8E0EA" border-v="1 solid #E5E7EB" border-outer="1 solid #B9C4D2">
+    <tr color="paper" size="9.5"><td><strong>Frente</strong></td><td><strong>Projeto / Produto</strong></td><td><strong>Status atual</strong></td><td><strong>Próximo marco / Observações</strong></td><td align="center"><strong>Previsão</strong></td></tr>
+    <tr fill="#F3F8FF"><td rowspan="5" color="#071B46" size="10"><strong>MedSystems</strong></td><td><strong>Ultraformer MPT</strong></td><td><p><span color="#FFD800">●</span> Aguardando peças de programática (Publya)</p><p>Peças de Meta aprovadas</p></td><td>Publya vai entregar todas as peças amanhã</td><td align="center"><strong>09/09</strong></td></tr>
+    <tr fill="#F8FBFF"><td><strong>Volnewmer</strong></td><td><p><span color="#FFD800">●</span> Aguardando peças de programática (Publya)</p><p>Peças de Meta aprovadas</p></td><td>Publya vai entregar todas as peças amanhã</td><td align="center"><strong>09/09</strong></td></tr>
+    <tr fill="#F3F8FF"><td><strong>Volformer</strong></td><td><p><span color="#FFD800">●</span> Aguardando peças de programática (Publya)</p><p>Peças de Meta aprovadas</p></td><td>Publya vai entregar todas as peças amanhã</td><td align="center"><strong>09/09</strong></td></tr>
+    <tr fill="#F8FBFF"><td><strong>Chrome</strong></td><td><span color="#0F6CE5">●</span> Desenvolvimento ainda não iniciado</td><td>Em produção</td><td align="center"><strong>18/09</strong></td></tr>
+    <tr fill="#F3F8FF"><td><strong>Youlaser Prime</strong></td><td><span color="#0F6CE5">●</span> Desenvolvimento ainda não iniciado</td><td>Em produção</td><td align="center"><strong>18/09</strong></td></tr>
+
+    <tr fill="#FFF8F7"><td rowspan="6" color="#071B46" size="10"><strong>BeautySystems</strong></td><td><strong>Aquapure</strong></td><td><p><span color="#E30613">●</span> <strong>Em atraso</strong></p><p>Será enviado hoje (08/09)</p></td><td>Envio das peças pela BBRO</td><td align="center"><strong>08/09</strong></td></tr>
+    <tr fill="#FFFCFB"><td><strong>Ultraformer MPT</strong></td><td><span color="#FF7A00">●</span> Aguardando material dos clientes</td><td>Recebimento de logo/imagens principais</td><td align="center">Entre 08 e 11/09</td></tr>
+    <tr fill="#FFF8F7"><td><strong>Youlaser MT</strong></td><td><span color="#FF7A00">●</span> Aguardando material dos clientes</td><td>Recebimento de logo/imagens principais</td><td align="center">Entre 08 e 11/09</td></tr>
+    <tr fill="#FFFCFB"><td><strong>Ultraformer III</strong></td><td><span color="#FF7A00">●</span> Aguardando material dos clientes</td><td>Recebimento de logo/imagens principais</td><td align="center">Entre 08 e 11/09</td></tr>
+    <tr fill="#FFF8F7"><td><strong>Secret RF</strong></td><td><span color="#0F6CE5">●</span> Desenvolvimento ainda não iniciado</td><td>Em produção</td><td align="center"><strong>18/09</strong></td></tr>
+    <tr fill="#FFFCFB"><td><strong>Vectra1</strong></td><td><span color="#0F6CE5">●</span> Desenvolvimento ainda não iniciado</td><td>Em produção</td><td align="center"><strong>18/09</strong></td></tr>
+
+    <tr fill="#ECFDF5"><td><strong>B2C / Awareness</strong></td><td><strong>Media at Home / OOH</strong></td><td><p><span color="#00B050">●</span> Peças enviadas à Publya em 03/09</p><p>Aguardando confirmação de desdobramentos e veiculação</p></td><td>Publya entrega as peças amanhã; verificar veiculação</td><td align="center"><strong>09/09</strong></td></tr>
+    <tr fill="#F0FDF4"><td><strong>Antipirataria</strong></td><td><strong>Keep it Real</strong></td><td><p><span color="#00B050">●</span> Identidade aprovada pelo cliente</p><p>Desdobramentos em produção</p></td><td>Em produção</td><td align="center"><strong>08/09</strong></td></tr>
+    <tr fill="#F8FAFC"><td rowspan="2"><strong>Novos Protocolos</strong></td><td><strong>Aquaformer</strong></td><td><span color="#64748B">○</span> Aguardando briefing</td><td>Aguardar briefing do cliente</td><td align="center">2ª quinzena de setembro</td></tr>
+    <tr fill="#FFFFFF"><td><strong>Aquanewmer</strong></td><td><span color="#64748B">○</span> Aguardando briefing</td><td>Aguardar briefing do cliente</td><td align="center">2ª quinzena de setembro</td></tr>
+  </table>
+
+  <text id="source-note" x="40" y="650" width="1090" height="20" font="caption" size="9" color="muted" wrap="false">Obs.: prazos e status podem ser atualizados conforme novos retornos dos clientes e da Publya.</text>
+  <text id="page-number" x="1160" y="648" width="80" height="22" font="caption" size="10" color="muted" align="right" wrap="false">06 / 06</text>
+</slide>

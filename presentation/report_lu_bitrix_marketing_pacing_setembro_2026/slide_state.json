@@ -2,8 +2,8 @@
   "project_info": {
     "title": "Report executivo — leads de marketing",
     "created": 1788912510.367,
-    "last_updated": 1788914409.003,
-    "total_slides": 4
+    "last_updated": 1788916148.78,
+    "total_slides": 6
   },
   "slides": [
     {
@@ -25,6 +25,16 @@
       "id": "spend_cpl",
       "state": "edited",
       "pageNum": 4
+    },
+    {
+      "id": "status_summary",
+      "state": "edited",
+      "pageNum": 5
+    },
+    {
+      "id": "delivery_status",
+      "state": "edited",
+      "pageNum": 6
     }
   ],
   "outline": [
@@ -51,6 +61,18 @@
       "title": "Verba e CPL por BU",
       "summary": "Consolida investimento Google + Meta, campanhas com entrega, CPL geral de marketing e CPL de mídia paga por BU; registra Programática como N/D em custo financeiro.",
       "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "status_summary",
+      "title": "Status final do mês",
+      "summary": "Sintetiza a distribuição dos 14 projetos por status, destaca frentes finalizadas/em desenvolvimento e os principais pontos de atenção para setembro.",
+      "image_plan": "Sem imagem; usar cards, barras de status e indicadores executivos no sistema visual Report Lu."
+    },
+    {
+      "id": "delivery_status",
+      "title": "Cronograma de entregas",
+      "summary": "Reconstrói a tabela fornecida pelo usuário com frente, projeto/produto, status atual, próximo marco e previsão de entrega, preservando todos os textos e prazos informados.",
+      "image_plan": "Sem imagem; usar tabela editorial com cores de status e agrupamentos por frente."
     }
   ]
 }

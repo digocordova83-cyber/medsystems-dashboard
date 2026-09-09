@@ -654,3 +654,10 @@
 - [x] Recalcular pacing e CPL por BU com o universo Bitrix-only; usar investimento externo somente como numerador financeiro explicitamente rotulado.
 - [x] Refazer o Report Lu com 418 leads Bitrix24 RD Station = sim, 397 atribuídos às BUs e 21 não atribuídos.
 - [x] Validar, publicar e entregar o Report Lu corrigido, disponível para download em PDF ou PPTX.
+- [x] Apurar o total bruto de registros de leads Bitrix24 até 07/09/2026, sem filtros de conteúdo, marca, origem ou deduplicação: 465 IDs únicos no mês.
+- [x] Separar os 465 leads brutos de setembro por BU usando exclusivamente o Pipeline de Vendas e mostrar os não atribuídos: 163 MedSystems, 242 BeautySystems, 20 no pipeline 20889 e 40 sem pipeline.
+- [x] Apurar os leads do RD Station até 07/09/2026 por BU e explicitar a unidade de contagem da fonte: 189 contatos novos MedSystems e 192 BeautySystems; conversões no período somam 213 e 231 contatos distintos, respectivamente.
+- [x] Revisar o Report Lu para usar exclusivamente leads Bitrix24 com `RD Station = sim` em todas as métricas de volume e BU.
+- [x] Refinar o layout das quatro lâminas atuais, preservando a identidade visual clean do Report Lu.
+- [x] Adicionar duas lâminas finais: síntese dos 15 projetos por status e tabela reconstruída de entregas, marcos e previsões.
+- [x] Validar visualmente, publicar e entregar o novo deck de seis lâminas em PDF/PPTX.

@@ -1,0 +1,85 @@
+<slide id="status_summary">
+  <background color="paper"/>
+  <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
+  <shape id="header-accent" type="rect" x="64" y="50" width="6" height="66" fill="accent" corner-radius="3"/>
+  <text id="slide-kicker" x="84" y="50" width="500" height="20" font="caption" size="12" color="accent" wrap="false"><strong>STATUS FINAL DO MÊS · SETEMBRO</strong></text>
+  <text id="slide-title" x="84" y="76" width="1010" height="42" font="heading" size="32" color="ink" wrap="false"><strong>15 entregas mapeadas; 5 avançam para conclusão</strong></text>
+  <text id="slide-subtitle" x="84" y="124" width="1060" height="24" font="body" size="15" color="muted" wrap="false">Síntese do cronograma enviado · status e prazos mantidos conforme o material recebido</text>
+
+  <shape id="total-card" type="rect" x="64" y="170" width="360" height="82" fill="#EFF6FF" corner-radius="16" shadow="true"/>
+  <icon id="total-icon" name="clipboard-list" x="88" y="191" width="38" height="38" color="brand"/>
+  <text id="total-label" x="146" y="184" width="250" height="18" font="caption" size="11" color="brand" wrap="false"><strong>ENTREGAS MAPEADAS</strong></text>
+  <text id="total-value" x="146" y="207" width="250" height="34" font="metric" size="31" color="ink" wrap="false"><strong>15</strong></text>
+
+  <shape id="progress-card" type="rect" x="440" y="170" width="360" height="82" fill="#ECFDF5" corner-radius="16" shadow="true"/>
+  <icon id="progress-icon" name="circle-check" x="464" y="191" width="38" height="38" color="#10B981"/>
+  <text id="progress-label" x="522" y="184" width="250" height="18" font="caption" size="11" color="#047857" wrap="false"><strong>FINALIZAÇÃO + DESENVOLVIMENTO</strong></text>
+  <text id="progress-value" x="522" y="207" width="250" height="34" font="metric" size="31" color="#047857" wrap="false"><strong>5</strong> <span size="14" color="muted">projetos</span></text>
+
+  <shape id="attention-card" type="rect" x="816" y="170" width="374" height="82" fill="#FFF7ED" corner-radius="16" shadow="true"/>
+  <icon id="attention-icon" name="triangle-alert" x="840" y="191" width="38" height="38" color="#F97316"/>
+  <text id="attention-label" x="898" y="184" width="264" height="18" font="caption" size="11" color="#C2410C" wrap="false"><strong>DEPENDÊNCIAS / A INICIAR</strong></text>
+  <text id="attention-value" x="898" y="207" width="264" height="34" font="metric" size="31" color="#C2410C" wrap="false"><strong>10</strong> <span size="14" color="muted">projetos</span></text>
+
+  <shape id="distribution-panel" type="rect" x="64" y="286" width="558" height="326" fill="#F8FAFC" corner-radius="18"/>
+  <text id="distribution-title" x="90" y="306" width="500" height="24" font="body" size="17" color="ink" wrap="false"><strong>Distribuição por status</strong></text>
+
+  <shape id="status-green-dot" type="ellipse" x="92" y="352" width="14" height="14" fill="#00B050"/>
+  <text id="status-green-label" x="120" y="346" width="230" height="24" font="body" size="14" color="ink" wrap="false">Finalização</text>
+  <shape id="status-green-bg" type="rect" x="346" y="352" width="220" height="12" fill="#DCFCE7" corner-radius="6"/>
+  <shape id="status-green-bar" type="rect" x="346" y="352" width="88" height="12" fill="#00B050" corner-radius="6"/>
+  <text id="status-green-value" x="576" y="345" width="24" height="24" font="caption" size="12" color="ink" align="right" wrap="false"><strong>2</strong></text>
+
+  <shape id="status-yellow-dot" type="ellipse" x="92" y="394" width="14" height="14" fill="#FFD800"/>
+  <text id="status-yellow-label" x="120" y="388" width="230" height="24" font="body" size="14" color="ink" wrap="false">Em desenvolvimento</text>
+  <shape id="status-yellow-bg" type="rect" x="346" y="394" width="220" height="12" fill="#FEF3C7" corner-radius="6"/>
+  <shape id="status-yellow-bar" type="rect" x="346" y="394" width="132" height="12" fill="#FFD800" corner-radius="6"/>
+  <text id="status-yellow-value" x="576" y="387" width="24" height="24" font="caption" size="12" color="ink" align="right" wrap="false"><strong>3</strong></text>
+
+  <shape id="status-orange-dot" type="ellipse" x="92" y="436" width="14" height="14" fill="#FF7A00"/>
+  <text id="status-orange-label" x="120" y="430" width="230" height="24" font="body" size="14" color="ink" wrap="false">Aguardando terceiros</text>
+  <shape id="status-orange-bg" type="rect" x="346" y="436" width="220" height="12" fill="#FFEDD5" corner-radius="6"/>
+  <shape id="status-orange-bar" type="rect" x="346" y="436" width="132" height="12" fill="#FF7A00" corner-radius="6"/>
+  <text id="status-orange-value" x="576" y="429" width="24" height="24" font="caption" size="12" color="ink" align="right" wrap="false"><strong>3</strong></text>
+
+  <shape id="status-red-dot" type="ellipse" x="92" y="478" width="14" height="14" fill="#E30613"/>
+  <text id="status-red-label" x="120" y="472" width="230" height="24" font="body" size="14" color="ink" wrap="false">Em atraso</text>
+  <shape id="status-red-bg" type="rect" x="346" y="478" width="220" height="12" fill="#FEE2E2" corner-radius="6"/>
+  <shape id="status-red-bar" type="rect" x="346" y="478" width="44" height="12" fill="#E30613" corner-radius="6"/>
+  <text id="status-red-value" x="576" y="471" width="24" height="24" font="caption" size="12" color="ink" align="right" wrap="false"><strong>1</strong></text>
+
+  <shape id="status-blue-dot" type="ellipse" x="92" y="520" width="14" height="14" fill="#0F6CE5"/>
+  <text id="status-blue-label" x="120" y="514" width="230" height="24" font="body" size="14" color="ink" wrap="false">A iniciar</text>
+  <shape id="status-blue-bg" type="rect" x="346" y="520" width="220" height="12" fill="#DBEAFE" corner-radius="6"/>
+  <shape id="status-blue-bar" type="rect" x="346" y="520" width="176" height="12" fill="#0F6CE5" corner-radius="6"/>
+  <text id="status-blue-value" x="576" y="513" width="24" height="24" font="caption" size="12" color="ink" align="right" wrap="false"><strong>4</strong></text>
+
+  <shape id="status-gray-dot" type="ellipse" x="92" y="562" width="14" height="14" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <text id="status-gray-label" x="120" y="556" width="230" height="24" font="body" size="14" color="ink" wrap="false">Aguardando briefing</text>
+  <shape id="status-gray-bg" type="rect" x="346" y="562" width="220" height="12" fill="#E2E8F0" corner-radius="6"/>
+  <shape id="status-gray-bar" type="rect" x="346" y="562" width="88" height="12" fill="#64748B" corner-radius="6"/>
+  <text id="status-gray-value" x="576" y="555" width="24" height="24" font="caption" size="12" color="ink" align="right" wrap="false"><strong>2</strong></text>
+
+  <shape id="milestones-panel" type="rect" x="646" y="286" width="544" height="326" fill="#071B46" corner-radius="18"/>
+  <text id="milestones-title" x="674" y="306" width="480" height="24" font="body" size="17" color="paper" wrap="false"><strong>Próximos marcos</strong></text>
+  <shape id="milestone-line" type="line" x="708" y="354" width="0" height="212" stroke="#254B83" stroke-width="3"/>
+
+  <shape id="milestone-1-dot" type="ellipse" x="698" y="350" width="20" height="20" fill="#10B981"/>
+  <text id="milestone-1-date" x="738" y="342" width="94" height="24" font="caption" size="12" color="#6EE7B7" wrap="false"><strong>08–09/09</strong></text>
+  <text id="milestone-1-text" x="838" y="342" width="316" height="42" font="body" size="14" color="paper"><p>6 entregas com previsão imediata</p></text>
+
+  <shape id="milestone-2-dot" type="ellipse" x="698" y="408" width="20" height="20" fill="#FF7A00"/>
+  <text id="milestone-2-date" x="738" y="400" width="94" height="24" font="caption" size="12" color="#FDBA74" wrap="false"><strong>08–11/09</strong></text>
+  <text id="milestone-2-text" x="838" y="400" width="316" height="42" font="body" size="14" color="paper"><p>3 projetos Beauty aguardam materiais</p></text>
+
+  <shape id="milestone-3-dot" type="ellipse" x="698" y="466" width="20" height="20" fill="#0F6CE5"/>
+  <text id="milestone-3-date" x="738" y="458" width="94" height="24" font="caption" size="12" color="#93C5FD" wrap="false"><strong>18/09</strong></text>
+  <text id="milestone-3-text" x="838" y="458" width="316" height="42" font="body" size="14" color="paper"><p>4 projetos previstos para entrega</p></text>
+
+  <shape id="milestone-4-dot" type="ellipse" x="698" y="524" width="20" height="20" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/>
+  <text id="milestone-4-date" x="738" y="516" width="94" height="36" font="caption" size="12" color="#CBD5E1"><p><strong>2ª quinzena</strong></p></text>
+  <text id="milestone-4-text" x="838" y="516" width="316" height="42" font="body" size="14" color="paper"><p>2 novos protocolos aguardam briefing</p></text>
+
+  <text id="source-note" x="64" y="650" width="1030" height="20" font="caption" size="11" color="muted" wrap="false">Fonte: quadro de status fornecido pelo usuário · atualização recebida em 08/09</text>
+  <text id="page-number" x="1132" y="648" width="58" height="22" font="caption" size="11" color="muted" align="right" wrap="false">05 / 06</text>
+</slide>

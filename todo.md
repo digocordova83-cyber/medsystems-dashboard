@@ -666,3 +666,6 @@
 - [x] Apurar no Bitrix24 os mesmos leads `RD Station = sim` por SDR, MQL, SAL, SQL, descartado e fechado, sem inferir etapas ausentes.
 - [x] Adicionar uma lâmina auditável de pipeline antes do plano de mídia.
 - [x] Validar, publicar e entregar o deck atualizado com o cronograma preservado na lâmina final.
+- [x] Separar `Convertidos` de `SQL` na visão dos 418 leads Bitrix24 com `RD Station = sim`, sem dupla contagem.
+- [x] Recalcular SQL e Convertidos por BU diretamente pelos status atuais do Bitrix24.
+- [x] Atualizar, validar, publicar e entregar a lâmina de pipeline revisada.

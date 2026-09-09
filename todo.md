@@ -705,3 +705,22 @@
 - [x] Adicionar e executar testes Vitest para a nova regra Bitrix-only.
 - [x] Validar no navegador os totais de referência de 01–08/09: 173 MedSystems, 244 BeautySystems e 25 não atribuídos.
 - [x] Salvar, publicar e entregar o dashboard atualizado.
+- [x] Extrair do documento `Definição e identificadores — Leads de Marketing` todos os filtros, inclusões e exclusões definidos para o RD Station.
+- [x] Mapear os filtros do documento para os campos e eventos reais persistidos nas contas RD Station MedSystems e BeautySystems.
+- [x] Aplicar exatamente os filtros no período de 01–08/09/2026, sem inferir condições não descritas.
+- [x] Validar e informar o número de conversões por BU, com a definição da unidade de contagem explicitada: 223 MedSystems e 244 BeautySystems.
+- [x] Extrair os contatos únicos elegíveis pelos filtros documentados do RD Station no corte de 01–08/09/2026.
+- [x] Exportar nome, e-mail e telefone em planilha Excel separada por MedSystems e BeautySystems, sem contatos duplicados.
+- [x] Validar contagens, campos ausentes e integridade do arquivo antes da entrega: 207 MedSystems e 227 BeautySystems.
+- [x] Cruzar os 434 contatos únicos filtrados do RD Station com todos os leads Bitrix24 de 01–08/09/2026 por e-mail e/ou telefone normalizados.
+- [x] Deduplicar o resultado por contato RD e separar matches por e-mail, telefone, ambos e casos ambíguos.
+- [x] Informar quantos contatos chegaram ao Bitrix24 por BU, sem expor PII no resumo: 207 MedSystems e 227 BeautySystems, 100% encontrados.
+- [x] Detalhar os 434 contatos conciliados pelas fontes originais registradas no RD Station, por BU.
+- [x] Detalhar os IDs de lead correspondentes pelas fontes originais do Bitrix24, por BU de origem no RD.
+- [x] Comparar RD Station versus Bitrix24 e destacar divergências de classificação sem duplicar contatos ou leads.
+- [x] Auditar o componente atual de campanha, conjunto e criativo e identificar os campos que causam truncamento e baixa legibilidade.
+- [x] Redesenhar a tabela com melhor contraste, hierarquia, larguras, quebra controlada, tooltips e leitura responsiva.
+- [x] Auditar os campos e endpoints nativos disponíveis para imagens/miniaturas dos anúncios Meta nas contas oficiais.
+- [x] Criar galeria visual de criativos Meta com campanha, conjunto, anúncio, status e métricas, além de filtros de campanha e conjunto.
+- [x] Adicionar estados de carregamento, imagem indisponível e erro sem inventar criativos.
+- [x] Criar/atualizar testes Vitest, validar desktop/mobile, salvar e publicar as melhorias.

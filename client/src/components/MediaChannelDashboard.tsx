@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
-import { Activity, ArrowUpRight, BarChart3, CalendarDays, CircleDollarSign, Filter, Images, Lightbulb, MousePointerClick, Target } from "lucide-react";
+import { Activity, ArrowUpRight, BarChart3, CalendarDays, CircleDollarSign, Filter, Images, Lightbulb, MousePointerClick, Search, Target } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 type Brand = "all" | "medsystems" | "beautysystems";
@@ -100,9 +100,54 @@ function CampaignDistribution({ rows, totalSpend }: { rows: { campaignId: string
   return <div className="rounded-3xl border border-white/10 bg-black/15 p-5"><PanelHeader eyebrow="Alocação" title="Distribuição de verba" detail={`${brl(totalSpend)} distribuídos entre as campanhas do filtro.`} /><div className="mt-5 space-y-3">{rows.slice(0, 8).map((item, index) => <div key={item.campaignId}><div className="mb-1.5 flex items-center justify-between gap-3"><span className="truncate text-sm text-slate-300" title={item.campaignName}>{item.campaignName}</span><span className="shrink-0 font-mono-ui text-xs text-white">{brl(item.spend)} · {percent(item.spendShare)}</span></div><div className="h-2 overflow-hidden rounded-full bg-white/5"><div className={index === 0 ? "h-full rounded-full bg-cyan-300" : index === 1 ? "h-full rounded-full bg-violet-300" : "h-full rounded-full bg-emerald-300"} style={{ width: `${Math.max(2, item.spendShare)}%` }} /></div></div>)}</div></div>;
 }
 
-function ActiveCreatives({ rows, campaignId, statusAsOf }: { rows: { campaignId: string; campaignName: string; adId: string; adName: string; effectiveStatus: "ACTIVE"; previewUrl: string | null; metricsThrough: string | null }[]; campaignId: string; statusAsOf: string | null }) {
-  return <section className="rounded-2xl border border-violet-200/15 bg-violet-300/[.035] p-5"><div className="flex flex-col justify-between gap-3 md:flex-row md:items-end"><PanelHeader eyebrow="Criativos Meta" title="Anúncios com status ativo" detail={campaignId === "all" ? "Anúncios ativos organizados por campanha, independentemente da entrega no intervalo de mídia." : "Anúncios ativos da campanha selecionada."} /><Badge variant="outline" className="w-fit border-emerald-200/20 bg-emerald-200/[.05] text-emerald-100">Status efetivo em {statusAsOf?.split("-").reverse().join("/")}</Badge></div>{rows.length ? <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3">{rows.slice(0, 12).map(item => <article key={item.adId} className="rounded-2xl border border-white/10 bg-black/20 p-4"><div className="flex items-start justify-between gap-3"><div className="min-w-0"><p className="truncate text-sm font-bold text-white" title={item.adName}>{item.adName}</p><p className="mt-1 truncate text-xs text-muted-foreground" title={item.campaignName}>{item.campaignName}</p></div><Badge variant="outline" className="shrink-0 border-emerald-200/20 text-emerald-100">Ativo</Badge></div><div className="mt-4 grid grid-cols-2 gap-2"><Metric label="ID do anúncio" value={item.adId} /><Metric label="Último registro" value={item.metricsThrough?.split("-").reverse().join("/") ?? "Indisponível"} /></div><div className="mt-4 flex items-center justify-between gap-3 text-xs"><span className="text-muted-foreground">Desempenho permanece no nível campanha</span>{item.previewUrl ? <a href={item.previewUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 font-medium text-violet-100 hover:text-white">Ver prévia <ArrowUpRight className="h-3.5 w-3.5" /></a> : <span className="text-muted-foreground">Prévia indisponível</span>}</div></article>)}</div> : <EmptyState title="Nenhum criativo ativo identificado" detail="O snapshot de status não encontrou anúncios ativos para a marca e campanha selecionadas." />}</section>;
+type CreativeRow = {
+  brand: "medsystems" | "beautysystems";
+  campaignId: string;
+  campaignName: string;
+  adsetId: string;
+  adsetName: string;
+  adId: string;
+  adName: string;
+  effectiveStatus: "ACTIVE";
+  statusAsOf: string | null;
+  thumbnailUrl: string | null;
+  previewUrl: string | null;
+  spend: number;
+  leads: number;
+  impressions: number;
+  clicks: number;
+  cpl: number | null;
+  ctr: number | null;
+  metricsThrough: string | null;
+};
+
+function ActiveCreatives({ rows, campaignId, statusAsOf }: { rows: CreativeRow[]; campaignId: string; statusAsOf: string | null }) {
+  const [adsetId, setAdsetId] = useState("all");
+  const [search, setSearch] = useState("");
+  const [visible, setVisible] = useState(12);
+  useEffect(() => { setAdsetId("all"); setSearch(""); setVisible(12); }, [campaignId, statusAsOf]);
+  const adsets = useMemo(() => {
+    const grouped = new Map<string, { id: string; label: string; campaignName: string; count: number }>();
+    rows.forEach(item => { const current = grouped.get(item.adsetId) ?? { id: item.adsetId, label: item.adsetName, campaignName: item.campaignName, count: 0 }; current.count += 1; grouped.set(item.adsetId, current); });
+    return Array.from(grouped.values()).sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+  }, [rows]);
+  const filtered = useMemo(() => {
+    const term = search.trim().toLocaleLowerCase("pt-BR");
+    return rows.filter(item => (adsetId === "all" || item.adsetId === adsetId) && (!term || [item.adName, item.adsetName, item.campaignName].some(value => value.toLocaleLowerCase("pt-BR").includes(term))));
+  }, [rows, adsetId, search]);
+  const displayed = filtered.slice(0, visible);
+
+  return <section className="overflow-hidden rounded-[28px] border border-violet-200/15 bg-[radial-gradient(circle_at_90%_0%,rgba(167,139,250,.14),transparent_35%),linear-gradient(145deg,rgba(16,13,36,.96),rgba(8,14,29,.98))] shadow-2xl shadow-violet-950/20">
+    <div className="border-b border-white/10 p-5 sm:p-6"><div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end"><PanelHeader eyebrow="Criativos Meta" title="Galeria de anúncios ativos" detail={campaignId === "all" ? "Miniaturas reais, estrutura campanha → conjunto → anúncio e desempenho agregado no período selecionado." : "Criativos ativos da campanha selecionada, com métricas no nível de anúncio."} /><div className="flex flex-wrap items-center gap-2"><Badge variant="outline" className="w-fit border-emerald-200/20 bg-emerald-200/[.06] text-emerald-100">Status em {statusAsOf?.split("-").reverse().join("/") ?? "data indisponível"}</Badge><Badge variant="outline" className="border-violet-200/20 bg-violet-200/[.06] text-violet-100">{integer(filtered.length)} criativos</Badge></div></div>
+      {rows.length ? <div className="mt-5 grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(260px,.7fr)]"><label className="relative block"><Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-violet-100/55" /><input aria-label="Buscar criativo Meta" value={search} onChange={event => { setSearch(event.target.value); setVisible(12); }} placeholder="Buscar campanha, conjunto ou anúncio…" className="h-12 w-full rounded-2xl border border-white/10 bg-black/25 pl-11 pr-4 text-sm text-white outline-none placeholder:text-slate-500 focus:border-violet-200/30 focus:ring-2 focus:ring-violet-200/20" /></label><label><span className="sr-only">Filtrar por conjunto de anúncios</span><select aria-label="Filtrar por conjunto de anúncios" value={adsetId} onChange={event => { setAdsetId(event.target.value); setVisible(12); }} className="h-12 w-full rounded-2xl border border-white/10 bg-[#0b1222] px-4 text-sm text-white outline-none focus:border-violet-200/30 focus:ring-2 focus:ring-violet-200/20"><option value="all">Todos os conjuntos · {rows.length}</option>{adsets.map(item => <option key={item.id} value={item.id}>{item.label}{campaignId === "all" ? ` · ${item.campaignName}` : ""} · {item.count}</option>)}</select></label></div> : null}
+    </div>
+    {rows.length && filtered.length ? <><div className="grid gap-4 p-4 sm:p-5 md:grid-cols-2 2xl:grid-cols-3">{displayed.map(item => <CreativeCard key={item.adId} item={item} />)}</div>{visible < filtered.length ? <div className="border-t border-white/8 p-5 text-center"><Button variant="outline" onClick={() => setVisible(current => current + 12)} className="border-violet-200/20 bg-violet-200/[.05] text-violet-50 hover:bg-violet-200/10">Carregar mais {Math.min(12, filtered.length - visible)} criativos</Button></div> : null}</> : rows.length ? <div className="p-5"><EmptyState title="Nenhum criativo encontrado" detail="Ajuste a busca ou o filtro de conjunto para visualizar os anúncios ativos." /></div> : <div className="p-5"><EmptyState title="Nenhum criativo ativo identificado" detail="A fonte não encontrou anúncios ativos para a marca, campanha e período selecionados." /></div>}
+  </section>;
 }
+
+function CreativeCard({ item }: { item: CreativeRow }) { return <article className="group overflow-hidden rounded-2xl border border-white/10 bg-black/25 transition duration-200 hover:-translate-y-0.5 hover:border-violet-200/25 hover:shadow-xl hover:shadow-violet-950/20"><CreativeImage src={item.thumbnailUrl} alt={`Miniatura do anúncio ${item.adName}`} /><div className="p-4"><div className="flex items-start justify-between gap-3"><div className="min-w-0"><p className="line-clamp-2 text-sm font-bold leading-5 text-white" title={item.adName}>{item.adName}</p><p className="mt-1 line-clamp-1 text-[11px] text-violet-100/70" title={item.adsetName}>{item.adsetName}</p></div><Badge variant="outline" className="shrink-0 border-emerald-200/20 bg-emerald-200/[.05] text-[10px] text-emerald-100">Ativo</Badge></div><p className="mt-3 line-clamp-1 border-t border-white/8 pt-3 text-[11px] text-muted-foreground" title={item.campaignName}>{item.campaignName}</p><div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4"><CreativeMetric label="Verba" value={brl(item.spend)} /><CreativeMetric label="Leads" value={integer(item.leads)} /><CreativeMetric label="CPL" value={item.cpl == null ? "—" : brl(item.cpl)} /><CreativeMetric label="CTR" value={item.ctr == null ? "—" : percent(item.ctr)} /></div><div className="mt-4 flex items-center justify-between gap-3 text-[11px]"><span className="text-muted-foreground">{integer(item.impressions)} imp. · {integer(item.clicks)} cliques</span>{item.previewUrl ? <a href={item.previewUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 font-semibold text-violet-100 transition-colors hover:text-white">Abrir anúncio <ArrowUpRight className="h-3.5 w-3.5" /></a> : <span className="text-muted-foreground">Prévia indisponível</span>}</div></div></article>; }
+function CreativeImage({ src, alt }: { src: string | null; alt: string }) { const [failed, setFailed] = useState(false); return <div className="relative aspect-[16/10] overflow-hidden border-b border-white/8 bg-[radial-gradient(circle_at_50%_30%,rgba(167,139,250,.18),transparent_55%),#090f1d]">{src && !failed ? <img src={src} alt={alt} loading="lazy" onError={() => setFailed(true)} className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]" /> : <div className="grid h-full place-items-center text-center"><div><Images className="mx-auto h-7 w-7 text-violet-200/55" /><p className="mt-2 text-xs text-muted-foreground">Imagem indisponível</p></div></div>}<span className="absolute left-3 top-3 rounded-full border border-black/20 bg-black/65 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[.12em] text-white backdrop-blur">{src && !failed ? "Criativo" : "Sem imagem"}</span></div>; }
+function CreativeMetric({ label, value }: { label: string; value: string }) { return <div className="rounded-xl border border-white/7 bg-white/[.035] px-2.5 py-2"><p className="text-[8px] uppercase tracking-[.1em] text-muted-foreground">{label}</p><p className="mt-1 truncate font-mono-ui text-[11px] font-bold text-white" title={value}>{value}</p></div>; }
 
 function Metric({ label, value }: { label: string; value: string }) { return <div className="rounded-lg border border-white/6 bg-white/[.025] p-2"><p className="text-[9px] uppercase tracking-[.1em] text-muted-foreground">{label}</p><p className="mt-1 truncate text-xs font-semibold text-white">{value}</p></div>; }
 function LoadingState({ platform }: { platform: string }) { return <section className="grid min-h-[420px] place-items-center rounded-2xl border border-white/10 bg-black/15"><div className="text-center"><BarChart3 className="mx-auto h-7 w-7 animate-pulse text-cyan-200" /><p className="mt-3 text-sm text-muted-foreground">Montando a visão de {platform}…</p></div></section>; }

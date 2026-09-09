@@ -2,7 +2,6 @@ import { and, desc, eq, gte, inArray, lt, sql } from "drizzle-orm";
 import { mediaDailyPerformance } from "../../drizzle/schema";
 import { getDb } from "../db";
 import { dedupeCanonicalCampaignRows, sumCampaignMetrics } from "./canonicalCampaignRows";
-import { META_ACTIVE_AD_IDS, META_ACTIVE_STATUS_AS_OF, META_CAMPAIGN_PREVIEWS } from "./metaActiveAdsSnapshot";
 
 export type MediaDashboardPlatform = "google_ads" | "meta_ads";
 export type MediaDashboardBrand = "all" | "medsystems" | "beautysystems";
@@ -24,6 +23,21 @@ export function validateMediaDateRange(startDate: string, endDate: string) {
   const endExclusive = new Date(`${endDate}T00:00:00-03:00`);
   endExclusive.setDate(endExclusive.getDate() + 1);
   return { start, endExclusive };
+}
+
+export function deriveCreativeMetrics(input: { spend: unknown; leads: unknown; impressions: unknown; clicks: unknown }) {
+  const spend = numeric(input.spend);
+  const leads = numeric(input.leads);
+  const impressions = numeric(input.impressions);
+  const clicks = numeric(input.clicks);
+  return {
+    spend,
+    leads,
+    impressions,
+    clicks,
+    cpl: leads > 0 ? spend / leads : null,
+    ctr: impressions > 0 ? (clicks / impressions) * 100 : null,
+  };
 }
 
 export async function mediaChannelDashboard(input: {
@@ -101,29 +115,43 @@ export async function mediaChannelDashboard(input: {
   const campaignOptions = Array.from(optionMap.values()).sort((a, b) => b.spend - a.spend);
   const coverageDates = canonicalBaseRows.map(row => new Date(row.reportDate).getTime()).filter(Number.isFinite);
 
-  const activeIds = Array.from(META_ACTIVE_AD_IDS);
-  const activeCreatives = input.platform === "meta_ads" && activeIds.length
+  const activeCreatives = input.platform === "meta_ads"
     ? await db.select({
       campaignId: mediaDailyPerformance.campaignId,
       campaignName: mediaDailyPerformance.campaignName,
       brand: mediaDailyPerformance.brand,
+      adsetId: mediaDailyPerformance.adGroupId,
+      adsetName: mediaDailyPerformance.adGroupName,
       adId: mediaDailyPerformance.adId,
       adName: mediaDailyPerformance.adName,
       lastMetricDate: sql<Date>`max(${mediaDailyPerformance.reportDate})`,
+      spend: sql<number>`sum(${mediaDailyPerformance.spend})`,
+      leads: sql<number>`sum(${mediaDailyPerformance.platformLeads})`,
+      impressions: sql<number>`sum(${mediaDailyPerformance.impressions})`,
+      clicks: sql<number>`sum(${mediaDailyPerformance.clicks})`,
+      thumbnailUrl: sql<string | null>`max(json_unquote(json_extract(cast(${mediaDailyPerformance.rawPayload} as json), '$.thumbnail_storage_path')))`,
+      previewUrl: sql<string | null>`max(json_unquote(json_extract(cast(${mediaDailyPerformance.rawPayload} as json), '$.ad_preview_shareable_link')))`,
     }).from(mediaDailyPerformance).where(and(
       eq(mediaDailyPerformance.recordLevel, "ad"),
       eq(mediaDailyPerformance.platform, "meta_ads"),
       inArray(mediaDailyPerformance.brand, brands),
-      inArray(mediaDailyPerformance.adId, activeIds),
+      gte(mediaDailyPerformance.reportDate, start),
+      lt(mediaDailyPerformance.reportDate, endExclusive),
+      sql`json_unquote(json_extract(cast(${mediaDailyPerformance.rawPayload} as json), '$.effective_status')) = 'ACTIVE'`,
       input.campaignId ? eq(mediaDailyPerformance.campaignId, input.campaignId) : undefined,
     )).groupBy(
       mediaDailyPerformance.campaignId,
       mediaDailyPerformance.campaignName,
       mediaDailyPerformance.brand,
+      mediaDailyPerformance.adGroupId,
+      mediaDailyPerformance.adGroupName,
       mediaDailyPerformance.adId,
       mediaDailyPerformance.adName,
-    ).orderBy(desc(sql`max(${mediaDailyPerformance.reportDate})`))
+    ).orderBy(desc(sql`sum(${mediaDailyPerformance.spend})`), desc(sql`sum(${mediaDailyPerformance.platformLeads})`))
     : [];
+
+  const activeStatusDates = activeCreatives.map(row => row.lastMetricDate ? new Date(row.lastMetricDate).getTime() : Number.NaN).filter(Number.isFinite);
+  const activeStatusAsOf = activeStatusDates.length ? localDate(new Date(Math.max(...activeStatusDates))) : null;
 
   const topThreeSpend = campaigns.slice(0, 3).reduce((sum, row) => sum + row.spend, 0);
   return {
@@ -149,17 +177,24 @@ export async function mediaChannelDashboard(input: {
     byDay: Array.from(byDayMap.values()).sort((a, b) => a.date.localeCompare(b.date)),
     campaigns,
     campaignOptions,
-    activeCreatives: activeCreatives.map(row => ({
-      campaignId: row.campaignId,
-      campaignName: row.campaignName ?? "Sem nome",
-      brand: row.brand,
-      adId: row.adId ?? "",
-      adName: row.adName ?? "Sem nome",
-      effectiveStatus: "ACTIVE" as const,
-      statusAsOf: META_ACTIVE_STATUS_AS_OF,
-      previewUrl: META_CAMPAIGN_PREVIEWS[row.campaignId]?.adId === row.adId ? META_CAMPAIGN_PREVIEWS[row.campaignId]?.previewUrl ?? null : null,
-      metricsThrough: row.lastMetricDate ? localDate(row.lastMetricDate) : null,
-    })),
+    activeCreatives: activeCreatives.map(row => {
+      const metrics = deriveCreativeMetrics(row);
+      return {
+        campaignId: row.campaignId,
+        campaignName: row.campaignName ?? "Sem nome",
+        brand: row.brand,
+        adsetId: row.adsetId ?? "",
+        adsetName: row.adsetName ?? "Sem conjunto",
+        adId: row.adId ?? "",
+        adName: row.adName ?? "Sem nome",
+        effectiveStatus: "ACTIVE" as const,
+        statusAsOf: activeStatusAsOf,
+        thumbnailUrl: row.thumbnailUrl && row.thumbnailUrl !== "null" ? row.thumbnailUrl : null,
+        previewUrl: row.previewUrl && row.previewUrl !== "null" ? row.previewUrl : null,
+        ...metrics,
+        metricsThrough: row.lastMetricDate ? localDate(row.lastMetricDate) : null,
+      };
+    }),
     insights: {
       topSpendCampaign: campaigns[0] ?? null,
       topLeadCampaign: [...campaigns].sort((a, b) => b.leads - a.leads || b.spend - a.spend)[0] ?? null,
@@ -168,7 +203,8 @@ export async function mediaChannelDashboard(input: {
     },
     methodology: {
       campaignLevelOnly: true,
-      activeStatusAsOf: input.platform === "meta_ads" ? META_ACTIVE_STATUS_AS_OF : null,
+      activeStatusAsOf: input.platform === "meta_ads" ? activeStatusAsOf : null,
+      creativeMetricsLevel: input.platform === "meta_ads" ? "ad" : null,
       officialRecommendationsAvailable: false,
     },
   };

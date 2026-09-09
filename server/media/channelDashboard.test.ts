@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { META_ACTIVE_AD_IDS, META_ACTIVE_STATUS_AS_OF } from "./metaActiveAdsSnapshot";
-import { validateMediaDateRange } from "./channelDashboard";
+import { deriveCreativeMetrics, validateMediaDateRange } from "./channelDashboard";
 
 describe("painéis gerenciais de mídia", () => {
   it("aceita intervalo inclusivo e converte o fim para limite exclusivo", () => {
@@ -13,8 +12,18 @@ describe("painéis gerenciais de mídia", () => {
     expect(() => validateMediaDateRange("2026-08-20", "2026-08-01")).toThrow("data inicial");
   });
 
-  it("mantém um snapshot Meta explícito e não vazio", () => {
-    expect(META_ACTIVE_STATUS_AS_OF).toBe("2026-08-20");
-    expect(META_ACTIVE_AD_IDS.size).toBe(128);
+  it("calcula CPL e CTR no nível de anúncio", () => {
+    expect(deriveCreativeMetrics({ spend: "250", leads: "5", impressions: "1000", clicks: "40" })).toEqual({
+      spend: 250,
+      leads: 5,
+      impressions: 1000,
+      clicks: 40,
+      cpl: 50,
+      ctr: 4,
+    });
+  });
+
+  it("mantém CPL e CTR indisponíveis quando não há denominador", () => {
+    expect(deriveCreativeMetrics({ spend: 80, leads: 0, impressions: 0, clicks: 0 })).toMatchObject({ cpl: null, ctr: null });
   });
 });

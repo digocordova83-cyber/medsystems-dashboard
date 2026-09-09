@@ -3,45 +3,45 @@
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="4" fill="brand"/>
 
   <text id="slide-kicker" x="64" y="52" width="300" height="20" font="caption" size="12" color="accent" wrap="false"><strong>ENTRADA NO CRM · 01–07/09</strong></text>
-  <text id="slide-title" x="64" y="78" width="920" height="42" font="heading" size="32" color="ink" wrap="false">Mídia paga representa 80% da entrada no Bitrix24</text>
-  <text id="slide-subtitle" x="64" y="126" width="1010" height="24" font="body" size="16" color="muted" wrap="false">238 IDs de leads de marketing em pipelines de BU reconhecidos · TITLE = Oportunidade do RD Station</text>
+  <text id="slide-title" x="64" y="78" width="920" height="42" font="heading" size="32" color="ink" wrap="false">Mídia paga representa 68% dos leads atribuídos às BUs</text>
+  <text id="slide-subtitle" x="64" y="126" width="1050" height="24" font="body" size="16" color="muted" wrap="false">406 leads com RD Station = sim em pipelines de BU reconhecidos · título não é filtro de inclusão</text>
 
   <shape id="total-card" type="rect" x="64" y="174" width="244" height="62" fill="surface"/>
-  <text id="total-card-label" x="82" y="184" width="208" height="16" font="caption" size="11" color="muted" wrap="false">LEADS DE MARKETING</text>
-  <text id="total-card-value" x="82" y="202" width="208" height="28" font="metric" size="27" color="brand" wrap="false"><strong>238</strong></text>
+  <text id="total-card-label" x="82" y="184" width="208" height="16" font="caption" size="11" color="muted" wrap="false">LEADS ATRIBUÍDOS ÀS BUS</text>
+  <text id="total-card-value" x="82" y="202" width="208" height="28" font="metric" size="27" color="brand" wrap="false"><strong>406</strong></text>
 
   <shape id="paid-card" type="rect" x="324" y="174" width="244" height="62" fill="surface"/>
   <text id="paid-card-label" x="342" y="184" width="208" height="16" font="caption" size="11" color="muted" wrap="false">MÍDIA PAGA</text>
-  <text id="paid-card-value" x="342" y="202" width="208" height="28" font="metric" size="27" color="brand" wrap="false"><strong>190</strong> <span size="15" color="muted">· 79,8%</span></text>
+  <text id="paid-card-value" x="342" y="202" width="208" height="28" font="metric" size="27" color="brand" wrap="false"><strong>275</strong> <span size="15" color="muted">· 67,7%</span></text>
 
   <shape id="organic-card" type="rect" x="584" y="174" width="244" height="62" fill="surface"/>
-  <text id="organic-card-label" x="602" y="184" width="208" height="16" font="caption" size="11" color="muted" wrap="false">ORGÂNICO</text>
-  <text id="organic-card-value" x="602" y="202" width="208" height="28" font="metric" size="27" color="accent" wrap="false"><strong>40</strong> <span size="15" color="muted">· 16,8%</span></text>
+  <text id="organic-card-label" x="602" y="184" width="208" height="16" font="caption" size="11" color="muted" wrap="false">ORGÂNICO / DIRETO</text>
+  <text id="organic-card-value" x="602" y="202" width="208" height="28" font="metric" size="27" color="accent" wrap="false"><strong>56</strong> <span size="15" color="muted">· 13,8%</span></text>
 
   <shape id="other-card" type="rect" x="844" y="174" width="346" height="62" fill="surface"/>
   <text id="other-card-label" x="862" y="184" width="310" height="16" font="caption" size="11" color="muted" wrap="false">REFERÊNCIA + NÃO CLASSIFICADO</text>
-  <text id="other-card-value" x="862" y="202" width="310" height="28" font="metric" size="27" color="ink" wrap="false"><strong>8</strong> <span size="15" color="muted">· 3,4%</span></text>
+  <text id="other-card-value" x="862" y="202" width="310" height="28" font="metric" size="27" color="ink" wrap="false"><strong>75</strong> <span size="15" color="muted">· 18,5%</span></text>
 
   <text id="table-title" x="64" y="260" width="500" height="22" font="body" size="16" color="ink" wrap="false"><strong>Detalhe por canal</strong></text>
   <table id="channel-table" x="64" y="292" width="526" height="238" columns="3,2,2,2" rows="38,50,50,50,50" font="body" size="15" color="ink" padding="8 12" header-fill="brand" header-border="1 brand" border-h="1 solid hairline">
     <tr color="paper"><td><strong>Canal</strong></td><td align="right"><strong>Med</strong></td><td align="right"><strong>Beauty</strong></td><td align="right"><strong>Total</strong></td></tr>
-    <tr><td>Mídia paga</td><td align="right">63</td><td align="right">127</td><td align="right"><strong>190</strong></td></tr>
-    <tr fill="#F0FDF4"><td>Orgânico</td><td align="right">14</td><td align="right">26</td><td align="right"><strong>40</strong></td></tr>
+    <tr><td>Mídia paga</td><td align="right">78</td><td align="right">197</td><td align="right"><strong>275</strong></td></tr>
+    <tr fill="#F0FDF4"><td>Orgânico / direto</td><td align="right">21</td><td align="right">35</td><td align="right"><strong>56</strong></td></tr>
     <tr><td>Referência</td><td align="right">2</td><td align="right">5</td><td align="right"><strong>7</strong></td></tr>
-    <tr fill="#F9FAFB"><td>Não classificado</td><td align="right">0</td><td align="right">1</td><td align="right"><strong>1</strong></td></tr>
+    <tr fill="#F9FAFB"><td>Não classificado</td><td align="right">62</td><td align="right">6</td><td align="right"><strong>68</strong></td></tr>
   </table>
 
   <text id="chart-title" x="644" y="260" width="500" height="22" font="body" size="16" color="ink" wrap="false"><strong>Composição por BU</strong></text>
-  <chart id="channel-chart" type="column" x="628" y="292" width="562" height="238" font="caption" size="12" categories="MedSystems,BeautySystems" color="brand,accent,#F59E0B,#9CA3AF" legend="bottom" data-labels="true" y-axis="true" y-max="170" gridlines="h" gap-width="90">
-    <series name="Mídia paga" values="63,127" label-expr="{value:.0f}"/>
-    <series name="Orgânico" values="14,26" label-expr="{value:.0f}"/>
+  <chart id="channel-chart" type="column" x="628" y="292" width="562" height="238" font="caption" size="12" categories="MedSystems,BeautySystems" color="brand,accent,#F59E0B,#9CA3AF" legend="bottom" data-labels="true" y-axis="true" y-max="220" gridlines="h" gap-width="90">
+    <series name="Mídia paga" values="78,197" label-expr="{value:.0f}"/>
+    <series name="Orgânico / direto" values="21,35" label-expr="{value:.0f}"/>
     <series name="Referência" values="2,5" label-expr="{value:.0f}"/>
-    <series name="Não classificado" values="0,1" label-expr="{value:.0f}"/>
+    <series name="Não classificado" values="62,6" label-expr="{value:.0f}"/>
   </chart>
 
   <shape id="unmapped-note-bg" type="rect" x="64" y="562" width="1126" height="54" fill="#FFF7ED"/>
-  <text id="unmapped-note" x="84" y="574" width="1084" height="30" font="body" size="15" color="ink" line-height="1.18"><p><strong color="#C2410C">Monitoramento:</strong> 20 leads do pipeline 20889 (Consumíveis) ficam fora das BUs até a confirmação do significado de DSB.</p></text>
+  <text id="unmapped-note" x="84" y="574" width="1084" height="30" font="body" size="15" color="ink" line-height="1.18"><p><strong color="#C2410C">Não atribuídos:</strong> 25 leads com RD Station = sim ficam fora das BUs — 23 no pipeline 20889 (Consumíveis) e 2 sem pipeline.</p></text>
 
-  <text id="source-note" x="64" y="650" width="880" height="22" font="caption" size="12" color="muted" wrap="false">Fonte: Bitrix24 · data original DATE_CREATE em Brasília · classificação por campos de origem e UTM quando disponíveis</text>
+  <text id="source-note" x="64" y="650" width="950" height="22" font="caption" size="12" color="muted" wrap="false">Fonte: Bitrix24 · RD Station = sim · data DATE_CREATE em Brasília · BU definida exclusivamente pelo Pipeline de Vendas</text>
   <text id="page-number" x="1170" y="650" width="46" height="22" font="caption" size="12" color="muted" align="right" wrap="false">02</text>
 </slide>

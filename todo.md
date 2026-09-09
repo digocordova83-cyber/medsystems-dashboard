@@ -636,3 +636,14 @@
 - [x] Calcular realizado, ritmo esperado, pacing, desvio e projeção de setembro por BU sem misturar a unidade de leads Bitrix24.
 - [x] Atualizar o Report Lu com lâmina detalhada de canais e leitura de pacing contra as metas fornecidas.
 - [x] Validar, exportar e entregar o PDF final atualizado, sem PII.
+
+- [x] Reproduzir o universo de leads de marketing usado no Report Lu de 01–07/09/2026 e confirmar as regras de inclusão.
+- [x] Auditar leads Bitrix24 potencialmente excluídos por pipeline sem BU, pipeline 20889, origem/canal não classificado ou campos de marketing incompletos.
+- [x] Confrontar os casos não atribuídos com a evidência RD e classificar somente os que tiverem BU comprovada, sem PII.
+- [x] Atualizar volumes, pacing, CPL e o Report Lu após comprovar a omissão causada pelo filtro de título exato.
+- [x] Validar, documentar, publicar e entregar a conclusão da auditoria de não atribuídos.
+
+- [x] Aplicar `RD Station = sim` como critério de inclusão de lead de marketing, independentemente do título exato no Bitrix24.
+- [x] Recalcular leads e canais com pipeline 15391 = MedSystems, 15395 = BeautySystems e 20889 separado como não atribuído.
+- [x] Atualizar pacing, projeção e CPL por BU com o universo corrigido e investimento até 07/09/2026.
+- [x] Atualizar e validar o Report Lu, destacando os 25 leads não atribuídos sem inferir BU.

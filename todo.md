@@ -685,3 +685,6 @@
 - [x] Remover todos os logos da capa do Report parcial de setembro.
 - [x] Reequilibrar a composição da capa sem adicionar novos elementos de marca.
 - [x] Validar, publicar e entregar a apresentação com a capa sem logos.
+- [x] Simplificar a capa para exibir somente o título `Report executivo`.
+- [x] Remover da capa filtros, horários, período, metodologia, subtítulos e textos auxiliares.
+- [x] Validar, publicar e entregar o deck com a capa minimalista.

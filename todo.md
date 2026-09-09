@@ -691,3 +691,9 @@
 - [x] Adicionar à capa a indicação `Dados parciais até 08/09`.
 - [x] Preservar o título `Report executivo` e o layout minimalista.
 - [x] Validar, publicar e entregar o documento com a data atualizada.
+- [x] Auditar a cobertura de Bitrix24, Windsor e demais fontes até 08/09/2026 no horário de Brasília.
+- [x] Recalcular leads `RD Station = sim`, canais, pacing, projeção, investimento e CPL por BU no corte de 08/09.
+- [x] Recalcular as etapas oficiais do Bitrix24 por BU e os negócios ganhos até 08/09.
+- [x] Redesenhar o slide 5 dividido por MedSystems e BeautySystems, sem valores de negócios ganhos.
+- [x] Manter volumes e valores de negócios ganhos exclusivamente no slide 6.
+- [x] Atualizar, validar, publicar e entregar a versão final do report em PDF/PPTX.

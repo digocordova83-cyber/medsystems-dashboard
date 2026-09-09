@@ -2,51 +2,51 @@
   <background color="paper"/>
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
   <shape id="header-accent" type="rect" x="64" y="50" width="6" height="66" fill="accent" corner-radius="3"/>
-  <text id="slide-kicker" x="84" y="50" width="430" height="20" font="caption" size="12" color="accent" wrap="false"><strong>ENTRADA NO CRM · 01–07/09</strong></text>
-  <text id="slide-title" x="84" y="76" width="940" height="42" font="heading" size="32" color="ink" wrap="false"><strong>Mídia paga concentra 68% dos leads atribuídos</strong></text>
+  <text id="slide-kicker" x="84" y="50" width="430" height="20" font="caption" size="12" color="accent" wrap="false"><strong>ENTRADA NO CRM · 01–08/09</strong></text>
+  <text id="slide-title" x="84" y="76" width="940" height="42" font="heading" size="32" color="ink" wrap="false"><strong>Mídia paga concentra 67% dos leads atribuídos</strong></text>
   <text id="slide-subtitle" x="84" y="124" width="1060" height="24" font="body" size="15" color="muted" wrap="false">Universo exclusivo: Bitrix24 com RD Station = sim · BU definida somente pelo Pipeline de Vendas</text>
 
   <shape id="universe-card" type="rect" x="64" y="170" width="258" height="82" fill="#F8FAFC" corner-radius="16" shadow="true"/>
   <shape id="universe-strip" type="rect" x="64" y="170" width="8" height="82" fill="brand" corner-radius="4"/>
   <text id="universe-label" x="86" y="184" width="214" height="18" font="caption" size="11" color="muted" wrap="false">UNIVERSO RD STATION = SIM</text>
-  <text id="universe-value" x="86" y="207" width="214" height="34" font="metric" size="31" color="ink" wrap="false"><strong>418</strong></text>
+  <text id="universe-value" x="86" y="207" width="214" height="34" font="metric" size="31" color="ink" wrap="false"><strong>442</strong></text>
 
   <shape id="assigned-card" type="rect" x="338" y="170" width="258" height="82" fill="#F8FAFC" corner-radius="16" shadow="true"/>
   <shape id="assigned-strip" type="rect" x="338" y="170" width="8" height="82" fill="accent" corner-radius="4"/>
   <text id="assigned-label" x="360" y="184" width="214" height="18" font="caption" size="11" color="muted" wrap="false">ATRIBUÍDOS ÀS BUS</text>
-  <text id="assigned-value" x="360" y="207" width="214" height="34" font="metric" size="31" color="accent" wrap="false"><strong>397</strong></text>
+  <text id="assigned-value" x="360" y="207" width="214" height="34" font="metric" size="31" color="accent" wrap="false"><strong>417</strong></text>
 
   <shape id="paid-card" type="rect" x="612" y="170" width="258" height="82" fill="#F8FAFC" corner-radius="16" shadow="true"/>
   <shape id="paid-strip" type="rect" x="612" y="170" width="8" height="82" fill="#0F5DDB" corner-radius="4"/>
   <text id="paid-label" x="634" y="184" width="214" height="18" font="caption" size="11" color="muted" wrap="false">MÍDIA PAGA</text>
-  <text id="paid-value" x="634" y="207" width="214" height="34" font="metric" size="31" color="brand" wrap="false"><strong>270</strong> <span size="14" color="muted">· 68,0%</span></text>
+  <text id="paid-value" x="634" y="207" width="214" height="34" font="metric" size="31" color="brand" wrap="false"><strong>281</strong> <span size="14" color="muted">· 67,4%</span></text>
 
   <shape id="unassigned-card" type="rect" x="886" y="170" width="304" height="82" fill="#FFF7ED" corner-radius="16" shadow="true"/>
   <shape id="unassigned-strip" type="rect" x="886" y="170" width="8" height="82" fill="#F97316" corner-radius="4"/>
   <text id="unassigned-label" x="908" y="184" width="260" height="18" font="caption" size="11" color="#C2410C" wrap="false">SEM BU RECONHECIDA</text>
-  <text id="unassigned-value" x="908" y="207" width="260" height="34" font="metric" size="31" color="#C2410C" wrap="false"><strong>21</strong> <span size="14" color="muted">· 5,0%</span></text>
+  <text id="unassigned-value" x="908" y="207" width="260" height="34" font="metric" size="31" color="#C2410C" wrap="false"><strong>25</strong> <span size="14" color="muted">· 5,7%</span></text>
 
   <text id="table-title" x="64" y="282" width="510" height="22" font="body" size="16" color="ink" wrap="false"><strong>Composição por canal</strong></text>
   <table id="channel-table" x="64" y="314" width="526" height="226" columns="3,2,2,2" rows="38,47,47,47,47" font="body" size="14" color="ink" padding="7 12" header-fill="#071B46" header-border="1 #071B46" border-h="1 solid hairline" border-outer="1 solid hairline">
     <tr color="paper"><td><strong>Canal</strong></td><td align="right"><strong>Med</strong></td><td align="right"><strong>Beauty</strong></td><td align="right"><strong>Total</strong></td></tr>
-    <tr><td>Mídia paga</td><td align="right">77</td><td align="right">193</td><td align="right"><strong color="brand">270</strong></td></tr>
+    <tr><td>Mídia paga</td><td align="right">86</td><td align="right">195</td><td align="right"><strong color="brand">281</strong></td></tr>
     <tr fill="#ECFDF5"><td>Eventos</td><td align="right">62</td><td align="right">0</td><td align="right"><strong color="accent">62</strong></td></tr>
-    <tr><td>Orgânico</td><td align="right">21</td><td align="right">33</td><td align="right"><strong>54</strong></td></tr>
-    <tr fill="#F8FAFC"><td>Referência / não class.</td><td align="right">1</td><td align="right">10</td><td align="right"><strong>11</strong></td></tr>
+    <tr><td>Orgânico</td><td align="right">23</td><td align="right">37</td><td align="right"><strong>60</strong></td></tr>
+    <tr fill="#F8FAFC"><td>Referência / não class.</td><td align="right">2</td><td align="right">12</td><td align="right"><strong>14</strong></td></tr>
   </table>
 
-  <text id="chart-title" x="638" y="282" width="520" height="22" font="body" size="16" color="ink" wrap="false"><strong>Distribuição dos 397 leads atribuídos</strong></text>
+  <text id="chart-title" x="638" y="282" width="520" height="22" font="body" size="16" color="ink" wrap="false"><strong>Distribuição dos 417 leads atribuídos</strong></text>
   <shape id="chart-card" type="rect" x="628" y="314" width="562" height="226" fill="#F8FAFC" corner-radius="16"/>
-  <chart id="channel-chart" type="column" x="646" y="326" width="526" height="202" font="caption" size="11" categories="MedSystems,BeautySystems" color="brand,accent,#F59E0B,#9CA3AF" legend="bottom" data-labels="true" stack="normal" y-axis="true" y-max="280" gridlines="h" gap-width="95">
-    <series name="Mídia paga" values="77,193" label-expr="{value:.0f}"/>
+  <chart id="channel-chart" type="column" x="646" y="326" width="526" height="202" font="caption" size="11" categories="MedSystems,BeautySystems" color="brand,accent,#F59E0B,#9CA3AF" legend="bottom" data-labels="true" stack="normal" y-axis="true" y-max="300" gridlines="h" gap-width="95">
+    <series name="Mídia paga" values="86,195" label-expr="{value:.0f}"/>
     <series name="Eventos" values="62,0" label-expr="{value:.0f}"/>
-    <series name="Orgânico" values="21,33" label-expr="{value:.0f}"/>
-    <series name="Referência / não class." values="1,10" label-expr="{value:.0f}"/>
+    <series name="Orgânico" values="23,37" label-expr="{value:.0f}"/>
+    <series name="Referência / não class." values="2,12" label-expr="{value:.0f}"/>
   </chart>
 
   <shape id="unmapped-note-bg" type="rect" x="64" y="564" width="1126" height="52" fill="#FFF7ED" corner-radius="12"/>
   <icon id="unmapped-icon" name="circle-alert" x="84" y="578" width="24" height="24" color="#F97316"/>
-  <text id="unmapped-note" x="122" y="574" width="1040" height="32" font="body" size="14" color="ink" anchor="middle" wrap="false"><strong color="#C2410C">21 não atribuídos:</strong> 19 no pipeline 20889 e 2 sem pipeline; permanecem fora das métricas por BU.</text>
+  <text id="unmapped-note" x="122" y="574" width="1040" height="32" font="body" size="13" color="ink" anchor="middle" wrap="false"><strong color="#C2410C">25 sem BU:</strong> 23 no pipeline 20889 e 2 sem pipeline · Em 08/09 entraram <strong>20 leads</strong>: 6 Med, 12 Beauty e 2 sem BU.</text>
 
   <text id="source-note" x="64" y="650" width="1030" height="20" font="caption" size="11" color="muted" wrap="false">Fonte: Bitrix24 · UF_CRM_1738950899 = 1 · sem filtros de título, origem, UTM ou evidência externa</text>
   <text id="page-number" x="1132" y="648" width="58" height="22" font="caption" size="11" color="muted" align="right" wrap="false">02 / 08</text>

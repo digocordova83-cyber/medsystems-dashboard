@@ -3,67 +3,45 @@
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
   <shape id="header-accent" type="rect" x="64" y="50" width="6" height="66" fill="accent" corner-radius="3"/>
   <text id="slide-kicker" x="84" y="50" width="560" height="20" font="caption" size="12" color="accent" wrap="false"><strong>FUNIL BITRIX24 · ETAPAS DO CRM</strong></text>
-  <text id="slide-title" x="84" y="76" width="1030" height="42" font="heading" size="32" color="ink" wrap="false"><strong>Etapas atuais dos leads e resultado comercial</strong></text>
-  <text id="slide-subtitle" x="84" y="124" width="1080" height="24" font="body" size="15" color="muted" wrap="false">Leitura operacional do período · nomes reproduzidos do CRM · negócios ganhos apresentados separadamente</text>
+  <text id="slide-title" x="84" y="76" width="1030" height="42" font="heading" size="32" color="ink" wrap="false"><strong>Onde os leads estão hoje, por BU</strong></text>
+  <text id="slide-subtitle" x="84" y="124" width="1080" height="24" font="body" size="15" color="muted" wrap="false">Posição atual no CRM em 08/09 · estoque por etapa, não taxa histórica de conversão</text>
 
-  <shape id="lead-base-card" type="rect" x="64" y="166" width="1126" height="60" fill="#071B46" corner-radius="16"/>
-  <icon id="lead-base-icon" name="users" x="88" y="182" width="28" height="28" color="#6EE7B7"/>
-  <text id="lead-base-label" x="132" y="177" width="420" height="36" font="heading" size="21" color="paper" anchor="middle" wrap="false"><strong>418 leads no Bitrix24</strong> <span size="13" color="#BFDBFE">· RD Station = sim</span></text>
-  <text id="lead-base-period" x="900" y="184" width="258" height="22" font="caption" size="11" color="#BFDBFE" align="right" wrap="false">Corte: 01–07/09/2026</text>
+  <shape id="med-base-card" type="rect" x="64" y="166" width="548" height="66" fill="#EFF6FF" corner-radius="16"/>
+  <shape id="med-base-strip" type="rect" x="64" y="166" width="8" height="66" fill="brand" corner-radius="4"/>
+  <text id="med-base-title" x="88" y="178" width="260" height="20" font="body" size="16" color="ink" wrap="false"><strong>MedSystems</strong></text>
+  <text id="med-base-detail" x="88" y="202" width="460" height="18" font="caption" size="11" color="muted" wrap="false"><strong color="brand">173 leads</strong> na BU · 168 nas etapas operacionais exibidas</text>
 
-  <text id="stages-label" x="64" y="244" width="400" height="20" font="body" size="15" color="ink" wrap="false"><strong>Etapa atual dos leads no CRM</strong></text>
+  <shape id="beauty-base-card" type="rect" x="642" y="166" width="548" height="66" fill="#ECFDF5" corner-radius="16"/>
+  <shape id="beauty-base-strip" type="rect" x="642" y="166" width="8" height="66" fill="accent" corner-radius="4"/>
+  <text id="beauty-base-title" x="666" y="178" width="260" height="20" font="body" size="16" color="ink" wrap="false"><strong>BeautySystems</strong></text>
+  <text id="beauty-base-detail" x="666" y="202" width="460" height="18" font="caption" size="11" color="muted" wrap="false"><strong color="#047857">244 leads</strong> na BU · 241 nas etapas operacionais exibidas</text>
 
-  <shape id="stage-sdr" type="rect" x="64" y="276" width="206" height="68" fill="#EFF6FF" corner-radius="14"/>
-  <text id="stage-sdr-label" x="78" y="286" width="178" height="18" font="caption" size="10" color="brand" wrap="false"><strong>SDR</strong></text>
-  <text id="stage-sdr-value" x="78" y="308" width="178" height="28" font="metric" size="24" color="ink" wrap="false"><strong>125</strong></text>
+  <table id="med-stage-table" x="64" y="252" width="548" height="310" columns="4,1.2" rows="36,39,39,39,39,39,39,40" font="body" size="13" color="ink" padding="7 14" header-fill="#071B46" header-border="1 #071B46" border-h="1 solid hairline" border-outer="1 solid hairline">
+    <tr color="paper"><td><strong>Etapa atual · MedSystems</strong></td><td align="right"><strong>Leads</strong></td></tr>
+    <tr><td>SDR</td><td align="right"><strong>16</strong></td></tr>
+    <tr fill="#FFFBEB"><td>Leads de EVENTOS</td><td align="right"><strong>35</strong></td></tr>
+    <tr><td>Primeiro Contato</td><td align="right"><strong color="brand">57</strong></td></tr>
+    <tr><td>Segundo Contato</td><td align="right"><strong>6</strong></td></tr>
+    <tr><td>Terceiro Contato</td><td align="right"><strong>5</strong></td></tr>
+    <tr><td>Relacionamento</td><td align="right"><strong>0</strong></td></tr>
+    <tr fill="#FEF2F2"><td>Descartados <span size="10" color="muted">(CRM + MKT)</span></td><td align="right"><strong color="#B91C1C">49</strong></td></tr>
+  </table>
 
-  <shape id="stage-events" type="rect" x="284" y="276" width="206" height="68" fill="#FFFBEB" corner-radius="14"/>
-  <text id="stage-events-label" x="298" y="286" width="178" height="18" font="caption" size="10" color="#92400E" wrap="false"><strong>Leads de EVENTOS</strong></text>
-  <text id="stage-events-value" x="298" y="308" width="178" height="28" font="metric" size="24" color="ink" wrap="false"><strong>42</strong></text>
+  <table id="beauty-stage-table" x="642" y="252" width="548" height="310" columns="4,1.2" rows="36,39,39,39,39,39,39,40" font="body" size="13" color="ink" padding="7 14" header-fill="#0047BB" header-border="1 #0047BB" border-h="1 solid hairline" border-outer="1 solid hairline">
+    <tr color="paper"><td><strong>Etapa atual · BeautySystems</strong></td><td align="right"><strong>Leads</strong></td></tr>
+    <tr><td>SDR</td><td align="right"><strong>29</strong></td></tr>
+    <tr fill="#FFFBEB"><td>Leads de EVENTOS</td><td align="right"><strong>0</strong></td></tr>
+    <tr><td>Primeiro Contato</td><td align="right"><strong color="brand">147</strong></td></tr>
+    <tr><td>Segundo Contato</td><td align="right"><strong>24</strong></td></tr>
+    <tr><td>Terceiro Contato</td><td align="right"><strong>9</strong></td></tr>
+    <tr><td>Relacionamento</td><td align="right"><strong color="#047857">14</strong></td></tr>
+    <tr fill="#FEF2F2"><td>Descartados <span size="10" color="muted">(CRM + MKT)</span></td><td align="right"><strong color="#B91C1C">18</strong></td></tr>
+  </table>
 
-  <shape id="stage-first" type="rect" x="504" y="276" width="206" height="68" fill="#E0F2FE" corner-radius="14"/>
-  <text id="stage-first-label" x="518" y="286" width="178" height="18" font="caption" size="10" color="#0369A1" wrap="false"><strong>Primeiro Contato</strong></text>
-  <text id="stage-first-value" x="518" y="308" width="178" height="28" font="metric" size="24" color="ink" wrap="false"><strong>152</strong></text>
+  <shape id="reading-panel" type="rect" x="64" y="584" width="1126" height="42" fill="#F8FAFC" corner-radius="12"/>
+  <icon id="reading-icon" name="info" x="86" y="593" width="24" height="24" color="brand"/>
+  <text id="reading-text" x="124" y="590" width="1038" height="28" font="caption" size="11" color="muted" anchor="middle" wrap="false">Status históricos não operacionais ficam fora desta leitura · negócios ganhos são apresentados exclusivamente no slide 6.</text>
 
-  <shape id="stage-second" type="rect" x="724" y="276" width="206" height="68" fill="#ECFEFF" corner-radius="14"/>
-  <text id="stage-second-label" x="738" y="286" width="178" height="18" font="caption" size="10" color="#0E7490" wrap="false"><strong>Segundo Contato</strong></text>
-  <text id="stage-second-value" x="738" y="308" width="178" height="28" font="metric" size="24" color="ink" wrap="false"><strong>14</strong></text>
-
-  <shape id="stage-third" type="rect" x="944" y="276" width="246" height="68" fill="#ECFDF5" corner-radius="14"/>
-  <text id="stage-third-label" x="958" y="286" width="218" height="18" font="caption" size="10" color="#047857" wrap="false"><strong>Terceiro Contato</strong></text>
-  <text id="stage-third-value" x="958" y="308" width="218" height="28" font="metric" size="24" color="ink" wrap="false"><strong>5</strong></text>
-
-  <shape id="stage-relationship" type="rect" x="64" y="356" width="260" height="68" fill="#D1FAE5" corner-radius="14"/>
-  <text id="stage-relationship-label" x="78" y="366" width="232" height="18" font="caption" size="10" color="#047857" wrap="false"><strong>Relacionamento</strong></text>
-  <text id="stage-relationship-value" x="78" y="388" width="232" height="28" font="metric" size="24" color="ink" wrap="false"><strong>14</strong></text>
-
-  <shape id="stage-convert" type="rect" x="338" y="356" width="260" height="68" fill="#F0FDF4" corner-radius="14"/>
-  <text id="stage-convert-label" x="352" y="366" width="232" height="18" font="caption" size="10" color="#15803D" wrap="false"><strong>Converter Lead</strong></text>
-  <text id="stage-convert-value" x="352" y="388" width="232" height="28" font="metric" size="24" color="muted" wrap="false"><strong>0</strong></text>
-
-  <shape id="stage-discard" type="rect" x="612" y="356" width="260" height="68" fill="#FEF2F2" corner-radius="14"/>
-  <text id="stage-discard-label" x="626" y="366" width="232" height="18" font="caption" size="10" color="#991B1B" wrap="false"><strong>Lead Descartado</strong></text>
-  <text id="stage-discard-value" x="626" y="388" width="232" height="28" font="metric" size="24" color="#B91C1C" wrap="false"><strong>41</strong></text>
-
-  <shape id="stage-discard-mkt" type="rect" x="886" y="356" width="304" height="68" fill="#FFF7ED" corner-radius="14"/>
-  <text id="stage-discard-mkt-label" x="900" y="366" width="276" height="18" font="caption" size="10" color="#9A3412" wrap="false"><strong>Lead Descartado p/ MKT</strong></text>
-  <text id="stage-discard-mkt-value" x="900" y="388" width="276" height="28" font="metric" size="24" color="#C2410C" wrap="false"><strong>3</strong></text>
-
-  <shape id="commercial-result" type="rect" x="64" y="454" width="1126" height="96" fill="#ECFDF5" corner-radius="16" stroke="#A7F3D0" stroke-width="1"/>
-  <shape id="commercial-strip" type="rect" x="64" y="454" width="8" height="96" fill="accent" corner-radius="4"/>
-  <icon id="commercial-icon" name="trophy" x="92" y="482" width="34" height="34" color="#047857"/>
-  <text id="commercial-label" x="144" y="468" width="300" height="18" font="caption" size="10" color="#047857" wrap="false"><strong>RESULTADO COMERCIAL DO PERÍODO</strong></text>
-  <text id="commercial-value" x="144" y="492" width="360" height="36" font="heading" size="27" color="ink" wrap="false"><strong>19 negócios ganhos</strong></text>
-  <shape id="commercial-divider-1" type="line" x="540" y="472" width="0" height="58" stroke="#A7F3D0" stroke-width="1"/>
-  <text id="commercial-med" x="570" y="470" width="190" height="62" font="body" size="14" color="muted"><p><strong color="brand" size="24">13</strong> MedSystems</p></text>
-  <shape id="commercial-divider-2" type="line" x="790" y="472" width="0" height="58" stroke="#A7F3D0" stroke-width="1"/>
-  <text id="commercial-beauty" x="820" y="470" width="190" height="62" font="body" size="14" color="muted"><p><strong color="#047857" size="24">6</strong> BeautySystems</p></text>
-  <text id="commercial-amount" x="982" y="470" width="180" height="62" font="body" size="13" color="muted" align="right"><p>Valor registrado</p><p><strong color="ink" size="17">R$ 3.172.063,96</strong></p></text>
-
-  <shape id="reading-panel" type="rect" x="64" y="572" width="1126" height="56" fill="#F8FAFC" corner-radius="12"/>
-  <icon id="reading-icon" name="info" x="86" y="588" width="24" height="24" color="brand"/>
-  <text id="reading-text" x="124" y="581" width="1038" height="38" font="caption" size="11" color="muted" anchor="middle" wrap="false">As etapas representam a posição atual dos leads; negócios ganhos representam o resultado comercial registrado entre 01 e 07/09.</text>
-
-  <text id="source-note" x="64" y="650" width="1030" height="20" font="caption" size="11" color="muted" wrap="false">Fonte: Bitrix24 · STATUS_ID dos leads e STAGE_SEMANTIC_ID = S dos negócios · corte 01–07/09/2026</text>
+  <text id="source-note" x="64" y="650" width="1030" height="20" font="caption" size="11" color="muted" wrap="false">Fonte: Bitrix24 · STATUS_ID dos leads · RD Station = sim · corte 01–08/09/2026</text>
   <text id="page-number" x="1132" y="648" width="58" height="22" font="caption" size="11" color="muted" align="right" wrap="false">05 / 08</text>
 </slide>

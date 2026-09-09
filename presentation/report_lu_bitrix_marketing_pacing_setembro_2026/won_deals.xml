@@ -3,49 +3,49 @@
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
   <shape id="header-accent" type="rect" x="64" y="50" width="6" height="66" fill="accent" corner-radius="3"/>
   <text id="slide-kicker" x="84" y="50" width="560" height="20" font="caption" size="12" color="accent" wrap="false"><strong>NEGÓCIOS GANHOS · BITRIX24</strong></text>
-  <text id="slide-title" x="84" y="76" width="1040" height="42" font="heading" size="31" color="ink" wrap="false"><strong>19 negócios ganhos no período</strong></text>
-  <text id="slide-subtitle" x="84" y="124" width="1080" height="24" font="body" size="15" color="muted" wrap="false">Fechamentos registrados de 01–07/09 nos pipelines comerciais oficiais</text>
+  <text id="slide-title" x="84" y="76" width="1040" height="42" font="heading" size="31" color="ink" wrap="false"><strong>27 negócios ganhos no período</strong></text>
+  <text id="slide-subtitle" x="84" y="124" width="1080" height="24" font="body" size="15" color="muted" wrap="false">Fechamentos registrados de 01–08/09 nos pipelines comerciais oficiais</text>
 
   <shape id="won-count-card" type="rect" x="64" y="168" width="350" height="92" fill="#ECFDF5" corner-radius="16" shadow="true"/>
   <text id="won-count-label" x="88" y="184" width="300" height="18" font="caption" size="11" color="#047857" wrap="false"><strong>NEGÓCIOS GANHOS</strong></text>
-  <text id="won-count-value" x="88" y="208" width="300" height="38" font="metric" size="34" color="#047857" wrap="false"><strong>19</strong></text>
+  <text id="won-count-value" x="88" y="208" width="300" height="38" font="metric" size="34" color="#047857" wrap="false"><strong>27</strong></text>
 
   <shape id="won-value-card" type="rect" x="430" y="168" width="416" height="92" fill="#EFF6FF" corner-radius="16" shadow="true"/>
   <text id="won-value-label" x="454" y="184" width="368" height="18" font="caption" size="11" color="brand" wrap="false"><strong>VALOR DE OPORTUNIDADE</strong></text>
-  <text id="won-value-value" x="454" y="208" width="368" height="38" font="metric" size="32" color="brand" wrap="false"><strong>R$ 3.172.063,96</strong></text>
+  <text id="won-value-value" x="454" y="208" width="368" height="38" font="metric" size="31" color="brand" wrap="false"><strong>R$ 5.041.815,96</strong></text>
 
   <shape id="won-split-card" type="rect" x="862" y="168" width="328" height="92" fill="#F0FDF4" corner-radius="16" shadow="true"/>
   <text id="won-split-label" x="886" y="184" width="280" height="18" font="caption" size="11" color="#047857" wrap="false"><strong>DISTRIBUIÇÃO POR BU</strong></text>
-  <text id="won-split-value" x="886" y="208" width="280" height="38" font="heading" size="25" color="ink" wrap="false"><strong>13 Med · 6 Beauty</strong></text>
+  <text id="won-split-value" x="886" y="208" width="280" height="38" font="heading" size="25" color="ink" wrap="false"><strong>15 Med · 12 Beauty</strong></text>
 
   <shape id="med-won-panel" type="rect" x="64" y="292" width="548" height="178" fill="#F8FAFC" corner-radius="18" stroke="#DBEAFE" stroke-width="1"/>
   <shape id="med-won-strip" type="rect" x="64" y="292" width="9" height="178" fill="brand" corner-radius="5"/>
   <text id="med-won-title" x="94" y="314" width="460" height="24" font="body" size="18" color="ink" wrap="false"><strong>MedSystems · Vendas WF1</strong></text>
-  <text id="med-won-count" x="94" y="358" width="180" height="44" font="metric" size="40" color="#047857" wrap="false"><strong>13</strong></text>
+  <text id="med-won-count" x="94" y="358" width="180" height="44" font="metric" size="40" color="#047857" wrap="false"><strong>15</strong></text>
   <text id="med-won-count-label" x="94" y="404" width="180" height="18" font="caption" size="11" color="muted" wrap="false">negócios ganhos</text>
   <shape id="med-won-divider" type="line" x="300" y="342" width="0" height="96" stroke="hairline" stroke-width="1"/>
   <text id="med-won-value-label" x="330" y="354" width="240" height="18" font="caption" size="11" color="muted" wrap="false">VALOR REGISTRADO</text>
-  <text id="med-won-value" x="330" y="388" width="240" height="38" font="heading" size="27" color="brand" wrap="false"><strong>R$ 2.363.063,96</strong></text>
+  <text id="med-won-value" x="330" y="388" width="240" height="38" font="heading" size="25" color="brand" wrap="false"><strong>R$ 2.997.815,96</strong></text>
 
   <shape id="beauty-won-panel" type="rect" x="642" y="292" width="548" height="178" fill="#F8FAFC" corner-radius="18" stroke="#A7F3D0" stroke-width="1"/>
   <shape id="beauty-won-strip" type="rect" x="642" y="292" width="9" height="178" fill="accent" corner-radius="5"/>
   <text id="beauty-won-title" x="672" y="314" width="470" height="24" font="body" size="18" color="ink" wrap="false"><strong>BeautySystems · Negócios e Redes</strong></text>
-  <text id="beauty-won-count" x="672" y="358" width="180" height="44" font="metric" size="40" color="#047857" wrap="false"><strong>6</strong></text>
+  <text id="beauty-won-count" x="672" y="358" width="180" height="44" font="metric" size="40" color="#047857" wrap="false"><strong>12</strong></text>
   <text id="beauty-won-count-label" x="672" y="404" width="180" height="18" font="caption" size="11" color="muted" wrap="false">negócios ganhos</text>
   <shape id="beauty-won-divider" type="line" x="878" y="342" width="0" height="96" stroke="hairline" stroke-width="1"/>
   <text id="beauty-won-value-label" x="908" y="354" width="240" height="18" font="caption" size="11" color="muted" wrap="false">VALOR REGISTRADO</text>
-  <text id="beauty-won-value" x="908" y="388" width="240" height="38" font="heading" size="27" color="brand" wrap="false"><strong>R$ 809.000,00</strong></text>
+  <text id="beauty-won-value" x="908" y="388" width="240" height="38" font="heading" size="27" color="brand" wrap="false"><strong>R$ 2.044.000,00</strong></text>
 
   <shape id="summary-panel" type="rect" x="64" y="496" width="1126" height="116" fill="#F8FAFC" corner-radius="16"/>
   <icon id="summary-icon" name="circle-check" x="88" y="530" width="30" height="30" color="#047857"/>
   <text id="summary-title" x="136" y="512" width="420" height="22" font="body" size="15" color="ink" wrap="false"><strong>Leitura comercial do período</strong></text>
-  <text id="summary-copy" x="136" y="544" width="540" height="50" font="caption" size="11" color="muted" line-height="1.3"><p>Os pipelines comerciais somam 19 ganhos. Sete registros do pipeline MedSystems Faturamento foram excluídos para evitar duplicação de vendas.</p></text>
+  <text id="summary-copy" x="136" y="544" width="540" height="50" font="caption" size="11" color="muted" line-height="1.3"><p>Os pipelines comerciais somam 27 ganhos. Quarenta e cinco registros do pipeline MedSystems Faturamento foram excluídos para evitar duplicação de vendas.</p></text>
   <shape id="summary-divider" type="line" x="716" y="518" width="0" height="72" stroke="hairline" stroke-width="1"/>
   <text id="summary-period-label" x="748" y="520" width="180" height="18" font="caption" size="10" color="muted" wrap="false"><strong>PERÍODO</strong></text>
-  <text id="summary-period" x="748" y="548" width="180" height="28" font="heading" size="21" color="ink" wrap="false"><strong>01–07/09</strong></text>
+  <text id="summary-period" x="748" y="548" width="180" height="28" font="heading" size="21" color="ink" wrap="false"><strong>01–08/09</strong></text>
   <text id="summary-bu-label" x="972" y="520" width="170" height="18" font="caption" size="10" color="muted" wrap="false"><strong>PIPELINES</strong></text>
   <text id="summary-bu" x="972" y="548" width="170" height="36" font="caption" size="11" color="ink"><p>MedSystems Vendas</p><p>Negócios e Redes</p></text>
 
-  <text id="source-note" x="64" y="650" width="1035" height="20" font="caption" size="11" color="muted" wrap="false">Fonte: Bitrix24 · STAGE_SEMANTIC_ID = S · CLOSEDATE 01–07/09/2026 · pipelines comerciais oficiais</text>
+  <text id="source-note" x="64" y="650" width="1035" height="20" font="caption" size="11" color="muted" wrap="false">Fonte: Bitrix24 · STAGE_SEMANTIC_ID = S · CLOSEDATE 01–08/09/2026 · pipelines comerciais oficiais</text>
   <text id="page-number" x="1132" y="648" width="58" height="22" font="caption" size="11" color="muted" align="right" wrap="false">06 / 08</text>
 </slide>

@@ -3,28 +3,28 @@
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
   <shape id="header-accent" type="rect" x="64" y="50" width="6" height="66" fill="accent" corner-radius="3"/>
   <text id="slide-kicker" x="84" y="50" width="520" height="20" font="caption" size="12" color="accent" wrap="false"><strong>PLANO DE AÇÃO · MÍDIA</strong></text>
-  <text id="slide-title" x="84" y="76" width="1010" height="42" font="heading" size="32" color="ink" wrap="false"><strong>Acelerar Beauty sem perder o ritmo de Med</strong></text>
+  <text id="slide-title" x="84" y="76" width="1010" height="42" font="heading" size="32" color="ink" wrap="false"><strong>Acelerar Beauty e sustentar a entrega de Med</strong></text>
   <text id="slide-subtitle" x="84" y="124" width="1070" height="24" font="body" size="15" color="muted" wrap="false">Ações orientadas por pacing e CPL · redistribuição dentro da verba atual antes de qualquer aumento adicional</text>
 
   <shape id="beauty-pace-card" type="rect" x="64" y="168" width="548" height="118" fill="#FFF7ED" corner-radius="18" shadow="true"/>
   <shape id="beauty-pace-strip" type="rect" x="64" y="168" width="9" height="118" fill="#F97316" corner-radius="5"/>
   <text id="beauty-pace-label" x="92" y="184" width="250" height="20" font="caption" size="11" color="#C2410C" wrap="false"><strong>BEAUTYSYSTEMS · RECUPERAR ESCALA</strong></text>
-  <text id="beauty-pace-value" x="92" y="212" width="180" height="42" font="metric" size="36" color="#C2410C" wrap="false"><strong>69,8%</strong></text>
-  <text id="beauty-pace-detail" x="282" y="210" width="300" height="48" font="body" size="14" color="ink" line-height="1.25"><p><strong>33,71</strong> leads/dia atuais</p><p><strong color="#C2410C">52,78</strong> leads/dia necessários</p></text>
-  <text id="beauty-pace-gap" x="92" y="260" width="490" height="18" font="caption" size="11" color="muted" wrap="false">Gap: -102 vs. ritmo esperado · faltam 1.214 leads em 23 dias · aceleração requerida: +56%</text>
+  <text id="beauty-pace-value" x="92" y="212" width="180" height="42" font="metric" size="36" color="#C2410C" wrap="false"><strong>63,1%</strong></text>
+  <text id="beauty-pace-detail" x="282" y="210" width="300" height="48" font="body" size="14" color="ink" line-height="1.25"><p><strong>30,50</strong> leads/dia atuais</p><p><strong color="#C2410C">54,82</strong> leads/dia necessários</p></text>
+  <text id="beauty-pace-gap" x="92" y="260" width="490" height="18" font="caption" size="11" color="muted" wrap="false">Gap: -143 vs. ritmo esperado · faltam 1.206 leads em 22 dias · aceleração requerida: +80%</text>
 
   <shape id="med-pace-card" type="rect" x="642" y="168" width="548" height="118" fill="#ECFDF5" corner-radius="18" shadow="true"/>
   <shape id="med-pace-strip" type="rect" x="642" y="168" width="9" height="118" fill="#10B981" corner-radius="5"/>
-  <text id="med-pace-label" x="670" y="184" width="250" height="20" font="caption" size="11" color="#047857" wrap="false"><strong>MEDSYSTEMS · PROTEGER ENTREGA</strong></text>
-  <text id="med-pace-value" x="670" y="212" width="180" height="42" font="metric" size="36" color="#047857" wrap="false"><strong>101,5%</strong></text>
-  <text id="med-pace-detail" x="860" y="210" width="300" height="48" font="body" size="14" color="ink" line-height="1.25"><p><strong>23,00</strong> leads/dia atuais</p><p><strong color="#047857">22,56</strong> leads/dia necessários</p></text>
-  <text id="med-pace-gap" x="670" y="260" width="490" height="18" font="caption" size="11" color="muted" wrap="false">+2 leads acima do ritmo esperado · faltam 519 leads em 23 dias · manter estabilidade</text>
+  <text id="med-pace-label" x="670" y="184" width="280" height="20" font="caption" size="11" color="#047857" wrap="false"><strong>MEDSYSTEMS · SUSTENTAR ENTREGA</strong></text>
+  <text id="med-pace-value" x="670" y="212" width="180" height="42" font="metric" size="36" color="#047857" wrap="false"><strong>95,4%</strong></text>
+  <text id="med-pace-detail" x="860" y="210" width="300" height="48" font="body" size="14" color="ink" line-height="1.25"><p><strong>21,63</strong> leads/dia atuais</p><p><strong color="#047857">23,05</strong> leads/dia necessários</p></text>
+  <text id="med-pace-gap" x="670" y="260" width="490" height="18" font="caption" size="11" color="muted" wrap="false">Gap: -8 vs. ritmo esperado · faltam 507 leads em 22 dias · correção requerida: +6,6%</text>
 
   <shape id="beauty-actions" type="rect" x="64" y="310" width="548" height="238" fill="#FFFCF8" corner-radius="18" stroke="#FED7AA" stroke-width="1"/>
   <text id="beauty-actions-title" x="90" y="330" width="490" height="26" font="body" size="17" color="#C2410C" wrap="false"><strong>Beauty · três movimentos para ganhar ritmo</strong></text>
   <shape id="beauty-step1" type="ellipse" x="90" y="376" width="30" height="30" fill="#F97316"/>
   <text id="beauty-step1-num" x="90" y="376" width="30" height="30" font="caption" size="12" color="paper" align="center" anchor="middle" wrap="false"><strong>1</strong></text>
-  <text id="beauty-step1-text" x="136" y="370" width="430" height="46" font="body" size="13" color="ink" line-height="1.2"><p><strong>Redistribuir verba</strong> para campanhas com CPL abaixo de R$ 61,50 e fluxo de leads estável.</p></text>
+  <text id="beauty-step1-text" x="136" y="370" width="430" height="46" font="body" size="13" color="ink" line-height="1.2"><p><strong>Redistribuir verba</strong> para campanhas com CPL abaixo de R$ 69,01 e fluxo de leads estável.</p></text>
   <shape id="beauty-step2" type="ellipse" x="90" y="430" width="30" height="30" fill="#F97316"/>
   <text id="beauty-step2-num" x="90" y="430" width="30" height="30" font="caption" size="12" color="paper" align="center" anchor="middle" wrap="false"><strong>2</strong></text>
   <text id="beauty-step2-text" x="136" y="424" width="430" height="46" font="body" size="13" color="ink" line-height="1.2"><p><strong>Liberar oferta e criativos</strong> conforme materiais de Aquapure, Ultraformer e Youlaser forem aprovados.</p></text>
@@ -39,7 +39,7 @@
   <text id="med-step1-text" x="714" y="370" width="430" height="46" font="body" size="13" color="ink" line-height="1.2"><p><strong>Proteger campanhas vencedoras</strong> e evitar mudanças bruscas que reiniciem aprendizado.</p></text>
   <shape id="med-step2" type="ellipse" x="668" y="430" width="30" height="30" fill="#10B981"/>
   <text id="med-step2-num" x="668" y="430" width="30" height="30" font="caption" size="12" color="paper" align="center" anchor="middle" wrap="false"><strong>2</strong></text>
-  <text id="med-step2-text" x="714" y="424" width="430" height="46" font="body" size="13" color="ink" line-height="1.2"><p><strong>Corrigir o componente pago</strong>: 77 leads vs. 84 esperados, escalando somente com CPL estável.</p></text>
+  <text id="med-step2-text" x="714" y="424" width="430" height="46" font="body" size="13" color="ink" line-height="1.2"><p><strong>Corrigir o ritmo para 23 leads/dia</strong>, escalando somente com CPL pago próximo de R$ 190,54.</p></text>
   <shape id="med-step3" type="ellipse" x="668" y="484" width="30" height="30" fill="#10B981"/>
   <text id="med-step3-num" x="668" y="484" width="30" height="30" font="caption" size="12" color="paper" align="center" anchor="middle" wrap="false"><strong>3</strong></text>
   <text id="med-step3-text" x="714" y="478" width="430" height="48" font="body" size="13" color="ink" line-height="1.2"><p><strong>Sequenciar novos ativos</strong> de Ultraformer MPT, Volnewmer e Volformer sem canibalizar o que já entrega.</p></text>
@@ -48,6 +48,6 @@
   <icon id="governance-icon" name="activity" x="84" y="581" width="26" height="26" color="brand"/>
   <text id="governance-text" x="126" y="576" width="1038" height="36" font="caption" size="11" color="ink" anchor="middle" line-height="1.25"><p><strong>Cadência:</strong> monitoramento diário D-1 de leads RD Station = sim, pacing e CPL por BU; redistribuição a cada 48–72h. Aumento de verba somente após aprovação.</p></text>
 
-  <text id="source-note" x="64" y="650" width="1030" height="20" font="caption" size="11" color="muted" wrap="false">Premissas: metas 680 Med / 1.450 Beauty · realizado 161 / 236 até 07/09 · ritmo calculado para 23 dias restantes</text>
+  <text id="source-note" x="64" y="650" width="1030" height="20" font="caption" size="11" color="muted" wrap="false">Premissas: metas 680 Med / 1.450 Beauty · realizado 173 / 244 até 08/09 · 22 dias restantes</text>
   <text id="page-number" x="1132" y="648" width="58" height="22" font="caption" size="11" color="muted" align="right" wrap="false">07 / 08</text>
 </slide>

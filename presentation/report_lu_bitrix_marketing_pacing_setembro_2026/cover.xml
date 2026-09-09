@@ -1,10 +1,27 @@
 <slide id="cover">
   <background color="paper"/>
   <shape id="cover-top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
-  <shape id="cover-right-panel" type="rect" x="904" y="0" width="376" height="720" fill="#071B46"/>
-  <shape id="cover-blue-orb" type="ellipse" x="1010" y="-92" width="390" height="390" fill="#0F5DDB" opacity="0.32"/>
-  <shape id="cover-green-orb" type="ellipse" x="1040" y="430" width="300" height="300" fill="#00A88F" opacity="0.20"/>
-  <shape id="cover-accent-line" type="rect" x="84" y="238" width="72" height="6" fill="accent"/>
-  <text id="cover-title" x="84" y="278" width="720" height="150" font="display" size="66" color="ink" line-height="1.02"><p><strong>Report</strong></p><p><strong color="brand">executivo</strong></p></text>
-  <text id="cover-partial-date" x="88" y="458" width="430" height="28" font="body" size="18" color="muted" wrap="false"><strong>Dados parciais até 08/09</strong></text>
+  <shape id="cover-right-panel" type="rect" x="880" y="6" width="400" height="714" fill="#071B46"/>
+  <shape id="cover-panel-divider" type="rect" x="879" y="6" width="1" height="714" fill="hairline"/>
+
+  <shape id="cover-blue-orb" type="ellipse" x="978" y="0" width="302" height="302" fill="#0F5DDB" opacity="0.34"/>
+  <shape id="cover-green-orb" type="ellipse" x="1030" y="474" width="250" height="246" fill="#00A88F" opacity="0.22"/>
+  <shape id="cover-outline-orb" type="ellipse" x="946" y="156" width="258" height="258" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="0.14"/>
+  <shape id="cover-panel-line-one" type="line" x="930" y="474" width="242" height="0" stroke="#FFFFFF" stroke-width="1" opacity="0.12"/>
+  <shape id="cover-panel-line-two" type="line" x="930" y="502" width="196" height="0" stroke="#FFFFFF" stroke-width="1" opacity="0.08"/>
+  <shape id="cover-panel-dot-one" type="ellipse" x="934" y="112" width="12" height="12" fill="accent" opacity="0.90"/>
+  <shape id="cover-panel-dot-two" type="ellipse" x="958" y="112" width="12" height="12" fill="paper" opacity="0.34"/>
+  <shape id="cover-panel-dot-three" type="ellipse" x="982" y="112" width="12" height="12" fill="brand" opacity="0.90"/>
+
+  <shape id="cover-title-accent" type="rect" x="84" y="236" width="6" height="168" fill="accent" corner-radius="3"/>
+  <text id="cover-title" x="116" y="232" width="680" height="176" font="display" size="70" color="ink" line-height="1.00">
+    <p><strong>Report</strong></p>
+    <p><strong color="brand">executivo</strong></p>
+  </text>
+
+  <shape id="cover-date-card" type="rect" x="116" y="458" width="360" height="54" fill="surface" corner-radius="14"/>
+  <shape id="cover-date-strip" type="rect" x="116" y="458" width="6" height="54" fill="accent" corner-radius="3"/>
+  <text id="cover-partial-date" x="142" y="469" width="308" height="30" font="body" size="17" color="muted" anchor="middle" wrap="false"><strong>Dados parciais até 08/09</strong></text>
+
+  <shape id="cover-bottom-hairline" type="rect" x="84" y="650" width="710" height="1" fill="hairline"/>
 </slide>

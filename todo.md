@@ -724,3 +724,8 @@
 - [x] Criar galeria visual de criativos Meta com campanha, conjunto, anúncio, status e métricas, além de filtros de campanha e conjunto.
 - [x] Adicionar estados de carregamento, imagem indisponível e erro sem inventar criativos.
 - [x] Criar/atualizar testes Vitest, validar desktop/mobile, salvar e publicar as melhorias.
+- [x] Auditar a estrutura real do deck e confirmar se a capa ativa é `cover.html` ou `cover.xml`.
+- [x] Analisar integralmente a capa e os elementos fixos do sistema visual Report Lu antes da edição.
+- [x] Otimizar a capa em uma única reescrita completa, preservando estrutura, identidade e consistência do template.
+- [x] Registrar o padrão visual e editorial atualizado do Report Lu na memória compartilhada do projeto.
+- [x] Validar e apresentar o deck completo com todas as lâminas do outline original.

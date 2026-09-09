@@ -688,3 +688,6 @@
 - [x] Simplificar a capa para exibir somente o título `Report executivo`.
 - [x] Remover da capa filtros, horários, período, metodologia, subtítulos e textos auxiliares.
 - [x] Validar, publicar e entregar o deck com a capa minimalista.
+- [x] Adicionar à capa a indicação `Dados parciais até 08/09`.
+- [x] Preservar o título `Report executivo` e o layout minimalista.
+- [x] Validar, publicar e entregar o documento com a data atualizada.

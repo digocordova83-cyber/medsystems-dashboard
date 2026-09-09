@@ -6,4 +6,5 @@
   <shape id="cover-green-orb" type="ellipse" x="1040" y="430" width="300" height="300" fill="#00A88F" opacity="0.20"/>
   <shape id="cover-accent-line" type="rect" x="84" y="238" width="72" height="6" fill="accent"/>
   <text id="cover-title" x="84" y="278" width="720" height="150" font="display" size="66" color="ink" line-height="1.02"><p><strong>Report</strong></p><p><strong color="brand">executivo</strong></p></text>
+  <text id="cover-partial-date" x="88" y="458" width="430" height="28" font="body" size="18" color="muted" wrap="false"><strong>Dados parciais até 08/09</strong></text>
 </slide>

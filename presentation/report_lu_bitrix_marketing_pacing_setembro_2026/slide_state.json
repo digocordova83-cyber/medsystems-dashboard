@@ -2,8 +2,8 @@
   "project_info": {
     "title": "Report executivo — leads de marketing",
     "created": 1788912510.367,
-    "last_updated": 1788916148.78,
-    "total_slides": 6
+    "last_updated": 1788916926.62,
+    "total_slides": 7
   },
   "slides": [
     {
@@ -28,13 +28,23 @@
     },
     {
       "id": "status_summary",
+      "state": "deleted",
+      "pageNum": -1
+    },
+    {
+      "id": "rd_pipeline",
       "state": "edited",
       "pageNum": 5
     },
     {
-      "id": "delivery_status",
+      "id": "beauty_media_action",
       "state": "edited",
       "pageNum": 6
+    },
+    {
+      "id": "delivery_status",
+      "state": "edited",
+      "pageNum": 7
     }
   ],
   "outline": [
@@ -63,10 +73,16 @@
       "image_plan": "Use a suitable image if needed"
     },
     {
-      "id": "status_summary",
-      "title": "Status final do mês",
-      "summary": "Sintetiza a distribuição dos 14 projetos por status, destaca frentes finalizadas/em desenvolvimento e os principais pontos de atenção para setembro.",
-      "image_plan": "Sem imagem; usar cards, barras de status e indicadores executivos no sistema visual Report Lu."
+      "id": "rd_pipeline",
+      "title": "Pipeline dos leads RD Station = sim",
+      "summary": "Mostra a distribuição atual dos 418 leads por SDR, MQL, SAL, SQL, descartados e eventos/triagem, com negócios e fechados vinculados diretamente por LEAD_ID.",
+      "image_plan": "Sem imagem; usar funil visual, tabela por BU e notas metodológicas auditáveis."
+    },
+    {
+      "id": "beauty_media_action",
+      "title": "Plano de ação de mídia — BeautySystems",
+      "summary": "Apresenta o ritmo diário necessário para recuperar a meta de setembro e organiza ações de mídia em eficiência imediata, liberação de oferta/criativos e escala controlada por CPL.",
+      "image_plan": "Sem imagem; usar cards de pacing, três frentes de ação e critérios de decisão visualmente destacados."
     },
     {
       "id": "delivery_status",

@@ -661,3 +661,8 @@
 - [x] Refinar o layout das quatro lâminas atuais, preservando a identidade visual clean do Report Lu.
 - [x] Adicionar duas lâminas finais: síntese dos 15 projetos por status e tabela reconstruída de entregas, marcos e previsões.
 - [x] Validar visualmente, publicar e entregar o novo deck de seis lâminas em PDF/PPTX.
+- [x] Substituir a lâmina 5 de síntese de status por um plano de ação de mídia com dois eixos: elevar o pacing de BeautySystems e sustentar MedSystems acima de 100%.
+- [x] Calcular o ritmo diário necessário por BU e usar somente metas e resultados já validados.
+- [x] Apurar no Bitrix24 os mesmos leads `RD Station = sim` por SDR, MQL, SAL, SQL, descartado e fechado, sem inferir etapas ausentes.
+- [x] Adicionar uma lâmina auditável de pipeline antes do plano de mídia.
+- [x] Validar, publicar e entregar o deck atualizado com o cronograma preservado na lâmina final.

@@ -743,3 +743,7 @@
 - [x] Corrigir o cálculo do intervalo padrão para usar o último D-1 disponível na interface e nas consultas.
 - [x] Criar teste de regressão para o filtro padrão de mês corrente na aba Negócios.
 - [x] Validar no navegador os KPIs com corte em 09/09, salvar e publicar a correção.
+- [x] Auditar por que 09/09 ficou zerado na evolução diária da aba Negócios.
+- [x] Reprocessar todos os leads Bitrix24 criados em 09/09 com RD Station = sim, sem filtros por origem, UTM ou título.
+- [x] Recalcular o snapshot e validar os KPIs e o gráfico diário da aba Negócios para 01–09/09.
+- [x] Documentar, salvar e publicar o corte corrigido de 09/09/2026.

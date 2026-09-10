@@ -16,6 +16,12 @@ A aba passou a receber do servidor o intervalo padrão do mês corrente até D-1
 
 Em validação autenticada na prévia em 10/09/2026, a abertura padrão exibiu **01/09/2026 a 09/09/2026**, 442 leads, 28 ganhos e R$ 5,3 mi. Em seguida, a seleção manual de 01–08/09 foi aplicada e preservada, retornando 27 ganhos, o que confirma que os KPIs acompanham o intervalo efetivamente escolhido.
 
+## Reprocessamento auditável de 09/09
+
+Em 10/09/2026, a coleta de setembro foi reexecutada diretamente no Bitrix24 e retornou 499 leads no mês. Para a data de 09/09, a API retornou três leads criados, todos com o campo oficial `UF_CRM_1738950899` (RD Station) igual a `0`; nenhum recebeu o valor `1` (RD Station = sim). Portanto, a linha diária continua em zero por aplicação estrita da regra acordada, e não por omissão de data no gráfico.
+
+O dashboard mantém o critério: incluir todos e apenas os IDs técnicos cujo campo oficial do Bitrix24 seja **RD Station = sim**, sem qualquer exclusão por título, origem, UTM, mídia ou cruzamento externo. A reimportação não encontrou registros elegíveis adicionais em 09/09, preservando o acumulado de 442 leads no intervalo 01–09/09.
+
 ## Cobertura de UTM em negócios ganhos
 
 Uma auditoria agregada dos 28 negócios ganhos fechados de 01 a 09/09 encontrou `UTM_SOURCE = APP` e `UTM_CONTENT = APP` em todos os registros, com `UTM_MEDIUM`, `UTM_CAMPAIGN` e `UTM_TERM` nulos. Portanto, não existe campanha, conjunto ou criativo comercialmente identificável no próprio negócio para este corte. A interface trata `APP` como valor genérico e o expõe como **Não identificado**, sem atribuir receita a qualquer campanha, conjunto ou criativo.

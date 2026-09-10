@@ -170,6 +170,19 @@ function attributionFields(raw: Record<string, any>) {
   };
 }
 
+function commercialAttributionFields(raw: Record<string, any>) {
+  const genericValues = new Set(["app", "(not set)", "not set", "n/a", "na"]);
+  const normalize = (value: string) => genericValues.has(value.toLowerCase()) ? "Não identificado" : value;
+  const fields = attributionFields(raw);
+  return {
+    source: normalize(fields.source),
+    medium: normalize(fields.medium),
+    campaign: normalize(fields.campaign),
+    adset: normalize(fields.adset),
+    creative: normalize(fields.creative),
+  };
+}
+
 function addCount(map: Map<string, number>, label: string, amount = 1) {
   map.set(label, (map.get(label) ?? 0) + amount);
 }
@@ -393,6 +406,29 @@ export function buildRdOpportunityManagerDashboard(input: {
   }
   const wonDeals = commercialWins.length;
   const wonValue = commercialWins.reduce((sum, deal) => sum + numberValue(deal.OPPORTUNITY), 0);
+  const winsAttribution = new Map<string, {
+    source: string;
+    medium: string;
+    campaign: string;
+    adset: string;
+    creative: string;
+    wonDeals: number;
+    wonValue: number;
+  }>();
+  const winsAttributionCoverage = { source: 0, medium: 0, campaign: 0, adset: 0, creative: 0, total: commercialWins.length };
+  for (const deal of commercialWins) {
+    const fields = commercialAttributionFields(deal);
+    if (fields.source !== "Não identificado") winsAttributionCoverage.source += 1;
+    if (fields.medium !== "Não identificado") winsAttributionCoverage.medium += 1;
+    if (fields.campaign !== "Não identificado") winsAttributionCoverage.campaign += 1;
+    if (fields.adset !== "Não identificado") winsAttributionCoverage.adset += 1;
+    if (fields.creative !== "Não identificado") winsAttributionCoverage.creative += 1;
+    const key = [fields.source, fields.medium, fields.campaign, fields.adset, fields.creative].join("\u0001");
+    const row = winsAttribution.get(key) ?? { ...fields, wonDeals: 0, wonValue: 0 };
+    row.wonDeals += 1;
+    row.wonValue += numberValue(deal.OPPORTUNITY);
+    winsAttribution.set(key, row);
+  }
   const leads = eligible.length;
   const unassignedLeads = eligible.filter(item => !["15391", "15395"].includes(item.pipelineId)).length;
 
@@ -421,6 +457,8 @@ export function buildRdOpportunityManagerDashboard(input: {
       reconciledOutsidePaidField: 0,
     },
     commercialWinsByBu: winsByBu,
+    winsAttribution: Array.from(winsAttribution.values()).sort((a, b) => b.wonDeals - a.wonDeals || b.wonValue - a.wonValue || a.campaign.localeCompare(b.campaign)),
+    winsAttributionCoverage,
     funnel: [
       { key: "lead", label: "Leads", count: leads, conversionFromPrevious: 100, conversionFromLead: 100, rule: "ID técnico de lead criado no período com RD Station = sim" },
       { key: "mql", label: "MQL · Qualificados", count: mql, conversionFromPrevious: rate(mql, leads), conversionFromLead: rate(mql, leads), rule: "Primeiro Contato ou etapa posterior no status atual do lead" },
@@ -446,7 +484,7 @@ export function buildRdOpportunityManagerDashboard(input: {
     methodology: {
       mql: "Etapa atual em Primeiro Contato, Segundo Contato, Terceiro Contato, Relacionamento, Converter Lead ou Histórico Lead Convertidos.",
       sql: "Etapa atual em Relacionamento, Converter Lead ou Histórico Lead Convertidos.",
-      deal: "Negócios ganhos são lidos separadamente nos pipelines comerciais oficiais pelo fechamento no período; não dependem de match com os leads.",
+      deal: "Negócios ganhos são lidos separadamente nos pipelines comerciais oficiais pelo fechamento no período. Campanha, conjunto e criativo de ganhos usam apenas UTMs presentes diretamente no negócio; ausências ficam como Não identificado.",
       attribution: "UTMs diretas do lead; fallback para o payload RD Station embutido. UTM content representa conjunto/grupo e UTM term representa criativo; ausências aparecem como Não identificado.",
       reconciliation: "O universo inclui todos os IDs técnicos de lead do Bitrix24 com o campo oficial RD Station = sim no período. Não há filtro por título, origem, UTM ou match externo. A BU vem somente do Pipeline de Vendas; os demais registros permanecem como não atribuídos.",
       limitation: "MQL e SQL representam o status atual do lead, não o histórico de passagem entre etapas. Negócios ganhos são uma leitura comercial independente e não compõem taxa de conversão do funil sem vínculo técnico confiável.",

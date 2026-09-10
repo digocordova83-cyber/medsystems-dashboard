@@ -17,6 +17,7 @@ import {
 } from "../drizzle/schema";
 import { ENV } from "./_core/env";
 import { dedupeCanonicalCampaignRows, sumCampaignMetrics } from "./media/canonicalCampaignRows";
+import { reportingPeriodRange, type AnalyticsPeriod } from "./reportingPeriod";
 import { sha256 } from "./rdstation/crypto";
 import { JULY_2026, RD_ACCOUNTS, RD_ACCOUNT_META, type RdAccountKey } from "./rdstation/types";
 
@@ -315,7 +316,7 @@ export type JulyViewType = "primeira" | "ultima";
 export type BitrixEntityType = "lead" | "contact" | "deal";
 export type AnalyticsBrand = "all" | "medsystems" | "beautysystems";
 export type DealStatusFilter = "all" | "open" | "won" | "lost";
-export type AnalyticsPeriod = "2026-07" | "2026-08";
+export type { AnalyticsPeriod } from "./reportingPeriod";
 
 const BITRIX_BRAND_FIELD = "UF_CRM_1683207237";
 const BITRIX_BRAND_VALUES = { "1907": "medsystems", "3065": "beautysystems" } as const;
@@ -1315,9 +1316,7 @@ async function rdUtmLeadFlow(brands: readonly Exclude<AnalyticsBrand, "all">[], 
 export async function rdStationOperationsDashboard(brand: AnalyticsBrand, period: AnalyticsPeriod = "2026-07") {
   const db = await getDb();
   if (!db) throw new Error("Banco de dados indisponível.");
-  const range = period === "2026-08"
-    ? { start: new Date("2026-08-01T00:00:00-03:00"), end: new Date("2026-08-21T00:00:00-03:00"), endLabel: "2026-08-20" }
-    : { start: new Date("2026-07-01T00:00:00-03:00"), end: new Date("2026-08-01T00:00:00-03:00"), endLabel: "2026-07-31" };
+  const range = reportingPeriodRange(period);
   const brands = brand === "all" ? ["medsystems", "beautysystems"] as const : [brand] as const;
   const events = await db.select({ accountKey: rdStationConversionEvents.accountKey, contactUuid: rdStationConversionEvents.contactUuid, eventCreatedAt: rdStationConversionEvents.eventCreatedAt, rawPayload: rdStationConversionEvents.rawPayload })
     .from(rdStationConversionEvents)
@@ -1382,7 +1381,7 @@ export async function rdStationOperationsDashboard(brand: AnalyticsBrand, period
   const breakdown = (rows: Map<string, number>) => Array.from(rows, ([label, count]) => ({ label, count })).sort((a, b) => b.count - a.count);
   const totals = brands.reduce((acc, current) => ({ convertedContacts: acc.convertedContacts + byBrand[current].convertedContacts, utmLeads: acc.utmLeads + byBrand[current].utmLeads }), { convertedContacts: 0, utmLeads: 0 });
   return {
-    period: { key: period, start: period === "2026-08" ? "2026-08-01" : "2026-07-01", end: range.endLabel },
+    period: { key: period, start: range.startLabel, end: range.endLabel ?? range.startLabel },
     totals,
     byBrand,
     coverage,
@@ -1399,17 +1398,9 @@ export async function rdStationOperationsDashboard(brand: AnalyticsBrand, period
 export async function mediaDashboardAnalytics(brand: AnalyticsBrand, period: AnalyticsPeriod = "2026-07") {
   const db = await getDb();
   if (!db) throw new Error("Banco de dados indisponível.");
-  const todayBrt = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(new Date());
-  const todayStartBrt = new Date(`${todayBrt}T00:00:00-03:00`);
-  const augustLimit = new Date("2026-09-01T00:00:00-03:00");
-  const augustEnd = todayStartBrt < augustLimit ? todayStartBrt : augustLimit;
-  const augustEndLabel = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(new Date(augustEnd.getTime() - 1));
-  const periodRange = {
-    "2026-07": { start: new Date("2026-07-01T00:00:00-03:00"), end: new Date("2026-08-01T00:00:00-03:00"), endLabel: "2026-07-31", rdLeadsAvailable: true },
-    "2026-08": { start: new Date("2026-08-01T00:00:00-03:00"), end: augustEnd, endLabel: augustEndLabel, rdEnd: augustEnd, rdEndLabel: augustEndLabel, rdLeadsAvailable: true },
-  }[period];
+  const periodRange = reportingPeriodRange(period);
   const { start, end } = periodRange;
-  const rdEnd = (period === "2026-08" ? periodRange.rdEnd : end) ?? end;
+  const rdEnd = end;
   const brands = brand === "all" ? ["medsystems", "beautysystems"] as const : [brand] as const;
   const mediaWhere = and(eq(mediaDailyPerformance.recordLevel, "campaign"), inArray(mediaDailyPerformance.brand, brands), gte(mediaDailyPerformance.reportDate, start), lt(mediaDailyPerformance.reportDate, end));
   const adWhere = and(eq(mediaDailyPerformance.recordLevel, "ad"), inArray(mediaDailyPerformance.brand, brands), gte(mediaDailyPerformance.reportDate, start), lt(mediaDailyPerformance.reportDate, end));
@@ -1502,7 +1493,7 @@ export async function mediaDashboardAnalytics(brand: AnalyticsBrand, period: Ana
   const attribution = period === "2026-07" ? await attributionAuditSummary(brand) : [];
 
   return {
-    period: { key: period, start: period === "2026-07" ? "2026-07-01" : "2026-08-01", end: periodRange.endLabel, rdEnd: "rdEndLabel" in periodRange ? periodRange.rdEndLabel : periodRange.endLabel },
+    period: { key: period, start: periodRange.startLabel, end: periodRange.endLabel ?? periodRange.startLabel, rdEnd: periodRange.endLabel ?? periodRange.startLabel },
     media: {
       spend: analyticsNumber(mediaTotal?.spend),
       impressions: analyticsNumber(mediaTotal?.impressions),

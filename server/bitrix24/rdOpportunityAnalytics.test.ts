@@ -58,6 +58,34 @@ describe("buildRdOpportunityManagerDashboard", () => {
     });
   });
 
+  it("detalha ganhos por campanha, conjunto e criativo apenas pelas UTMs do próprio negócio", () => {
+    const result = buildRdOpportunityManagerDashboard({
+      rows,
+      dealRows: [
+        deal({ ID: "201", CATEGORY_ID: "42", STAGE_SEMANTIC_ID: "S", OPPORTUNITY: "9000", UTM_SOURCE: "google", UTM_MEDIUM: "cpc", UTM_CAMPAIGN: "med-search", UTM_CONTENT: "grupo-a", UTM_TERM: "criativo-a" }),
+        deal({ ID: "202", CATEGORY_ID: "57", STAGE_SEMANTIC_ID: "S", OPPORTUNITY: "15000" }),
+      ],
+      filters,
+      period: { start: "2026-09-01", end: "2026-09-08" },
+    });
+    expect(result.winsAttribution).toEqual(expect.arrayContaining([
+      expect.objectContaining({ campaign: "med-search", adset: "grupo-a", creative: "criativo-a", wonDeals: 1, wonValue: 9000 }),
+      expect.objectContaining({ campaign: "Não identificado", wonDeals: 1, wonValue: 15000 }),
+    ]));
+    expect(result.winsAttributionCoverage).toMatchObject({ total: 2, source: 1, medium: 1, campaign: 1, adset: 1, creative: 1 });
+  });
+
+  it("trata valores comerciais genéricos como não identificados", () => {
+    const result = buildRdOpportunityManagerDashboard({
+      rows,
+      dealRows: [deal({ ID: "301", CATEGORY_ID: "42", STAGE_SEMANTIC_ID: "S", OPPORTUNITY: "9000", UTM_SOURCE: "APP", UTM_CONTENT: "APP" })],
+      filters,
+      period: { start: "2026-09-01", end: "2026-09-08" },
+    });
+    expect(result.winsAttribution[0]).toMatchObject({ source: "Não identificado", campaign: "Não identificado", adset: "Não identificado", creative: "Não identificado" });
+    expect(result.winsAttributionCoverage).toMatchObject({ total: 1, source: 0, campaign: 0, adset: 0, creative: 0 });
+  });
+
   it("aplica BU somente pelo pipeline e mantém filtros de dimensão", () => {
     const result = buildRdOpportunityManagerDashboard({
       rows,

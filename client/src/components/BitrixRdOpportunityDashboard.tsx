@@ -56,6 +56,7 @@ export function BitrixRdOpportunityDashboard() {
   const options = (key: string) => (data.filterOptions[key] ?? []) as FilterOption[];
   const baselinePipelines = options("pipelines");
   const filteredAttribution = data.attribution.filter(row => !utmSearch || [row.source, row.medium, row.campaign, row.adset, row.creative].join(" ").toLocaleLowerCase("pt-BR").includes(utmSearch.toLocaleLowerCase("pt-BR")));
+  const filteredWinsAttribution = data.winsAttribution.filter(row => !utmSearch || [row.source, row.medium, row.campaign, row.adset, row.creative].join(" ").toLocaleLowerCase("pt-BR").includes(utmSearch.toLocaleLowerCase("pt-BR")));
   const applyDates = () => { if (draftStart <= draftEnd) { setStartDate(draftStart); setEndDate(draftEnd); } };
   const updateFilter = (key: keyof Filters, value: string) => setFilters(current => ({ ...current, [key]: value }));
   const setPipeline = (value: string) => updateFilter("pipeline", value);
@@ -140,6 +141,28 @@ export function BitrixRdOpportunityDashboard() {
         <AttributionTable rows={filteredAttribution} />
       </section>
 
+      <section className="overflow-hidden rounded-[28px] border border-emerald-200/15 bg-[radial-gradient(circle_at_92%_0%,rgba(52,211,153,.10),transparent_32%),linear-gradient(145deg,rgba(7,31,29,.96),rgba(5,18,24,.98))] shadow-2xl shadow-emerald-950/10">
+        <div className="flex flex-col justify-between gap-4 border-b border-white/10 p-5 sm:flex-row sm:items-end sm:p-6">
+          <div>
+            <PanelHeader eyebrow="Resultado comercial" title="Negócios ganhos por campanha → conjunto → criativo" detail="Atribuição lida exclusivamente pelas UTMs registradas no próprio negócio ganho. É uma visão comercial independente: não força vínculo com o funil de leads." />
+            <div className="mt-4 flex flex-wrap gap-2">
+              <span className="rounded-full border border-emerald-200/15 bg-emerald-200/[.07] px-3 py-1.5 text-[11px] font-medium text-emerald-50">{integer(filteredWinsAttribution.reduce((sum, row) => sum + row.wonDeals, 0))} ganhos nas linhas visíveis</span>
+              <span className="rounded-full border border-white/10 bg-white/[.035] px-3 py-1.5 text-[11px] text-slate-300">{brl(filteredWinsAttribution.reduce((sum, row) => sum + row.wonValue, 0))} em valor de oportunidade</span>
+            </div>
+          </div>
+          <Badge variant="outline" className="w-fit border-emerald-200/20 bg-emerald-200/[.06] text-emerald-100"><BadgeDollarSign className="mr-1.5 h-3.5 w-3.5" />UTM do negócio ganho</Badge>
+        </div>
+        <div className="grid gap-px border-b border-white/10 bg-white/10 sm:grid-cols-3">
+          {[
+            ["Campanha identificada", data.winsAttributionCoverage.campaign],
+            ["Conjunto identificado", data.winsAttributionCoverage.adset],
+            ["Criativo identificado", data.winsAttributionCoverage.creative],
+          ].map(([label, count]) => <div key={String(label)} className="bg-[#08221f]/80 px-5 py-4"><p className="text-[9px] uppercase tracking-[.14em] text-slate-500">{label}</p><p className="mt-1 font-mono-ui text-lg font-bold text-emerald-100">{integer(Number(count))}<span className="ml-1 text-xs font-medium text-slate-400">de {integer(data.winsAttributionCoverage.total)}</span></p></div>)}
+        </div>
+        {data.winsAttributionCoverage.campaign === 0 && data.winsAttributionCoverage.adset === 0 && data.winsAttributionCoverage.creative === 0 && <div className="border-b border-amber-200/10 bg-amber-100/[.035] px-5 py-3 text-xs leading-relaxed text-amber-50/90">Os ganhos do período não possuem UTMs de campanha, conjunto ou criativo preenchidas no CRM. Valores genéricos como <strong>APP</strong> foram tratados como <strong>Não identificado</strong>; o dashboard não infere a origem comercial.</div>}
+        <WinsAttributionTable rows={filteredWinsAttribution} />
+      </section>
+
       <section className="grid gap-5 xl:grid-cols-3">
         <RankPanel eyebrow="Estágio atual" title="Distribuição da operação" rows={data.stages} total={data.totals.leads} tone="violet" />
         <RankPanel eyebrow="Responsabilidade" title="Carteira por responsável" rows={data.responsible} total={data.totals.leads} tone="cyan" />
@@ -192,6 +215,19 @@ function AttributionTable({ rows }: { rows: { source: string; medium: string; ca
       </table>
     </div>
     <div className="attribution-scroll max-h-[760px] space-y-3 overflow-y-auto p-4 lg:hidden">{rows.map((row, index) => <article key={`${row.campaign}-${row.adset}-${row.creative}-${index}`} className="rounded-2xl border border-white/10 bg-black/20 p-4"><div className="flex items-start justify-between gap-3"><SourceBadge source={row.source} medium={row.medium} /><div className="flex gap-1.5"><CompactMetric label="L" value={row.leads} tone="cyan" /><CompactMetric label="M" value={row.mql} tone="violet" /><CompactMetric label="S" value={row.sql} tone="amber" /></div></div><div className="mt-4 space-y-3"><MobileHierarchyRow index="01" label="Campanha" value={row.campaign} /><MobileHierarchyRow index="02" label="Conjunto" value={row.adset} /><MobileHierarchyRow index="03" label="Criativo" value={row.creative} /></div></article>)}</div>
+  </>;
+}
+function WinsAttributionTable({ rows }: { rows: { source: string; medium: string; campaign: string; adset: string; creative: string; wonDeals: number; wonValue: number }[] }) {
+  if (!rows.length) return <div className="grid min-h-56 place-items-center p-8 text-center"><div><BriefcaseBusiness className="mx-auto h-7 w-7 text-emerald-200/60" /><p className="mt-3 font-semibold text-white">Nenhum ganho encontrado nesta busca</p><p className="mt-1 text-sm text-slate-500">Revise a busca ou os filtros ativos.</p></div></div>;
+  return <>
+    <div className="attribution-scroll hidden max-h-[620px] overflow-auto lg:block">
+      <table className="w-full min-w-[1110px] table-fixed text-left text-xs">
+        <colgroup><col className="w-[15%]" /><col className="w-[26%]" /><col className="w-[22%]" /><col className="w-[22%]" /><col className="w-[7%]" /><col className="w-[8%]" /></colgroup>
+        <thead className="sticky top-0 z-20 bg-[#09211f]/95 text-[9px] uppercase tracking-[.14em] text-slate-400 shadow-[0_1px_0_rgba(255,255,255,.1)] backdrop-blur-xl"><tr><th className="px-5 py-4">Origem</th><th className="px-4 py-4"><HierarchyHeader index="01" label="Campanha" /></th><th className="px-4 py-4"><HierarchyHeader index="02" label="Conjunto" /></th><th className="px-4 py-4"><HierarchyHeader index="03" label="Criativo" /></th><th className="px-2 py-4 text-center">Ganhos</th><th className="px-4 py-4 text-right">Valor ganho</th></tr></thead>
+        <tbody className="divide-y divide-white/[.065]">{rows.map((row, index) => <tr key={`${row.campaign}-${row.adset}-${row.creative}-${index}`} className="group align-top transition-colors hover:bg-emerald-100/[.035]"><td className="px-5 py-5"><SourceBadge source={row.source} medium={row.medium} /></td><HierarchyCell value={row.campaign} /><HierarchyCell value={row.adset} /><HierarchyCell value={row.creative} /><td className="px-2 py-5 text-center"><span className="inline-grid min-w-10 place-items-center rounded-lg border border-emerald-200/15 bg-emerald-200/[.07] px-2 py-1.5 font-mono-ui text-xs font-bold text-emerald-100">{integer(row.wonDeals)}</span></td><td className="px-4 py-5 text-right font-mono-ui text-sm font-bold text-emerald-100">{brl(row.wonValue)}</td></tr>)}</tbody>
+      </table>
+    </div>
+    <div className="attribution-scroll max-h-[620px] space-y-3 overflow-y-auto p-4 lg:hidden">{rows.map((row, index) => <article key={`${row.campaign}-${row.adset}-${row.creative}-${index}`} className="rounded-2xl border border-emerald-200/10 bg-black/20 p-4"><div className="flex items-start justify-between gap-3"><SourceBadge source={row.source} medium={row.medium} /><div className="rounded-lg bg-emerald-200/10 px-2.5 py-1.5 text-center text-emerald-100"><p className="text-[8px] uppercase tracking-[.1em] opacity-60">Ganhos</p><p className="font-mono-ui text-xs font-bold">{integer(row.wonDeals)}</p></div></div><div className="mt-4 space-y-3"><MobileHierarchyRow index="01" label="Campanha" value={row.campaign} /><MobileHierarchyRow index="02" label="Conjunto" value={row.adset} /><MobileHierarchyRow index="03" label="Criativo" value={row.creative} /></div><div className="mt-4 border-t border-white/10 pt-3 text-right"><p className="text-[9px] uppercase tracking-[.12em] text-slate-500">Valor ganho</p><p className="mt-1 font-mono-ui text-sm font-bold text-emerald-100">{brl(row.wonValue)}</p></div></article>)}</div>
   </>;
 }
 function HierarchyHeader({ index, label }: { index: string; label: string }) { return <span className="inline-flex items-center gap-2"><span className="grid h-5 w-5 place-items-center rounded-md bg-white/[.06] font-mono-ui text-[8px] text-cyan-100/70">{index}</span>{label}</span>; }

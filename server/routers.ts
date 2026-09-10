@@ -14,11 +14,15 @@ import { bitrixExportSnapshot } from "./spreadsheet/bitrixExportSnapshot";
 import { mediaChannelDashboard } from "./media/channelDashboard";
 import { publyaRouter } from "./publya/router";
 import { leadReconciliationDashboard } from "./leads/reconciliation";
+import { currentAnalyticsPeriod, isAnalyticsPeriod, type AnalyticsPeriod } from "./reportingPeriod";
 
 const accountInput = z.enum(RD_ACCOUNTS);
 const analyticsBrandInput = z.enum(["all", "medsystems", "beautysystems"]);
 const dashboardDateInput = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 const optionalFilterInput = z.string().max(512).default("all");
+const reportingPeriodInput = z.string().refine(isAnalyticsPeriod, "Informe o período no formato AAAA-MM.")
+  .refine(value => value <= currentAnalyticsPeriod(), "O período selecionado ainda não está disponível.")
+  .transform(value => value as AnalyticsPeriod);
 const dashboardProcedure = protectedProcedure.use(({ ctx, next }) => {
   if (ctx.user.loginMethod !== "password" || !ctx.user.username) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "Acesso exclusivo para usuários do dashboard." });
@@ -106,16 +110,16 @@ export const appRouter = router({
     syncNextEvents: adminProcedure.input(z.object({ accountKey: accountInput })).mutation(async ({ input }) => (
       syncNextJulyConversionBatch(input.accountKey as RdAccountKey)
     )),
-    operationsDashboard: dashboardProcedure.input(z.object({ brand: analyticsBrandInput, period: z.enum(["2026-07", "2026-08"]).default("2026-07") })).query(({ input }) => rdStationOperationsDashboard(input.brand, input.period)),
+    operationsDashboard: dashboardProcedure.input(z.object({ brand: analyticsBrandInput, period: reportingPeriodInput.default(currentAnalyticsPeriod()) })).query(({ input }) => rdStationOperationsDashboard(input.brand, input.period)),
   }),
   bitrix24: router({
     medsystemsStatus: adminProcedure.query(() => medsystemsBitrixStatus()),
     medsystemsJulyTotals: adminProcedure.query(() => medsystemsBitrixJulyTotals()),
-    medsystemsJulyDealAnalytics: dashboardProcedure.input(z.object({ status: z.enum(["all", "open", "won", "lost"]), brand: analyticsBrandInput, period: z.enum(["2026-07", "2026-08"]).default("2026-07") }).optional()).query(({ input }) => medsystemsBitrixJulyDealAnalytics(input?.status ?? "all", input?.brand ?? "all", input?.period ?? "2026-07")),
-    medsystemsLeadChannelFunnel: dashboardProcedure.input(z.object({ status: z.enum(["all", "open", "won", "lost"]), brand: analyticsBrandInput, period: z.enum(["2026-07", "2026-08"]).default("2026-07") }).optional()).query(({ input }) => medsystemsBitrixLeadChannelFunnel(input?.status ?? "all", input?.brand ?? "all", input?.period ?? "2026-07")),
-    medsystemsCampaignAttributionDetail: dashboardProcedure.input(z.object({ status: z.enum(["all", "open", "won", "lost"]), brand: analyticsBrandInput, period: z.enum(["2026-07", "2026-08"]).default("2026-07") }).optional()).query(({ input }) => medsystemsBitrixCampaignAttributionDetail(input?.status ?? "all", input?.brand ?? "all", input?.period ?? "2026-07")),
-    medsystemsUtmReceiptCoverage: dashboardProcedure.input(z.object({ brand: analyticsBrandInput, period: z.enum(["2026-07", "2026-08"]).default("2026-07") }).optional()).query(({ input }) => medsystemsUtmReceiptCoverage(input?.brand ?? "all", input?.period ?? "2026-07")),
-    operationsDashboard: dashboardProcedure.input(z.object({ status: z.enum(["all", "open", "won", "lost"]), brand: analyticsBrandInput, period: z.enum(["2026-07", "2026-08"]).default("2026-07") }).optional()).query(({ input }) => medsystemsBitrixOperationsDashboard(input?.status ?? "all", input?.brand ?? "all", input?.period ?? "2026-07")),
+    medsystemsJulyDealAnalytics: dashboardProcedure.input(z.object({ status: z.enum(["all", "open", "won", "lost"]), brand: analyticsBrandInput, period: reportingPeriodInput.default(currentAnalyticsPeriod()) }).optional()).query(({ input }) => medsystemsBitrixJulyDealAnalytics(input?.status ?? "all", input?.brand ?? "all", input?.period ?? currentAnalyticsPeriod())),
+    medsystemsLeadChannelFunnel: dashboardProcedure.input(z.object({ status: z.enum(["all", "open", "won", "lost"]), brand: analyticsBrandInput, period: reportingPeriodInput.default(currentAnalyticsPeriod()) }).optional()).query(({ input }) => medsystemsBitrixLeadChannelFunnel(input?.status ?? "all", input?.brand ?? "all", input?.period ?? currentAnalyticsPeriod())),
+    medsystemsCampaignAttributionDetail: dashboardProcedure.input(z.object({ status: z.enum(["all", "open", "won", "lost"]), brand: analyticsBrandInput, period: reportingPeriodInput.default(currentAnalyticsPeriod()) }).optional()).query(({ input }) => medsystemsBitrixCampaignAttributionDetail(input?.status ?? "all", input?.brand ?? "all", input?.period ?? currentAnalyticsPeriod())),
+    medsystemsUtmReceiptCoverage: dashboardProcedure.input(z.object({ brand: analyticsBrandInput, period: reportingPeriodInput.default(currentAnalyticsPeriod()) }).optional()).query(({ input }) => medsystemsUtmReceiptCoverage(input?.brand ?? "all", input?.period ?? currentAnalyticsPeriod())),
+    operationsDashboard: dashboardProcedure.input(z.object({ status: z.enum(["all", "open", "won", "lost"]), brand: analyticsBrandInput, period: reportingPeriodInput.default(currentAnalyticsPeriod()) }).optional()).query(({ input }) => medsystemsBitrixOperationsDashboard(input?.status ?? "all", input?.brand ?? "all", input?.period ?? currentAnalyticsPeriod())),
     rdOpportunityDashboard: dashboardProcedure.input(z.object({
       startDate: dashboardDateInput.default("2026-08-01"),
       endDate: dashboardDateInput.default("2026-08-25"),
@@ -145,7 +149,7 @@ export const appRouter = router({
     })),
   }),
   analytics: router({
-    dashboard: dashboardProcedure.input(z.object({ brand: analyticsBrandInput, period: z.enum(["2026-07", "2026-08"]).default("2026-07") })).query(({ input }) => mediaDashboardAnalytics(input.brand, input.period)),
+    dashboard: dashboardProcedure.input(z.object({ brand: analyticsBrandInput, period: reportingPeriodInput.default(currentAnalyticsPeriod()) })).query(({ input }) => mediaDashboardAnalytics(input.brand, input.period)),
     channelDashboard: dashboardProcedure.input(z.object({
       platform: z.enum(["google_ads", "meta_ads"]),
       brand: analyticsBrandInput.default("all"),

@@ -1,11 +1,17 @@
-import { bitrixCampaignAttributionDetail, bitrixDealBrand, bitrixDealJulyAnalytics, bitrixLeadChannelFunnel, bitrixJulyTotals, bitrixOperationsDashboard, bitrixReferencedContactIds, finishBitrixSyncRun, reconcileAttributionAuditLinks, reconcileBitrixEntities, refreshAttributionAuditFromBitrix, startBitrixSyncRun, type AnalyticsPeriod, type BitrixEntityType, type DealStatusFilter, upsertBitrixEntities, utmReceiptCoverage } from "../db";
+import { bitrixCampaignAttributionDetail, bitrixDealBrand, bitrixDealJulyAnalytics, bitrixLeadChannelFunnel, bitrixJulyTotals, bitrixOperationsDashboard, bitrixReferencedContactIds, finishBitrixSyncRun, reconcileAttributionAuditLinks, reconcileBitrixEntities, refreshAttributionAuditFromBitrix, startBitrixSyncRun, type BitrixEntityType, type DealStatusFilter, upsertBitrixEntities, utmReceiptCoverage } from "../db";
 import { rdOpportunityManagerDashboard, rdOpportunityManagerDashboardsByAccount, validateBusinessDateRange, type RdOpportunityFilters } from "./rdOpportunityAnalytics";
+import { reportingPeriodRange, type AnalyticsPeriod } from "../reportingPeriod";
 
 const CRM_CAPABILITIES = ["Leads", "Contatos", "Negócios"] as const;
-const PERIODS: Record<AnalyticsPeriod, { start: Date; end: Date; bitrixStart: string; bitrixEnd: string }> = {
-  "2026-07": { start: new Date("2026-07-01T00:00:00-03:00"), end: new Date("2026-08-01T00:00:00-03:00"), bitrixStart: "2026-07-01T00:00:00-03:00", bitrixEnd: "2026-08-01T00:00:00-03:00" },
-  "2026-08": { start: new Date("2026-08-01T00:00:00-03:00"), end: new Date("2026-08-27T00:00:00-03:00"), bitrixStart: "2026-08-01T00:00:00-03:00", bitrixEnd: "2026-08-27T00:00:00-03:00" },
-};
+function periodRange(period: AnalyticsPeriod) {
+  const range = reportingPeriodRange(period);
+  return {
+    start: range.start,
+    end: range.end,
+    bitrixStart: `${range.startLabel}T00:00:00-03:00`,
+    bitrixEnd: `${range.endExclusiveLabel}T00:00:00-03:00`,
+  };
+}
 const ENTITY_METHOD: Record<BitrixEntityType, string> = { lead: "crm.lead.list", contact: "crm.contact.list", deal: "crm.deal.list" };
 const ENTITY_SELECT: Record<BitrixEntityType, string[]> = {
   lead: ["*", "UF_*"],
@@ -63,7 +69,7 @@ export async function medsystemsBitrixStatus() {
 }
 
 export async function syncMedsystemsEntityForPeriod(entityType: BitrixEntityType, period: AnalyticsPeriod) {
-  const range = PERIODS[period];
+  const range = periodRange(period);
   const baseUrl = webhookBaseUrl();
   const portal = new URL(baseUrl).host;
   const runId = await startBitrixSyncRun(portal, entityType, range.start, range.end);
@@ -100,7 +106,7 @@ export async function syncMedsystemsEntityForPeriod(entityType: BitrixEntityType
 }
 
 export async function syncMedsystemsReferencedContactsForPeriod(period: AnalyticsPeriod) {
-  const range = PERIODS[period];
+  const range = periodRange(period);
   const portal = new URL(webhookBaseUrl()).host;
   const contactIds = await bitrixReferencedContactIds({ portal, start: range.start, end: range.end });
   const contacts: Record<string, unknown>[] = [];
@@ -113,29 +119,29 @@ export async function syncMedsystemsReferencedContactsForPeriod(period: Analytic
 }
 
 export async function syncMedsystemsJulyEntity(entityType: BitrixEntityType) { return syncMedsystemsEntityForPeriod(entityType, "2026-07"); }
-export async function medsystemsBitrixJulyTotals() { const range = PERIODS["2026-07"]; return bitrixJulyTotals(new URL(webhookBaseUrl()).host, range.start, range.end); }
+export async function medsystemsBitrixJulyTotals() { const range = periodRange("2026-07"); return bitrixJulyTotals(new URL(webhookBaseUrl()).host, range.start, range.end); }
 export async function medsystemsBitrixJulyDealAnalytics(statusFilter: DealStatusFilter = "all", brand: "all" | "medsystems" | "beautysystems" = "all", period: AnalyticsPeriod = "2026-07") {
-  const range = PERIODS[period];
+  const range = periodRange(period);
   return bitrixDealJulyAnalytics(new URL(webhookBaseUrl()).host, range.start, range.end, statusFilter, brand);
 }
 
 export async function medsystemsBitrixLeadChannelFunnel(statusFilter: DealStatusFilter = "all", brand: "all" | "medsystems" | "beautysystems" = "all", period: AnalyticsPeriod = "2026-07") {
-  const range = PERIODS[period];
+  const range = periodRange(period);
   return bitrixLeadChannelFunnel(new URL(webhookBaseUrl()).host, range.start, range.end, statusFilter, brand);
 }
 
 export async function medsystemsBitrixCampaignAttributionDetail(statusFilter: DealStatusFilter = "all", brand: "all" | "medsystems" | "beautysystems" = "all", period: AnalyticsPeriod = "2026-07") {
-  const range = PERIODS[period];
+  const range = periodRange(period);
   return bitrixCampaignAttributionDetail(new URL(webhookBaseUrl()).host, range.start, range.end, statusFilter, brand);
 }
 
 export async function medsystemsUtmReceiptCoverage(brand: "all" | "medsystems" | "beautysystems" = "all", period: AnalyticsPeriod = "2026-07") {
-  const range = PERIODS[period];
+  const range = periodRange(period);
   return utmReceiptCoverage(new URL(webhookBaseUrl()).host, range.start, range.end, period, brand);
 }
 
 export async function medsystemsBitrixOperationsDashboard(statusFilter: DealStatusFilter = "all", brand: "all" | "medsystems" | "beautysystems" = "all", period: AnalyticsPeriod = "2026-07") {
-  const range = PERIODS[period];
+  const range = periodRange(period);
   return bitrixOperationsDashboard(new URL(webhookBaseUrl()).host, range.start, range.end, statusFilter, brand);
 }
 

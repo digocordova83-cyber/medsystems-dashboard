@@ -734,3 +734,8 @@
 - [x] Atualizar Google, Meta e Programática com dados verificáveis até 09/09/2026.
 - [x] Recalcular o snapshot diário e validar os totais do dashboard por BU e sem BU.
 - [x] Testar a interface, salvar e publicar a atualização de 09/09/2026.
+- [x] Alinhar o Overview ao mês corrente até o último D-1 disponível, com os mesmos filtros e dados atualizados das abas operacionais.
+- [x] Validar o intervalo padrão, os KPIs e a atualização diária do Overview antes de publicar.
+- [x] Exibir na aba Negócios os negócios ganhos por campanha, conjunto e criativo somente quando houver vínculo técnico comprovado; manter os demais como Não identificado.
+- [x] Validar a nova visão de ganhos por origem contra os totais comerciais e publicar as melhorias.
+- [x] Exibir a cobertura de UTM dos negócios ganhos e tratar valores genéricos como Não identificado, sem inferir campanha, conjunto ou criativo: 0 de 28 ganhos possuem campanha, conjunto ou criativo válido no CRM.

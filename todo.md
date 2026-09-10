@@ -750,3 +750,7 @@
 - [x] Revalidar diretamente na API o total geral de leads criados no Bitrix24 em 09/09, sem usar o flag RD Station.
 - [x] Conferir paginação, fuso e data original do CRM contra os registros persistidos.
 - [x] Concluir que não há divergência na carga dos leads técnicos e manter inalterada a metodologia da aba Negócios até nova decisão de escopo.
+- [x] Apurar no RD Station os leads de marketing de 09/09/2026 conforme os critérios acordados, por BU: 30 eventos MedSystems e 22 BeautySystems, total de 52; equivalem a 28 e 21 contatos únicos, respectivamente.
+- [x] Cruzar os 49 contatos únicos qualificados do RD Station em 09/09/2026 com o Bitrix24 por e-mail e/ou telefone normalizado: 15 encontrados, após 156 consultas diretas sem falhas.
+- [x] Retomar a consulta direta ao Bitrix24 por e-mail e telefone dos contatos RD Station qualificados em 09/09/2026.
+- [x] Retestar o webhook Bitrix24 e concluir o cruzamento direto após a conectividade ser restabelecida.

@@ -729,3 +729,8 @@
 - [x] Otimizar a capa em uma única reescrita completa, preservando estrutura, identidade e consistência do template.
 - [x] Registrar o padrão visual e editorial atualizado do Report Lu na memória compartilhada do projeto.
 - [x] Validar e apresentar o deck completo com todas as lâminas do outline original.
+- [x] Confirmar a cobertura de RD Station, Bitrix24, Google, Meta e Publya até 09/09/2026.
+- [x] Sincronizar RD Station e Bitrix24 até 09/09/2026 sem alterar a regra `RD Station = sim` do dashboard.
+- [x] Atualizar Google, Meta e Programática com dados verificáveis até 09/09/2026.
+- [x] Recalcular o snapshot diário e validar os totais do dashboard por BU e sem BU.
+- [x] Testar a interface, salvar e publicar a atualização de 09/09/2026.

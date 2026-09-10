@@ -7,7 +7,7 @@ import { adminProcedure, protectedProcedure, publicProcedure, router } from "./_
 import { systemRouter } from "./_core/systemRouter";
 import { callbackUrl, createAuthorizationUrl, fetchSegmentations, integrationStatus, syncNextContactPage, syncNextJulyConversionBatch, updateSegmentation } from "./rdstation/service";
 import { isRdAccountKey, RD_ACCOUNTS, type RdAccountKey } from "./rdstation/types";
-import { medsystemsBitrixCampaignAttributionDetail, medsystemsBitrixLeadChannelFunnel, medsystemsBitrixJulyDealAnalytics, medsystemsBitrixJulyTotals, medsystemsBitrixOperationsDashboard, medsystemsBitrixRdOpportunityDashboard, medsystemsBitrixStatus, medsystemsUtmReceiptCoverage } from "./bitrix24/service";
+import { medsystemsBitrixCampaignAttributionDetail, medsystemsBitrixLeadChannelFunnel, medsystemsBitrixJulyDealAnalytics, medsystemsBitrixJulyTotals, medsystemsBitrixOperationsDashboard, medsystemsBitrixRdOpportunityDashboard, medsystemsBitrixRdOpportunityDefaultPeriod, medsystemsBitrixStatus, medsystemsUtmReceiptCoverage } from "./bitrix24/service";
 import { getUserByUsername, listDashboardAccessLogs, mediaDashboardAnalytics, recordDashboardAccess, rdStationOperationsDashboard, upsertUser } from "./db";
 import { clearDashboardLoginFailures, isDashboardLoginBlocked, normalizeDashboardUsername, publicDashboardUser, registerDashboardLoginFailure, requestAuditMetadata, verifyDashboardPassword } from "./dashboardAuth";
 import { bitrixExportSnapshot } from "./spreadsheet/bitrixExportSnapshot";
@@ -120,9 +120,10 @@ export const appRouter = router({
     medsystemsCampaignAttributionDetail: dashboardProcedure.input(z.object({ status: z.enum(["all", "open", "won", "lost"]), brand: analyticsBrandInput, period: reportingPeriodInput.default(currentAnalyticsPeriod()) }).optional()).query(({ input }) => medsystemsBitrixCampaignAttributionDetail(input?.status ?? "all", input?.brand ?? "all", input?.period ?? currentAnalyticsPeriod())),
     medsystemsUtmReceiptCoverage: dashboardProcedure.input(z.object({ brand: analyticsBrandInput, period: reportingPeriodInput.default(currentAnalyticsPeriod()) }).optional()).query(({ input }) => medsystemsUtmReceiptCoverage(input?.brand ?? "all", input?.period ?? currentAnalyticsPeriod())),
     operationsDashboard: dashboardProcedure.input(z.object({ status: z.enum(["all", "open", "won", "lost"]), brand: analyticsBrandInput, period: reportingPeriodInput.default(currentAnalyticsPeriod()) }).optional()).query(({ input }) => medsystemsBitrixOperationsDashboard(input?.status ?? "all", input?.brand ?? "all", input?.period ?? currentAnalyticsPeriod())),
+    rdOpportunityDefaultPeriod: dashboardProcedure.query(() => medsystemsBitrixRdOpportunityDefaultPeriod()),
     rdOpportunityDashboard: dashboardProcedure.input(z.object({
-      startDate: dashboardDateInput.default("2026-08-01"),
-      endDate: dashboardDateInput.default("2026-08-25"),
+      startDate: dashboardDateInput.optional(),
+      endDate: dashboardDateInput.optional(),
       pipeline: z.string().max(32).default("all"),
       responsible: optionalFilterInput,
       source: optionalFilterInput,
@@ -132,21 +133,24 @@ export const appRouter = router({
       campaign: optionalFilterInput,
       adset: optionalFilterInput,
       creative: optionalFilterInput,
-    }).optional()).query(({ input }) => medsystemsBitrixRdOpportunityDashboard({
-      startDate: input?.startDate ?? "2026-08-01",
-      endDate: input?.endDate ?? "2026-08-25",
-      filters: {
-        pipeline: input?.pipeline ?? "all",
-        responsible: input?.responsible ?? "all",
-        source: input?.source ?? "all",
-        stage: input?.stage ?? "all",
-        position: input?.position ?? "all",
-        product: input?.product ?? "all",
-        campaign: input?.campaign ?? "all",
-        adset: input?.adset ?? "all",
-        creative: input?.creative ?? "all",
-      },
-    })),
+    }).optional()).query(({ input }) => {
+      const defaults = medsystemsBitrixRdOpportunityDefaultPeriod();
+      return medsystemsBitrixRdOpportunityDashboard({
+        startDate: input?.startDate ?? defaults.startDate,
+        endDate: input?.endDate ?? defaults.endDate,
+        filters: {
+          pipeline: input?.pipeline ?? "all",
+          responsible: input?.responsible ?? "all",
+          source: input?.source ?? "all",
+          stage: input?.stage ?? "all",
+          position: input?.position ?? "all",
+          product: input?.product ?? "all",
+          campaign: input?.campaign ?? "all",
+          adset: input?.adset ?? "all",
+          creative: input?.creative ?? "all",
+        },
+      });
+    }),
   }),
   analytics: router({
     dashboard: dashboardProcedure.input(z.object({ brand: analyticsBrandInput, period: reportingPeriodInput.default(currentAnalyticsPeriod()) })).query(({ input }) => mediaDashboardAnalytics(input.brand, input.period)),

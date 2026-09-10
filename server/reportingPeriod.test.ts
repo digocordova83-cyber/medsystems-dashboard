@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { currentAnalyticsPeriod, reportingPeriodRange } from "./reportingPeriod";
+import { currentAnalyticsPeriod, currentMonthThroughD1Range, reportingPeriodRange } from "./reportingPeriod";
 
 describe("período mensal do Overview", () => {
   it("usa o mês vigente em Brasília", () => {
@@ -11,6 +11,14 @@ describe("período mensal do Overview", () => {
     expect(range.startLabel).toBe("2026-09-01");
     expect(range.endLabel).toBe("2026-09-09");
     expect(range.endExclusiveLabel).toBe("2026-09-10");
+  });
+
+  it("fornece à aba Negócios o período padrão pelo relógio do servidor", () => {
+    expect(currentMonthThroughD1Range(new Date("2026-09-10T15:00:00.000Z"))).toEqual({
+      startDate: "2026-09-01",
+      endDate: "2026-09-09",
+      hasAvailableDays: true,
+    });
   });
 
   it("mantém meses fechados até o último dia", () => {

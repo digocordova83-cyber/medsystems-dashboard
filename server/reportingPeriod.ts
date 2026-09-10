@@ -46,3 +46,17 @@ export function reportingPeriodRange(period: AnalyticsPeriod, now = new Date()) 
     hasAvailableDays: end > start,
   };
 }
+
+/**
+ * Intervalo padrão dos painéis operacionais: mês corrente até o último dia
+ * fechado em São Paulo. O cálculo vive no servidor para que todos os
+ * navegadores usem o mesmo corte D-1, independentemente do relógio local.
+ */
+export function currentMonthThroughD1Range(now = new Date()) {
+  const range = reportingPeriodRange(currentAnalyticsPeriod(now), now);
+  return {
+    startDate: range.startLabel,
+    endDate: range.endLabel,
+    hasAvailableDays: range.hasAvailableDays,
+  };
+}

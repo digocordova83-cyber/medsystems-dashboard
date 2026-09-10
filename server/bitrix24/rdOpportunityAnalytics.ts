@@ -201,6 +201,17 @@ function dayKey(date: Date) {
   return date.toLocaleDateString("en-CA", { timeZone: "America/Sao_Paulo" });
 }
 
+function periodDayKeys(period: { start: string; end: string }) {
+  const days: string[] = [];
+  const cursor = new Date(`${period.start}T12:00:00-03:00`);
+  const end = new Date(`${period.end}T12:00:00-03:00`);
+  while (cursor <= end) {
+    days.push(dayKey(cursor));
+    cursor.setDate(cursor.getDate() + 1);
+  }
+  return days;
+}
+
 function numberValue(value: unknown) {
   const parsed = Number(value ?? 0);
   return Number.isFinite(parsed) ? parsed : 0;
@@ -465,7 +476,7 @@ export function buildRdOpportunityManagerDashboard(input: {
       { key: "sql", label: "SQL · Oportunidades", count: sqlCount, conversionFromPrevious: rate(sqlCount, mql), conversionFromLead: rate(sqlCount, leads), rule: "Relacionamento, Converter Lead ou Histórico Lead Convertidos" },
     ],
     coverage,
-    byDay: Array.from(daily, ([date, values]) => ({ date, ...values })).sort((a, b) => a.date.localeCompare(b.date)),
+    byDay: periodDayKeys(input.period).map(date => ({ date, ...(daily.get(date) ?? { leads: 0, mql: 0, sql: 0, deals: 0 }) })),
     stages: countRows(distributions.stages),
     responsible: countRows(distributions.responsible),
     sourceInformation: countRows(distributions.source),

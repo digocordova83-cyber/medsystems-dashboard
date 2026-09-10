@@ -6,7 +6,7 @@ import {
   CheckCircle2, ChevronRight, CircleDollarSign, Filter, Layers3, Megaphone,
   MousePointerClick, Search, Sparkles, Target, TrendingUp, UserRound, Workflow, X,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 type FilterOption = { value: string; label: string; count: number };
@@ -28,23 +28,39 @@ const friendlyBusinessError = (detail: string) => /service unavailable|unexpecte
   ? "O serviço ficou temporariamente indisponível. Aguarde alguns segundos e tente novamente."
   : detail;
 
-function yesterdayInSaoPaulo() {
+function fallbackDefaultPeriod() {
   const date = new Date(Date.now() - 86_400_000);
-  return new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo", year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
+  const endDate = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo", year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
+  return { startDate: `${endDate.slice(0, 8)}01`, endDate };
 }
 
 export function BitrixRdOpportunityDashboard() {
-  const defaultEnd = useMemo(yesterdayInSaoPaulo, []);
-  const defaultStart = `${defaultEnd.slice(0, 8)}01`;
-  const [startDate, setStartDate] = useState(defaultStart);
-  const [endDate, setEndDate] = useState(defaultEnd);
-  const [draftStart, setDraftStart] = useState(defaultStart);
-  const [draftEnd, setDraftEnd] = useState(defaultEnd);
+  const fallbackPeriod = useMemo(fallbackDefaultPeriod, []);
+  const defaultPeriodQuery = trpc.bitrix24.rdOpportunityDefaultPeriod.useQuery(undefined, {
+    staleTime: 60_000,
+    refetchInterval: 60_000,
+    refetchOnWindowFocus: true,
+  });
+  const defaultPeriod = defaultPeriodQuery.data ?? fallbackPeriod;
+  const [startDate, setStartDate] = useState(fallbackPeriod.startDate);
+  const [endDate, setEndDate] = useState(fallbackPeriod.endDate);
+  const [draftStart, setDraftStart] = useState(fallbackPeriod.startDate);
+  const [draftEnd, setDraftEnd] = useState(fallbackPeriod.endDate);
+  const [usesDefaultPeriod, setUsesDefaultPeriod] = useState(true);
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
   const [utmSearch, setUtmSearch] = useState("");
+
+  useEffect(() => {
+    if (!usesDefaultPeriod) return;
+    setStartDate(defaultPeriod.startDate);
+    setEndDate(defaultPeriod.endDate);
+    setDraftStart(defaultPeriod.startDate);
+    setDraftEnd(defaultPeriod.endDate);
+  }, [defaultPeriod.endDate, defaultPeriod.startDate, usesDefaultPeriod]);
+
   const query = trpc.bitrix24.rdOpportunityDashboard.useQuery(
     { startDate, endDate, ...filters },
-    { retry: 1, staleTime: 5 * 60_000, refetchOnWindowFocus: false },
+    { retry: 1, staleTime: 60_000, refetchOnWindowFocus: true },
   );
   const data = query.data;
   const activeFilterCount = Object.values(filters).filter(value => value !== "all").length;
@@ -57,7 +73,13 @@ export function BitrixRdOpportunityDashboard() {
   const baselinePipelines = options("pipelines");
   const filteredAttribution = data.attribution.filter(row => !utmSearch || [row.source, row.medium, row.campaign, row.adset, row.creative].join(" ").toLocaleLowerCase("pt-BR").includes(utmSearch.toLocaleLowerCase("pt-BR")));
   const filteredWinsAttribution = data.winsAttribution.filter(row => !utmSearch || [row.source, row.medium, row.campaign, row.adset, row.creative].join(" ").toLocaleLowerCase("pt-BR").includes(utmSearch.toLocaleLowerCase("pt-BR")));
-  const applyDates = () => { if (draftStart <= draftEnd) { setStartDate(draftStart); setEndDate(draftEnd); } };
+  const applyDates = () => {
+    if (draftStart <= draftEnd) {
+      setStartDate(draftStart);
+      setEndDate(draftEnd);
+      setUsesDefaultPeriod(draftStart === defaultPeriod.startDate && draftEnd === defaultPeriod.endDate);
+    }
+  };
   const updateFilter = (key: keyof Filters, value: string) => setFilters(current => ({ ...current, [key]: value }));
   const setPipeline = (value: string) => updateFilter("pipeline", value);
 
@@ -68,14 +90,14 @@ export function BitrixRdOpportunityDashboard() {
           <div className="flex flex-wrap items-center gap-2">
             <Badge variant="outline" className="border-cyan-200/25 bg-cyan-200/[.07] text-cyan-100">Revenue command center</Badge>
             <Badge variant="outline" className="border-emerald-200/20 bg-emerald-200/[.06] text-emerald-100">Universo: RD Station = sim</Badge>
-            <Badge variant="outline" className="border-white/10 text-white/60">Atualização D-1</Badge>
+            <Badge variant="outline" className="border-white/10 text-white/60">Dados até {defaultPeriod.endDate.split("-").reverse().join("/")}</Badge>
           </div>
           <h2 className="mt-4 max-w-2xl text-3xl font-black tracking-[-.045em] text-white sm:text-4xl">Funil comercial do Bitrix24</h2>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">Todos os IDs de lead marcados como RD Station = sim, com BU definida pelo Pipeline de Vendas e resultado comercial lido separadamente.</p>
         </div>
         <div className="grid gap-3 sm:grid-cols-2 xl:min-w-[560px] xl:grid-cols-[1fr_1fr_auto]">
-          <DateField label="Data inicial" value={draftStart} onChange={setDraftStart} max={defaultEnd} />
-          <DateField label="Data final" value={draftEnd} onChange={setDraftEnd} min={draftStart} max={defaultEnd} />
+          <DateField label="Data inicial" value={draftStart} onChange={setDraftStart} max={defaultPeriod.endDate} />
+          <DateField label="Data final" value={draftEnd} onChange={setDraftEnd} min={draftStart} max={defaultPeriod.endDate} />
           <Button onClick={applyDates} disabled={draftStart > draftEnd} className="h-11 self-end bg-white text-slate-950 hover:bg-slate-100"><Filter className="mr-2 h-4 w-4" />Aplicar</Button>
         </div>
       </div>

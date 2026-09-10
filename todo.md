@@ -739,3 +739,7 @@
 - [x] Exibir na aba Negócios os negócios ganhos por campanha, conjunto e criativo somente quando houver vínculo técnico comprovado; manter os demais como Não identificado.
 - [x] Validar a nova visão de ganhos por origem contra os totais comerciais e publicar as melhorias.
 - [x] Exibir a cobertura de UTM dos negócios ganhos e tratar valores genéricos como Não identificado, sem inferir campanha, conjunto ou criativo: 0 de 28 ganhos possuem campanha, conjunto ou criativo válido no CRM.
+- [x] Reproduzir e diagnosticar por que a aba Negócios exibe 01–08/09 apesar do corte atualizado até 09/09/2026.
+- [x] Corrigir o cálculo do intervalo padrão para usar o último D-1 disponível na interface e nas consultas.
+- [x] Criar teste de regressão para o filtro padrão de mês corrente na aba Negócios.
+- [x] Validar no navegador os KPIs com corte em 09/09, salvar e publicar a correção.

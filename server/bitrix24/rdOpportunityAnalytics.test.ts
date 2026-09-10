@@ -32,6 +32,8 @@ describe("buildRdOpportunityManagerDashboard", () => {
   it("usa exclusivamente RD Station = sim e preserva uma unidade por ID técnico", () => {
     const result = buildRdOpportunityManagerDashboard({ rows, filters, period: { start: "2026-09-01", end: "2026-09-08" } });
     expect(result.totals).toMatchObject({ leads: 3, uniqueBitrixLeadIds: 3, uniqueContacts: 3 });
+    expect(result.byDay).toHaveLength(8);
+    expect(result.byDay.at(-1)).toEqual({ date: "2026-09-08", leads: 0, mql: 0, sql: 0, deals: 0 });
     expect(result.sourceRule).toContain("RD Station = sim");
     expect(result.filterOptions.pipelines).toEqual(expect.arrayContaining([
       expect.objectContaining({ value: "15391", count: 2 }),

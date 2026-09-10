@@ -1,6 +1,6 @@
 import { bitrixCampaignAttributionDetail, bitrixDealBrand, bitrixDealJulyAnalytics, bitrixLeadChannelFunnel, bitrixJulyTotals, bitrixOperationsDashboard, bitrixReferencedContactIds, finishBitrixSyncRun, reconcileAttributionAuditLinks, reconcileBitrixEntities, refreshAttributionAuditFromBitrix, startBitrixSyncRun, type BitrixEntityType, type DealStatusFilter, upsertBitrixEntities, utmReceiptCoverage } from "../db";
 import { rdOpportunityManagerDashboard, rdOpportunityManagerDashboardsByAccount, validateBusinessDateRange, type RdOpportunityFilters } from "./rdOpportunityAnalytics";
-import { reportingPeriodRange, type AnalyticsPeriod } from "../reportingPeriod";
+import { currentMonthThroughD1Range, reportingPeriodRange, type AnalyticsPeriod } from "../reportingPeriod";
 
 const CRM_CAPABILITIES = ["Leads", "Contatos", "Negócios"] as const;
 function periodRange(period: AnalyticsPeriod) {
@@ -143,6 +143,12 @@ export async function medsystemsUtmReceiptCoverage(brand: "all" | "medsystems" |
 export async function medsystemsBitrixOperationsDashboard(statusFilter: DealStatusFilter = "all", brand: "all" | "medsystems" | "beautysystems" = "all", period: AnalyticsPeriod = "2026-07") {
   const range = periodRange(period);
   return bitrixOperationsDashboard(new URL(webhookBaseUrl()).host, range.start, range.end, statusFilter, brand);
+}
+
+export function medsystemsBitrixRdOpportunityDefaultPeriod(now = new Date()) {
+  const period = currentMonthThroughD1Range(now);
+  if (!period.endDate) throw new Error("Ainda não há um dia fechado no mês corrente para a aba Negócios.");
+  return { startDate: period.startDate, endDate: period.endDate };
 }
 
 export async function medsystemsBitrixRdOpportunityDashboard(input: { startDate: string; endDate: string; filters: RdOpportunityFilters }) {

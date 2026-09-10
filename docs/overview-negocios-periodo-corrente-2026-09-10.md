@@ -22,6 +22,12 @@ Em 10/09/2026, a coleta de setembro foi reexecutada diretamente no Bitrix24 e re
 
 O dashboard mantém o critério: incluir todos e apenas os IDs técnicos cujo campo oficial do Bitrix24 seja **RD Station = sim**, sem qualquer exclusão por título, origem, UTM, mídia ou cruzamento externo. A reimportação não encontrou registros elegíveis adicionais em 09/09, preservando o acumulado de 442 leads no intervalo 01–09/09.
 
+## Auditoria independente do volume geral de 09/09
+
+Uma segunda consulta direta à API do Bitrix24 confirmou a paginação e o corte de São Paulo. No período de 09/09, foram criados **3 registros da entidade Lead**, **25 registros da entidade Contato** e **11 registros da entidade Negócio**. A diferença ocorre porque o CRM mantém entidades distintas: o dashboard Negócios mede somente IDs da entidade Lead, conforme a regra vigente.
+
+Dos três registros Lead no corte de São Paulo, dois têm data 09/09 no fuso retornado pelo portal e um foi gravado no início de 10/09 no fuso do portal, mas ainda correspondia a 09/09 em São Paulo. Assim, o resultado de três leads técnicos foi confirmado pela API e pela base persistida; nenhum dos três tinha RD Station = sim. Contatos e negócios não foram incorporados ao funil de leads para não alterar a metodologia sem decisão explícita.
+
 ## Cobertura de UTM em negócios ganhos
 
 Uma auditoria agregada dos 28 negócios ganhos fechados de 01 a 09/09 encontrou `UTM_SOURCE = APP` e `UTM_CONTENT = APP` em todos os registros, com `UTM_MEDIUM`, `UTM_CAMPAIGN` e `UTM_TERM` nulos. Portanto, não existe campanha, conjunto ou criativo comercialmente identificável no próprio negócio para este corte. A interface trata `APP` como valor genérico e o expõe como **Não identificado**, sem atribuir receita a qualquer campanha, conjunto ou criativo.

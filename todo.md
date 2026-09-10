@@ -747,3 +747,6 @@
 - [x] Reprocessar todos os leads Bitrix24 criados em 09/09 com RD Station = sim, sem filtros por origem, UTM ou título.
 - [x] Recalcular o snapshot e validar os KPIs e o gráfico diário da aba Negócios para 01–09/09.
 - [x] Documentar, salvar e publicar o corte corrigido de 09/09/2026.
+- [x] Revalidar diretamente na API o total geral de leads criados no Bitrix24 em 09/09, sem usar o flag RD Station.
+- [x] Conferir paginação, fuso e data original do CRM contra os registros persistidos.
+- [x] Concluir que não há divergência na carga dos leads técnicos e manter inalterada a metodologia da aba Negócios até nova decisão de escopo.

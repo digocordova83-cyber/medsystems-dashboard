@@ -2,6 +2,7 @@ import { and, eq, gte, inArray, lt } from "drizzle-orm";
 import { bitrix24Entities, rdStationContacts, rdStationConversionEvents } from "../../drizzle/schema";
 import { bitrixLeadPipelineBrand, getDb, normalizeIdentityEmail, normalizeIdentityPhone, saoPauloBusinessDate } from "../db";
 import { bitrixLeadStageLabel, RD_STATION_FIELD, RD_STATION_VALUE, validateBusinessDateRange } from "../bitrix24/rdOpportunityAnalytics";
+import { normalizeIdentityName } from "./paidMediaEvidence";
 import { qualifiesDirectApiEvent, type SourceBucket } from "../rdstation/filtering";
 
 type AuditBrand = "all" | "medsystems" | "beautysystems";
@@ -34,6 +35,7 @@ type RdEvent = {
 type BitrixEntity = {
   entityType: "lead" | "contact";
   bitrixId: number;
+  fullName: string | null;
   email: string | null;
   phone: string | null;
   stageOrStatus: string | null;
@@ -74,16 +76,16 @@ function uniqueEntities(values: BitrixEntity[]) {
     .sort((a, b) => a.entityType.localeCompare(b.entityType) || a.bitrixId - b.bitrixId);
 }
 
-function matchMethod(emailMatched: boolean, phoneMatched: boolean) {
-  if (emailMatched && phoneMatched) return "E-mail + telefone";
+function matchMethod(emailMatched: boolean, nameMatched: boolean) {
+  if (emailMatched && nameMatched) return "E-mail + nome";
   if (emailMatched) return "E-mail";
-  if (phoneMatched) return "Telefone";
+  if (nameMatched) return "Nome";
   return "Sem correspondência";
 }
 
-export function auditMatchStatus(input: { emailMatched: boolean; phoneMatched: boolean; leadCount: number; contactCount: number; totalCount: number }) {
+export function auditMatchStatus(input: { emailMatched: boolean; nameMatched: boolean; leadCount: number; contactCount: number; totalCount: number }) {
   const status: Exclude<AuditMatchStatus, "all"> = input.totalCount > 1 ? "multiple" : input.leadCount ? "lead" : input.contactCount ? "contact_only" : "not_found";
-  return { status, method: matchMethod(input.emailMatched, input.phoneMatched) };
+  return { status, method: matchMethod(input.emailMatched, input.nameMatched) };
 }
 
 function emptyBrandTotals() {
@@ -102,10 +104,10 @@ export async function rdBitrixLeadAudit(input: RdBitrixLeadAuditFilters & { port
     db.select({ accountKey: rdStationContacts.accountKey, contactUuid: rdStationContacts.contactUuid, name: rdStationContacts.name, email: rdStationContacts.email, phone: rdStationContacts.phone })
       .from(rdStationContacts)
       .where(inArray(rdStationContacts.accountKey, brands)),
-    db.select({ entityType: bitrix24Entities.entityType, bitrixId: bitrix24Entities.bitrixId, email: bitrix24Entities.email, phone: bitrix24Entities.phone, stageOrStatus: bitrix24Entities.stageOrStatus, createdAtBitrix: bitrix24Entities.createdAtBitrix, rawPayload: bitrix24Entities.rawPayload })
+    db.select({ entityType: bitrix24Entities.entityType, bitrixId: bitrix24Entities.bitrixId, fullName: bitrix24Entities.fullName, email: bitrix24Entities.email, phone: bitrix24Entities.phone, stageOrStatus: bitrix24Entities.stageOrStatus, createdAtBitrix: bitrix24Entities.createdAtBitrix, rawPayload: bitrix24Entities.rawPayload })
       .from(bitrix24Entities)
       .where(and(eq(bitrix24Entities.portal, input.portal), eq(bitrix24Entities.entityType, "lead"))),
-    db.select({ entityType: bitrix24Entities.entityType, bitrixId: bitrix24Entities.bitrixId, email: bitrix24Entities.email, phone: bitrix24Entities.phone, stageOrStatus: bitrix24Entities.stageOrStatus, createdAtBitrix: bitrix24Entities.createdAtBitrix, rawPayload: bitrix24Entities.rawPayload })
+    db.select({ entityType: bitrix24Entities.entityType, bitrixId: bitrix24Entities.bitrixId, fullName: bitrix24Entities.fullName, email: bitrix24Entities.email, phone: bitrix24Entities.phone, stageOrStatus: bitrix24Entities.stageOrStatus, createdAtBitrix: bitrix24Entities.createdAtBitrix, rawPayload: bitrix24Entities.rawPayload })
       .from(bitrix24Entities)
       .where(and(eq(bitrix24Entities.portal, input.portal), eq(bitrix24Entities.entityType, "contact"))),
   ]);
@@ -135,22 +137,24 @@ export async function rdBitrixLeadAudit(input: RdBitrixLeadAuditFilters & { port
   }
 
   const contactById = new Map(bitrixContacts.map(row => [row.bitrixId, row as BitrixEntity]));
-  const allBitrix = [...bitrixLeads, ...bitrixContacts].map(row => {
+  const linkedContactIds = new Set<number>();
+  const allBitrix = bitrixLeads.map(row => {
     const entity = row as BitrixEntity;
-    if (entity.entityType !== "lead") return entity;
     const raw = parsePayload(entity.rawPayload);
     const relatedContact = contactById.get(Number(raw.CONTACT_ID));
+    if (relatedContact) linkedContactIds.add(relatedContact.bitrixId);
     return {
       ...entity,
       email: normalizeIdentityEmail(entity.email) ? entity.email : relatedContact?.email ?? null,
       phone: normalizeIdentityPhone(entity.phone) ? entity.phone : relatedContact?.phone ?? null,
+      fullName: normalizeIdentityName(entity.fullName) ? entity.fullName : relatedContact?.fullName ?? null,
     };
-  });
+  }).concat(bitrixContacts.filter(row => !linkedContactIds.has(row.bitrixId)).map(row => row as BitrixEntity));
   const byEmail = new Map<string, BitrixEntity[]>();
-  const byPhone = new Map<string, BitrixEntity[]>();
+  const byName = new Map<string, BitrixEntity[]>();
   for (const entity of allBitrix) {
     addIndex(byEmail, normalizeIdentityEmail(entity.email), entity);
-    addIndex(byPhone, normalizeIdentityPhone(entity.phone), entity);
+    addIndex(byName, normalizeIdentityName(entity.fullName), entity);
   }
 
   for (const lead of bitrixLeads as BitrixEntity[]) {
@@ -173,10 +177,10 @@ export async function rdBitrixLeadAudit(input: RdBitrixLeadAuditFilters & { port
   const rows = Array.from(qualified.values()).map(item => {
     const { contact } = item;
     const email = normalizeIdentityEmail(contact.email);
-    const phone = normalizeIdentityPhone(contact.phone);
+    const name = normalizeIdentityName(contact.name);
     const emailMatches = email ? byEmail.get(email) ?? [] : [];
-    const phoneMatches = phone ? byPhone.get(phone) ?? [] : [];
-    const allMatches = uniqueEntities([...emailMatches, ...phoneMatches]);
+    const nameMatches = emailMatches.length ? [] : name ? byName.get(name) ?? [] : [];
+    const allMatches = uniqueEntities(emailMatches.length ? emailMatches : nameMatches);
     const leadMatches = allMatches.filter(match => match.entityType === "lead");
     const contactMatches = allMatches.filter(match => match.entityType === "contact");
     const linkedContactIds = new Set(leadMatches.map(match => Number(parsePayload(match.rawPayload).CONTACT_ID)).filter(id => Number.isInteger(id) && id > 0));
@@ -185,7 +189,7 @@ export async function rdBitrixLeadAudit(input: RdBitrixLeadAuditFilters & { port
     const matchedContact = independentContactMatches[0] ?? contactMatches[0] ?? null;
     const match = auditMatchStatus({
       emailMatched: emailMatches.length > 0,
-      phoneMatched: phoneMatches.length > 0,
+      nameMatched: nameMatches.length > 0,
       leadCount: leadMatches.length,
       contactCount: independentContactMatches.length || (leadMatches.length ? 0 : contactMatches.length),
       totalCount: leadMatches.length + independentContactMatches.length || contactMatches.length,
@@ -246,7 +250,7 @@ export async function rdBitrixLeadAudit(input: RdBitrixLeadAuditFilters & { port
     methodology: {
       rd: "Contatos únicos com pelo menos uma conversão RD Station no período que atende às fontes permitidas e não é importação.",
       bitrix: "Leads técnicos do Bitrix24 criados no período; a coluna RD Station = sim é apresentada separadamente e não substitui o universo do RD.",
-      matching: "E-mail e telefone são normalizados. A auditoria prioriza Lead; quando há somente Contato, mostra Contato sem etapa de Lead; múltiplos registros permanecem explícitos.",
+      matching: "A auditoria prioriza e-mail exato. Quando não há e-mail correspondente, usa nome normalizado; múltiplos registros permanecem explícitos. A busca retorna Lead ou, na ausência dele, Contato sem etapa de Lead.",
       privacy: "Dados pessoais são retornados exclusivamente para sessão autenticada do Dashboard.",
     },
   };

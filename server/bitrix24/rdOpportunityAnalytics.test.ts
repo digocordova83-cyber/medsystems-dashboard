@@ -29,12 +29,12 @@ describe("buildRdOpportunityManagerDashboard", () => {
     row(4, { TITLE: "Sem flag", UF_CRM_1739195085: "15391", STATUS_ID: "CONVERTED" }),
   ];
 
-  it("usa exclusivamente RD Station = sim e preserva uma unidade por ID técnico", () => {
+  it("preserva uma unidade por entrada do universo e registra a regra do funil", () => {
     const result = buildRdOpportunityManagerDashboard({ rows, filters, period: { start: "2026-09-01", end: "2026-09-08" } });
     expect(result.totals).toMatchObject({ leads: 3, uniqueBitrixLeadIds: 3, uniqueContacts: 3 });
     expect(result.byDay).toHaveLength(8);
     expect(result.byDay.at(-1)).toEqual({ date: "2026-09-08", leads: 0, mql: 0, sql: 0, deals: 0 });
-    expect(result.sourceRule).toContain("RD Station = sim");
+    expect(result.sourceRule).toContain("RD Station qualificado");
     expect(result.filterOptions.pipelines).toEqual(expect.arrayContaining([
       expect.objectContaining({ value: "15391", count: 2 }),
       expect.objectContaining({ value: "15395", count: 1 }),

@@ -8,7 +8,7 @@ const DEFAULT_FILTERS = {
 };
 
 const ACCOUNT_KEYS = ["medsystems", "beautysystems"] as const;
-const RULE_VERSION = "bitrix_rd_station_flag_v1";
+const RULE_VERSION = "rd_bitrix_name_v1";
 
 export async function reconcilePaidMediaBusinessDate(businessDate: string) {
   const db = await getDb();

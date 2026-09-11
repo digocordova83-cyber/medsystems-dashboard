@@ -761,3 +761,8 @@
 - [x] Adicionar no Dashboard uma lista rolável de auditoria com nome, e-mail, telefone, BU, origem e etapa atual do funil.
 - [x] Adicionar filtros de data, BU e status de correspondência à auditoria de leads.
 - [x] Criar testes de reconciliação e validar a nova interface autenticada antes de publicar.
+- [x] Substituir o universo principal da aba Negócios por contatos qualificados do RD Station localizados no Bitrix24 por nome e e-mail.
+- [x] Definir e testar a prioridade de correspondência por e-mail e nome, mantendo ambiguidades explicitamente auditáveis.
+- [x] Recalcular KPIs, funil, distribuição de BU e evolução diária a partir dos contatos RD encontrados no CRM.
+- [x] Atualizar a auditoria protegida para separar encontrados por e-mail, por nome e não encontrados, sem expor dados fora da sessão autenticada.
+- [x] Validar a nova metodologia no período atual, publicar e documentar a substituição do critério anterior RD Station = sim.

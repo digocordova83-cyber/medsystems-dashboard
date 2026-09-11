@@ -90,11 +90,11 @@ export function BitrixRdOpportunityDashboard() {
         <div className="max-w-3xl">
           <div className="flex flex-wrap items-center gap-2">
             <Badge variant="outline" className="border-cyan-200/25 bg-cyan-200/[.07] text-cyan-100">Revenue command center</Badge>
-            <Badge variant="outline" className="border-emerald-200/20 bg-emerald-200/[.06] text-emerald-100">Universo: RD Station = sim</Badge>
+            <Badge variant="outline" className="border-emerald-200/20 bg-emerald-200/[.06] text-emerald-100">Universo: RD Station → Bitrix24</Badge>
             <Badge variant="outline" className="border-white/10 text-white/60">Dados até {defaultPeriod.endDate.split("-").reverse().join("/")}</Badge>
           </div>
-          <h2 className="mt-4 max-w-2xl text-3xl font-black tracking-[-.045em] text-white sm:text-4xl">Funil comercial do Bitrix24</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">Todos os IDs de lead marcados como RD Station = sim, com BU definida pelo Pipeline de Vendas e resultado comercial lido separadamente.</p>
+          <h2 className="mt-4 max-w-2xl text-3xl font-black tracking-[-.045em] text-white sm:text-4xl">Funil comercial RD Station → Bitrix24</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">Contatos qualificados no RD Station encontrados de forma única no Bitrix24 por e-mail ou nome; a etapa atual vem do CRM e o resultado comercial é lido separadamente.</p>
         </div>
         <div className="grid gap-3 sm:grid-cols-2 xl:min-w-[560px] xl:grid-cols-[1fr_1fr_auto]">
           <DateField label="Data inicial" value={draftStart} onChange={setDraftStart} max={defaultPeriod.endDate} />
@@ -104,7 +104,7 @@ export function BitrixRdOpportunityDashboard() {
       </div>
 
       <div className="mt-7 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
-        <HeroKpi icon={Megaphone} label="Leads Bitrix24" value={integer(data.totals.leads)} helper="IDs técnicos · sem deduplicação por contato" tone="cyan" />
+        <HeroKpi icon={Megaphone} label="Leads RD → Bitrix" value={integer(data.totals.leads)} helper="Contatos qualificados localizados no CRM" tone="cyan" />
         <HeroKpi icon={Target} label="MQL · Qualificados" value={integer(data.totals.mql)} helper={`${ratio(data.totals.mql, data.totals.leads)} dos leads`} tone="violet" />
         <HeroKpi icon={TrendingUp} label="SQL · Oportunidades" value={integer(data.totals.sql)} helper={`${ratio(data.totals.sql, data.totals.mql)} dos MQLs`} tone="amber" />
         <HeroKpi icon={BriefcaseBusiness} label="Negócios ganhos" value={integer(data.totals.wonDeals)} helper={`${integer(data.commercialWinsByBu.medsystems.count)} Med · ${integer(data.commercialWinsByBu.beautysystems.count)} Beauty`} tone="emerald" />
@@ -114,7 +114,7 @@ export function BitrixRdOpportunityDashboard() {
 
     <section className="rounded-2xl border border-white/10 bg-black/20 p-4 sm:p-5">
       <div className="flex flex-col justify-between gap-3 lg:flex-row lg:items-end">
-        <PanelHeader eyebrow="Filtro principal · Bitrix24" title="Pipeline / marca no CRM" detail={`O universo contém todos os IDs de lead com RD Station = sim no período. Título, origem e UTM não excluem registros; ${integer(data.totals.unassignedLeads)} lead(s) permanecem sem BU reconhecida.`} />
+        <PanelHeader eyebrow="Filtro principal · Bitrix24" title="Pipeline / marca no CRM" detail={`O universo contém somente contatos RD Station qualificados e encontrados no CRM por e-mail ou nome. Título, origem e UTM não excluem registros; ${integer(data.totals.unassignedLeads)} lead(s) permanecem sem BU reconhecida.`} />
         {activeFilterCount ? <Button variant="outline" size="sm" className="w-fit border-white/10 bg-black/10 text-slate-300" onClick={() => setFilters(DEFAULT_FILTERS)}><X className="mr-2 h-3.5 w-3.5" />Limpar {activeFilterCount} filtros</Button> : null}
       </div>
       <div className="mt-4 flex flex-wrap gap-2">
@@ -133,9 +133,9 @@ export function BitrixRdOpportunityDashboard() {
       </div>
     </section>
 
-    {data.totals.leads === 0 ? <EmptyState title="Nenhum lead RD Station = sim" detail="Ajuste as datas ou remova parte dos filtros para ampliar o recorte." /> : <>
+    {data.totals.leads === 0 ? <EmptyState title="Nenhum lead RD Station encontrado no Bitrix24" detail="Ajuste as datas ou remova parte dos filtros para ampliar o recorte." /> : <>
       <section className="rounded-3xl border border-white/10 bg-[linear-gradient(145deg,rgba(15,31,48,.94),rgba(5,14,24,.98))] p-5 sm:p-6">
-        <div className="flex flex-col justify-between gap-3 md:flex-row md:items-end"><PanelHeader eyebrow="Progressão dos leads" title="Funil por status atual" detail="Cada etapa usa IDs técnicos de lead e a posição atual registrada no Bitrix24; não representa histórico de transição." /><Badge variant="outline" className="w-fit border-white/10 text-white/60">ID técnico + etapa atual</Badge></div>
+        <div className="flex flex-col justify-between gap-3 md:flex-row md:items-end"><PanelHeader eyebrow="Progressão dos leads" title="Funil por status atual" detail="Cada etapa usa o contato qualificado do RD Station e a posição atual encontrada no Bitrix24; não representa histórico de transição." /><Badge variant="outline" className="w-fit border-white/10 text-white/60">Contato RD + etapa Bitrix</Badge></div>
         <FunnelView stages={data.funnel} />
         <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <SmallKpi label="Ganhos MedSystems" value={integer(data.commercialWinsByBu.medsystems.count)} helper={brl(data.commercialWinsByBu.medsystems.value)} accent="emerald" />
@@ -225,7 +225,7 @@ function FunnelView({ stages }: { stages: { key: string; label: string; count: n
   </div>)}</div>;
 }
 
-function TrendPanel({ rows }: { rows: { date: string; leads: number; mql: number; sql: number; deals: number }[] }) { return <section className="rounded-2xl border border-white/10 bg-black/20 p-5"><PanelHeader eyebrow="Evolução diária" title="Entrada e progressão comercial" detail="Coorte pela data de criação no Bitrix24; MQL e SQL refletem a situação atual desses IDs de lead." /><div className="mt-5 h-[310px]"><ResponsiveContainer width="100%" height="100%"><LineChart data={rows} margin={{ top: 12, right: 8, bottom: 0, left: -24 }}><CartesianGrid stroke="rgba(255,255,255,.06)" vertical={false} /><XAxis dataKey="date" tickFormatter={value => `${value.slice(8, 10)}/${value.slice(5, 7)}`} tick={{ fill: "#64748b", fontSize: 10 }} axisLine={false} tickLine={false} /><YAxis tick={{ fill: "#64748b", fontSize: 10 }} axisLine={false} tickLine={false} allowDecimals={false} /><Tooltip contentStyle={{ background: "#08131f", border: "1px solid rgba(255,255,255,.1)", borderRadius: 12, color: "white" }} labelFormatter={value => String(value).split("-").reverse().join("/")} /><Legend iconType="circle" wrapperStyle={{ fontSize: 11, color: "#94a3b8" }} /><Line type="monotone" dataKey="leads" name="Leads" stroke="#67e8f9" strokeWidth={2.5} dot={false} /><Line type="monotone" dataKey="mql" name="MQL" stroke="#a78bfa" strokeWidth={2} dot={false} /><Line type="monotone" dataKey="sql" name="SQL" stroke="#fbbf24" strokeWidth={2} dot={false} /></LineChart></ResponsiveContainer></div></section>; }
+function TrendPanel({ rows }: { rows: { date: string; leads: number; mql: number; sql: number; deals: number }[] }) { return <section className="rounded-2xl border border-white/10 bg-black/20 p-5"><PanelHeader eyebrow="Evolução diária" title="Entrada e progressão comercial" detail="Coorte pela data da conversão qualificada no RD Station; MQL e SQL refletem a situação atual encontrada no Bitrix24." /><div className="mt-5 h-[310px]"><ResponsiveContainer width="100%" height="100%"><LineChart data={rows} margin={{ top: 12, right: 8, bottom: 0, left: -24 }}><CartesianGrid stroke="rgba(255,255,255,.06)" vertical={false} /><XAxis dataKey="date" tickFormatter={value => `${value.slice(8, 10)}/${value.slice(5, 7)}`} tick={{ fill: "#64748b", fontSize: 10 }} axisLine={false} tickLine={false} /><YAxis tick={{ fill: "#64748b", fontSize: 10 }} axisLine={false} tickLine={false} allowDecimals={false} /><Tooltip contentStyle={{ background: "#08131f", border: "1px solid rgba(255,255,255,.1)", borderRadius: 12, color: "white" }} labelFormatter={value => String(value).split("-").reverse().join("/")} /><Legend iconType="circle" wrapperStyle={{ fontSize: 11, color: "#94a3b8" }} /><Line type="monotone" dataKey="leads" name="Leads" stroke="#67e8f9" strokeWidth={2.5} dot={false} /><Line type="monotone" dataKey="mql" name="MQL" stroke="#a78bfa" strokeWidth={2} dot={false} /><Line type="monotone" dataKey="sql" name="SQL" stroke="#fbbf24" strokeWidth={2} dot={false} /></LineChart></ResponsiveContainer></div></section>; }
 
 function CoveragePanel({ coverage, total }: { coverage: { source: number; medium: number; campaign: number; adset: number; creative: number; responsible: number; linkedDeal: number }; total: number }) { const rows = [{ label: "utm_source", value: coverage.source }, { label: "utm_medium", value: coverage.medium }, { label: "Campanha", value: coverage.campaign }, { label: "Conjunto", value: coverage.adset }, { label: "Criativo", value: coverage.creative }, { label: "Responsável", value: coverage.responsible }]; return <section className="rounded-2xl border border-white/10 bg-black/20 p-5"><PanelHeader eyebrow="Cobertura" title="Qualidade da atribuição" detail="Percentual de leads com campo identificável no recorte atual." /><div className="mt-5 space-y-4">{rows.map(row => <div key={row.label}><div className="mb-1.5 flex justify-between gap-3 text-xs"><span className="text-slate-400">{row.label}</span><span className="font-mono-ui text-white">{integer(row.value)} · {ratio(row.value, total)}</span></div><div className="h-1.5 overflow-hidden rounded-full bg-white/5"><div className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-violet-400" style={{ width: `${total ? (row.value / total) * 100 : 0}%` }} /></div></div>)}</div></section>; }
 

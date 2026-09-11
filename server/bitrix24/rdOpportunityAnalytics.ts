@@ -1,6 +1,8 @@
 import { and, asc, eq, gt, gte, inArray, lt, sql } from "drizzle-orm";
-import { bitrix24Entities } from "../../drizzle/schema";
-import { getDb } from "../db";
+import { bitrix24Entities, rdStationContacts, rdStationConversionEvents } from "../../drizzle/schema";
+import { getDb, normalizeIdentityEmail } from "../db";
+import { normalizeIdentityName } from "../leads/paidMediaEvidence";
+import { qualifiesDirectApiEvent } from "../rdstation/filtering";
 
 export const RD_STATION_FIELD = "UF_CRM_1738950899";
 export const RD_STATION_VALUE = "1";
@@ -79,6 +81,10 @@ export type RdOpportunityRawLead = {
   fullName?: string | null;
   email?: string | null;
   phone?: string | null;
+  rdAccountKey?: "medsystems" | "beautysystems";
+  rdContactUuid?: string;
+  rdEventDate?: Date;
+  matchMethod?: "E-mail" | "Nome";
 };
 export type RdOpportunityRawDeal = { rawPayload: string };
 export type RdOpportunityRawContact = {
@@ -100,6 +106,32 @@ export type RdOpportunityReferenceIdentity = {
 
 type CountRow = { label: string; count: number };
 type OptionRow = { value: string; label: string; count: number };
+type BitrixMatchCandidate = {
+  bitrixId: number;
+  entityType: "lead" | "contact";
+  fullName: string | null;
+  email: string | null;
+  phone: string | null;
+  stageOrStatus: string | null;
+  createdAtBitrix: Date;
+  rawPayload: string;
+};
+
+export function resolveRdBitrixLeadMatch(input: {
+  rdEmail: string | null;
+  rdName: string | null;
+  byEmail: Map<string, BitrixMatchCandidate[]>;
+  byName: Map<string, BitrixMatchCandidate[]>;
+}) {
+  const email = normalizeIdentityEmail(input.rdEmail);
+  const name = normalizeIdentityName(input.rdName);
+  const emailCandidates = email ? input.byEmail.get(email) ?? [] : [];
+  const nameCandidates = name ? input.byName.get(name) ?? [] : [];
+  const candidates = emailCandidates.length ? emailCandidates : nameCandidates;
+  const method: "E-mail" | "Nome" | null = emailCandidates.length ? "E-mail" : nameCandidates.length ? "Nome" : null;
+  if (candidates.length === 1 && method) return { candidate: candidates[0]!, method, status: "matched" as const };
+  return { candidate: null, method, status: candidates.length > 1 ? "multiple" as const : "not_found" as const };
+}
 
 export function mergePaidMediaReferenceIdentities(
   historical: RdOpportunityReferenceIdentity[],
@@ -271,12 +303,12 @@ export function buildRdOpportunityManagerDashboard(input: {
 
   const base = input.rows.flatMap(row => {
     const raw = parsePayload(row.rawPayload);
-    if (!isRdStationLead(raw)) return [];
+    if (!row.rdAccountKey && !isRdStationLead(raw)) return [];
     const pipelineId = cleanText(raw.UF_CRM_1739195085, "unknown");
     const responsibleId = cleanText(raw.ASSIGNED_BY_ID, "unknown");
     const stageId = cleanText(raw.STATUS_ID ?? row.stageOrStatus, "unknown");
     const fields = attributionFields(raw);
-    const identityKey = `lead:${row.bitrixId}`;
+    const identityKey = row.rdAccountKey && row.rdContactUuid ? `rd:${row.rdAccountKey}:${row.rdContactUuid}` : `lead:${row.bitrixId}`;
     const item = {
       row,
       raw,
@@ -354,7 +386,7 @@ export function buildRdOpportunityManagerDashboard(input: {
     const isSql = SQL_STATUSES.has(item.stageId);
     if (isMql) mql += 1;
     if (isSql) sqlCount += 1;
-    const day = dayKey(item.row.createdAtBitrix);
+    const day = dayKey(item.row.rdEventDate ?? item.row.createdAtBitrix);
     const dayItem = daily.get(day) ?? { leads: 0, mql: 0, sql: 0, deals: 0 };
     dayItem.leads += 1;
     dayItem.mql += isMql ? 1 : 0;
@@ -450,7 +482,7 @@ export function buildRdOpportunityManagerDashboard(input: {
   const unassignedLeads = eligible.filter(item => !["15391", "15395"].includes(item.pipelineId)).length;
 
   return {
-    sourceRule: "Bitrix24 com RD Station = sim; uma linha por ID técnico de lead",
+    sourceRule: "Contato RD Station qualificado e localizado de forma única no Bitrix24 por e-mail ou nome; uma linha por contato RD encontrado",
     period: input.period,
     selectedFilters: input.filters,
     filterOptions: Object.fromEntries(Object.entries(optionMaps).map(([key, map]) => [key, optionRows(map)])),
@@ -477,7 +509,7 @@ export function buildRdOpportunityManagerDashboard(input: {
     winsAttribution: Array.from(winsAttribution.values()).sort((a, b) => b.wonDeals - a.wonDeals || b.wonValue - a.wonValue || a.campaign.localeCompare(b.campaign)),
     winsAttributionCoverage,
     funnel: [
-      { key: "lead", label: "Leads", count: leads, conversionFromPrevious: 100, conversionFromLead: 100, rule: "ID técnico de lead criado no período com RD Station = sim" },
+      { key: "lead", label: "Leads encontrados", count: leads, conversionFromPrevious: 100, conversionFromLead: 100, rule: "Contato RD Station qualificado no período com correspondência única por e-mail ou nome na base do Bitrix24" },
       { key: "mql", label: "MQL · Qualificados", count: mql, conversionFromPrevious: rate(mql, leads), conversionFromLead: rate(mql, leads), rule: "Primeiro Contato ou etapa posterior no status atual do lead" },
       { key: "sql", label: "SQL · Oportunidades", count: sqlCount, conversionFromPrevious: rate(sqlCount, mql), conversionFromLead: rate(sqlCount, leads), rule: "Relacionamento, Converter Lead ou Histórico Lead Convertidos" },
     ],
@@ -503,7 +535,7 @@ export function buildRdOpportunityManagerDashboard(input: {
       sql: "Etapa atual em Relacionamento, Converter Lead ou Histórico Lead Convertidos.",
       deal: "Negócios ganhos são lidos separadamente nos pipelines comerciais oficiais pelo fechamento no período. Campanha, conjunto e criativo de ganhos usam apenas UTMs presentes diretamente no negócio; ausências ficam como Não identificado.",
       attribution: "UTMs diretas do lead; fallback para o payload RD Station embutido. UTM content representa conjunto/grupo e UTM term representa criativo; ausências aparecem como Não identificado.",
-      reconciliation: "O universo inclui todos os IDs técnicos de lead do Bitrix24 com o campo oficial RD Station = sim no período. Não há filtro por título, origem, UTM ou match externo. A BU vem somente do Pipeline de Vendas; os demais registros permanecem como não atribuídos.",
+      reconciliation: "O universo inclui somente contatos qualificados do RD Station no período que possuem uma correspondência única no Bitrix24 por e-mail exato ou, na ausência de e-mail correspondente, nome normalizado. Registros ambíguos ou não encontrados permanecem fora do funil e visíveis na auditoria. A BU vem somente do Pipeline de Vendas; registros sem pipeline reconhecido permanecem como não atribuídos.",
       limitation: "MQL e SQL representam o status atual do lead, não o histórico de passagem entre etapas. Negócios ganhos são uma leitura comercial independente e não compõem taxa de conversão do funil sem vínculo técnico confiável.",
     },
   };
@@ -525,29 +557,77 @@ async function loadRdOpportunityDataset(input: {
 }): Promise<RdOpportunityDataset> {
   const db = await getDb();
   if (!db) throw new Error("Banco de dados indisponível.");
+  const [rdEvents, rdContacts, bitrixLeads, bitrixContacts] = await Promise.all([
+    db.select({ accountKey: rdStationConversionEvents.accountKey, contactUuid: rdStationConversionEvents.contactUuid, eventCreatedAt: rdStationConversionEvents.eventCreatedAt, rawPayload: rdStationConversionEvents.rawPayload })
+      .from(rdStationConversionEvents)
+      .where(and(inArray(rdStationConversionEvents.accountKey, ["medsystems", "beautysystems"]), gte(rdStationConversionEvents.eventCreatedAt, input.start), lt(rdStationConversionEvents.eventCreatedAt, input.end))),
+    db.select({ accountKey: rdStationContacts.accountKey, contactUuid: rdStationContacts.contactUuid, name: rdStationContacts.name, email: rdStationContacts.email, phone: rdStationContacts.phone })
+      .from(rdStationContacts)
+      .where(inArray(rdStationContacts.accountKey, ["medsystems", "beautysystems"])),
+    db.select({ bitrixId: bitrix24Entities.bitrixId, fullName: bitrix24Entities.fullName, email: bitrix24Entities.email, phone: bitrix24Entities.phone, stageOrStatus: bitrix24Entities.stageOrStatus, createdAtBitrix: bitrix24Entities.createdAtBitrix, rawPayload: bitrix24Entities.rawPayload })
+      .from(bitrix24Entities)
+      .where(and(eq(bitrix24Entities.portal, input.portal), eq(bitrix24Entities.entityType, "lead"))),
+    db.select({ bitrixId: bitrix24Entities.bitrixId, fullName: bitrix24Entities.fullName, email: bitrix24Entities.email, phone: bitrix24Entities.phone, stageOrStatus: bitrix24Entities.stageOrStatus, createdAtBitrix: bitrix24Entities.createdAtBitrix, rawPayload: bitrix24Entities.rawPayload })
+      .from(bitrix24Entities)
+      .where(and(eq(bitrix24Entities.portal, input.portal), eq(bitrix24Entities.entityType, "contact"))),
+  ]);
+  const contactsByKey = new Map(rdContacts.map(contact => [`${contact.accountKey}:${contact.contactUuid}`, contact]));
+  const qualified = new Map<string, { accountKey: "medsystems" | "beautysystems"; contactUuid: string; eventCreatedAt: Date }>();
+  for (const event of rdEvents) {
+    if (!qualifiesDirectApiEvent(parsePayload(event.rawPayload)).qualifies) continue;
+    const key = `${event.accountKey}:${event.contactUuid}`;
+    const existing = qualified.get(key);
+    if (!existing || event.eventCreatedAt < existing.eventCreatedAt) qualified.set(key, { accountKey: event.accountKey, contactUuid: event.contactUuid, eventCreatedAt: event.eventCreatedAt });
+  }
+  const contactsById = new Map(bitrixContacts.map(contact => [contact.bitrixId, contact]));
+  const linkedContactIds = new Set<number>();
+  const candidates: BitrixMatchCandidate[] = bitrixLeads.map(lead => {
+    const linkedContactId = Number(parsePayload(lead.rawPayload).CONTACT_ID);
+    const linkedContact = contactsById.get(linkedContactId);
+    if (linkedContact) linkedContactIds.add(linkedContactId);
+    return {
+      ...lead,
+      entityType: "lead" as const,
+      fullName: normalizeIdentityName(lead.fullName) ? lead.fullName : linkedContact?.fullName ?? null,
+      email: normalizeIdentityEmail(lead.email) ? lead.email : linkedContact?.email ?? null,
+      phone: lead.phone ?? linkedContact?.phone ?? null,
+    };
+  });
+  for (const contact of bitrixContacts) {
+    if (linkedContactIds.has(contact.bitrixId)) continue;
+    candidates.push({ ...contact, entityType: "contact" });
+  }
+  const byEmail = new Map<string, BitrixMatchCandidate[]>();
+  const byName = new Map<string, BitrixMatchCandidate[]>();
+  for (const candidate of candidates) {
+    const add = (index: Map<string, BitrixMatchCandidate[]>, key: string | null) => {
+      if (!key) return;
+      const current = index.get(key) ?? [];
+      if (!current.some(item => item.entityType === candidate.entityType && item.bitrixId === candidate.bitrixId)) current.push(candidate);
+      index.set(key, current);
+    };
+    add(byEmail, normalizeIdentityEmail(candidate.email));
+    add(byName, normalizeIdentityName(candidate.fullName));
+  }
   const rows: RdOpportunityRawLead[] = [];
-  let cursor = 0;
-  const rdFlag = sql<string>`json_unquote(json_extract(${bitrix24Entities.rawPayload}, '$.UF_CRM_1738950899'))`;
-  while (true) {
-    const page = await db.select({
-      bitrixId: bitrix24Entities.bitrixId,
-      createdAtBitrix: bitrix24Entities.createdAtBitrix,
-      stageOrStatus: bitrix24Entities.stageOrStatus,
-      rawPayload: bitrix24Entities.rawPayload,
-      fullName: bitrix24Entities.fullName,
-      email: bitrix24Entities.email,
-      phone: bitrix24Entities.phone,
-    }).from(bitrix24Entities).where(and(
-      eq(bitrix24Entities.portal, input.portal),
-      eq(bitrix24Entities.entityType, "lead"),
-      eq(rdFlag, RD_STATION_VALUE),
-      gte(bitrix24Entities.createdAtBitrix, input.start),
-      lt(bitrix24Entities.createdAtBitrix, input.end),
-      gt(bitrix24Entities.bitrixId, cursor),
-    )).orderBy(asc(bitrix24Entities.bitrixId)).limit(PAGE_SIZE);
-    rows.push(...page);
-    if (page.length < PAGE_SIZE) break;
-    cursor = page[page.length - 1]!.bitrixId;
+  for (const item of Array.from(qualified.values())) {
+    const contact = contactsByKey.get(`${item.accountKey}:${item.contactUuid}`);
+    if (!contact) continue;
+    const match = resolveRdBitrixLeadMatch({ rdEmail: contact.email, rdName: contact.name, byEmail, byName });
+    if (match.status !== "matched" || !match.candidate) continue;
+    rows.push({
+      bitrixId: match.candidate.bitrixId,
+      createdAtBitrix: match.candidate.createdAtBitrix,
+      stageOrStatus: match.candidate.stageOrStatus,
+      rawPayload: match.candidate.rawPayload,
+      fullName: match.candidate.fullName,
+      email: match.candidate.email,
+      phone: match.candidate.phone,
+      rdAccountKey: item.accountKey,
+      rdContactUuid: item.contactUuid,
+      rdEventDate: item.eventCreatedAt,
+      matchMethod: match.method,
+    });
   }
 
   const categoryId = sql<string>`json_unquote(json_extract(${bitrix24Entities.rawPayload}, '$.CATEGORY_ID'))`;

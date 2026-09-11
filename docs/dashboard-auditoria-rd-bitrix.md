@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-A aba **Negócios** passa a conter uma auditoria protegida por login do Dashboard. Ela compara o volume de contatos únicos qualificados no RD Station com o volume de IDs técnicos de Lead criados no Bitrix24, sem substituir ou forçar a equivalência entre os universos.
+A aba **Negócios** contém uma auditoria protegida por login do Dashboard. O universo do funil é formado pelos contatos únicos qualificados no RD Station que possuem uma correspondência única na base do Bitrix24; assim, o mesmo conjunto de contatos é usado na leitura RD e na leitura do CRM.
 
 ## Regra de leitura
 
@@ -10,9 +10,10 @@ A aba **Negócios** passa a conter uma auditoria protegida por login do Dashboar
 |---|---|
 | Contatos RD | Contato único com ao menos uma conversão no período cuja origem está entre as fontes permitidas e que não é importação. |
 | Eventos RD | Todas as conversões qualificadas dos contatos no período. |
-| Leads Bitrix | IDs técnicos de Lead criados no período selecionado. |
-| RD Station = sim | Subconjunto dos Leads Bitrix com o campo oficial `UF_CRM_1738950899 = 1`. |
-| Correspondência | E-mail e telefone normalizados. Lead tem prioridade; um contato vinculado ao mesmo Lead não é tratado como duplicidade. |
+| Universo do funil | Contatos RD qualificados no período com correspondência única no Bitrix24. |
+| Correspondência | E-mail exato normalizado tem prioridade. Sem e-mail correspondente, é usado nome normalizado. Mais de um registro compatível permanece como múltiplo e não integra o funil. |
+| Etapa do funil | Etapa atual do Lead Bitrix. Quando a correspondência é somente Contato, a linha é auditável, mas fica sem etapa de Lead. |
+| Leads técnicos Bitrix | Métrica de referência do CRM; não define mais o universo do funil. |
 
 ## Lista protegida
 
@@ -20,6 +21,8 @@ A lista rolável apresenta, somente em sessão autenticada, nome, e-mail, telefo
 
 ## Evidência de validação
 
-Na prévia autenticada, com o intervalo 01–10/09/2026, a auditoria carregou junto à aba Negócios e retornou 555 contatos RD únicos e 615 eventos qualificados. No Bitrix24, a mesma leitura mostrou 541 IDs técnicos de Lead criados, dos quais 476 têm `RD Station = sim`, reproduzindo o total exibido no funil comercial. O card também destaca 83 IDs técnicos sem BU reconhecida e, dentro deles, 27 com `RD Station = sim`; ambos permanecem incluídos nos totais gerais. A diferença fica visível na lista, com 70 correspondências como Lead, 3 somente como Contato, 454 sem correspondência e 28 com múltiplos registros. Esses totais são de auditoria e não devem ser interpretados como atribuição automática de origem.
+Na prévia autenticada, com o intervalo 01–10/09/2026, a auditoria carregou junto à aba Negócios e retornou **555 contatos RD únicos** e **615 eventos qualificados**. A busca no Bitrix24 encontrou **373 contatos com correspondência única**: **370 como Lead** e **3 somente como Contato**. O funil principal passou a usar exatamente esses **373** contatos; nele, os filtros de Pipeline/BU também somam 373, com 256 em BeautySystems, 80 em MedSystems e 37 sem BU reconhecida. Permanecem na lista para auditoria 94 não encontrados e 88 com múltiplos registros, sem inclusão no funil. O Bitrix24 possui 541 IDs técnicos de Lead no período apenas como referência de CRM; essa métrica não define o universo atual.
 
-O filtro de situação **Não encontrado** foi validado na sessão autenticada: a lista passou a exibir somente linhas sem correspondência no Bitrix24, mantendo os cards consolidados do período como contexto de leitura.
+O filtro de situação **Não encontrado** foi validado na sessão autenticada: a lista passou a exibir somente linhas sem correspondência no Bitrix24, mantendo os cards consolidados do período como contexto de leitura. A etapa atual e os filtros comerciais vêm da entidade encontrada no CRM; o número de contatos qualificados do RD é preservado como coorte do funil.
+
+Os filtros de Pipeline/BU também foram validados no mesmo recorte: **256 BeautySystems**, **80 MedSystems** e **37 sem BU reconhecida** somam os **373 contatos** do funil. O snapshot diário de 10/09 foi recalculado com a versão `rd_bitrix_name_v1`; o agendamento existente não foi alterado.

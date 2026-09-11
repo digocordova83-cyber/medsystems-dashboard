@@ -1,39 +1,39 @@
 <slide id="delivery_status">
   <background color="paper"/>
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
-  <text id="eyebrow" x="72" y="34" width="470" height="20" font="caption" size="12" color="brand" wrap="false"><strong>PROGRAMÁTICA · ENTREGA E CRITÉRIOS DE SUCESSO</strong></text>
-  <text id="title" x="72" y="58" width="940" height="48" font="heading" size="34" color="ink" wrap="false">Entrega existe; sucesso exige prova de negócio</text>
-  <text id="subtitle" x="72" y="103" width="1000" height="24" font="body" size="16" color="muted">A avaliação precisa separar visibilidade e tráfego da prova de contato qualificado e vínculo com CRM.</text>
+  <text id="eyebrow" x="72" y="34" width="520" height="20" font="caption" size="12" color="brand" wrap="false"><strong>PROGRAMÁTICA · ALCANCE, INTERESSE E RESULTADO</strong></text>
+  <text id="title" x="72" y="58" width="1040" height="48" font="heading" size="34" color="ink" wrap="false">Programática já gera alcance; agora precisa provar resultado</text>
+  <text id="subtitle" x="72" y="103" width="1000" height="24" font="body" size="16" color="muted">A próxima etapa é transformar visibilidade e cliques em leads identificados e oportunidades acompanhadas pelo time comercial.</text>
   <shape id="history-panel" type="rect" x="72" y="164" width="458" height="406" fill="#071B46" corner-radius="20"/>
-  <text id="history-label" x="104" y="194" width="300" height="20" font="caption" size="12" color="#A7F3D0" wrap="false">ÚLTIMA ENTREGA DV360 VERIFICÁVEL · AGOSTO</text>
+  <text id="history-label" x="104" y="194" width="300" height="20" font="caption" size="12" color="#A7F3D0" wrap="false">ÚLTIMA ENTREGA DISPONÍVEL · AGOSTO</text>
   <text id="history-title" x="104" y="224" width="330" height="54" font="heading" size="28" color="paper" line-height="1.05"><p>B2B</p><p>Geolocalização</p></text>
   <shape id="history-line" type="line" x="104" y="300" width="330" height="0" stroke="#FFFFFF" stroke-width="1" opacity="0.18"/>
-  <text id="history-impr-label" x="104" y="324" width="180" height="18" font="caption" size="12" color="#BFDBFE">IMPRESSÕES</text>
+  <text id="history-impr-label" x="104" y="324" width="180" height="18" font="caption" size="12" color="#BFDBFE">IMPACTOS</text>
   <text id="history-impr-value" x="104" y="344" width="260" height="40" font="metric" size="36" color="paper" wrap="false"><strong>669.098</strong></text>
   <text id="history-click-label" x="104" y="404" width="130" height="18" font="caption" size="12" color="#BFDBFE">CLIQUES</text>
   <text id="history-click-value" x="104" y="424" width="150" height="34" font="heading" size="30" color="paper" wrap="false"><strong>1.110</strong></text>
   <text id="history-ctr-label" x="294" y="404" width="112" height="18" font="caption" size="12" color="#BFDBFE" align="right">CTR</text>
   <text id="history-ctr-value" x="274" y="424" width="132" height="34" font="heading" size="30" color="paper" align="right" wrap="false"><strong>0,166%</strong></text>
   <shape id="history-bottom" type="rect" x="104" y="486" width="298" height="52" fill="#0F5DDB" corner-radius="12"/>
-  <text id="history-view-label" x="124" y="495" width="120" height="16" font="caption" size="11" color="#DBEAFE">VIEWABILITY</text>
+  <text id="history-view-label" x="124" y="495" width="120" height="16" font="caption" size="11" color="#DBEAFE">VISIBILIDADE</text>
   <text id="history-view-value" x="124" y="512" width="170" height="22" font="heading" size="22" color="paper" wrap="false"><strong>79,67%</strong></text>
   <shape id="criterion-one" type="rect" x="568" y="164" width="640" height="112" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="16"/>
   <icon id="criterion-one-icon" name="eye" x="596" y="202" width="32" height="32" color="brand"/>
-  <text id="criterion-one-title" x="650" y="184" width="430" height="24" font="heading" size="21" color="ink" wrap="false">1. Entrega contratada e visibilidade mensurável</text>
-  <text id="criterion-one-copy" x="650" y="216" width="510" height="36" font="body" size="14" color="muted">Reportar volume contratado, viewability e CTR. Para display, a referência MRC é 50% da peça visível por pelo menos 1 segundo.</text>
+  <text id="criterion-one-title" x="650" y="184" width="430" height="24" font="heading" size="21" color="ink" wrap="false">1. Entregar alcance com qualidade</text>
+  <text id="criterion-one-copy" x="650" y="216" width="510" height="36" font="body" size="14" color="muted">Acompanhar impactos, visibilidade e cliques para garantir que a campanha está chegando ao público planejado.</text>
   <shape id="criterion-two" type="rect" x="568" y="296" width="640" height="112" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="16"/>
   <icon id="criterion-two-icon" name="link" x="596" y="334" width="32" height="32" color="accent"/>
-  <text id="criterion-two-title" x="650" y="316" width="430" height="24" font="heading" size="21" color="ink" wrap="false">2. Tráfego identificado por campanha</text>
-  <text id="criterion-two-copy" x="650" y="348" width="510" height="36" font="body" size="14" color="muted">Cada acesso precisa carregar UTM/campanha para permitir a chegada do contato ao RD Station e a auditoria posterior no Bitrix24.</text>
+  <text id="criterion-two-title" x="650" y="316" width="430" height="24" font="heading" size="21" color="ink" wrap="false">2. Transformar atenção em interesse</text>
+  <text id="criterion-two-copy" x="650" y="348" width="510" height="36" font="body" size="14" color="muted">Cada campanha precisa gerar visitas identificadas para sabermos quais frentes despertam interesse real.</text>
   <shape id="criterion-three" type="rect" x="568" y="428" width="640" height="112" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="16"/>
   <icon id="criterion-three-icon" name="workflow" x="596" y="466" width="32" height="32" color="#D97706"/>
-  <text id="criterion-three-title" x="650" y="448" width="430" height="24" font="heading" size="21" color="ink" wrap="false">3. Evidência de conversão até o CRM</text>
-  <text id="criterion-three-copy" x="650" y="480" width="510" height="36" font="body" size="14" color="muted">A frente só deve ser chamada de sucesso comercial quando contatos e, depois, negócios puderem ser ligados à campanha sem inferência.</text>
+  <text id="criterion-three-title" x="650" y="448" width="430" height="24" font="heading" size="21" color="ink" wrap="false">3. Gerar leads e oportunidades</text>
+  <text id="criterion-three-copy" x="650" y="480" width="510" height="36" font="body" size="14" color="muted">O resultado comercial aparece quando os contatos chegam ao funil e avançam para oportunidades acompanhadas pelo time.</text>
   <shape id="limitation-band" type="rect" x="72" y="590" width="1136" height="56" fill="#FFF7ED" corner-radius="14"/>
-  <icon id="limitation-icon" name="alert-triangle" x="94" y="607" width="25" height="25" color="#D97706"/>
-  <text id="limitation-title" x="136" y="600" width="420" height="18" font="caption" size="12" color="#92400E" wrap="false">LEITURA ATUAL</text>
-  <text id="limitation-copy" x="136" y="621" width="1000" height="18" font="body" size="14" color="ink">As campanhas DV360 estão encerradas e retornam zero em setembro. As campanhas Publya ativas disponíveis estão classificadas como Meta e Google Ads; a nova avaliação deve fechar em 30/09.</text>
+  <icon id="limitation-icon" name="calendar" x="94" y="607" width="25" height="25" color="#D97706"/>
+  <text id="limitation-title" x="136" y="600" width="420" height="18" font="caption" size="12" color="#92400E" wrap="false">PRÓXIMO PONTO DE DECISÃO · 30/09</text>
+  <text id="limitation-copy" x="136" y="621" width="1000" height="18" font="body" size="14" color="ink">No fechamento do mês, vamos avaliar se o alcance se converteu em visitas identificadas, leads e oportunidades suficientes para justificar continuidade ou expansão.</text>
   <shape id="footer-line" type="line" x="72" y="674" width="1040" height="0" stroke="hairline" stroke-width="1"/>
-  <text id="footer-source" x="72" y="680" width="890" height="18" font="caption" size="11" color="muted">Fonte: Publya · referência de viewability: Google Ads Help / padrão MRC · última leitura disponível até 10/09/2026</text>
+  <text id="footer-source" x="72" y="680" width="890" height="18" font="caption" size="11" color="muted">Fonte: Publya · última entrega disponível até 10/09/2026</text>
   <text id="page-number" x="1146" y="678" width="62" height="20" font="caption" size="12" color="brand" align="right">08</text>
 </slide>

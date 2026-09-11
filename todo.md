@@ -793,3 +793,7 @@
 - [x] Atualizar o plano Beauty para explicar e recuperar o saldo de 1.206 leads indicado pelo usuário.
 - [x] Definir no report o que programática já entregou e os critérios/prazo necessários para comprovar sucesso.
 - [x] Revisar, validar e reenviar o Report Lu em arquivo final.
+- [x] Reescrever títulos e mensagens do Report Lu com linguagem simples, executiva e orientada ao cliente.
+- [x] Reduzir explicações técnicas de extração a notas discretas de metodologia, sem ocultar limitações relevantes.
+- [x] Transformar o plano Beauty em uma matriz clara de objetivo, ação, responsável, frequência e gatilho de decisão.
+- [x] Validar a leitura do deck, reapresentar e entregar a versão cliente.

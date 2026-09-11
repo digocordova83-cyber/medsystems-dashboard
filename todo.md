@@ -754,4 +754,5 @@
 - [x] Cruzar os 49 contatos únicos qualificados do RD Station em 09/09/2026 com o Bitrix24 por e-mail e/ou telefone normalizado: 15 encontrados, após 156 consultas diretas sem falhas.
 - [x] Retomar a consulta direta ao Bitrix24 por e-mail e telefone dos contatos RD Station qualificados em 09/09/2026.
 - [x] Retestar o webhook Bitrix24 e concluir o cruzamento direto após a conectividade ser restabelecida.
-- [x] Apurar no RD Station os leads de marketing de 10/09/2026 conforme os critérios acordados, por BU: 3 MedSystems e 6 BeautySystems, total de 9 eventos e 9 contatos únicos.
+- [x] Apuração inicial parcial no RD Station de 10/09/2026: 3 MedSystems e 6 BeautySystems, total de 9 eventos e 9 contatos únicos; substituída pela revalidação completa da fonte.
+- [x] Revalidar diretamente no RD Station o total completo de 10/09/2026, incluindo paginação, fuso São Paulo e regra de qualificação: 51 eventos qualificados e 44 contatos únicos, sendo 18 MedSystems e 26 BeautySystems.

@@ -85,6 +85,8 @@ export type RdOpportunityRawLead = {
   rdContactUuid?: string;
   rdEventDate?: Date;
   matchMethod?: "E-mail" | "Nome";
+  isMultipleBitrixMatch?: boolean;
+  bitrixCandidateCount?: number;
 };
 export type RdOpportunityRawDeal = { rawPayload: string };
 export type RdOpportunityRawContact = {
@@ -129,8 +131,8 @@ export function resolveRdBitrixLeadMatch(input: {
   const nameCandidates = name ? input.byName.get(name) ?? [] : [];
   const candidates = emailCandidates.length ? emailCandidates : nameCandidates;
   const method: "E-mail" | "Nome" | null = emailCandidates.length ? "E-mail" : nameCandidates.length ? "Nome" : null;
-  if (candidates.length === 1 && method) return { candidate: candidates[0]!, method, status: "matched" as const };
-  return { candidate: null, method, status: candidates.length > 1 ? "multiple" as const : "not_found" as const };
+  if (candidates.length === 1 && method) return { candidate: candidates[0]!, candidates, method, status: "matched" as const };
+  return { candidate: null, candidates, method, status: candidates.length > 1 ? "multiple" as const : "not_found" as const };
 }
 
 export function mergePaidMediaReferenceIdentities(
@@ -308,7 +310,9 @@ export function buildRdOpportunityManagerDashboard(input: {
     const responsibleId = cleanText(raw.ASSIGNED_BY_ID, "unknown");
     const stageId = cleanText(raw.STATUS_ID ?? row.stageOrStatus, "unknown");
     const fields = attributionFields(raw);
-    const identityKey = row.rdAccountKey && row.rdContactUuid ? `rd:${row.rdAccountKey}:${row.rdContactUuid}` : `lead:${row.bitrixId}`;
+    const identityKey = row.rdAccountKey && row.rdContactUuid
+      ? `rd:${row.rdAccountKey}:${row.rdContactUuid}:lead:${row.bitrixId}`
+      : `lead:${row.bitrixId}`;
     const item = {
       row,
       raw,
@@ -479,17 +483,23 @@ export function buildRdOpportunityManagerDashboard(input: {
     winsAttribution.set(key, row);
   }
   const leads = eligible.length;
+  const uniqueContacts = new Set(eligible.map(item => item.row.rdAccountKey && item.row.rdContactUuid
+    ? `rd:${item.row.rdAccountKey}:${item.row.rdContactUuid}`
+    : `lead:${item.row.bitrixId}`)).size;
+  const uniqueBitrixLeadIds = new Set(eligible.map(item => item.row.bitrixId)).size;
   const unassignedLeads = eligible.filter(item => !["15391", "15395"].includes(item.pipelineId)).length;
+  const duplicateBitrixLeadCandidates = eligible.filter(item => item.row.isMultipleBitrixMatch).length;
+  const duplicateRdContacts = new Set(eligible.filter(item => item.row.isMultipleBitrixMatch).map(item => `${item.row.rdAccountKey}:${item.row.rdContactUuid}`)).size;
 
   return {
-    sourceRule: "Contato RD Station qualificado e localizado de forma única no Bitrix24 por e-mail ou nome; uma linha por contato RD encontrado",
+    sourceRule: "Contato RD Station qualificado localizado no Bitrix24 por e-mail ou nome; correspondências múltiplas incluem cada Lead candidato como linha técnica distinta",
     period: input.period,
     selectedFilters: input.filters,
     filterOptions: Object.fromEntries(Object.entries(optionMaps).map(([key, map]) => [key, optionRows(map)])),
     totals: {
       leads,
-      uniqueContacts: leads,
-      uniqueBitrixLeadIds: leads,
+      uniqueContacts,
+      uniqueBitrixLeadIds,
       mql,
       sql: sqlCount,
       dealLeads: 0,
@@ -502,6 +512,8 @@ export function buildRdOpportunityManagerDashboard(input: {
       wonValue,
       discardedLeads: eligible.filter(item => LOST_STATUSES.has(item.stageId)).length,
       unassignedLeads,
+      duplicateBitrixLeadCandidates,
+      duplicateRdContacts,
       reconciledByIdentity: 0,
       reconciledOutsidePaidField: 0,
     },
@@ -509,7 +521,7 @@ export function buildRdOpportunityManagerDashboard(input: {
     winsAttribution: Array.from(winsAttribution.values()).sort((a, b) => b.wonDeals - a.wonDeals || b.wonValue - a.wonValue || a.campaign.localeCompare(b.campaign)),
     winsAttributionCoverage,
     funnel: [
-      { key: "lead", label: "Leads encontrados", count: leads, conversionFromPrevious: 100, conversionFromLead: 100, rule: "Contato RD Station qualificado no período com correspondência única por e-mail ou nome na base do Bitrix24" },
+      { key: "lead", label: "Leads encontrados", count: leads, conversionFromPrevious: 100, conversionFromLead: 100, rule: "Contato RD Station qualificado no período com correspondência única ou cada Lead candidato de uma correspondência múltipla na base do Bitrix24" },
       { key: "mql", label: "MQL · Qualificados", count: mql, conversionFromPrevious: rate(mql, leads), conversionFromLead: rate(mql, leads), rule: "Primeiro Contato ou etapa posterior no status atual do lead" },
       { key: "sql", label: "SQL · Oportunidades", count: sqlCount, conversionFromPrevious: rate(sqlCount, mql), conversionFromLead: rate(sqlCount, leads), rule: "Relacionamento, Converter Lead ou Histórico Lead Convertidos" },
     ],
@@ -535,7 +547,7 @@ export function buildRdOpportunityManagerDashboard(input: {
       sql: "Etapa atual em Relacionamento, Converter Lead ou Histórico Lead Convertidos.",
       deal: "Negócios ganhos são lidos separadamente nos pipelines comerciais oficiais pelo fechamento no período. Campanha, conjunto e criativo de ganhos usam apenas UTMs presentes diretamente no negócio; ausências ficam como Não identificado.",
       attribution: "UTMs diretas do lead; fallback para o payload RD Station embutido. UTM content representa conjunto/grupo e UTM term representa criativo; ausências aparecem como Não identificado.",
-      reconciliation: "O universo inclui somente contatos qualificados do RD Station no período que possuem uma correspondência única no Bitrix24 por e-mail exato ou, na ausência de e-mail correspondente, nome normalizado. Registros ambíguos ou não encontrados permanecem fora do funil e visíveis na auditoria. A BU vem somente do Pipeline de Vendas; registros sem pipeline reconhecido permanecem como não atribuídos.",
+      reconciliation: "O universo inclui contatos qualificados do RD Station localizados no Bitrix24 por e-mail exato ou, na ausência de e-mail correspondente, nome normalizado. Correspondências únicas entram uma vez; em correspondências múltiplas, cada Lead técnico candidato entra no funil e fica sinalizado como duplicidade na auditoria. Contatos sem Lead e registros não encontrados permanecem fora do funil. A BU vem somente do Pipeline de Vendas; registros sem pipeline reconhecido permanecem como não atribuídos.",
       limitation: "MQL e SQL representam o status atual do lead, não o histórico de passagem entre etapas. Negócios ganhos são uma leitura comercial independente e não compõem taxa de conversão do funil sem vínculo técnico confiável.",
     },
   };
@@ -614,20 +626,28 @@ async function loadRdOpportunityDataset(input: {
     const contact = contactsByKey.get(`${item.accountKey}:${item.contactUuid}`);
     if (!contact) continue;
     const match = resolveRdBitrixLeadMatch({ rdEmail: contact.email, rdName: contact.name, byEmail, byName });
-    if (match.status !== "matched" || !match.candidate) continue;
-    rows.push({
-      bitrixId: match.candidate.bitrixId,
-      createdAtBitrix: match.candidate.createdAtBitrix,
-      stageOrStatus: match.candidate.stageOrStatus,
-      rawPayload: match.candidate.rawPayload,
-      fullName: match.candidate.fullName,
-      email: match.candidate.email,
-      phone: match.candidate.phone,
-      rdAccountKey: item.accountKey,
-      rdContactUuid: item.contactUuid,
-      rdEventDate: item.eventCreatedAt,
-      matchMethod: match.method,
-    });
+    const leadCandidates = match.status === "matched"
+      ? (match.candidate ? [match.candidate] : [])
+      : match.status === "multiple"
+        ? match.candidates.filter(candidate => candidate.entityType === "lead")
+        : [];
+    for (const candidate of leadCandidates) {
+      rows.push({
+        bitrixId: candidate.bitrixId,
+        createdAtBitrix: candidate.createdAtBitrix,
+        stageOrStatus: candidate.stageOrStatus,
+        rawPayload: candidate.rawPayload,
+        fullName: candidate.fullName,
+        email: candidate.email,
+        phone: candidate.phone,
+        rdAccountKey: item.accountKey,
+        rdContactUuid: item.contactUuid,
+        rdEventDate: item.eventCreatedAt,
+        matchMethod: match.method ?? undefined,
+        isMultipleBitrixMatch: match.status === "multiple",
+        bitrixCandidateCount: match.candidates.length,
+      });
+    }
   }
 
   const categoryId = sql<string>`json_unquote(json_extract(${bitrix24Entities.rawPayload}, '$.CATEGORY_ID'))`;

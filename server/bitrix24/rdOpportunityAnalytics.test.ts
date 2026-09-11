@@ -141,6 +141,19 @@ describe("buildRdOpportunityManagerDashboard", () => {
     expect(result.duplicates).toMatchObject({ peopleWithMultipleLeadIds: 0, leadIdsInDuplicateGroups: 0, extraLeadIds: 0 });
   });
 
+  it("inclui no funil cada Lead técnico candidato de um contato RD com correspondência múltipla", () => {
+    const result = buildRdOpportunityManagerDashboard({
+      rows: [
+        { ...row(91, { ...rd, UF_CRM_1739195085: "15391", STATUS_ID: "NEW" }), rdAccountKey: "medsystems" as const, rdContactUuid: "rd-1", isMultipleBitrixMatch: true, bitrixCandidateCount: 2 },
+        { ...row(92, { ...rd, UF_CRM_1739195085: "15391", STATUS_ID: "IN_PROCESS" }), rdAccountKey: "medsystems" as const, rdContactUuid: "rd-1", isMultipleBitrixMatch: true, bitrixCandidateCount: 2 },
+      ],
+      filters,
+      period: { start: "2026-09-01", end: "2026-09-08" },
+    });
+    expect(result.totals).toMatchObject({ leads: 2, uniqueContacts: 1, uniqueBitrixLeadIds: 2, mql: 1, duplicateBitrixLeadCandidates: 2, duplicateRdContacts: 1 });
+    expect(result.filterOptions.pipelines).toEqual([expect.objectContaining({ value: "15391", count: 2 })]);
+  });
+
   it("pré-seleciona somente leads com o campo oficial RD Station = sim", () => {
     const candidates = rdOpportunityCandidateRows({
       rows: [

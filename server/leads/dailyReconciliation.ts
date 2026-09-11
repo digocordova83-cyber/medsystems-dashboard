@@ -8,7 +8,7 @@ const DEFAULT_FILTERS = {
 };
 
 const ACCOUNT_KEYS = ["medsystems", "beautysystems"] as const;
-const RULE_VERSION = "rd_bitrix_name_v1";
+const RULE_VERSION = "rd_bitrix_multi_v1";
 
 export async function reconcilePaidMediaBusinessDate(businessDate: string) {
   const db = await getDb();
@@ -31,7 +31,7 @@ export async function reconcilePaidMediaBusinessDate(businessDate: string) {
     const row = {
       businessDate,
       accountKey,
-      uniqueContacts: dashboard.totals.leads,
+      uniqueContacts: dashboard.totals.uniqueContacts,
       mqlContacts: dashboard.totals.mql,
       sqlContacts: dashboard.totals.sql,
       contactsWithDeals: dashboard.totals.dealLeads,
@@ -41,9 +41,9 @@ export async function reconcilePaidMediaBusinessDate(businessDate: string) {
       leadIdsWithDeals: dashboard.totals.dealLeads,
       reconciledByIdentity: dashboard.totals.reconciledByIdentity,
       recoveredOutsidePaidField: dashboard.totals.reconciledOutsidePaidField,
-      peopleWithMultipleLeadIds: dashboard.duplicates.peopleWithMultipleLeadIds,
-      leadIdsInDuplicateGroups: dashboard.duplicates.leadIdsInDuplicateGroups,
-      extraLeadIds: dashboard.duplicates.extraLeadIds,
+      peopleWithMultipleLeadIds: dashboard.totals.duplicateRdContacts,
+      leadIdsInDuplicateGroups: dashboard.totals.duplicateBitrixLeadCandidates,
+      extraLeadIds: Math.max(0, dashboard.totals.duplicateBitrixLeadCandidates - dashboard.totals.duplicateRdContacts),
       ruleVersion: RULE_VERSION,
       status: "completed",
       summary,

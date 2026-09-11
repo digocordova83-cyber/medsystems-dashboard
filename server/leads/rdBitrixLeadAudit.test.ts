@@ -36,12 +36,13 @@ describe("auditMatchStatus", () => {
 
   it("mantém nome com mais de um registro fora do funil", () => {
     const candidate = (bitrixId: number) => ({ bitrixId, entityType: "lead" as const, fullName: "Ana Silva", email: null, phone: null, stageOrStatus: "NEW", createdAtBitrix: new Date(), rawPayload: "{}" });
-    expect(resolveRdBitrixLeadMatch({
+    const result = resolveRdBitrixLeadMatch({
       rdEmail: null,
       rdName: "Ana Silva",
       byEmail: new Map(),
       byName: new Map([["ana silva", [candidate(1), candidate(2)]]]),
-    })).toMatchObject({ status: "multiple", candidate: null });
+    });
+    expect(result).toMatchObject({ status: "multiple", candidate: null, candidates: [{ bitrixId: 1 }, { bitrixId: 2 }] });
   });
 
   it("expõe os dados de revisão de cada candidato Bitrix sem transformar contato em etapa de Lead", () => {

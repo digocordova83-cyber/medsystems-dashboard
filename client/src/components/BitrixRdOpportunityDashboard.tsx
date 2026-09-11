@@ -94,7 +94,7 @@ export function BitrixRdOpportunityDashboard() {
             <Badge variant="outline" className="border-white/10 text-white/60">Dados até {defaultPeriod.endDate.split("-").reverse().join("/")}</Badge>
           </div>
           <h2 className="mt-4 max-w-2xl text-3xl font-black tracking-[-.045em] text-white sm:text-4xl">Funil comercial RD Station → Bitrix24</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">Contatos qualificados no RD Station encontrados de forma única no Bitrix24 por e-mail ou nome; a etapa atual vem do CRM e o resultado comercial é lido separadamente.</p>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">Contatos qualificados no RD Station localizados no Bitrix24 por e-mail ou nome. Correspondências múltiplas incluem cada Lead técnico candidato no funil, mantendo a duplicidade visível na auditoria.</p>
         </div>
         <div className="grid gap-3 sm:grid-cols-2 xl:min-w-[560px] xl:grid-cols-[1fr_1fr_auto]">
           <DateField label="Data inicial" value={draftStart} onChange={setDraftStart} max={defaultPeriod.endDate} />
@@ -104,7 +104,7 @@ export function BitrixRdOpportunityDashboard() {
       </div>
 
       <div className="mt-7 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
-        <HeroKpi icon={Megaphone} label="Leads RD → Bitrix" value={integer(data.totals.leads)} helper="Contatos qualificados localizados no CRM" tone="cyan" />
+        <HeroKpi icon={Megaphone} label="Leads RD → Bitrix" value={integer(data.totals.leads)} helper={data.totals.duplicateBitrixLeadCandidates ? `${integer(data.totals.duplicateBitrixLeadCandidates)} Leads duplicados incluídos` : "Contatos qualificados localizados no CRM"} tone="cyan" />
         <HeroKpi icon={Target} label="MQL · Qualificados" value={integer(data.totals.mql)} helper={`${ratio(data.totals.mql, data.totals.leads)} dos leads`} tone="violet" />
         <HeroKpi icon={TrendingUp} label="SQL · Oportunidades" value={integer(data.totals.sql)} helper={`${ratio(data.totals.sql, data.totals.mql)} dos MQLs`} tone="amber" />
         <HeroKpi icon={BriefcaseBusiness} label="Negócios ganhos" value={integer(data.totals.wonDeals)} helper={`${integer(data.commercialWinsByBu.medsystems.count)} Med · ${integer(data.commercialWinsByBu.beautysystems.count)} Beauty`} tone="emerald" />
@@ -114,7 +114,7 @@ export function BitrixRdOpportunityDashboard() {
 
     <section className="rounded-2xl border border-white/10 bg-black/20 p-4 sm:p-5">
       <div className="flex flex-col justify-between gap-3 lg:flex-row lg:items-end">
-        <PanelHeader eyebrow="Filtro principal · Bitrix24" title="Pipeline / marca no CRM" detail={`O universo contém somente contatos RD Station qualificados e encontrados no CRM por e-mail ou nome. Título, origem e UTM não excluem registros; ${integer(data.totals.unassignedLeads)} lead(s) permanecem sem BU reconhecida.`} />
+        <PanelHeader eyebrow="Filtro principal · Bitrix24" title="Pipeline / marca no CRM" detail={`O universo contém contatos RD Station qualificados encontrados no CRM por e-mail ou nome. Cada Lead técnico de correspondências múltiplas também é contado; ${integer(data.totals.duplicateBitrixLeadCandidates)} duplicidade(s) técnica(s) estão sinalizadas na auditoria e ${integer(data.totals.unassignedLeads)} lead(s) permanecem sem BU reconhecida.`} />
         {activeFilterCount ? <Button variant="outline" size="sm" className="w-fit border-white/10 bg-black/10 text-slate-300" onClick={() => setFilters(DEFAULT_FILTERS)}><X className="mr-2 h-3.5 w-3.5" />Limpar {activeFilterCount} filtros</Button> : null}
       </div>
       <div className="mt-4 flex flex-wrap gap-2">

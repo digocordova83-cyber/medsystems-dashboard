@@ -112,7 +112,7 @@ export function bitrixAuditCandidate(entity: BitrixEntity): BitrixAuditCandidate
 }
 
 function emptyBrandTotals() {
-  return { rdQualifiedEvents: 0, rdQualifiedContacts: 0, bitrixTechnicalLeads: 0, bitrixRdStationLeads: 0, matchedAsLead: 0, matchedAsContactOnly: 0, notFound: 0, multiple: 0 };
+  return { rdQualifiedEvents: 0, rdQualifiedContacts: 0, bitrixTechnicalLeads: 0, bitrixRdStationLeads: 0, matchedAsLead: 0, matchedAsContactOnly: 0, notFound: 0, multiple: 0, multipleLeadCandidates: 0 };
 }
 
 export async function rdBitrixLeadAudit(input: RdBitrixLeadAuditFilters & { portal: string }) {
@@ -223,7 +223,10 @@ export async function rdBitrixLeadAudit(input: RdBitrixLeadAuditFilters & { port
     totals.rdQualifiedContacts += 1;
     if (status === "lead") totals.matchedAsLead += 1;
     else if (status === "contact_only") totals.matchedAsContactOnly += 1;
-    else if (status === "multiple") totals.multiple += 1;
+    else if (status === "multiple") {
+      totals.multiple += 1;
+      totals.multipleLeadCandidates += leadMatches.length;
+    }
     else totals.notFound += 1;
     const raw = representative ? parsePayload(representative.rawPayload) : {};
     return {
@@ -259,6 +262,7 @@ export async function rdBitrixLeadAudit(input: RdBitrixLeadAuditFilters & { port
     matchedAsContactOnly: sum.matchedAsContactOnly + row.matchedAsContactOnly,
     notFound: sum.notFound + row.notFound,
     multiple: sum.multiple + row.multiple,
+    multipleLeadCandidates: sum.multipleLeadCandidates + row.multipleLeadCandidates,
   }), emptyBrandTotals());
   if (input.brand === "all") {
     totals.bitrixTechnicalLeads += unassignedBitrix.technicalLeads;
@@ -274,7 +278,7 @@ export async function rdBitrixLeadAudit(input: RdBitrixLeadAuditFilters & { port
     methodology: {
       rd: "Contatos únicos com pelo menos uma conversão RD Station no período que atende às fontes permitidas e não é importação.",
       bitrix: "Leads técnicos do Bitrix24 criados no período; a coluna RD Station = sim é apresentada separadamente e não substitui o universo do RD.",
-      matching: "A auditoria prioriza e-mail exato. Quando não há e-mail correspondente, usa nome normalizado; múltiplos registros permanecem explícitos. A busca retorna Lead ou, na ausência dele, Contato sem etapa de Lead.",
+      matching: "A auditoria prioriza e-mail exato. Quando não há e-mail correspondente, usa nome normalizado. Correspondências múltiplas permanecem explícitas: cada Lead técnico candidato entra no funil; Contatos sem Lead permanecem somente na auditoria.",
       privacy: "Dados pessoais são retornados exclusivamente para sessão autenticada do Dashboard.",
     },
   };

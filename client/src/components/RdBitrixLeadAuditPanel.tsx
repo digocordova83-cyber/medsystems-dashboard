@@ -55,7 +55,7 @@ export function RdBitrixLeadAuditPanel({ startDate, endDate }: { startDate: stri
         <div className="flex flex-wrap items-center gap-2"><Badge variant="outline" className="border-sky-200/20 bg-sky-200/[.06] text-sky-100"><ShieldCheck className="mr-1.5 h-3.5 w-3.5" />Auditoria protegida</Badge><Badge variant="outline" className="border-white/10 text-white/60">RD Station ↔ Bitrix24</Badge></div>
         <p className="mt-4 font-mono-ui text-[10px] uppercase tracking-[.16em] text-sky-100/55">Conferência de integração</p>
         <h3 className="mt-1 text-xl font-black tracking-[-.03em] text-white sm:text-2xl">Leads do RD Station no Bitrix24</h3>
-        <p className="mt-2 text-sm leading-6 text-slate-400">O funil usa os contatos qualificados no RD Station encontrados de forma única no Bitrix24. A busca prioriza e-mail exato e usa nome normalizado apenas na ausência de e-mail correspondente; casos múltiplos exibem todos os candidatos do CRM para revisão.</p>
+        <p className="mt-2 text-sm leading-6 text-slate-400">O funil usa os contatos qualificados no RD Station localizados no Bitrix24. A busca prioriza e-mail exato e usa nome normalizado apenas na ausência de e-mail correspondente; em casos múltiplos, cada Lead técnico candidato é incluído no funil e todos os registros ficam visíveis para revisão.</p>
       </div>
       <div className="flex flex-wrap gap-2">
         {([ ["all", "Todas"], ["medsystems", "MedSystems"], ["beautysystems", "BeautySystems"] ] as const).map(([value, label]) => <button key={value} onClick={() => setBrand(value)} className={`rounded-full border px-3 py-2 text-xs font-medium transition-all active:scale-[.97] ${brand === value ? "border-sky-200/35 bg-sky-200/15 text-sky-50" : "border-white/10 bg-white/[.025] text-slate-400 hover:border-white/20 hover:text-white"}`}>{label}</button>)}
@@ -64,10 +64,11 @@ export function RdBitrixLeadAuditPanel({ startDate, endDate }: { startDate: stri
 
     <div className="border-b border-white/10 bg-black/15 p-5 sm:p-6">
       <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
-        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
           <AuditMetric icon={UsersRound} label="Contatos RD" value={data ? number(data.totals.rdQualifiedContacts) : "—"} helper="Únicos e qualificados" tone="sky" />
           <AuditMetric icon={DatabaseZap} label="Eventos RD" value={data ? number(data.totals.rdQualifiedEvents) : "—"} helper="Conversões aceitas" tone="violet" />
-          <AuditMetric icon={UserRoundSearch} label="RD encontrado no Bitrix" value={data ? number(data.totals.matchedAsLead + data.totals.matchedAsContactOnly) : "—"} helper="Correspondência única por e-mail ou nome" tone="cyan" />
+          <AuditMetric icon={UserRoundSearch} label="RD com match único" value={data ? number(data.totals.matchedAsLead + data.totals.matchedAsContactOnly) : "—"} helper="Uma correspondência por e-mail ou nome" tone="cyan" />
+          <AuditMetric icon={UserCheck} label="Leads múltiplos no funil" value={data ? number(data.totals.multipleLeadCandidates) : "—"} helper="Candidatos Lead de casos duplicados" tone="violet" />
           <AuditMetric icon={CheckCircle2} label="Leads técnicos Bitrix" value={data ? number(data.totals.bitrixTechnicalLeads) : "—"} helper={data?.unassignedBitrix.technicalLeads ? `Inclui ${number(data.unassignedBitrix.technicalLeads)} sem BU` : "Referência do CRM no período"} tone="emerald" />
         </div>
         <div className="flex flex-wrap items-center gap-2"><label className="sr-only" htmlFor="audit-match-status">Situação no Bitrix24</label><select id="audit-match-status" value={matchStatus} onChange={event => setMatchStatus(event.target.value as AuditStatus)} className="h-10 rounded-xl border border-white/10 bg-[#08131f] px-3 text-xs text-white outline-none focus:ring-2 focus:ring-sky-200/30"><option value="all">Todas as situações</option><option value="lead">Encontrado como Lead</option><option value="contact_only">Somente Contato</option><option value="not_found">Não encontrado</option><option value="multiple">Múltiplos registros</option></select><Button variant="outline" size="sm" onClick={() => query.refetch()} className="h-10 border-white/10 bg-white/[.025] text-slate-200 hover:bg-white/[.07]"><RefreshCcw className={`mr-2 h-3.5 w-3.5 ${query.isFetching ? "animate-spin" : ""}`} />Atualizar</Button></div>

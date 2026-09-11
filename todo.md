@@ -769,3 +769,7 @@
 - [x] Incluir todos os registros candidatos do Bitrix24 em cada caso de correspondência múltipla da auditoria.
 - [x] Exibir na lista protegida o tipo, etapa e data de criação de cada candidato Bitrix24, sem alterar o funil principal.
 - [x] Criar regressão para múltiplos candidatos e validar a visualização autenticada antes de publicar.
+- [x] Incluir no funil cada Lead Bitrix24 candidato de correspondências múltiplas do RD Station, mantendo Contatos sem Lead apenas na auditoria.
+- [x] Recalcular KPIs, filtros, distribuição de BU e evolução diária com os Leads duplicados incluídos.
+- [x] Sinalizar visualmente no funil e na metodologia que registros múltiplos foram incluídos como Leads técnicos distintos.
+- [x] Cobrir a regra de duplicidades em teste, validar a interface autenticada e publicar.

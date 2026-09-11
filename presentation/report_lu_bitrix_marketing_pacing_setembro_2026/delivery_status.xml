@@ -1,46 +1,39 @@
 <slide id="delivery_status">
   <background color="paper"/>
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
-  <shape id="header-accent" type="rect" x="40" y="34" width="6" height="64" fill="accent" corner-radius="3"/>
-  <text id="slide-kicker" x="60" y="34" width="500" height="18" font="caption" size="11" color="accent" wrap="false"><strong>STATUS DAS ENTREGAS · SETEMBRO</strong></text>
-  <text id="slide-title" x="60" y="58" width="890" height="38" font="heading" size="29" color="ink" wrap="false"><strong>Cronograma de entregas e dependências de setembro</strong></text>
-  <text id="slide-subtitle" x="60" y="102" width="900" height="20" font="caption" size="11" color="muted" wrap="false">Tabela reconstruída a partir do material recebido; textos e previsões preservados.</text>
-
-  <shape id="legend-final-dot" type="ellipse" x="58" y="132" width="11" height="11" fill="#00B050"/>
-  <text id="legend-final" x="76" y="126" width="94" height="22" font="caption" size="9" color="ink" anchor="middle" wrap="false">Finalização</text>
-  <shape id="legend-dev-dot" type="ellipse" x="180" y="132" width="11" height="11" fill="#FFD800"/>
-  <text id="legend-dev" x="198" y="126" width="124" height="22" font="caption" size="9" color="ink" anchor="middle" wrap="false">Em desenvolvimento</text>
-  <shape id="legend-third-dot" type="ellipse" x="338" y="132" width="11" height="11" fill="#FF7A00"/>
-  <text id="legend-third" x="356" y="126" width="130" height="22" font="caption" size="9" color="ink" anchor="middle" wrap="false">Aguardando terceiros</text>
-  <shape id="legend-late-dot" type="ellipse" x="502" y="132" width="11" height="11" fill="#E30613"/>
-  <text id="legend-late" x="520" y="126" width="80" height="22" font="caption" size="9" color="ink" anchor="middle" wrap="false">Em atraso</text>
-  <shape id="legend-start-dot" type="ellipse" x="616" y="132" width="11" height="11" fill="#0F6CE5"/>
-  <text id="legend-start" x="634" y="126" width="74" height="22" font="caption" size="9" color="ink" anchor="middle" wrap="false">A iniciar</text>
-  <shape id="legend-brief-dot" type="ellipse" x="724" y="132" width="11" height="11" fill="#FFFFFF" stroke="#64748B" stroke-width="1.5"/>
-  <text id="legend-brief" x="742" y="126" width="124" height="22" font="caption" size="9" color="ink" anchor="middle" wrap="false">Aguardando briefing</text>
-  <text id="legend-date" x="1020" y="126" width="220" height="22" font="caption" size="9" color="muted" align="right" anchor="middle" wrap="false">Atualização recebida em 08/09</text>
-
-  <table id="delivery-table" x="40" y="158" width="1200" height="472" columns="1.5,2.0,4.2,4.1,1.8" rows="32,29.333,29.333,29.333,29.333,29.333,29.333,29.333,29.333,29.333,29.333,29.333,29.333,29.333,29.333,29.338" font="caption" size="8.5" color="ink" line-height="1.0" padding="3 7" header-fill="#071B46" header-border="1 #071B46" border-h="1 solid #D8E0EA" border-v="1 solid #E5E7EB" border-outer="1 solid #B9C4D2">
-    <tr color="paper" size="9.5"><td><strong>Frente</strong></td><td><strong>Projeto / Produto</strong></td><td><strong>Status atual</strong></td><td><strong>Próximo marco / Observações</strong></td><td align="center"><strong>Previsão</strong></td></tr>
-    <tr fill="#F3F8FF"><td rowspan="5" color="#071B46" size="10"><strong>MedSystems</strong></td><td><strong>Ultraformer MPT</strong></td><td><p><span color="#FFD800">●</span> Aguardando peças de programática (Publya)</p><p>Peças de Meta aprovadas</p></td><td>Publya vai entregar todas as peças amanhã</td><td align="center"><strong>09/09</strong></td></tr>
-    <tr fill="#F8FBFF"><td><strong>Volnewmer</strong></td><td><p><span color="#FFD800">●</span> Aguardando peças de programática (Publya)</p><p>Peças de Meta aprovadas</p></td><td>Publya vai entregar todas as peças amanhã</td><td align="center"><strong>09/09</strong></td></tr>
-    <tr fill="#F3F8FF"><td><strong>Volformer</strong></td><td><p><span color="#FFD800">●</span> Aguardando peças de programática (Publya)</p><p>Peças de Meta aprovadas</p></td><td>Publya vai entregar todas as peças amanhã</td><td align="center"><strong>09/09</strong></td></tr>
-    <tr fill="#F8FBFF"><td><strong>Chrome</strong></td><td><span color="#0F6CE5">●</span> Desenvolvimento ainda não iniciado</td><td>Em produção</td><td align="center"><strong>18/09</strong></td></tr>
-    <tr fill="#F3F8FF"><td><strong>Youlaser Prime</strong></td><td><span color="#0F6CE5">●</span> Desenvolvimento ainda não iniciado</td><td>Em produção</td><td align="center"><strong>18/09</strong></td></tr>
-
-    <tr fill="#FFF8F7"><td rowspan="6" color="#071B46" size="10"><strong>BeautySystems</strong></td><td><strong>Aquapure</strong></td><td><p><span color="#E30613">●</span> <strong>Em atraso</strong></p><p>Será enviado hoje (08/09)</p></td><td>Envio das peças pela BBRO</td><td align="center"><strong>08/09</strong></td></tr>
-    <tr fill="#FFFCFB"><td><strong>Ultraformer MPT</strong></td><td><span color="#FF7A00">●</span> Aguardando material dos clientes</td><td>Recebimento de logo/imagens principais</td><td align="center">Entre 08 e 11/09</td></tr>
-    <tr fill="#FFF8F7"><td><strong>Youlaser MT</strong></td><td><span color="#FF7A00">●</span> Aguardando material dos clientes</td><td>Recebimento de logo/imagens principais</td><td align="center">Entre 08 e 11/09</td></tr>
-    <tr fill="#FFFCFB"><td><strong>Ultraformer III</strong></td><td><span color="#FF7A00">●</span> Aguardando material dos clientes</td><td>Recebimento de logo/imagens principais</td><td align="center">Entre 08 e 11/09</td></tr>
-    <tr fill="#FFF8F7"><td><strong>Secret RF</strong></td><td><span color="#0F6CE5">●</span> Desenvolvimento ainda não iniciado</td><td>Em produção</td><td align="center"><strong>18/09</strong></td></tr>
-    <tr fill="#FFFCFB"><td><strong>Vectra1</strong></td><td><span color="#0F6CE5">●</span> Desenvolvimento ainda não iniciado</td><td>Em produção</td><td align="center"><strong>18/09</strong></td></tr>
-
-    <tr fill="#ECFDF5"><td><strong>B2C / Awareness</strong></td><td><strong>Media at Home / OOH</strong></td><td><p><span color="#00B050">●</span> Peças enviadas à Publya em 03/09</p><p>Aguardando confirmação de desdobramentos e veiculação</p></td><td>Publya entrega as peças amanhã; verificar veiculação</td><td align="center"><strong>09/09</strong></td></tr>
-    <tr fill="#F0FDF4"><td><strong>Antipirataria</strong></td><td><strong>Keep it Real</strong></td><td><p><span color="#00B050">●</span> Identidade aprovada pelo cliente</p><p>Desdobramentos em produção</p></td><td>Em produção</td><td align="center"><strong>08/09</strong></td></tr>
-    <tr fill="#F8FAFC"><td rowspan="2"><strong>Novos Protocolos</strong></td><td><strong>Aquaformer</strong></td><td><span color="#64748B">○</span> Aguardando briefing</td><td>Aguardar briefing do cliente</td><td align="center">2ª quinzena de setembro</td></tr>
-    <tr fill="#FFFFFF"><td><strong>Aquanewmer</strong></td><td><span color="#64748B">○</span> Aguardando briefing</td><td>Aguardar briefing do cliente</td><td align="center">2ª quinzena de setembro</td></tr>
-  </table>
-
-  <text id="source-note" x="40" y="650" width="1090" height="20" font="caption" size="9" color="muted" wrap="false">Obs.: prazos e status podem ser atualizados conforme novos retornos dos clientes e da Publya.</text>
-  <text id="page-number" x="1160" y="648" width="80" height="22" font="caption" size="10" color="muted" align="right" wrap="false">08 / 08</text>
+  <text id="eyebrow" x="72" y="34" width="470" height="20" font="caption" size="12" color="brand" wrap="false"><strong>PROGRAMÁTICA · ENTREGA E CRITÉRIOS DE SUCESSO</strong></text>
+  <text id="title" x="72" y="58" width="940" height="48" font="heading" size="34" color="ink" wrap="false">Entrega existe; sucesso exige prova de negócio</text>
+  <text id="subtitle" x="72" y="103" width="1000" height="24" font="body" size="16" color="muted">A avaliação precisa separar visibilidade e tráfego da prova de contato qualificado e vínculo com CRM.</text>
+  <shape id="history-panel" type="rect" x="72" y="164" width="458" height="406" fill="#071B46" corner-radius="20"/>
+  <text id="history-label" x="104" y="194" width="300" height="20" font="caption" size="12" color="#A7F3D0" wrap="false">ÚLTIMA ENTREGA DV360 VERIFICÁVEL · AGOSTO</text>
+  <text id="history-title" x="104" y="224" width="330" height="54" font="heading" size="28" color="paper" line-height="1.05"><p>B2B</p><p>Geolocalização</p></text>
+  <shape id="history-line" type="line" x="104" y="300" width="330" height="0" stroke="#FFFFFF" stroke-width="1" opacity="0.18"/>
+  <text id="history-impr-label" x="104" y="324" width="180" height="18" font="caption" size="12" color="#BFDBFE">IMPRESSÕES</text>
+  <text id="history-impr-value" x="104" y="344" width="260" height="40" font="metric" size="36" color="paper" wrap="false"><strong>669.098</strong></text>
+  <text id="history-click-label" x="104" y="404" width="130" height="18" font="caption" size="12" color="#BFDBFE">CLIQUES</text>
+  <text id="history-click-value" x="104" y="424" width="150" height="34" font="heading" size="30" color="paper" wrap="false"><strong>1.110</strong></text>
+  <text id="history-ctr-label" x="294" y="404" width="112" height="18" font="caption" size="12" color="#BFDBFE" align="right">CTR</text>
+  <text id="history-ctr-value" x="274" y="424" width="132" height="34" font="heading" size="30" color="paper" align="right" wrap="false"><strong>0,166%</strong></text>
+  <shape id="history-bottom" type="rect" x="104" y="486" width="298" height="52" fill="#0F5DDB" corner-radius="12"/>
+  <text id="history-view-label" x="124" y="495" width="120" height="16" font="caption" size="11" color="#DBEAFE">VIEWABILITY</text>
+  <text id="history-view-value" x="124" y="512" width="170" height="22" font="heading" size="22" color="paper" wrap="false"><strong>79,67%</strong></text>
+  <shape id="criterion-one" type="rect" x="568" y="164" width="640" height="112" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="16"/>
+  <icon id="criterion-one-icon" name="eye" x="596" y="202" width="32" height="32" color="brand"/>
+  <text id="criterion-one-title" x="650" y="184" width="430" height="24" font="heading" size="21" color="ink" wrap="false">1. Entrega contratada e visibilidade mensurável</text>
+  <text id="criterion-one-copy" x="650" y="216" width="510" height="36" font="body" size="14" color="muted">Reportar volume contratado, viewability e CTR. Para display, a referência MRC é 50% da peça visível por pelo menos 1 segundo.</text>
+  <shape id="criterion-two" type="rect" x="568" y="296" width="640" height="112" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="16"/>
+  <icon id="criterion-two-icon" name="link" x="596" y="334" width="32" height="32" color="accent"/>
+  <text id="criterion-two-title" x="650" y="316" width="430" height="24" font="heading" size="21" color="ink" wrap="false">2. Tráfego identificado por campanha</text>
+  <text id="criterion-two-copy" x="650" y="348" width="510" height="36" font="body" size="14" color="muted">Cada acesso precisa carregar UTM/campanha para permitir a chegada do contato ao RD Station e a auditoria posterior no Bitrix24.</text>
+  <shape id="criterion-three" type="rect" x="568" y="428" width="640" height="112" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="16"/>
+  <icon id="criterion-three-icon" name="workflow" x="596" y="466" width="32" height="32" color="#D97706"/>
+  <text id="criterion-three-title" x="650" y="448" width="430" height="24" font="heading" size="21" color="ink" wrap="false">3. Evidência de conversão até o CRM</text>
+  <text id="criterion-three-copy" x="650" y="480" width="510" height="36" font="body" size="14" color="muted">A frente só deve ser chamada de sucesso comercial quando contatos e, depois, negócios puderem ser ligados à campanha sem inferência.</text>
+  <shape id="limitation-band" type="rect" x="72" y="590" width="1136" height="56" fill="#FFF7ED" corner-radius="14"/>
+  <icon id="limitation-icon" name="alert-triangle" x="94" y="607" width="25" height="25" color="#D97706"/>
+  <text id="limitation-title" x="136" y="600" width="420" height="18" font="caption" size="12" color="#92400E" wrap="false">LEITURA ATUAL</text>
+  <text id="limitation-copy" x="136" y="621" width="1000" height="18" font="body" size="14" color="ink">As campanhas DV360 estão encerradas e retornam zero em setembro. As campanhas Publya ativas disponíveis estão classificadas como Meta e Google Ads; a nova avaliação deve fechar em 30/09.</text>
+  <shape id="footer-line" type="line" x="72" y="674" width="1040" height="0" stroke="hairline" stroke-width="1"/>
+  <text id="footer-source" x="72" y="680" width="890" height="18" font="caption" size="11" color="muted">Fonte: Publya · referência de viewability: Google Ads Help / padrão MRC · última leitura disponível até 10/09/2026</text>
+  <text id="page-number" x="1146" y="678" width="62" height="20" font="caption" size="12" color="brand" align="right">08</text>
 </slide>

@@ -1,52 +1,45 @@
 <slide id="pacing">
   <background color="paper"/>
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
-  <shape id="header-accent" type="rect" x="64" y="50" width="6" height="66" fill="accent" corner-radius="3"/>
-  <text id="slide-kicker" x="84" y="50" width="420" height="20" font="caption" size="12" color="accent" wrap="false"><strong>PACING DE META · SETEMBRO</strong></text>
-  <text id="slide-title" x="84" y="76" width="980" height="42" font="heading" size="32" color="ink" wrap="false"><strong>Med está próximo do ritmo; Beauty opera a 63%</strong></text>
-  <text id="slide-subtitle" x="84" y="124" width="1060" height="24" font="body" size="15" color="muted" wrap="false">8 de 30 dias · realizado exclusivamente com leads Bitrix24 marcados como RD Station = sim</text>
-
-  <shape id="med-card" type="rect" x="64" y="170" width="354" height="102" fill="#ECFDF5" corner-radius="18" shadow="true"/>
-  <text id="med-card-label" x="88" y="184" width="300" height="18" font="caption" size="11" color="#047857" wrap="false"><strong>MEDSYSTEMS · PRÓXIMO DO RITMO</strong></text>
-  <text id="med-card-value" x="88" y="208" width="160" height="38" font="metric" size="34" color="#047857" wrap="false"><strong>95,4%</strong></text>
-  <text id="med-card-detail" x="245" y="212" width="145" height="30" font="caption" size="12" color="muted" align="right"><p><strong color="ink">173</strong> realizado</p><p>181 esperado</p></text>
-  <shape id="med-progress-bg" type="rect" x="88" y="252" width="300" height="7" fill="#CDEFE0" corner-radius="4"/>
-  <shape id="med-progress" type="rect" x="88" y="252" width="286" height="7" fill="#10B981" corner-radius="4"/>
-
-  <shape id="beauty-card" type="rect" x="434" y="170" width="354" height="102" fill="#FFF7ED" corner-radius="18" shadow="true"/>
-  <text id="beauty-card-label" x="458" y="184" width="300" height="18" font="caption" size="11" color="#C2410C" wrap="false"><strong>BEAUTYSYSTEMS · PONTO DE ATENÇÃO</strong></text>
-  <text id="beauty-card-value" x="458" y="208" width="160" height="38" font="metric" size="34" color="#C2410C" wrap="false"><strong>63,1%</strong></text>
-  <text id="beauty-card-detail" x="615" y="212" width="145" height="30" font="caption" size="12" color="muted" align="right"><p><strong color="ink">244</strong> realizado</p><p>387 esperado</p></text>
-  <shape id="beauty-progress-bg" type="rect" x="458" y="252" width="300" height="7" fill="#FED7AA" corner-radius="4"/>
-  <shape id="beauty-progress" type="rect" x="458" y="252" width="189" height="7" fill="#F97316" corner-radius="4"/>
-
-  <shape id="total-card" type="rect" x="804" y="170" width="386" height="102" fill="#EFF6FF" corner-radius="18" shadow="true"/>
-  <text id="total-card-label" x="828" y="184" width="338" height="18" font="caption" size="11" color="brand" wrap="false"><strong>CONSOLIDADO · RITMO VERSUS CALENDÁRIO</strong></text>
-  <text id="total-card-value" x="828" y="208" width="170" height="38" font="metric" size="34" color="brand" wrap="false"><strong>73,4%</strong></text>
-  <text id="total-card-detail" x="1008" y="212" width="158" height="30" font="caption" size="12" color="muted" align="right"><p><strong color="ink">417</strong> realizado</p><p>568 esperado</p></text>
-  <shape id="total-progress-bg" type="rect" x="828" y="252" width="338" height="7" fill="#BFDBFE" corner-radius="4"/>
-  <shape id="total-progress" type="rect" x="828" y="252" width="248" height="7" fill="brand" corner-radius="4"/>
-
-  <text id="comparison-title" x="64" y="298" width="620" height="22" font="body" size="16" color="ink" wrap="false"><strong>Meta e projeção por BU</strong></text>
-  <table id="pacing-table" x="64" y="330" width="696" height="202" columns="3,2,2,2,2" rows="40,54,54,54" font="caption" size="12" color="ink" padding="8 10" header-fill="#071B46" header-border="1 #071B46" border-h="1 solid hairline" border-outer="1 solid hairline">
-    <tr color="paper"><td><strong>BU</strong></td><td align="right"><strong>Meta</strong></td><td align="right"><strong>Realizado</strong></td><td align="right"><strong>Projeção</strong></td><td align="right"><strong>Gap proj.</strong></td></tr>
-    <tr><td><strong>MedSystems</strong></td><td align="right">680</td><td align="right"><strong color="#047857">173</strong></td><td align="right">649</td><td align="right" color="#C2410C"><strong>-31</strong></td></tr>
-    <tr fill="#FFF7ED"><td><strong>BeautySystems</strong></td><td align="right">1.450</td><td align="right"><strong color="#C2410C">244</strong></td><td align="right">915</td><td align="right" color="#C2410C"><strong>-535</strong></td></tr>
-    <tr fill="#EFF6FF"><td><strong>Total</strong></td><td align="right"><strong>2.130</strong></td><td align="right"><strong color="brand">417</strong></td><td align="right"><strong>1.564</strong></td><td align="right" color="#C2410C"><strong>-566</strong></td></tr>
-  </table>
-
-  <text id="chart-title" x="794" y="298" width="380" height="22" font="body" size="16" color="ink" wrap="false"><strong>Realizado × esperado até 08/09</strong></text>
-  <shape id="chart-card" type="rect" x="780" y="330" width="410" height="202" fill="#F8FAFC" corner-radius="16"/>
-  <chart id="pacing-chart" type="bar" x="796" y="340" width="378" height="182" font="caption" size="11" categories="MedSystems,BeautySystems" color="brand,#94A3B8" legend="bottom" data-labels="true" y-axis="true" y-max="440" gridlines="v" gap-width="70">
-    <series name="Realizado" values="173,244" label-expr="{value:.0f}"/>
-    <series name="Esperado" values="181,387" label-expr="{value:.0f}"/>
+  <text id="eyebrow" x="72" y="34" width="420" height="20" font="caption" size="12" color="brand" wrap="false"><strong>PACING · META TOTAL DE SETEMBRO</strong></text>
+  <text id="title" x="72" y="58" width="900" height="48" font="heading" size="34" color="ink" wrap="false">Beauty precisa recuperar 1.021 leads</text>
+  <text id="subtitle" x="72" y="103" width="920" height="24" font="body" size="16" color="muted">O saldo é calculado sobre a meta total e os Leads técnicos das BUs reconhecidas no funil RD Station → Bitrix24.</text>
+  <shape id="med-card" type="rect" x="72" y="144" width="262" height="112" fill="#EFF6FF" corner-radius="16"/>
+  <text id="med-card-label" x="94" y="164" width="150" height="18" font="caption" size="12" color="muted" wrap="false">MEDSYSTEMS</text>
+  <text id="med-card-value" x="94" y="186" width="132" height="42" font="metric" size="38" color="brand" wrap="false"><strong>18,2%</strong></text>
+  <text id="med-card-note" x="94" y="230" width="210" height="18" font="caption" size="12" color="muted">124 de 680 leads</text>
+  <shape id="beauty-card" type="rect" x="352" y="144" width="262" height="112" fill="#FFF7ED" corner-radius="16"/>
+  <text id="beauty-card-label" x="374" y="164" width="170" height="18" font="caption" size="12" color="muted" wrap="false">BEAUTYSYSTEMS</text>
+  <text id="beauty-card-value" x="374" y="186" width="132" height="42" font="metric" size="38" color="#D97706" wrap="false"><strong>29,6%</strong></text>
+  <text id="beauty-card-note" x="374" y="230" width="210" height="18" font="caption" size="12" color="muted">429 de 1.450 leads</text>
+  <shape id="total-card" type="rect" x="632" y="144" width="262" height="112" fill="#ECFDF5" corner-radius="16"/>
+  <text id="total-card-label" x="654" y="164" width="170" height="18" font="caption" size="12" color="muted" wrap="false">CONSOLIDADO</text>
+  <text id="total-card-value" x="654" y="186" width="132" height="42" font="metric" size="38" color="accent" wrap="false"><strong>26,0%</strong></text>
+  <text id="total-card-note" x="654" y="230" width="210" height="18" font="caption" size="12" color="muted">553 de 2.130 leads</text>
+  <shape id="cut-card" type="rect" x="912" y="144" width="296" height="112" fill="ink" corner-radius="16"/>
+  <text id="cut-card-label" x="936" y="164" width="224" height="18" font="caption" size="12" color="#C7D2FE" wrap="false">DIAS RESTANTES</text>
+  <text id="cut-card-value" x="936" y="186" width="100" height="42" font="metric" size="38" color="paper" wrap="false"><strong>20</strong></text>
+  <text id="cut-card-note" x="1032" y="191" width="142" height="42" font="caption" size="12" color="#C7D2FE" line-height="1.15"><p>11–30/09</p><p>para cumprir a meta</p></text>
+  <shape id="chart-card" type="rect" x="72" y="286" width="542" height="278" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="18"/>
+  <text id="chart-title" x="98" y="310" width="300" height="28" font="heading" size="21" color="ink" wrap="false">Realizado × meta total</text>
+  <chart id="realized-target-chart" type="column" x="94" y="352" width="490" height="172" font="caption" text-size="12" text-color="muted" categories="Med,Beauty,Total" color="brand,#CBD5E1" legend="bottom" y-axis="true" gridlines="h" y-max="2200" gap-width="95" data-labels="true">
+    <series name="Realizado" values="124,429,553" label-expr="{value:.0f}"/>
+    <series name="Meta" values="680,1450,2130" label-expr="{value:.0f}"/>
   </chart>
-
-  <shape id="component-band" type="rect" x="64" y="556" width="1126" height="60" fill="#F8FAFC" corner-radius="14"/>
-  <text id="med-component" x="84" y="568" width="500" height="36" font="caption" size="12" color="ink" line-height="1.25"><p><strong color="#047857">Med:</strong> 173 acumulados · 6 em 08/09 · média atual de 21,63 leads/dia</p></text>
-  <shape id="component-divider" type="line" x="618" y="568" width="0" height="34" stroke="hairline" stroke-width="1"/>
-  <text id="beauty-component" x="644" y="568" width="500" height="36" font="caption" size="12" color="ink" line-height="1.25"><p><strong color="#C2410C">Beauty:</strong> 244 acumulados · 12 em 08/09 · média atual de 30,50 leads/dia</p></text>
-
-  <text id="method-note" x="64" y="650" width="1030" height="20" font="caption" size="11" color="muted" wrap="false">Projeção linear: realizado × 30/8 · 25 leads sem BU ficam fora do pacing por BU</text>
-  <text id="page-number" x="1132" y="648" width="58" height="22" font="caption" size="11" color="muted" align="right" wrap="false">03 / 08</text>
+  <text id="chart-note" x="98" y="534" width="480" height="16" font="caption" size="11" color="muted" align="center">Meta mensal total; não confundir com a meta exclusiva de mídia paga.</text>
+  <shape id="table-card" type="rect" x="650" y="286" width="558" height="278" fill="paper" stroke="hairline" stroke-width="1" corner-radius="18"/>
+  <text id="table-title" x="678" y="310" width="360" height="28" font="heading" size="21" color="ink" wrap="false">Ritmo necessário a partir de 11/09</text>
+  <table id="pacing-table" x="678" y="354" width="502" height="152" columns="3,2,2,2" rows="38,38,38,38" font="caption" size="13" color="ink" padding="8 10" header-fill="ink" header-border="1 ink" border-h="1 solid hairline">
+    <tr color="paper"><td>BU</td><td align="right">Saldo</td><td align="right">/ dia</td><td align="right">Meta</td></tr>
+    <tr><td>MedSystems</td><td align="right">556</td><td align="right"><strong color="brand">27,8</strong></td><td align="right">680</td></tr>
+    <tr fill="#FFF7ED"><td>BeautySystems</td><td align="right">1.021</td><td align="right"><strong color="#D97706">51,1</strong></td><td align="right">1.450</td></tr>
+    <tr fill="#F8FAFC"><td><strong>Total</strong></td><td align="right"><strong>1.577</strong></td><td align="right"><strong color="accent">78,9</strong></td><td align="right"><strong>2.130</strong></td></tr>
+  </table>
+  <text id="table-note" x="678" y="524" width="490" height="22" font="caption" size="12" color="muted">Base: 20 dias corridos restantes no mês, sem projeção de conversão adicional.</text>
+  <shape id="insight-band" type="rect" x="72" y="588" width="1136" height="60" fill="#FFF7ED" corner-radius="14"/>
+  <icon id="insight-icon" name="target" x="94" y="606" width="28" height="28" color="#D97706"/>
+  <text id="insight-text" x="140" y="600" width="1030" height="38" font="body" size="15" color="ink" anchor="middle">A referência de 1.206 leads faltantes pressupõe 244 realizados. A base auditada atual registra 429 em Beauty; por isso o saldo verificável é 1.021.</text>
+  <shape id="footer-line" type="line" x="72" y="674" width="1040" height="0" stroke="hairline" stroke-width="1"/>
+  <text id="footer-source" x="72" y="680" width="760" height="18" font="caption" size="11" color="muted">Fonte: funil RD Station → Bitrix24 · metas fornecidas pela operação</text>
+  <text id="page-number" x="1146" y="678" width="62" height="20" font="caption" size="12" color="brand" align="right">03</text>
 </slide>

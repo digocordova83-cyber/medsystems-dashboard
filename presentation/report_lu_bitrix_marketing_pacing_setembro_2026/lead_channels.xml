@@ -1,53 +1,58 @@
 <slide id="lead_channels">
   <background color="paper"/>
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
-  <shape id="header-accent" type="rect" x="64" y="50" width="6" height="66" fill="accent" corner-radius="3"/>
-  <text id="slide-kicker" x="84" y="50" width="430" height="20" font="caption" size="12" color="accent" wrap="false"><strong>ENTRADA NO CRM · 01–08/09</strong></text>
-  <text id="slide-title" x="84" y="76" width="940" height="42" font="heading" size="32" color="ink" wrap="false"><strong>Mídia paga concentra 67% dos leads atribuídos</strong></text>
-  <text id="slide-subtitle" x="84" y="124" width="1060" height="24" font="body" size="15" color="muted" wrap="false">Universo exclusivo: Bitrix24 com RD Station = sim · BU definida somente pelo Pipeline de Vendas</text>
-
-  <shape id="universe-card" type="rect" x="64" y="170" width="258" height="82" fill="#F8FAFC" corner-radius="16" shadow="true"/>
-  <shape id="universe-strip" type="rect" x="64" y="170" width="8" height="82" fill="brand" corner-radius="4"/>
-  <text id="universe-label" x="86" y="184" width="214" height="18" font="caption" size="11" color="muted" wrap="false">UNIVERSO RD STATION = SIM</text>
-  <text id="universe-value" x="86" y="207" width="214" height="34" font="metric" size="31" color="ink" wrap="false"><strong>442</strong></text>
-
-  <shape id="assigned-card" type="rect" x="338" y="170" width="258" height="82" fill="#F8FAFC" corner-radius="16" shadow="true"/>
-  <shape id="assigned-strip" type="rect" x="338" y="170" width="8" height="82" fill="accent" corner-radius="4"/>
-  <text id="assigned-label" x="360" y="184" width="214" height="18" font="caption" size="11" color="muted" wrap="false">ATRIBUÍDOS ÀS BUS</text>
-  <text id="assigned-value" x="360" y="207" width="214" height="34" font="metric" size="31" color="accent" wrap="false"><strong>417</strong></text>
-
-  <shape id="paid-card" type="rect" x="612" y="170" width="258" height="82" fill="#F8FAFC" corner-radius="16" shadow="true"/>
-  <shape id="paid-strip" type="rect" x="612" y="170" width="8" height="82" fill="#0F5DDB" corner-radius="4"/>
-  <text id="paid-label" x="634" y="184" width="214" height="18" font="caption" size="11" color="muted" wrap="false">MÍDIA PAGA</text>
-  <text id="paid-value" x="634" y="207" width="214" height="34" font="metric" size="31" color="brand" wrap="false"><strong>281</strong> <span size="14" color="muted">· 67,4%</span></text>
-
-  <shape id="unassigned-card" type="rect" x="886" y="170" width="304" height="82" fill="#FFF7ED" corner-radius="16" shadow="true"/>
-  <shape id="unassigned-strip" type="rect" x="886" y="170" width="8" height="82" fill="#F97316" corner-radius="4"/>
-  <text id="unassigned-label" x="908" y="184" width="260" height="18" font="caption" size="11" color="#C2410C" wrap="false">SEM BU RECONHECIDA</text>
-  <text id="unassigned-value" x="908" y="207" width="260" height="34" font="metric" size="31" color="#C2410C" wrap="false"><strong>25</strong> <span size="14" color="muted">· 5,7%</span></text>
-
-  <text id="table-title" x="64" y="282" width="510" height="22" font="body" size="16" color="ink" wrap="false"><strong>Composição por canal</strong></text>
-  <table id="channel-table" x="64" y="314" width="526" height="226" columns="3,2,2,2" rows="38,47,47,47,47" font="body" size="14" color="ink" padding="7 12" header-fill="#071B46" header-border="1 #071B46" border-h="1 solid hairline" border-outer="1 solid hairline">
-    <tr color="paper"><td><strong>Canal</strong></td><td align="right"><strong>Med</strong></td><td align="right"><strong>Beauty</strong></td><td align="right"><strong>Total</strong></td></tr>
-    <tr><td>Mídia paga</td><td align="right">86</td><td align="right">195</td><td align="right"><strong color="brand">281</strong></td></tr>
-    <tr fill="#ECFDF5"><td>Eventos</td><td align="right">62</td><td align="right">0</td><td align="right"><strong color="accent">62</strong></td></tr>
-    <tr><td>Orgânico</td><td align="right">23</td><td align="right">37</td><td align="right"><strong>60</strong></td></tr>
-    <tr fill="#F8FAFC"><td>Referência / não class.</td><td align="right">2</td><td align="right">12</td><td align="right"><strong>14</strong></td></tr>
-  </table>
-
-  <text id="chart-title" x="638" y="282" width="520" height="22" font="body" size="16" color="ink" wrap="false"><strong>Distribuição dos 417 leads atribuídos</strong></text>
-  <shape id="chart-card" type="rect" x="628" y="314" width="562" height="226" fill="#F8FAFC" corner-radius="16"/>
-  <chart id="channel-chart" type="column" x="646" y="326" width="526" height="202" font="caption" size="11" categories="MedSystems,BeautySystems" color="brand,accent,#F59E0B,#9CA3AF" legend="bottom" data-labels="true" stack="normal" y-axis="true" y-max="300" gridlines="h" gap-width="95">
-    <series name="Mídia paga" values="86,195" label-expr="{value:.0f}"/>
-    <series name="Eventos" values="62,0" label-expr="{value:.0f}"/>
-    <series name="Orgânico" values="23,37" label-expr="{value:.0f}"/>
-    <series name="Referência / não class." values="2,12" label-expr="{value:.0f}"/>
+  <text id="eyebrow" x="72" y="34" width="400" height="20" font="caption" size="12" color="brand" wrap="false"><strong>FUNIL COMERCIAL · 01–10/09</strong></text>
+  <text id="title" x="72" y="58" width="920" height="48" font="heading" size="34" color="ink" wrap="false">Funil avança, mas metas exigem aceleração</text>
+  <text id="subtitle" x="72" y="103" width="930" height="24" font="body" size="16" color="muted">Leads qualificados no RD Station localizados no Bitrix24; MQL e SQL representam a etapa atual no CRM.</text>
+  <shape id="card-total" type="rect" x="72" y="146" width="248" height="104" fill="surface" corner-radius="16"/>
+  <text id="card-total-label" x="94" y="166" width="190" height="18" font="caption" size="12" color="muted" wrap="false">LEADS TÉCNICOS</text>
+  <text id="card-total-value" x="94" y="188" width="190" height="44" font="metric" size="40" color="ink" wrap="false"><strong>553</strong></text>
+  <text id="card-total-note" x="204" y="202" width="90" height="20" font="caption" size="12" color="accent" align="right" wrap="false">BUs reconhecidas</text>
+  <shape id="card-mql" type="rect" x="338" y="146" width="248" height="104" fill="#ECFDF5" corner-radius="16"/>
+  <text id="card-mql-label" x="360" y="166" width="190" height="18" font="caption" size="12" color="muted" wrap="false">MQL ATUAL</text>
+  <text id="card-mql-value" x="360" y="188" width="190" height="44" font="metric" size="40" color="accent" wrap="false"><strong>447</strong></text>
+  <text id="card-mql-note" x="470" y="202" width="92" height="20" font="caption" size="12" color="accent" align="right" wrap="false">80,8% dos leads</text>
+  <shape id="card-sql" type="rect" x="604" y="146" width="248" height="104" fill="#EFF6FF" corner-radius="16"/>
+  <text id="card-sql-label" x="626" y="166" width="190" height="18" font="caption" size="12" color="muted" wrap="false">SQL ATUAL</text>
+  <text id="card-sql-value" x="626" y="188" width="190" height="44" font="metric" size="40" color="brand" wrap="false"><strong>49</strong></text>
+  <text id="card-sql-note" x="718" y="202" width="110" height="20" font="caption" size="12" color="brand" align="right" wrap="false">11,0% dos MQL</text>
+  <shape id="panel-med" type="rect" x="72" y="282" width="370" height="300" fill="paper" stroke="hairline" stroke-width="1" corner-radius="18"/>
+  <shape id="panel-med-bar" type="rect" x="72" y="282" width="8" height="300" fill="brand" corner-radius="4"/>
+  <text id="med-title" x="104" y="310" width="260" height="30" font="heading" size="24" color="ink" wrap="false">MedSystems</text>
+  <text id="med-leads" x="104" y="352" width="150" height="24" font="body" size="16" color="muted">Leads técnicos</text>
+  <text id="med-leads-value" x="280" y="346" width="112" height="32" font="heading" size="28" color="ink" align="right" wrap="false"><strong>124</strong></text>
+  <shape id="med-divider-one" type="line" x="104" y="394" width="256" height="0" stroke="hairline" stroke-width="1"/>
+  <text id="med-mql" x="104" y="414" width="150" height="24" font="body" size="16" color="muted">MQL</text>
+  <text id="med-mql-value" x="280" y="408" width="112" height="32" font="heading" size="28" color="accent" align="right" wrap="false"><strong>90</strong></text>
+  <text id="med-sql" x="104" y="462" width="150" height="24" font="body" size="16" color="muted">SQL</text>
+  <text id="med-sql-value" x="280" y="456" width="112" height="32" font="heading" size="28" color="brand" align="right" wrap="false"><strong>13</strong></text>
+  <shape id="med-divider-two" type="line" x="104" y="504" width="256" height="0" stroke="hairline" stroke-width="1"/>
+  <text id="med-rate" x="104" y="524" width="156" height="24" font="body" size="16" color="muted">MQL → SQL</text>
+  <text id="med-rate-value" x="280" y="520" width="112" height="28" font="heading" size="24" color="accent" align="right" wrap="false"><strong>14,4%</strong></text>
+  <shape id="panel-beauty" type="rect" x="466" y="282" width="370" height="300" fill="paper" stroke="hairline" stroke-width="1" corner-radius="18"/>
+  <shape id="panel-beauty-bar" type="rect" x="466" y="282" width="8" height="300" fill="accent" corner-radius="4"/>
+  <text id="beauty-title" x="498" y="310" width="260" height="30" font="heading" size="24" color="ink" wrap="false">BeautySystems</text>
+  <text id="beauty-leads" x="498" y="352" width="150" height="24" font="body" size="16" color="muted">Leads técnicos</text>
+  <text id="beauty-leads-value" x="674" y="346" width="112" height="32" font="heading" size="28" color="ink" align="right" wrap="false"><strong>429</strong></text>
+  <shape id="beauty-divider-one" type="line" x="498" y="394" width="256" height="0" stroke="hairline" stroke-width="1"/>
+  <text id="beauty-mql" x="498" y="414" width="150" height="24" font="body" size="16" color="muted">MQL</text>
+  <text id="beauty-mql-value" x="674" y="408" width="112" height="32" font="heading" size="28" color="accent" align="right" wrap="false"><strong>357</strong></text>
+  <text id="beauty-sql" x="498" y="462" width="150" height="24" font="body" size="16" color="muted">SQL</text>
+  <text id="beauty-sql-value" x="674" y="456" width="112" height="32" font="heading" size="28" color="brand" align="right" wrap="false"><strong>36</strong></text>
+  <shape id="beauty-divider-two" type="line" x="498" y="504" width="256" height="0" stroke="hairline" stroke-width="1"/>
+  <text id="beauty-rate" x="498" y="524" width="156" height="24" font="body" size="16" color="muted">MQL → SQL</text>
+  <text id="beauty-rate-value" x="674" y="520" width="112" height="28" font="heading" size="24" color="accent" align="right" wrap="false"><strong>10,1%</strong></text>
+  <shape id="chart-card" type="rect" x="866" y="282" width="342" height="300" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="18"/>
+  <text id="chart-title" x="894" y="310" width="280" height="28" font="heading" size="20" color="ink" wrap="false">MQL e SQL por BU</text>
+  <chart id="mql-sql-chart" type="column" x="884" y="350" width="300" height="190" font="caption" text-size="12" text-color="muted" categories="Med,Beauty" color="accent,brand" legend="bottom" y-axis="true" x-axis="true" gridlines="h" gap-width="100" data-labels="true">
+    <series name="MQL" values="90,357" label-expr="{value:.0f}"/>
+    <series name="SQL" values="13,36" label-expr="{value:.0f}"/>
   </chart>
-
-  <shape id="unmapped-note-bg" type="rect" x="64" y="564" width="1126" height="52" fill="#FFF7ED" corner-radius="12"/>
-  <icon id="unmapped-icon" name="circle-alert" x="84" y="578" width="24" height="24" color="#F97316"/>
-  <text id="unmapped-note" x="122" y="574" width="1040" height="32" font="body" size="13" color="ink" anchor="middle" wrap="false"><strong color="#C2410C">25 sem BU:</strong> 23 no pipeline 20889 e 2 sem pipeline · Em 08/09 entraram <strong>20 leads</strong>: 6 Med, 12 Beauty e 2 sem BU.</text>
-
-  <text id="source-note" x="64" y="650" width="1030" height="20" font="caption" size="11" color="muted" wrap="false">Fonte: Bitrix24 · UF_CRM_1738950899 = 1 · sem filtros de título, origem, UTM ou evidência externa</text>
-  <text id="page-number" x="1132" y="648" width="58" height="22" font="caption" size="11" color="muted" align="right" wrap="false">02 / 08</text>
+  <text id="chart-note" x="894" y="548" width="282" height="18" font="caption" size="11" color="muted" align="center" wrap="false">Etapa atual registrada no Bitrix24</text>
+  <shape id="method-band" type="rect" x="72" y="612" width="1136" height="42" fill="#F8FAFC" corner-radius="12"/>
+  <icon id="method-icon" name="shield-check" x="91" y="621" width="22" height="22" color="accent"/>
+  <text id="method-text" x="126" y="621" width="1040" height="22" font="caption" size="12" color="muted" anchor="middle">O funil inclui Leads técnicos candidatos em casos múltiplos; a auditoria mantém a rastreabilidade de cada vínculo RD Station → Bitrix24.</text>
+  <shape id="footer-line" type="line" x="72" y="674" width="1040" height="0" stroke="hairline" stroke-width="1"/>
+  <text id="footer-source" x="72" y="680" width="720" height="18" font="caption" size="11" color="muted">Fonte: RD Station e Bitrix24 · corte 10/09/2026</text>
+  <text id="page-number" x="1146" y="678" width="62" height="20" font="caption" size="12" color="brand" align="right">02</text>
 </slide>

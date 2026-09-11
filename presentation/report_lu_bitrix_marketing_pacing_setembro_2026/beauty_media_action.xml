@@ -1,53 +1,38 @@
 <slide id="beauty_media_action">
   <background color="paper"/>
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
-  <shape id="header-accent" type="rect" x="64" y="50" width="6" height="66" fill="accent" corner-radius="3"/>
-  <text id="slide-kicker" x="84" y="50" width="520" height="20" font="caption" size="12" color="accent" wrap="false"><strong>PLANO DE AÇÃO · MÍDIA</strong></text>
-  <text id="slide-title" x="84" y="76" width="1010" height="42" font="heading" size="32" color="ink" wrap="false"><strong>Acelerar Beauty e sustentar a entrega de Med</strong></text>
-  <text id="slide-subtitle" x="84" y="124" width="1070" height="24" font="body" size="15" color="muted" wrap="false">Ações orientadas por pacing e CPL · redistribuição dentro da verba atual antes de qualquer aumento adicional</text>
-
-  <shape id="beauty-pace-card" type="rect" x="64" y="168" width="548" height="118" fill="#FFF7ED" corner-radius="18" shadow="true"/>
-  <shape id="beauty-pace-strip" type="rect" x="64" y="168" width="9" height="118" fill="#F97316" corner-radius="5"/>
-  <text id="beauty-pace-label" x="92" y="184" width="250" height="20" font="caption" size="11" color="#C2410C" wrap="false"><strong>BEAUTYSYSTEMS · RECUPERAR ESCALA</strong></text>
-  <text id="beauty-pace-value" x="92" y="212" width="180" height="42" font="metric" size="36" color="#C2410C" wrap="false"><strong>63,1%</strong></text>
-  <text id="beauty-pace-detail" x="282" y="210" width="300" height="48" font="body" size="14" color="ink" line-height="1.25"><p><strong>30,50</strong> leads/dia atuais</p><p><strong color="#C2410C">54,82</strong> leads/dia necessários</p></text>
-  <text id="beauty-pace-gap" x="92" y="260" width="490" height="18" font="caption" size="11" color="muted" wrap="false">Gap: -143 vs. ritmo esperado · faltam 1.206 leads em 22 dias · aceleração requerida: +80%</text>
-
-  <shape id="med-pace-card" type="rect" x="642" y="168" width="548" height="118" fill="#ECFDF5" corner-radius="18" shadow="true"/>
-  <shape id="med-pace-strip" type="rect" x="642" y="168" width="9" height="118" fill="#10B981" corner-radius="5"/>
-  <text id="med-pace-label" x="670" y="184" width="280" height="20" font="caption" size="11" color="#047857" wrap="false"><strong>MEDSYSTEMS · SUSTENTAR ENTREGA</strong></text>
-  <text id="med-pace-value" x="670" y="212" width="180" height="42" font="metric" size="36" color="#047857" wrap="false"><strong>95,4%</strong></text>
-  <text id="med-pace-detail" x="860" y="210" width="300" height="48" font="body" size="14" color="ink" line-height="1.25"><p><strong>21,63</strong> leads/dia atuais</p><p><strong color="#047857">23,05</strong> leads/dia necessários</p></text>
-  <text id="med-pace-gap" x="670" y="260" width="490" height="18" font="caption" size="11" color="muted" wrap="false">Gap: -8 vs. ritmo esperado · faltam 507 leads em 22 dias · correção requerida: +6,6%</text>
-
-  <shape id="beauty-actions" type="rect" x="64" y="310" width="548" height="238" fill="#FFFCF8" corner-radius="18" stroke="#FED7AA" stroke-width="1"/>
-  <text id="beauty-actions-title" x="90" y="330" width="490" height="26" font="body" size="17" color="#C2410C" wrap="false"><strong>Beauty · três movimentos para ganhar ritmo</strong></text>
-  <shape id="beauty-step1" type="ellipse" x="90" y="376" width="30" height="30" fill="#F97316"/>
-  <text id="beauty-step1-num" x="90" y="376" width="30" height="30" font="caption" size="12" color="paper" align="center" anchor="middle" wrap="false"><strong>1</strong></text>
-  <text id="beauty-step1-text" x="136" y="370" width="430" height="46" font="body" size="13" color="ink" line-height="1.2"><p><strong>Redistribuir verba</strong> para campanhas com CPL abaixo de R$ 69,01 e fluxo de leads estável.</p></text>
-  <shape id="beauty-step2" type="ellipse" x="90" y="430" width="30" height="30" fill="#F97316"/>
-  <text id="beauty-step2-num" x="90" y="430" width="30" height="30" font="caption" size="12" color="paper" align="center" anchor="middle" wrap="false"><strong>2</strong></text>
-  <text id="beauty-step2-text" x="136" y="424" width="430" height="46" font="body" size="13" color="ink" line-height="1.2"><p><strong>Liberar oferta e criativos</strong> conforme materiais de Aquapure, Ultraformer e Youlaser forem aprovados.</p></text>
-  <shape id="beauty-step3" type="ellipse" x="90" y="484" width="30" height="30" fill="#F97316"/>
-  <text id="beauty-step3-num" x="90" y="484" width="30" height="30" font="caption" size="12" color="paper" align="center" anchor="middle" wrap="false"><strong>3</strong></text>
-  <text id="beauty-step3-text" x="136" y="478" width="430" height="48" font="body" size="13" color="ink" line-height="1.2"><p><strong>Expandir captura de demanda</strong> em Search, Meta conversão e remarketing após validar o sinal de lead.</p></text>
-
-  <shape id="med-actions" type="rect" x="642" y="310" width="548" height="238" fill="#F8FFFC" corner-radius="18" stroke="#A7F3D0" stroke-width="1"/>
-  <text id="med-actions-title" x="668" y="330" width="490" height="26" font="body" size="17" color="#047857" wrap="false"><strong>Med · proteger eficiência e estabilidade</strong></text>
-  <shape id="med-step1" type="ellipse" x="668" y="376" width="30" height="30" fill="#10B981"/>
-  <text id="med-step1-num" x="668" y="376" width="30" height="30" font="caption" size="12" color="paper" align="center" anchor="middle" wrap="false"><strong>1</strong></text>
-  <text id="med-step1-text" x="714" y="370" width="430" height="46" font="body" size="13" color="ink" line-height="1.2"><p><strong>Proteger campanhas vencedoras</strong> e evitar mudanças bruscas que reiniciem aprendizado.</p></text>
-  <shape id="med-step2" type="ellipse" x="668" y="430" width="30" height="30" fill="#10B981"/>
-  <text id="med-step2-num" x="668" y="430" width="30" height="30" font="caption" size="12" color="paper" align="center" anchor="middle" wrap="false"><strong>2</strong></text>
-  <text id="med-step2-text" x="714" y="424" width="430" height="46" font="body" size="13" color="ink" line-height="1.2"><p><strong>Corrigir o ritmo para 23 leads/dia</strong>, escalando somente com CPL pago próximo de R$ 190,54.</p></text>
-  <shape id="med-step3" type="ellipse" x="668" y="484" width="30" height="30" fill="#10B981"/>
-  <text id="med-step3-num" x="668" y="484" width="30" height="30" font="caption" size="12" color="paper" align="center" anchor="middle" wrap="false"><strong>3</strong></text>
-  <text id="med-step3-text" x="714" y="478" width="430" height="48" font="body" size="13" color="ink" line-height="1.2"><p><strong>Sequenciar novos ativos</strong> de Ultraformer MPT, Volnewmer e Volformer sem canibalizar o que já entrega.</p></text>
-
-  <shape id="governance-band" type="rect" x="64" y="568" width="1126" height="52" fill="#EFF6FF" corner-radius="14"/>
-  <icon id="governance-icon" name="activity" x="84" y="581" width="26" height="26" color="brand"/>
-  <text id="governance-text" x="126" y="576" width="1038" height="36" font="caption" size="11" color="ink" anchor="middle" line-height="1.25"><p><strong>Cadência:</strong> monitoramento diário D-1 de leads RD Station = sim, pacing e CPL por BU; redistribuição a cada 48–72h. Aumento de verba somente após aprovação.</p></text>
-
-  <text id="source-note" x="64" y="650" width="1030" height="20" font="caption" size="11" color="muted" wrap="false">Premissas: metas 680 Med / 1.450 Beauty · realizado 173 / 244 até 08/09 · 22 dias restantes</text>
-  <text id="page-number" x="1132" y="648" width="58" height="22" font="caption" size="11" color="muted" align="right" wrap="false">07 / 08</text>
+  <text id="eyebrow" x="72" y="34" width="460" height="20" font="caption" size="12" color="brand" wrap="false"><strong>PLANO DE RECUPERAÇÃO · BEAUTYSYSTEMS</strong></text>
+  <text id="title" x="72" y="58" width="980" height="48" font="heading" size="34" color="ink" wrap="false">Recuperar volume sem perder rastreabilidade</text>
+  <text id="subtitle" x="72" y="103" width="990" height="24" font="body" size="16" color="muted">A meta só é considerada cumprida quando o contato chega à base auditada RD Station → Bitrix24 com origem e etapa verificáveis.</text>
+  <shape id="beauty-pace-card" type="rect" x="72" y="144" width="432" height="102" fill="#FFF7ED" corner-radius="16"/>
+  <icon id="beauty-pace-icon" name="target" x="96" y="171" width="36" height="36" color="#D97706"/>
+  <text id="beauty-pace-label" x="150" y="162" width="210" height="18" font="caption" size="12" color="muted">RITMO NECESSÁRIO</text>
+  <text id="beauty-pace-value" x="150" y="185" width="210" height="40" font="metric" size="36" color="#D97706" wrap="false"><strong>51,1 / dia</strong></text>
+  <text id="beauty-pace-note" x="350" y="187" width="126" height="42" font="caption" size="12" color="muted" align="right" line-height="1.05"><p>1.021 leads</p><p>de saldo</p></text>
+  <shape id="control-card" type="rect" x="528" y="144" width="680" height="102" fill="#ECFDF5" corner-radius="16"/>
+  <icon id="control-icon" name="shield-check" x="554" y="171" width="36" height="36" color="accent"/>
+  <text id="control-title" x="610" y="162" width="500" height="22" font="heading" size="20" color="ink" wrap="false">Condição para escalar</text>
+  <text id="control-copy" x="610" y="190" width="548" height="32" font="body" size="15" color="muted">Cada nova frente deve trazer UTM, contato qualificado no RD Station e etapa atual no Bitrix24. Sem isso, há entrega de mídia, não recuperação auditável.</text>
+  <shape id="action-one" type="rect" x="72" y="286" width="352" height="278" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="18"/>
+  <shape id="action-one-index" type="ellipse" x="100" y="314" width="42" height="42" fill="brand"/>
+  <text id="action-one-number" x="100" y="319" width="42" height="28" font="heading" size="22" color="paper" align="center" anchor="middle">1</text>
+  <text id="action-one-title" x="100" y="382" width="266" height="52" font="heading" size="22" color="ink" line-height="1.08"><p>Volume diário</p><p>sob controle</p></text>
+  <text id="action-one-copy" x="100" y="450" width="284" height="76" font="body" size="15" color="muted" line-height="1.25">Monitorar a entrega diária contra 51,1 leads. Ajustar distribuição de verba quando o acumulado ficar abaixo do ritmo necessário.</text>
+  <shape id="action-two" type="rect" x="464" y="286" width="352" height="278" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="18"/>
+  <shape id="action-two-index" type="ellipse" x="492" y="314" width="42" height="42" fill="accent"/>
+  <text id="action-two-number" x="492" y="319" width="42" height="28" font="heading" size="22" color="paper" align="center" anchor="middle">2</text>
+  <text id="action-two-title" x="492" y="382" width="266" height="52" font="heading" size="22" color="ink" line-height="1.08"><p>Qualidade antes</p><p>de escala</p></text>
+  <text id="action-two-copy" x="492" y="450" width="284" height="76" font="body" size="15" color="muted" line-height="1.25">Priorizar campanhas com MQL suficiente e revisar aquelas com baixa conversão para SQL antes de ampliar alcance ou orçamento.</text>
+  <shape id="action-three" type="rect" x="856" y="286" width="352" height="278" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="18"/>
+  <shape id="action-three-index" type="ellipse" x="884" y="314" width="42" height="42" fill="#D97706"/>
+  <text id="action-three-number" x="884" y="319" width="42" height="28" font="heading" size="22" color="paper" align="center" anchor="middle">3</text>
+  <text id="action-three-title" x="884" y="382" width="266" height="52" font="heading" size="22" color="ink" line-height="1.08"><p>Dados certos</p><p>no CRM</p></text>
+  <text id="action-three-copy" x="884" y="450" width="284" height="76" font="body" size="15" color="muted" line-height="1.25">Corrigir UTMs e revisar múltiplos antes de atribuir resultado a campanha ou BU. O CRM é a evidência para a próxima decisão.</text>
+  <shape id="governance-band" type="rect" x="72" y="588" width="1136" height="58" fill="ink" corner-radius="14"/>
+  <icon id="governance-icon" name="calendar" x="94" y="606" width="26" height="26" color="accent"/>
+  <text id="governance-title" x="140" y="600" width="230" height="20" font="caption" size="12" color="#A7F3D0" wrap="false">GATILHO DE GOVERNANÇA</text>
+  <text id="governance-copy" x="140" y="620" width="1000" height="18" font="body" size="14" color="paper">Revisar em 20/09 a entrega acumulada, os UTMs que cruzam BU e a situação dos múltiplos antes de liberar qualquer escala adicional.</text>
+  <shape id="footer-line" type="line" x="72" y="674" width="1040" height="0" stroke="hairline" stroke-width="1"/>
+  <text id="footer-source" x="72" y="680" width="800" height="18" font="caption" size="11" color="muted">Fonte: metas de setembro e funil RD Station → Bitrix24 · corte 10/09/2026</text>
+  <text id="page-number" x="1146" y="678" width="62" height="20" font="caption" size="12" color="brand" align="right">07</text>
 </slide>

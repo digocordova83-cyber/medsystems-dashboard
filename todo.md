@@ -781,3 +781,9 @@
 - [x] Calcular realizados totais e de mídia paga por BU e consolidado, com o critério RD Station auditável.
 - [x] Exibir gráficos de Leads totais × meta total e Leads de mídia paga × meta paga, com período e premissas explícitos.
 - [x] Cobrir cálculos em teste, validar a interface e publicar o painel de pacing.
+- [x] Atualizar e validar os dados até 10/09/2026 para o Report Lu executivo, incluindo fechamento de Google e Meta via Windsor.
+- [x] Apurar MQL e conversão MQL→SQL por BU e campanha, mantendo casos sem campanha explicitamente identificados.
+- [x] Analisar os SQLs de agosto e posteriores por situação comercial: negócio ganho, negócio aberto ou sem vínculo comprovado.
+- [x] Consolidar a entrega de programática e definir critérios de sucesso, prazo e evidências necessárias.
+- [x] Elaborar plano de recuperação de Beauty frente à meta total de setembro.
+- [x] Atualizar, validar e apresentar o deck no padrão visual Report Lu sem expor dados pessoais.

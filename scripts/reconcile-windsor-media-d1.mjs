@@ -37,7 +37,8 @@ try {
   for (const source of sources) {
     for (const row of await resultRows(source.path)) {
       const account = accountMap[source.connector]?.[String(row.account_id)];
-      if (!account || !row.date || !row.campaign_id) continue;
+      const campaignId = row.campaign_id ? String(row.campaign_id) : row.campaign ? `name:${row.campaign}` : null;
+      if (!account || !row.date || !campaignId) continue;
       const leads = source.connector === "facebook" ? numeric(row.actions_lead) : numeric(row.conversions);
       await connection.execute(`INSERT INTO mediaDailyPerformance
         (platform, recordLevel, brand, reportDate, accountId, accountName, campaignId, campaignName, adGroupId, adId, spend, impressions, reach, clicks, platformLeads, platformConversions, rawPayload, syncedAt)
@@ -48,7 +49,7 @@ try {
         new Date(`${row.date}T12:00:00.000Z`),
         String(row.account_id),
         String(row.account_name ?? ""),
-        String(row.campaign_id),
+        campaignId,
         String(row.campaign ?? "Sem nome"),
         numeric(row.spend),
         Math.round(numeric(row.impressions)),

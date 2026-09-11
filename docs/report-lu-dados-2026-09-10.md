@@ -42,10 +42,14 @@ Em agosto, os SQLs únicos foram 81 MedSystems e 96 BeautySystems nos pipelines 
 
 ## Mídia e programática
 
-O fechamento de 10/09 foi consultado diretamente nas quatro contas oficiais Windsor e persistido pelo importador D-1. Google + Meta acumulam **R$ 32.431,92 em MedSystems** e **R$ 27.170,73 em BeautySystems**, totalizando **R$ 59.602,65** até 10/09. As plataformas registram 335,0 leads em MedSystems e 313 em BeautySystems; os decimais de Google Ads devem ser preservados como métrica de conversão da plataforma, e não como pessoas únicas.
+O fechamento de 10/09 foi recalculado diretamente no Windsor, por campanha e nas quatro contas oficiais. Google + Meta acumulam **R$ 19.859,52 em MedSystems** e **R$ 16.889,82 em BeautySystems**, totalizando **R$ 36.749,34** até 10/09. As plataformas registram **195,0 conversões em MedSystems** e **184,0 em BeautySystems**; estes são eventos de plataforma, não contatos únicos do CRM. O valor anterior de R$ 59.602,65 foi descartado por não reproduzir a conciliação atual no nível de campanha.
 
-No Publya, as campanhas `B2B - Setembro` estão ativas desde 02/09 e os últimos snapshots retornam Meta com **8.222 impressões, 268 cliques e 30 leads/conversões**, e Google Ads com **12.767 impressões, 305 cliques e 1 conversão**, ambos no acumulado 01–10/09. O valor financeiro do snapshot Publya deve ser apresentado como métrica específica da plataforma, não somado ao investimento Windsor sem uma reconciliação de escopo.
+No Publya, o recorte persistido de `B2B - Setembro` retorna entrega de Google Ads com **12.767 impressões e 305 cliques**, mas **gasto financeiro zero** e nenhum lead no snapshot disponível; a linha Meta também retorna zero no período. Por isso, Publya/Push não compõem o investimento conciliado até que haja custo verificável e um escopo compatível com Windsor.
 
 Para programática DV360, a última entrega não nula é de agosto: o snapshot de `B2B - Geolocalização` traz 669.098 impressões, 1.110 cliques, CTR de 0,166% e viewability de 79,67%. O feed devolve os mesmos números para a campanha `B2B` e para `B2B - Geolocalização`; portanto, esses dois registros **não devem ser somados**. Ambas as campanhas DV360 constam como encerradas em agosto e os snapshots de setembro são zerados.
 
 O slide de programática deve separar **entrega já observável** de **critério de sucesso ainda pendente**: entrega contratada, qualidade de visualização, tráfego qualificado com UTM e conversões/contatos rastreáveis até o CRM. A avaliação final de uma nova frente programática deve ocorrer no encerramento formal da campanha; para as frentes B2B de setembro, usar 30/09/2026, salvo mudança formal de período.
+
+## Beauty: referência de recuperação
+
+O funil auditável de 10/09 registra 429 Leads técnicos BeautySystems e saldo de 1.021 para a meta mensal de 1.450. O objetivo operacional informado pela gestão é recuperar **1.206 leads** no saldo do mês, equivalente a **60,3 leads por dia entre 11 e 30/09**. As duas leituras devem ser apresentadas separadamente: a primeira mede o funil reproduzível; a segunda orienta a execução de recuperação.

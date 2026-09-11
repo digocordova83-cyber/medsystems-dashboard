@@ -1,9 +1,9 @@
 <slide id="pacing">
   <background color="paper"/>
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
-  <text id="eyebrow" x="72" y="34" width="420" height="20" font="caption" size="12" color="brand" wrap="false"><strong>PACING · META TOTAL DE SETEMBRO</strong></text>
-  <text id="title" x="72" y="58" width="900" height="48" font="heading" size="34" color="ink" wrap="false">Beauty precisa recuperar 1.021 leads</text>
-  <text id="subtitle" x="72" y="103" width="920" height="24" font="body" size="16" color="muted">O saldo é calculado sobre a meta total e os Leads técnicos das BUs reconhecidas no funil RD Station → Bitrix24.</text>
+  <text id="eyebrow" x="72" y="34" width="520" height="20" font="caption" size="12" color="brand" wrap="false"><strong>PACING · META TOTAL DE SETEMBRO</strong></text>
+  <text id="title" x="72" y="58" width="960" height="48" font="heading" size="34" color="ink" wrap="false">Beauty: meta auditável e plano de recuperação</text>
+  <text id="subtitle" x="72" y="103" width="1020" height="24" font="body" size="16" color="muted">O funil mostra a meta total; o plano operacional incorpora a referência solicitada de 1.206 leads a recuperar.</text>
   <shape id="med-card" type="rect" x="72" y="144" width="262" height="112" fill="#EFF6FF" corner-radius="16"/>
   <text id="med-card-label" x="94" y="164" width="150" height="18" font="caption" size="12" color="muted" wrap="false">MEDSYSTEMS</text>
   <text id="med-card-value" x="94" y="186" width="132" height="42" font="metric" size="38" color="brand" wrap="false"><strong>18,2%</strong></text>
@@ -28,18 +28,18 @@
   </chart>
   <text id="chart-note" x="98" y="534" width="480" height="16" font="caption" size="11" color="muted" align="center">Meta mensal total; não confundir com a meta exclusiva de mídia paga.</text>
   <shape id="table-card" type="rect" x="650" y="286" width="558" height="278" fill="paper" stroke="hairline" stroke-width="1" corner-radius="18"/>
-  <text id="table-title" x="678" y="310" width="360" height="28" font="heading" size="21" color="ink" wrap="false">Ritmo necessário a partir de 11/09</text>
-  <table id="pacing-table" x="678" y="354" width="502" height="152" columns="3,2,2,2" rows="38,38,38,38" font="caption" size="13" color="ink" padding="8 10" header-fill="ink" header-border="1 ink" border-h="1 solid hairline">
-    <tr color="paper"><td>BU</td><td align="right">Saldo</td><td align="right">/ dia</td><td align="right">Meta</td></tr>
-    <tr><td>MedSystems</td><td align="right">556</td><td align="right"><strong color="brand">27,8</strong></td><td align="right">680</td></tr>
-    <tr fill="#FFF7ED"><td>BeautySystems</td><td align="right">1.021</td><td align="right"><strong color="#D97706">51,1</strong></td><td align="right">1.450</td></tr>
-    <tr fill="#F8FAFC"><td><strong>Total</strong></td><td align="right"><strong>1.577</strong></td><td align="right"><strong color="accent">78,9</strong></td><td align="right"><strong>2.130</strong></td></tr>
+  <text id="table-title" x="678" y="310" width="420" height="28" font="heading" size="21" color="ink" wrap="false">Recuperação de Beauty a partir de 11/09</text>
+  <table id="pacing-table" x="678" y="354" width="502" height="152" columns="4,2,2,2" rows="38,38,38,38" font="caption" size="13" color="ink" padding="8 10" header-fill="ink" header-border="1 ink" border-h="1 solid hairline">
+    <tr color="paper"><td>Leitura</td><td align="right">Saldo</td><td align="right">/ dia</td><td align="right">Base</td></tr>
+    <tr><td>Funil auditável</td><td align="right">1.021</td><td align="right"><strong color="brand">51,1</strong></td><td align="right">1.450 meta</td></tr>
+    <tr fill="#FFF7ED"><td>Plano solicitado</td><td align="right">1.206</td><td align="right"><strong color="#D97706">60,3</strong></td><td align="right">recuperação</td></tr>
+    <tr fill="#F8FAFC"><td><strong>MedSystems</strong></td><td align="right"><strong>556</strong></td><td align="right"><strong color="accent">27,8</strong></td><td align="right"><strong>680 meta</strong></td></tr>
   </table>
-  <text id="table-note" x="678" y="524" width="490" height="22" font="caption" size="12" color="muted">Base: 20 dias corridos restantes no mês, sem projeção de conversão adicional.</text>
+  <text id="table-note" x="678" y="524" width="490" height="22" font="caption" size="12" color="muted">Base: 20 dias corridos restantes. A referência 1.206 é uma meta operacional, não uma reclassificação do funil.</text>
   <shape id="insight-band" type="rect" x="72" y="588" width="1136" height="60" fill="#FFF7ED" corner-radius="14"/>
   <icon id="insight-icon" name="target" x="94" y="606" width="28" height="28" color="#D97706"/>
-  <text id="insight-text" x="140" y="600" width="1030" height="38" font="body" size="15" color="ink" anchor="middle">A referência de 1.206 leads faltantes pressupõe 244 realizados. A base auditada atual registra 429 em Beauty; por isso o saldo verificável é 1.021.</text>
+  <text id="insight-text" x="140" y="600" width="1030" height="38" font="body" size="15" color="ink" anchor="middle">Para cumprir a recuperação solicitada de 1.206 leads, Beauty precisa sustentar 60,3 leads/dia. O funil auditável registra 429 leads e saldo de 1.021 para a meta mensal de 1.450.</text>
   <shape id="footer-line" type="line" x="72" y="674" width="1040" height="0" stroke="hairline" stroke-width="1"/>
-  <text id="footer-source" x="72" y="680" width="760" height="18" font="caption" size="11" color="muted">Fonte: funil RD Station → Bitrix24 · metas fornecidas pela operação</text>
+  <text id="footer-source" x="72" y="680" width="920" height="18" font="caption" size="11" color="muted">Fonte: funil RD Station → Bitrix24 · metas fornecidas pela operação · corte 10/09/2026</text>
   <text id="page-number" x="1146" y="678" width="62" height="20" font="caption" size="12" color="brand" align="right">03</text>
 </slide>

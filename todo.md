@@ -787,3 +787,9 @@
 - [x] Consolidar a entrega de programática e definir critérios de sucesso, prazo e evidências necessárias.
 - [x] Elaborar plano de recuperação de Beauty frente à meta total de setembro.
 - [x] Atualizar, validar e apresentar o deck no padrão visual Report Lu sem expor dados pessoais.
+- [x] Reconciliar investimento Google, Meta, programática e Push até 10/09 com período, conta e campanha explícitos.
+- [x] Revalidar MQL e conversão MQL→SQL por BU e campanha com a metodologia comparável ao fechamento de agosto.
+- [x] Rastrear a coorte histórica de 98 SQLs de agosto e os SQLs posteriores para negócios ganhos, abertos, perdidos ou sem vínculo comprovado.
+- [x] Atualizar o plano Beauty para explicar e recuperar o saldo de 1.206 leads indicado pelo usuário.
+- [x] Definir no report o que programática já entregou e os critérios/prazo necessários para comprovar sucesso.
+- [x] Revisar, validar e reenviar o Report Lu em arquivo final.

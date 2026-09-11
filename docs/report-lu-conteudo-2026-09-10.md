@@ -17,7 +17,7 @@
 
 Mensagem: o funil é formado pelos contatos qualificados no RD Station encontrados no Bitrix24; casos múltiplos incluem cada Lead técnico candidato e permanecem auditáveis. Os números de MQL e SQL representam a etapa atual no CRM.
 
-## Slide 2 — Pacing: Beauty precisa recuperar 1.021 leads
+## Slide 2 — Pacing: funil auditável e recuperação Beauty
 
 | Leitura de setembro | MedSystems | BeautySystems | Consolidado |
 |---|---:|---:|---:|
@@ -27,7 +27,7 @@ Mensagem: o funil é formado pelos contatos qualificados no RD Station encontrad
 | Saldo | 556 | 1.021 | 1.577 |
 | Necessário por dia (11–30/09) | 27,8 | 51,1 | 78,9 |
 
-Mensagem: a meta total Beauty demanda 48,3 leads/dia no ritmo linear de setembro; após 10/09, o ritmo necessário passa a 51,1/dia. A referência de “1.206 faltantes” não coincide com a base auditada atual: corresponderia a 244 realizados, enquanto o funil atual registra 429.
+Mensagem: a meta total Beauty demanda 51,1 leads/dia no saldo auditável de 1.021 leads. Em paralelo, o plano operacional informado pela gestão trabalha uma recuperação de 1.206 leads, equivalente a 60,3 leads/dia entre 11 e 30/09; as duas bases são explicitadas, sem tratá-las como o mesmo indicador.
 
 ## Slide 3 — MQL → SQL: qualidade concentrada em poucas campanhas
 
@@ -51,26 +51,26 @@ Mensagem: as campanhas são reproduzidas pelo UTM gravado no CRM. O destaque de 
 
 Mensagem: o acompanhamento usa vínculo direto de negócio por `LEAD_ID`. O número de 98 SQLs que constou no relatório anterior foi informado pela gestão, mas não tem lista individual nem critério reconciliado; portanto, não pode ser ligado com segurança a negócios. O slide substitui a inferência por uma coorte auditável.
 
-## Slide 5 — Plano Beauty: recuperar volume sem perder rastreabilidade
+## Slide 5 — Plano Beauty: recuperar 1.206 leads com rastreabilidade
 
 | Ação | Dono operacional | Gatilho de acompanhamento | Evidência exigida |
 |---|---|---|---|
-| Garantir 51,1 leads/dia no saldo do mês | Mídia | Corte diário | Contatos RD qualificados e campanha UTM |
+| Garantir 60,3 leads/dia no plano de recuperação | Mídia | Corte diário | Contatos RD qualificados e campanha UTM |
 | Priorizar campanhas com MQL suficiente e revisar as de conversão baixa | Mídia + CRM | Diário | MQL, SQL e campanha no mesmo recorte |
 | Tratar leads no mesmo dia | SDR/CRM | SLA diário | Etapa Bitrix e responsável preenchidos |
 | Corrigir UTM e múltiplos antes de escalar | Mídia + Ops | Revisão em 20/09 | Auditoria RD → Bitrix sem ambiguidade crítica |
 
 Mensagem: o plano não assume que a plataforma entregará automaticamente o saldo. O volume só é considerado realizado quando entra na base auditada; a escala deve ser condicionada à qualidade e à rastreabilidade.
 
-## Slide 6 — Mídia: investimento atualizado, bases distintas
+## Slide 6 — Mídia: investimento conciliado, bases distintas
 
 | Indicador até 10/09 | MedSystems | BeautySystems | Total |
 |---|---:|---:|---:|
-| Google + Meta — investimento | R$ 32.431,92 | R$ 27.170,73 | R$ 59.602,65 |
-| Leads de plataforma | 335,0 | 313,0 | 648,0 |
-| CPL de plataforma | R$ 96,81 | R$ 86,81 | R$ 91,98 |
+| Google + Meta — investimento | R$ 19.859,52 | R$ 16.889,82 | R$ 36.749,34 |
+| Conversões de plataforma | 195,0 | 184,0 | 379,0 |
+| CPL de plataforma | R$ 101,83 | R$ 91,79 | R$ 96,95 |
 
-Mensagem: os leads de plataforma não são contatos únicos e não devem ser comparados diretamente aos Leads técnicos RD → Bitrix. Esta separação evita duplicar conversões de plataforma com o funil de CRM.
+Mensagem: os valores foram recalculados diretamente no Windsor por campanha e nas quatro contas oficiais. Conversões de plataforma não são contatos únicos e não devem ser comparadas diretamente aos Leads técnicos RD → Bitrix.
 
 ## Slide 7 — Programática: entrega existe; sucesso precisa de prova de negócio
 
@@ -88,7 +88,7 @@ Mensagem: em setembro, as campanhas Publya ativas disponíveis estão classifica
 
 1. Validar a nomenclatura de campanhas que cruzam BU no CRM, antes de redistribuir orçamento por campanha.
 2. Formalizar a meta contratada de programática e seus KPIs de sucesso, com prazo final em 30/09.
-3. Acompanhar diariamente o saldo de Beauty (1.021) e o ritmo mínimo de 51,1 leads/dia.
+3. Acompanhar diariamente as duas leituras de Beauty: saldo auditável de 1.021 e objetivo operacional de recuperação de 1.206 leads (60,3/dia).
 4. Publicar a visão comercial dos SQLs auditáveis, diferenciando aberto, ganho, perdido e sem vínculo direto.
 
 ## Fontes

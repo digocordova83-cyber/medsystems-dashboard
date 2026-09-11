@@ -1,14 +1,14 @@
 <slide id="beauty_media_action">
   <background color="paper"/>
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
-  <text id="eyebrow" x="72" y="34" width="460" height="20" font="caption" size="12" color="brand" wrap="false"><strong>PLANO DE RECUPERAÇÃO · BEAUTYSYSTEMS</strong></text>
-  <text id="title" x="72" y="58" width="980" height="48" font="heading" size="34" color="ink" wrap="false">Recuperar volume sem perder rastreabilidade</text>
-  <text id="subtitle" x="72" y="103" width="990" height="24" font="body" size="16" color="muted">A meta só é considerada cumprida quando o contato chega à base auditada RD Station → Bitrix24 com origem e etapa verificáveis.</text>
+  <text id="eyebrow" x="72" y="34" width="500" height="20" font="caption" size="12" color="brand" wrap="false"><strong>PLANO DE RECUPERAÇÃO · BEAUTYSYSTEMS</strong></text>
+  <text id="title" x="72" y="58" width="980" height="48" font="heading" size="34" color="ink" wrap="false">Recuperar 1.206 leads com controle de qualidade</text>
+  <text id="subtitle" x="72" y="103" width="1010" height="24" font="body" size="16" color="muted">Objetivo operacional solicitado para o saldo do mês; o realizado só entra quando for rastreável entre RD Station e Bitrix24.</text>
   <shape id="beauty-pace-card" type="rect" x="72" y="144" width="432" height="102" fill="#FFF7ED" corner-radius="16"/>
   <icon id="beauty-pace-icon" name="target" x="96" y="171" width="36" height="36" color="#D97706"/>
-  <text id="beauty-pace-label" x="150" y="162" width="210" height="18" font="caption" size="12" color="muted">RITMO NECESSÁRIO</text>
-  <text id="beauty-pace-value" x="150" y="185" width="210" height="40" font="metric" size="36" color="#D97706" wrap="false"><strong>51,1 / dia</strong></text>
-  <text id="beauty-pace-note" x="350" y="187" width="126" height="42" font="caption" size="12" color="muted" align="right" line-height="1.05"><p>1.021 leads</p><p>de saldo</p></text>
+  <text id="beauty-pace-label" x="150" y="162" width="210" height="18" font="caption" size="12" color="muted">RITMO OPERACIONAL</text>
+  <text id="beauty-pace-value" x="150" y="185" width="210" height="40" font="metric" size="36" color="#D97706" wrap="false"><strong>60,3 / dia</strong></text>
+  <text id="beauty-pace-note" x="350" y="187" width="126" height="42" font="caption" size="12" color="muted" align="right" line-height="1.05"><p>1.206 leads</p><p>a recuperar</p></text>
   <shape id="control-card" type="rect" x="528" y="144" width="680" height="102" fill="#ECFDF5" corner-radius="16"/>
   <icon id="control-icon" name="shield-check" x="554" y="171" width="36" height="36" color="accent"/>
   <text id="control-title" x="610" y="162" width="500" height="22" font="heading" size="20" color="ink" wrap="false">Condição para escalar</text>
@@ -17,12 +17,12 @@
   <shape id="action-one-index" type="ellipse" x="100" y="314" width="42" height="42" fill="brand"/>
   <text id="action-one-number" x="100" y="319" width="42" height="28" font="heading" size="22" color="paper" align="center" anchor="middle">1</text>
   <text id="action-one-title" x="100" y="382" width="266" height="52" font="heading" size="22" color="ink" line-height="1.08"><p>Volume diário</p><p>sob controle</p></text>
-  <text id="action-one-copy" x="100" y="450" width="284" height="76" font="body" size="15" color="muted" line-height="1.25">Monitorar a entrega diária contra 51,1 leads. Ajustar distribuição de verba quando o acumulado ficar abaixo do ritmo necessário.</text>
+  <text id="action-one-copy" x="100" y="450" width="284" height="76" font="body" size="15" color="muted" line-height="1.25">Monitorar a entrega diária contra 60,3 leads. Reequilibrar a verba quando o acumulado ficar abaixo do ritmo de recuperação.</text>
   <shape id="action-two" type="rect" x="464" y="286" width="352" height="278" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="18"/>
   <shape id="action-two-index" type="ellipse" x="492" y="314" width="42" height="42" fill="accent"/>
   <text id="action-two-number" x="492" y="319" width="42" height="28" font="heading" size="22" color="paper" align="center" anchor="middle">2</text>
   <text id="action-two-title" x="492" y="382" width="266" height="52" font="heading" size="22" color="ink" line-height="1.08"><p>Qualidade antes</p><p>de escala</p></text>
-  <text id="action-two-copy" x="492" y="450" width="284" height="76" font="body" size="15" color="muted" line-height="1.25">Priorizar campanhas com MQL suficiente e revisar aquelas com baixa conversão para SQL antes de ampliar alcance ou orçamento.</text>
+  <text id="action-two-copy" x="492" y="450" width="284" height="76" font="body" size="15" color="muted" line-height="1.25">Priorizar campanhas com MQL e revisar as de baixa conversão para SQL antes de ampliar alcance ou orçamento.</text>
   <shape id="action-three" type="rect" x="856" y="286" width="352" height="278" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="18"/>
   <shape id="action-three-index" type="ellipse" x="884" y="314" width="42" height="42" fill="#D97706"/>
   <text id="action-three-number" x="884" y="319" width="42" height="28" font="heading" size="22" color="paper" align="center" anchor="middle">3</text>
@@ -31,8 +31,8 @@
   <shape id="governance-band" type="rect" x="72" y="588" width="1136" height="58" fill="ink" corner-radius="14"/>
   <icon id="governance-icon" name="calendar" x="94" y="606" width="26" height="26" color="accent"/>
   <text id="governance-title" x="140" y="600" width="230" height="20" font="caption" size="12" color="#A7F3D0" wrap="false">GATILHO DE GOVERNANÇA</text>
-  <text id="governance-copy" x="140" y="620" width="1000" height="18" font="body" size="14" color="paper">Revisar em 20/09 a entrega acumulada, os UTMs que cruzam BU e a situação dos múltiplos antes de liberar qualquer escala adicional.</text>
+  <text id="governance-copy" x="140" y="620" width="1000" height="18" font="body" size="14" color="paper">Revisar em 20/09 a entrega acumulada, os UTMs que cruzam BU e os múltiplos antes de liberar qualquer escala adicional.</text>
   <shape id="footer-line" type="line" x="72" y="674" width="1040" height="0" stroke="hairline" stroke-width="1"/>
-  <text id="footer-source" x="72" y="680" width="800" height="18" font="caption" size="11" color="muted">Fonte: metas de setembro e funil RD Station → Bitrix24 · corte 10/09/2026</text>
+  <text id="footer-source" x="72" y="680" width="930" height="18" font="caption" size="11" color="muted">Fonte: objetivo operacional fornecido pela gestão e funil RD Station → Bitrix24 · corte 10/09/2026</text>
   <text id="page-number" x="1146" y="678" width="62" height="20" font="caption" size="12" color="brand" align="right">07</text>
 </slide>

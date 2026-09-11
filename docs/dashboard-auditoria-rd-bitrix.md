@@ -26,3 +26,9 @@ Na prévia autenticada, com o intervalo 01–10/09/2026, a auditoria carregou ju
 O filtro de situação **Não encontrado** foi validado na sessão autenticada: a lista passou a exibir somente linhas sem correspondência no Bitrix24, mantendo os cards consolidados do período como contexto de leitura. A etapa atual e os filtros comerciais vêm da entidade encontrada no CRM; o número de contatos qualificados do RD é preservado como coorte do funil.
 
 Os filtros de Pipeline/BU também foram validados no mesmo recorte: **256 BeautySystems**, **80 MedSystems** e **37 sem BU reconhecida** somam os **373 contatos** do funil. O snapshot diário de 10/09 foi recalculado com a versão `rd_bitrix_name_v1`; o agendamento existente não foi alterado.
+
+## Registros múltiplos
+
+Quando a auditoria identifica mais de um candidato para o mesmo contato RD Station, a lista protegida agora mostra **todos os candidatos Bitrix24** associados à chave de busca ativa. Cada candidato exibe tipo de entidade, ID técnico, nome, e-mail, telefone, etapa atual — quando for Lead — e data de criação. Esses casos continuam fora do funil até uma decisão de reconciliação, mas deixam de exigir consulta externa para comparar os registros.
+
+O filtro **Múltiplos registros** foi validado na sessão autenticada com duas correspondências candidatas exibidas na mesma linha de auditoria. Os dados pessoais permanecem restritos ao Dashboard autenticado e não são registrados nesta documentação.

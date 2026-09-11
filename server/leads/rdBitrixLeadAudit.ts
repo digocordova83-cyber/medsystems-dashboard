@@ -43,6 +43,16 @@ type BitrixEntity = {
   rawPayload: string;
 };
 
+export type BitrixAuditCandidate = {
+  entityType: "lead" | "contact";
+  bitrixId: number;
+  name: string;
+  email: string;
+  phone: string;
+  stage: string;
+  createdAt: string;
+};
+
 const BRAND_LABEL: Record<AccountKey, string> = {
   medsystems: "MedSystems",
   beautysystems: "BeautySystems",
@@ -86,6 +96,19 @@ function matchMethod(emailMatched: boolean, nameMatched: boolean) {
 export function auditMatchStatus(input: { emailMatched: boolean; nameMatched: boolean; leadCount: number; contactCount: number; totalCount: number }) {
   const status: Exclude<AuditMatchStatus, "all"> = input.totalCount > 1 ? "multiple" : input.leadCount ? "lead" : input.contactCount ? "contact_only" : "not_found";
   return { status, method: matchMethod(input.emailMatched, input.nameMatched) };
+}
+
+export function bitrixAuditCandidate(entity: BitrixEntity): BitrixAuditCandidate {
+  const raw = parsePayload(entity.rawPayload);
+  return {
+    entityType: entity.entityType,
+    bitrixId: entity.bitrixId,
+    name: entity.fullName?.trim() || "Não informado",
+    email: entity.email?.trim() || "Não informado",
+    phone: entity.phone?.trim() || "Não informado",
+    stage: entity.entityType === "lead" ? bitrixLeadStageLabel(raw.STATUS_ID ?? entity.stageOrStatus) : "Contato sem etapa de Lead",
+    createdAt: saoPauloBusinessDate(entity.createdAtBitrix),
+  };
 }
 
 function emptyBrandTotals() {
@@ -221,6 +244,7 @@ export async function rdBitrixLeadAudit(input: RdBitrixLeadAuditFilters & { port
       bitrixId: representative?.bitrixId ?? null,
       bitrixRecordCount: allMatches.length,
       bitrixCreatedAt: representative ? saoPauloBusinessDate(representative.createdAtBitrix) : null,
+      bitrixCandidates: status === "multiple" ? allMatches.map(bitrixAuditCandidate) : [],
     };
   }).filter(row => input.matchStatus === "all" || row.matchStatus === input.matchStatus)
     .sort((a, b) => a.rdDate.localeCompare(b.rdDate) || a.brandLabel.localeCompare(b.brandLabel) || a.name.localeCompare(b.name, "pt-BR"));

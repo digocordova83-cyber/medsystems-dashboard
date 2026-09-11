@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { auditMatchStatus } from "./rdBitrixLeadAudit";
+import { auditMatchStatus, bitrixAuditCandidate } from "./rdBitrixLeadAudit";
 import { resolveRdBitrixLeadMatch } from "../bitrix24/rdOpportunityAnalytics";
 
 describe("auditMatchStatus", () => {
@@ -42,5 +42,27 @@ describe("auditMatchStatus", () => {
       byEmail: new Map(),
       byName: new Map([["ana silva", [candidate(1), candidate(2)]]]),
     })).toMatchObject({ status: "multiple", candidate: null });
+  });
+
+  it("expõe os dados de revisão de cada candidato Bitrix sem transformar contato em etapa de Lead", () => {
+    const candidate = bitrixAuditCandidate({
+      bitrixId: 42,
+      entityType: "contact",
+      fullName: "Ana Silva",
+      email: "ana@exemplo.com",
+      phone: "+5511999999999",
+      stageOrStatus: null,
+      createdAtBitrix: new Date("2026-09-10T14:00:00.000Z"),
+      rawPayload: "{}",
+    });
+    expect(candidate).toMatchObject({
+      entityType: "contact",
+      bitrixId: 42,
+      name: "Ana Silva",
+      email: "ana@exemplo.com",
+      phone: "+5511999999999",
+      stage: "Contato sem etapa de Lead",
+      createdAt: "2026-09-10",
+    });
   });
 });

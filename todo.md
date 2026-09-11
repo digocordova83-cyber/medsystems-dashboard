@@ -766,3 +766,6 @@
 - [x] Recalcular KPIs, funil, distribuição de BU e evolução diária a partir dos contatos RD encontrados no CRM.
 - [x] Atualizar a auditoria protegida para separar encontrados por e-mail, por nome e não encontrados, sem expor dados fora da sessão autenticada.
 - [x] Validar a nova metodologia no período atual, publicar e documentar a substituição do critério anterior RD Station = sim.
+- [x] Incluir todos os registros candidatos do Bitrix24 em cada caso de correspondência múltipla da auditoria.
+- [x] Exibir na lista protegida o tipo, etapa e data de criação de cada candidato Bitrix24, sem alterar o funil principal.
+- [x] Criar regressão para múltiplos candidatos e validar a visualização autenticada antes de publicar.

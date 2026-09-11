@@ -2,6 +2,7 @@ import { and, asc, eq, gt, gte, inArray, lt, sql } from "drizzle-orm";
 import { bitrix24Entities, rdStationContacts, rdStationConversionEvents } from "../../drizzle/schema";
 import { getDb, normalizeIdentityEmail } from "../db";
 import { normalizeIdentityName } from "../leads/paidMediaEvidence";
+import { buildLeadPacing } from "../leads/leadPacing";
 import { qualifiesDirectApiEvent } from "../rdstation/filtering";
 
 export const RD_STATION_FIELD = "UF_CRM_1738950899";
@@ -87,6 +88,7 @@ export type RdOpportunityRawLead = {
   matchMethod?: "E-mail" | "Nome";
   isMultipleBitrixMatch?: boolean;
   bitrixCandidateCount?: number;
+  rdHasPaidEvent?: boolean;
 };
 export type RdOpportunityRawDeal = { rawPayload: string };
 export type RdOpportunityRawContact = {
@@ -490,6 +492,13 @@ export function buildRdOpportunityManagerDashboard(input: {
   const unassignedLeads = eligible.filter(item => !["15391", "15395"].includes(item.pipelineId)).length;
   const duplicateBitrixLeadCandidates = eligible.filter(item => item.row.isMultipleBitrixMatch).length;
   const duplicateRdContacts = new Set(eligible.filter(item => item.row.isMultipleBitrixMatch).map(item => `${item.row.rdAccountKey}:${item.row.rdContactUuid}`)).size;
+  const pacingActual = { medsystems: { total: 0, paid: 0 }, beautysystems: { total: 0, paid: 0 } };
+  for (const item of base) {
+    const brand = item.pipelineId === "15391" ? "medsystems" : item.pipelineId === "15395" ? "beautysystems" : null;
+    if (!brand) continue;
+    pacingActual[brand].total += 1;
+    if (item.row.rdHasPaidEvent) pacingActual[brand].paid += 1;
+  }
 
   return {
     sourceRule: "Contato RD Station qualificado localizado no Bitrix24 por e-mail ou nome; correspondências múltiplas incluem cada Lead candidato como linha técnica distinta",
@@ -518,6 +527,7 @@ export function buildRdOpportunityManagerDashboard(input: {
       reconciledOutsidePaidField: 0,
     },
     commercialWinsByBu: winsByBu,
+    pacing: buildLeadPacing({ period: input.period, actual: pacingActual }),
     winsAttribution: Array.from(winsAttribution.values()).sort((a, b) => b.wonDeals - a.wonDeals || b.wonValue - a.wonValue || a.campaign.localeCompare(b.campaign)),
     winsAttributionCoverage,
     funnel: [
@@ -584,12 +594,18 @@ async function loadRdOpportunityDataset(input: {
       .where(and(eq(bitrix24Entities.portal, input.portal), eq(bitrix24Entities.entityType, "contact"))),
   ]);
   const contactsByKey = new Map(rdContacts.map(contact => [`${contact.accountKey}:${contact.contactUuid}`, contact]));
-  const qualified = new Map<string, { accountKey: "medsystems" | "beautysystems"; contactUuid: string; eventCreatedAt: Date }>();
+  const qualified = new Map<string, { accountKey: "medsystems" | "beautysystems"; contactUuid: string; eventCreatedAt: Date; hasPaidEvent: boolean }>();
   for (const event of rdEvents) {
-    if (!qualifiesDirectApiEvent(parsePayload(event.rawPayload)).qualifies) continue;
+    const qualification = qualifiesDirectApiEvent(parsePayload(event.rawPayload));
+    if (!qualification.qualifies) continue;
     const key = `${event.accountKey}:${event.contactUuid}`;
     const existing = qualified.get(key);
-    if (!existing || event.eventCreatedAt < existing.eventCreatedAt) qualified.set(key, { accountKey: event.accountKey, contactUuid: event.contactUuid, eventCreatedAt: event.eventCreatedAt });
+    const hasPaidEvent = qualification.sourceBucket === "midia_paga" || existing?.hasPaidEvent === true;
+    if (!existing || event.eventCreatedAt < existing.eventCreatedAt) {
+      qualified.set(key, { accountKey: event.accountKey, contactUuid: event.contactUuid, eventCreatedAt: event.eventCreatedAt, hasPaidEvent });
+    } else if (hasPaidEvent !== existing.hasPaidEvent) {
+      existing.hasPaidEvent = hasPaidEvent;
+    }
   }
   const contactsById = new Map(bitrixContacts.map(contact => [contact.bitrixId, contact]));
   const linkedContactIds = new Set<number>();
@@ -646,6 +662,7 @@ async function loadRdOpportunityDataset(input: {
         matchMethod: match.method ?? undefined,
         isMultipleBitrixMatch: match.status === "multiple",
         bitrixCandidateCount: match.candidates.length,
+        rdHasPaidEvent: item.hasPaidEvent,
       });
     }
   }

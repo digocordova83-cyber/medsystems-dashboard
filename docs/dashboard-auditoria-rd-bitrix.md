@@ -34,3 +34,11 @@ Quando a auditoria identifica mais de um candidato para o mesmo contato RD Stati
 O filtro **Múltiplos registros** foi validado na sessão autenticada com duas correspondências candidatas exibidas na mesma linha de auditoria. Os dados pessoais permanecem restritos ao Dashboard autenticado e não são registrados nesta documentação.
 
 Na validação visual final, os KPIs da auditoria mostraram 555 contatos RD, 615 eventos qualificados, 373 correspondências únicas, 276 Leads candidatos de casos múltiplos e 541 Leads técnicos Bitrix24 como referência. O funil e seus filtros comerciais carregaram 649 Leads técnicos, e o filtro de múltiplos preservou a lista de candidatos para revisão.
+
+## Ordem da aba Negócios
+
+A auditoria RD Station ↔ Bitrix24 foi posicionada como o último bloco da aba Negócios. As seções **Campanha → conjunto → criativo** e **Negócios ganhos por campanha → conjunto → criativo** foram ocultadas temporariamente, sem excluir seus dados ou alterar o funil, os KPIs e os filtros existentes.
+
+## Metas e pacing de leads
+
+O painel de pacing utiliza as metas totais fornecidas para setembro de 2026: **680 MedSystems**, **1.450 BeautySystems** e **2.130 consolidado**. O painel de mídia paga usa uma referência separada: **360 MedSystems**, **1.180 BeautySystems** e **1.540 consolidado**. No corte de 01–10/09, a interface validada exibiu 553 leads totais elegíveis nos pipelines MedSystems e BeautySystems e 377 leads de mídia paga classificados diretamente no RD Station; registros sem BU reconhecida ficam fora das metas consolidadas. A trilha também registra outubro: 550 MedSystems e 1.450 BeautySystems no total; 380 MedSystems e 1.180 BeautySystems em mídia paga.

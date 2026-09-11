@@ -773,3 +773,11 @@
 - [x] Recalcular KPIs, filtros, distribuição de BU e evolução diária com os Leads duplicados incluídos.
 - [x] Sinalizar visualmente no funil e na metodologia que registros múltiplos foram incluídos como Leads técnicos distintos.
 - [x] Cobrir a regra de duplicidades em teste, validar a interface autenticada e publicar.
+- [x] Mover a auditoria de leads RD Station → Bitrix24 para o final da aba Negócios.
+- [x] Ocultar temporariamente as seções Campanha → conjunto → criativo e Negócios ganhos por campanha → conjunto → criativo.
+- [x] Validar a ordem final da aba Negócios, testes e publicação.
+- [x] Registrar metas totais: Set/26 de 680 MedSystems e 1.450 BeautySystems; Out/26 de 550 MedSystems e 1.450 BeautySystems.
+- [x] Registrar metas de mídia paga: Set/26 de 360 MedSystems e 1.180 BeautySystems; Out/26 de 380 MedSystems e 1.180 BeautySystems.
+- [x] Calcular realizados totais e de mídia paga por BU e consolidado, com o critério RD Station auditável.
+- [x] Exibir gráficos de Leads totais × meta total e Leads de mídia paga × meta paga, com período e premissas explícitos.
+- [x] Cobrir cálculos em teste, validar a interface e publicar o painel de pacing.

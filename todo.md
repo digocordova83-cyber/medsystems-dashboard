@@ -756,3 +756,8 @@
 - [x] Retestar o webhook Bitrix24 e concluir o cruzamento direto após a conectividade ser restabelecida.
 - [x] Apuração inicial parcial no RD Station de 10/09/2026: 3 MedSystems e 6 BeautySystems, total de 9 eventos e 9 contatos únicos; substituída pela revalidação completa da fonte.
 - [x] Revalidar diretamente no RD Station o total completo de 10/09/2026, incluindo paginação, fuso São Paulo e regra de qualificação: 51 eventos qualificados e 44 contatos únicos, sendo 18 MedSystems e 26 BeautySystems.
+- [x] Definir o contrato protegido da auditoria de leads RD Station e Bitrix24, incluindo período, BU, origem e correspondência por e-mail/telefone.
+- [x] Implementar consulta tRPC auditável com totais de RD, Bitrix e status de correspondência por contato.
+- [x] Adicionar no Dashboard uma lista rolável de auditoria com nome, e-mail, telefone, BU, origem e etapa atual do funil.
+- [x] Adicionar filtros de data, BU e status de correspondência à auditoria de leads.
+- [x] Criar testes de reconciliação e validar a nova interface autenticada antes de publicar.

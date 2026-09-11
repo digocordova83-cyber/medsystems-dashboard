@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { RdBitrixLeadAuditPanel } from "@/components/RdBitrixLeadAuditPanel";
 import { trpc } from "@/lib/trpc";
 import {
   ArrowDownRight, BadgeDollarSign, BarChart3, BriefcaseBusiness, CalendarDays,
@@ -148,6 +149,8 @@ export function BitrixRdOpportunityDashboard() {
         <TrendPanel rows={data.byDay} />
         <CoveragePanel coverage={data.coverage} total={data.totals.leads} />
       </section>
+
+      <RdBitrixLeadAuditPanel startDate={startDate} endDate={endDate} />
 
       <section className="overflow-hidden rounded-[28px] border border-cyan-200/15 bg-[radial-gradient(circle_at_90%_0%,rgba(34,211,238,.09),transparent_30%),linear-gradient(145deg,rgba(8,23,36,.98),rgba(5,14,25,.98))] shadow-2xl shadow-cyan-950/15">
         <div className="grid gap-5 border-b border-white/10 p-5 sm:p-6 xl:grid-cols-[1fr_minmax(320px,460px)] xl:items-end">

@@ -40,6 +40,12 @@ const STATUS_LABELS: Record<string, string> = {
   UC_8AJSSF: "Lead Descartado p/ MKT",
 };
 
+export function bitrixLeadStageLabel(value: unknown) {
+  const stageId = String(value ?? "").trim();
+  if (!stageId) return "Etapa não informada";
+  return STATUS_LABELS[stageId] ?? `Etapa #${stageId}`;
+}
+
 const RESPONSIBLE_LABELS: Record<string, string> = {
   "5521": "Vitor da Silva",
   "13877": "Marcela Assis Satilho Muller",

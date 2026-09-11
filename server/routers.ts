@@ -14,6 +14,7 @@ import { bitrixExportSnapshot } from "./spreadsheet/bitrixExportSnapshot";
 import { mediaChannelDashboard } from "./media/channelDashboard";
 import { publyaRouter } from "./publya/router";
 import { leadReconciliationDashboard } from "./leads/reconciliation";
+import { rdBitrixLeadAudit } from "./leads/rdBitrixLeadAudit";
 import { currentAnalyticsPeriod, isAnalyticsPeriod, type AnalyticsPeriod } from "./reportingPeriod";
 
 const accountInput = z.enum(RD_ACCOUNTS);
@@ -173,6 +174,15 @@ export const appRouter = router({
       endDate: input?.endDate ?? "2026-09-01",
       brand: input?.brand ?? "all",
       channel: input?.channel ?? "all",
+    })),
+    rdBitrixAudit: dashboardProcedure.input(z.object({
+      startDate: dashboardDateInput,
+      endDate: dashboardDateInput,
+      brand: analyticsBrandInput.default("all"),
+      matchStatus: z.enum(["all", "lead", "contact_only", "not_found", "multiple"]).default("all"),
+    })).query(async ({ input }) => rdBitrixLeadAudit({
+      ...input,
+      portal: new URL(process.env.BITRIX24_MEDSYSTEMS_WEBHOOK_BASE_URL ?? "https://medsystems.bitrix24.com.br/").host,
     })),
   }),
   spreadsheet: router({

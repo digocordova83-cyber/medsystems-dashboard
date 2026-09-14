@@ -3,7 +3,7 @@
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
   <text id="eyebrow" x="72" y="34" width="460" height="20" font="caption" size="12" color="brand" wrap="false"><strong>QUALIDADE DO FUNIL · MQL → SQL</strong></text>
   <text id="title" x="72" y="58" width="990" height="48" font="heading" size="34" color="ink" wrap="false">MQLs avançam para vendas nas duas BUs</text>
-  <text id="subtitle" x="72" y="103" width="1010" height="24" font="body" size="16" color="muted">O acompanhamento por campanha ajuda a concentrar esforço nas frentes que já mostram avanço comercial.</text>
+  <text id="subtitle" x="72" y="103" width="1010" height="24" font="body" size="16" color="muted">As campanhas com maior avanço orientam a priorização de verba e acompanhamento comercial.</text>
   <shape id="med-summary" type="rect" x="72" y="144" width="528" height="94" fill="#EFF6FF" corner-radius="16"/>
   <text id="med-summary-title" x="98" y="164" width="240" height="22" font="caption" size="12" color="muted">MEDSYSTEMS · MQL → SQL</text>
   <text id="med-summary-rate" x="98" y="187" width="150" height="38" font="metric" size="34" color="brand" wrap="false"><strong>13,1%</strong></text>
@@ -20,7 +20,7 @@
     <tr><td>Medical MPT LP</td><td align="right">7</td><td align="right">1</td><td align="right"><strong color="accent">14,3%</strong></td></tr>
     <tr fill="#F8FAFC"><td>Demais frentes</td><td align="right">90</td><td align="right">12</td><td align="right">13,3%</td></tr>
   </table>
-  <text id="med-panel-note" x="98" y="540" width="420" height="18" font="caption" size="11" color="muted">A leitura consolidada preserva todas as campanhas com menor volume.</text>
+  <text id="med-panel-note" x="98" y="540" width="420" height="18" font="caption" size="11" color="muted">Demais campanhas consolidadas para preservar a leitura executiva.</text>
   <shape id="beauty-panel" type="rect" x="576" y="270" width="632" height="304" fill="paper" stroke="hairline" stroke-width="1" corner-radius="18"/>
   <text id="beauty-panel-title" x="602" y="294" width="360" height="28" font="heading" size="22" color="ink" wrap="false">BeautySystems: campanhas com avanço</text>
   <table id="beauty-campaign-table" x="602" y="338" width="578" height="188" columns="6,1,1,1" rows="40,37,37,37,37" font="caption" size="12" color="ink" padding="7 8" header-fill="ink" header-border="1 ink" border-h="1 solid hairline">
@@ -32,7 +32,7 @@
   </table>
   <shape id="audit-band" type="rect" x="72" y="598" width="1136" height="44" fill="#FFF7ED" corner-radius="12"/>
   <icon id="audit-icon" name="lightbulb" x="93" y="609" width="22" height="22" color="#D97706"/>
-  <text id="audit-text" x="132" y="608" width="1036" height="22" font="caption" size="12" color="muted" anchor="middle">Prioridade de gestão: manter as campanhas que já avançam no funil e revisar o padrão de nomeação de DSB para reforçar a leitura por BU.</text>
+  <text id="audit-text" x="132" y="608" width="1036" height="22" font="caption" size="12" color="muted" anchor="middle">Decisão: manter as frentes que avançam e padronizar DSB para consolidar a leitura por BU.</text>
   <shape id="footer-line" type="line" x="72" y="674" width="1040" height="0" stroke="hairline" stroke-width="1"/>
   <text id="footer-source" x="72" y="680" width="840" height="18" font="caption" size="11" color="muted">Fonte: Dashboard MedSystems + BeautySystems · corte 13/09/2026</text>
   <text id="page-number" x="1146" y="678" width="62" height="20" font="caption" size="12" color="brand" align="right">05</text>

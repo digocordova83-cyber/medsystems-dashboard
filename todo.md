@@ -807,3 +807,6 @@
 - [x] Atualizar, validar e apresentar o Report Executivo no padrão Report Lu com o corte de 13/09/2026.
 - [x] Adicionar lâmina final de encerramento e agradecimento ao Report Executivo no padrão Report Lu.
 - [x] Validar e reenviar o documento atualizado com o encerramento.
+- [x] Auditar visualmente as nove lâminas do Report Executivo quanto a hierarquia, alinhamento, espaçamento e legibilidade.
+- [x] Corrigir inconsistências de layout e padronizar títulos, cards, tabelas, rodapés e densidade de informação.
+- [x] Validar novamente o deck completo e entregar a apresentação final refinada.

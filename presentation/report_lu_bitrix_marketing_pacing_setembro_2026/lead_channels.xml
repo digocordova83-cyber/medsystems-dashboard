@@ -16,39 +16,39 @@
   <text id="card-sql-label" x="626" y="166" width="190" height="18" font="caption" size="12" color="muted" wrap="false">PRONTOS PARA VENDAS · SQL</text>
   <text id="card-sql-value" x="626" y="188" width="190" height="44" font="metric" size="40" color="brand" wrap="false"><strong>50</strong></text>
   <text id="card-sql-note" x="718" y="202" width="110" height="20" font="caption" size="12" color="brand" align="right" wrap="false">9,7% dos MQLs</text>
-  <shape id="panel-med" type="rect" x="72" y="282" width="370" height="300" fill="paper" stroke="hairline" stroke-width="1" corner-radius="18"/>
+  <shape id="panel-med" type="rect" x="72" y="282" width="346" height="300" fill="paper" stroke="hairline" stroke-width="1" corner-radius="18"/>
   <shape id="panel-med-bar" type="rect" x="72" y="282" width="8" height="300" fill="brand" corner-radius="4"/>
-  <text id="med-title" x="104" y="310" width="260" height="30" font="heading" size="24" color="ink" wrap="false">MedSystems</text>
+  <text id="med-title" x="104" y="310" width="230" height="30" font="heading" size="24" color="ink" wrap="false">MedSystems</text>
   <text id="med-leads" x="104" y="352" width="150" height="24" font="body" size="16" color="muted">Leads no funil</text>
-  <text id="med-leads-value" x="280" y="346" width="112" height="32" font="heading" size="28" color="ink" align="right" wrap="false"><strong>168</strong></text>
-  <shape id="med-divider-one" type="line" x="104" y="394" width="256" height="0" stroke="hairline" stroke-width="1"/>
+  <text id="med-leads-value" x="270" y="346" width="98" height="32" font="heading" size="28" color="ink" align="right" wrap="false"><strong>168</strong></text>
+  <shape id="med-divider-one" type="line" x="104" y="394" width="250" height="0" stroke="hairline" stroke-width="1"/>
   <text id="med-mql" x="104" y="414" width="150" height="24" font="body" size="16" color="muted">Qualificados · MQL</text>
-  <text id="med-mql-value" x="280" y="408" width="112" height="32" font="heading" size="28" color="accent" align="right" wrap="false"><strong>107</strong></text>
+  <text id="med-mql-value" x="270" y="408" width="98" height="32" font="heading" size="28" color="accent" align="right" wrap="false"><strong>107</strong></text>
   <text id="med-sql" x="104" y="462" width="150" height="24" font="body" size="16" color="muted">Para vendas · SQL</text>
-  <text id="med-sql-value" x="280" y="456" width="112" height="32" font="heading" size="28" color="brand" align="right" wrap="false"><strong>14</strong></text>
-  <shape id="med-divider-two" type="line" x="104" y="504" width="256" height="0" stroke="hairline" stroke-width="1"/>
+  <text id="med-sql-value" x="270" y="456" width="98" height="32" font="heading" size="28" color="brand" align="right" wrap="false"><strong>14</strong></text>
+  <shape id="med-divider-two" type="line" x="104" y="504" width="250" height="0" stroke="hairline" stroke-width="1"/>
   <text id="med-rate" x="104" y="524" width="156" height="24" font="body" size="16" color="muted">MQL → SQL</text>
-  <text id="med-rate-value" x="280" y="520" width="112" height="28" font="heading" size="24" color="accent" align="right" wrap="false"><strong>13,1%</strong></text>
-  <shape id="panel-beauty" type="rect" x="466" y="282" width="370" height="300" fill="paper" stroke="hairline" stroke-width="1" corner-radius="18"/>
-  <shape id="panel-beauty-bar" type="rect" x="466" y="282" width="8" height="300" fill="accent" corner-radius="4"/>
-  <text id="beauty-title" x="498" y="310" width="260" height="30" font="heading" size="24" color="ink" wrap="false">BeautySystems</text>
-  <text id="beauty-leads" x="498" y="352" width="150" height="24" font="body" size="16" color="muted">Leads no funil</text>
-  <text id="beauty-leads-value" x="674" y="346" width="112" height="32" font="heading" size="28" color="ink" align="right" wrap="false"><strong>569</strong></text>
-  <shape id="beauty-divider-one" type="line" x="498" y="394" width="256" height="0" stroke="hairline" stroke-width="1"/>
-  <text id="beauty-mql" x="498" y="414" width="150" height="24" font="body" size="16" color="muted">Qualificados · MQL</text>
-  <text id="beauty-mql-value" x="674" y="408" width="112" height="32" font="heading" size="28" color="accent" align="right" wrap="false"><strong>410</strong></text>
-  <text id="beauty-sql" x="498" y="462" width="150" height="24" font="body" size="16" color="muted">Para vendas · SQL</text>
-  <text id="beauty-sql-value" x="674" y="456" width="112" height="32" font="heading" size="28" color="brand" align="right" wrap="false"><strong>36</strong></text>
-  <shape id="beauty-divider-two" type="line" x="498" y="504" width="256" height="0" stroke="hairline" stroke-width="1"/>
-  <text id="beauty-rate" x="498" y="524" width="156" height="24" font="body" size="16" color="muted">MQL → SQL</text>
-  <text id="beauty-rate-value" x="674" y="520" width="112" height="28" font="heading" size="24" color="accent" align="right" wrap="false"><strong>8,8%</strong></text>
-  <shape id="chart-card" type="rect" x="866" y="282" width="342" height="300" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="18"/>
-  <text id="chart-title" x="894" y="310" width="280" height="28" font="heading" size="20" color="ink" wrap="false">Qualificados e SQL por BU</text>
-  <chart id="mql-sql-chart" type="column" x="884" y="350" width="300" height="190" font="caption" text-size="12" text-color="muted" categories="Med,Beauty" color="accent,brand" legend="bottom" y-axis="true" x-axis="true" gridlines="h" gap-width="100" data-labels="true">
+  <text id="med-rate-value" x="270" y="520" width="98" height="28" font="heading" size="24" color="accent" align="right" wrap="false"><strong>13,1%</strong></text>
+  <shape id="panel-beauty" type="rect" x="438" y="282" width="346" height="300" fill="paper" stroke="hairline" stroke-width="1" corner-radius="18"/>
+  <shape id="panel-beauty-bar" type="rect" x="438" y="282" width="8" height="300" fill="accent" corner-radius="4"/>
+  <text id="beauty-title" x="470" y="310" width="230" height="30" font="heading" size="24" color="ink" wrap="false">BeautySystems</text>
+  <text id="beauty-leads" x="470" y="352" width="150" height="24" font="body" size="16" color="muted">Leads no funil</text>
+  <text id="beauty-leads-value" x="636" y="346" width="98" height="32" font="heading" size="28" color="ink" align="right" wrap="false"><strong>569</strong></text>
+  <shape id="beauty-divider-one" type="line" x="470" y="394" width="250" height="0" stroke="hairline" stroke-width="1"/>
+  <text id="beauty-mql" x="470" y="414" width="150" height="24" font="body" size="16" color="muted">Qualificados · MQL</text>
+  <text id="beauty-mql-value" x="636" y="408" width="98" height="32" font="heading" size="28" color="accent" align="right" wrap="false"><strong>410</strong></text>
+  <text id="beauty-sql" x="470" y="462" width="150" height="24" font="body" size="16" color="muted">Para vendas · SQL</text>
+  <text id="beauty-sql-value" x="636" y="456" width="98" height="32" font="heading" size="28" color="brand" align="right" wrap="false"><strong>36</strong></text>
+  <shape id="beauty-divider-two" type="line" x="470" y="504" width="250" height="0" stroke="hairline" stroke-width="1"/>
+  <text id="beauty-rate" x="470" y="524" width="156" height="24" font="body" size="16" color="muted">MQL → SQL</text>
+  <text id="beauty-rate-value" x="636" y="520" width="98" height="28" font="heading" size="24" color="accent" align="right" wrap="false"><strong>8,8%</strong></text>
+  <shape id="chart-card" type="rect" x="804" y="282" width="404" height="300" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="18"/>
+  <text id="chart-title" x="832" y="310" width="348" height="28" font="heading" size="20" color="ink" align="center" wrap="false">Qualificados e SQL por BU</text>
+  <chart id="mql-sql-chart" type="column" x="826" y="348" width="360" height="198" font="caption" text-size="12" text-color="muted" categories="Med,Beauty" color="accent,brand" legend="bottom" y-axis="true" x-axis="true" gridlines="h" gap-width="120" data-labels="true">
     <series name="Qualificados · MQL" values="107,410" label-expr="{value:.0f}"/>
     <series name="Para vendas · SQL" values="14,36" label-expr="{value:.0f}"/>
   </chart>
-  <text id="chart-note" x="894" y="548" width="282" height="18" font="caption" size="11" color="muted" align="center" wrap="false">Etapa atual no CRM</text>
+  <text id="chart-note" x="832" y="552" width="348" height="18" font="caption" size="11" color="muted" align="center" wrap="false">Etapa atual no CRM</text>
   <shape id="method-band" type="rect" x="72" y="612" width="1136" height="42" fill="#F8FAFC" corner-radius="12"/>
   <icon id="method-icon" name="trending-up" x="91" y="621" width="22" height="22" color="accent"/>
   <text id="method-text" x="126" y="621" width="1040" height="22" font="caption" size="12" color="muted" anchor="middle">No dia 13/09, o RD Station registrou 71 contatos qualificados: 40 MedSystems e 31 BeautySystems.</text>

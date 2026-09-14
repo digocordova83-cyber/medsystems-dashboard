@@ -3,7 +3,7 @@
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
   <text id="eyebrow" x="72" y="34" width="520" height="20" font="caption" size="12" color="brand" wrap="false"><strong>ACOMPANHAMENTO COMERCIAL · AGOSTO E SETEMBRO</strong></text>
   <text id="title" x="72" y="58" width="1070" height="48" font="heading" size="34" color="ink" wrap="false">Oportunidades já têm uma agenda comercial clara</text>
-  <text id="subtitle" x="72" y="103" width="1010" height="24" font="body" size="16" color="muted">O foco é avançar os negócios abertos com rotina de acompanhamento e próximos passos definidos.</text>
+  <text id="subtitle" x="72" y="103" width="1010" height="24" font="body" size="16" color="muted">O próximo ganho depende de cadência sobre as 67 oportunidades que seguem abertas.</text>
   <shape id="historic-card" type="rect" x="72" y="144" width="258" height="94" fill="#FFF7ED" corner-radius="16"/>
   <text id="historic-card-label" x="94" y="164" width="210" height="18" font="caption" size="12" color="muted">REFERÊNCIA DE AGOSTO</text>
   <text id="historic-card-value" x="94" y="186" width="120" height="40" font="metric" size="36" color="#D97706" wrap="false"><strong>98</strong></text>
@@ -21,7 +21,7 @@
   <shape id="august-panel" type="rect" x="72" y="276" width="552" height="288" fill="paper" stroke="hairline" stroke-width="1" corner-radius="18"/>
   <shape id="august-bar" type="rect" x="72" y="276" width="8" height="288" fill="brand" corner-radius="4"/>
   <text id="august-title" x="104" y="304" width="420" height="30" font="heading" size="24" color="ink" wrap="false">Agosto: oportunidades para acelerar</text>
-  <text id="august-description" x="104" y="342" width="428" height="42" font="body" size="16" color="muted">Dos SQLs acompanhados no CRM, 60 viraram oportunidade; 58 seguem abertas e pedem cadência comercial.</text>
+  <text id="august-description" x="104" y="344" width="428" height="42" font="body" size="16" color="muted">60 SQLs viraram oportunidade; 58 seguem abertos e pedem cadência comercial.</text>
   <shape id="august-open" type="rect" x="104" y="414" width="196" height="100" fill="#FFF7ED" corner-radius="14"/>
   <text id="august-open-label" x="124" y="433" width="150" height="18" font="caption" size="12" color="muted">EM ABERTO</text>
   <text id="august-open-value" x="124" y="458" width="150" height="38" font="metric" size="34" color="#D97706" wrap="false"><strong>58</strong></text>
@@ -31,7 +31,7 @@
   <shape id="september-panel" type="rect" x="656" y="276" width="552" height="288" fill="paper" stroke="hairline" stroke-width="1" corner-radius="18"/>
   <shape id="september-bar" type="rect" x="656" y="276" width="8" height="288" fill="accent" corner-radius="4"/>
   <text id="september-title" x="688" y="304" width="400" height="30" font="heading" size="24" color="ink" wrap="false">Setembro: 50 SQLs nas BUs prioritárias</text>
-  <text id="september-description" x="688" y="342" width="428" height="42" font="body" size="16" color="muted">A nova demanda já conta com nove oportunidades em aberto e deve entrar na mesma rotina de evolução comercial.</text>
+  <text id="september-description" x="688" y="344" width="428" height="42" font="body" size="16" color="muted">A nova demanda já soma nove oportunidades e entra na mesma rotina de evolução.</text>
   <shape id="september-sql" type="rect" x="688" y="414" width="196" height="100" fill="#EFF6FF" corner-radius="14"/>
   <text id="september-sql-label" x="708" y="433" width="150" height="18" font="caption" size="12" color="muted">SQLS</text>
   <text id="september-sql-value" x="708" y="458" width="150" height="38" font="metric" size="34" color="brand" wrap="false"><strong>50</strong></text>
@@ -40,7 +40,7 @@
   <text id="september-open-value" x="924" y="458" width="150" height="38" font="metric" size="34" color="#D97706" wrap="false"><strong>9</strong></text>
   <shape id="method-band" type="rect" x="72" y="590" width="1136" height="54" fill="#F8FAFC" corner-radius="14"/>
   <icon id="method-icon" name="handshake" x="94" y="605" width="24" height="24" color="brand"/>
-  <text id="method-text" x="136" y="600" width="1034" height="36" font="caption" size="12" color="muted" anchor="middle">A carteira comercial do período soma 34 ganhos e R$ 7,8 milhões. A rotina de follow-up acompanha as oportunidades abertas para transformar a demanda em resultado.</text>
+  <text id="method-text" x="136" y="605" width="1034" height="24" font="body" size="14" color="muted" anchor="middle">34 ganhos e R$ 7,8 milhões no período; o foco agora é avançar a carteira aberta.</text>
   <shape id="footer-line" type="line" x="72" y="674" width="1040" height="0" stroke="hairline" stroke-width="1"/>
   <text id="footer-source" x="72" y="680" width="850" height="18" font="caption" size="11" color="muted">Fonte: acompanhamento comercial no Bitrix24 · agosto e setembro até 13/09/2026</text>
   <text id="page-number" x="1146" y="678" width="62" height="20" font="caption" size="12" color="brand" align="right">06</text>

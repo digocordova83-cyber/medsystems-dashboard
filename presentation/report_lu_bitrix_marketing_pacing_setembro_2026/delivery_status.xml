@@ -3,7 +3,7 @@
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
   <text id="eyebrow" x="72" y="34" width="520" height="20" font="caption" size="12" color="brand" wrap="false"><strong>PROGRAMÁTICA · AQUISIÇÃO E ESCALA DE AUDIÊNCIA</strong></text>
   <text id="title" x="72" y="58" width="1090" height="48" font="heading" size="34" color="ink" wrap="false">Programática amplia o alcance qualificado da aquisição</text>
-  <text id="subtitle" x="72" y="103" width="1060" height="24" font="body" size="16" color="muted">Como frente primária de aquisição de demanda, o canal combina presença nos contextos certos, interesse e entrada no funil.</text>
+  <text id="subtitle" x="72" y="103" width="1060" height="24" font="body" size="16" color="muted">Como frente primária de geração de demanda, o canal combina escala, interesse e entrada no funil.</text>
   <shape id="history-panel" type="rect" x="72" y="164" width="458" height="406" fill="#071B46" corner-radius="20"/>
   <text id="history-label" x="104" y="194" width="320" height="20" font="caption" size="12" color="#A7F3D0" wrap="false">ENTREGA VERIFICADA · B2B GEOLOCALIZAÇÃO</text>
   <text id="history-title" x="104" y="224" width="330" height="54" font="heading" size="28" color="paper" line-height="1.05"><p>Aquisição em</p><p>contextos relevantes</p></text>
@@ -20,19 +20,19 @@
   <shape id="criterion-one" type="rect" x="568" y="164" width="640" height="112" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="16"/>
   <icon id="criterion-one-icon" name="radar" x="596" y="202" width="32" height="32" color="brand"/>
   <text id="criterion-one-title" x="650" y="184" width="460" height="24" font="heading" size="21" color="ink" wrap="false">1. Escala presença com qualidade</text>
-  <text id="criterion-one-copy" x="650" y="216" width="510" height="36" font="body" size="14" color="muted">A entrega já comprova capacidade de alcançar a audiência em escala, com boa visibilidade nos ambientes planejados.</text>
+  <text id="criterion-one-copy" x="650" y="216" width="510" height="36" font="body" size="14" color="muted">669 mil impactos e 79,67% de visibilidade comprovam escala nos ambientes planejados.</text>
   <shape id="criterion-two" type="rect" x="568" y="296" width="640" height="112" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="16"/>
   <icon id="criterion-two-icon" name="mouse-pointer-click" x="596" y="334" width="32" height="32" color="accent"/>
-  <text id="criterion-two-title" x="650" y="316" width="450" height="24" font="heading" size="21" color="ink" wrap="false">2. Leva a audiência à próxima ação</text>
-  <text id="criterion-two-copy" x="650" y="348" width="510" height="36" font="body" size="14" color="muted">Os cliques mostram interesse e ajudam a ampliar a entrada de audiência qualificada nas páginas e campanhas de conversão.</text>
+  <text id="criterion-two-title" x="650" y="316" width="450" height="24" font="heading" size="21" color="ink" wrap="false">2. Transforma atenção em interesse</text>
+  <text id="criterion-two-copy" x="650" y="348" width="510" height="36" font="body" size="14" color="muted">1.110 cliques ampliam o fluxo de audiência qualificada para páginas e campanhas.</text>
   <shape id="criterion-three" type="rect" x="568" y="428" width="640" height="112" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="16"/>
   <icon id="criterion-three-icon" name="trending-up" x="596" y="466" width="32" height="32" color="#D97706"/>
-  <text id="criterion-three-title" x="650" y="448" width="430" height="24" font="heading" size="21" color="ink" wrap="false">3. Fortalece o caminho até o funil</text>
-  <text id="criterion-three-copy" x="650" y="480" width="510" height="36" font="body" size="14" color="muted">Com rastreio por campanha e acompanhamento no CRM, o canal conecta alcance, interesse e geração de oportunidades.</text>
+  <text id="criterion-three-title" x="650" y="448" width="430" height="24" font="heading" size="21" color="ink" wrap="false">3. Conecta impacto ao funil</text>
+  <text id="criterion-three-copy" x="650" y="480" width="510" height="36" font="body" size="14" color="muted">UTMs e acompanhamento no CRM ligam alcance, novos contatos e oportunidades comerciais.</text>
   <shape id="limitation-band" type="rect" x="72" y="590" width="1136" height="56" fill="#FFF7ED" corner-radius="14"/>
   <icon id="limitation-icon" name="calendar" x="94" y="607" width="25" height="25" color="#D97706"/>
   <text id="limitation-title" x="136" y="600" width="420" height="18" font="caption" size="12" color="#92400E" wrap="false">PRÓXIMO PONTO DE LEITURA · 30/09</text>
-  <text id="limitation-copy" x="136" y="621" width="1000" height="18" font="body" size="14" color="ink">No fechamento do mês, vamos consolidar alcance, cliques, visitas identificadas e novos contatos para orientar a próxima onda de aquisição.</text>
+  <text id="limitation-copy" x="136" y="621" width="1000" height="18" font="body" size="14" color="ink">Consolidar alcance, cliques, visitas identificadas e novos contatos para orientar a próxima onda de aquisição.</text>
   <shape id="footer-line" type="line" x="72" y="674" width="1040" height="0" stroke="hairline" stroke-width="1"/>
   <text id="footer-source" x="72" y="680" width="890" height="18" font="caption" size="11" color="muted">Fonte: Publya · última entrega verificável disponível até 13/09/2026</text>
   <text id="page-number" x="1146" y="678" width="62" height="20" font="caption" size="12" color="brand" align="right">08</text>

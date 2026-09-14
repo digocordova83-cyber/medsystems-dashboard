@@ -11,8 +11,8 @@
   <shape id="closing-panel-dot-one" type="ellipse" x="934" y="112" width="12" height="12" fill="accent" opacity="0.90"/>
   <shape id="closing-panel-dot-two" type="ellipse" x="958" y="112" width="12" height="12" fill="paper" opacity="0.34"/>
   <shape id="closing-panel-dot-three" type="ellipse" x="982" y="112" width="12" height="12" fill="brand" opacity="0.90"/>
-  <shape id="closing-title-accent" type="rect" x="84" y="285" width="6" height="125" fill="accent" corner-radius="3"/>
-  <text id="closing-title" x="116" y="286" width="620" height="84" font="display" size="66" color="ink" wrap="false"><strong>Obrigado.</strong></text>
-  <text id="closing-subtitle" x="120" y="386" width="520" height="28" font="body" size="20" color="muted" wrap="false">Seguimos juntos na aceleração dos resultados.</text>
+  <shape id="closing-title-accent" type="rect" x="84" y="286" width="6" height="118" fill="accent" corner-radius="3"/>
+  <text id="closing-title" x="116" y="288" width="620" height="82" font="display" size="68" color="ink" wrap="false"><strong>Obrigado.</strong></text>
+  <text id="closing-subtitle" x="120" y="374" width="560" height="30" font="body" size="21" color="muted" wrap="false">Seguimos juntos na aceleração dos resultados.</text>
   <shape id="closing-bottom-hairline" type="rect" x="84" y="650" width="710" height="1" fill="hairline"/>
 </slide>

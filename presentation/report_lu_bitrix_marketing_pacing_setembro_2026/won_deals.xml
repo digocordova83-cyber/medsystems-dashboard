@@ -2,46 +2,46 @@
   <background color="paper"/>
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
   <text id="eyebrow" x="72" y="34" width="520" height="20" font="caption" size="12" color="brand" wrap="false"><strong>ACOMPANHAMENTO COMERCIAL · AGOSTO E SETEMBRO</strong></text>
-  <text id="title" x="72" y="58" width="1050" height="48" font="heading" size="34" color="ink" wrap="false">67 oportunidades seguem em acompanhamento comercial</text>
-  <text id="subtitle" x="72" y="103" width="1000" height="24" font="body" size="16" color="muted">A prioridade agora é acelerar a evolução dos negócios que já nasceram de leads prontos para vendas.</text>
+  <text id="title" x="72" y="58" width="1070" height="48" font="heading" size="34" color="ink" wrap="false">Oportunidades já têm uma agenda comercial clara</text>
+  <text id="subtitle" x="72" y="103" width="1010" height="24" font="body" size="16" color="muted">O foco é avançar os negócios abertos com rotina de acompanhamento e próximos passos definidos.</text>
   <shape id="historic-card" type="rect" x="72" y="144" width="258" height="94" fill="#FFF7ED" corner-radius="16"/>
   <text id="historic-card-label" x="94" y="164" width="210" height="18" font="caption" size="12" color="muted">REFERÊNCIA DE AGOSTO</text>
   <text id="historic-card-value" x="94" y="186" width="120" height="40" font="metric" size="36" color="#D97706" wrap="false"><strong>98</strong></text>
   <text id="historic-card-note" x="194" y="193" width="104" height="28" font="caption" size="11" color="muted" align="right"><p>SQLs reportados</p><p>no fechamento</p></text>
   <shape id="sql-card" type="rect" x="350" y="144" width="258" height="94" fill="#EFF6FF" corner-radius="16"/>
-  <text id="sql-card-label" x="372" y="164" width="200" height="18" font="caption" size="12" color="muted">SQLS ACOMPANHADOS · AGOSTO</text>
-  <text id="sql-card-value" x="372" y="186" width="190" height="40" font="metric" size="36" color="brand" wrap="false"><strong>182</strong></text>
+  <text id="sql-card-label" x="372" y="164" width="200" height="18" font="caption" size="12" color="muted">OPORTUNIDADES IDENTIFICADAS</text>
+  <text id="sql-card-value" x="372" y="186" width="190" height="40" font="metric" size="36" color="brand" wrap="false"><strong>60</strong></text>
   <shape id="linked-card" type="rect" x="628" y="144" width="258" height="94" fill="#F8FAFC" corner-radius="16"/>
-  <text id="linked-card-label" x="650" y="164" width="210" height="18" font="caption" size="12" color="muted">OPORTUNIDADES CRIADAS</text>
-  <text id="linked-card-value" x="650" y="186" width="190" height="40" font="metric" size="36" color="ink" wrap="false"><strong>60</strong></text>
+  <text id="linked-card-label" x="650" y="164" width="210" height="18" font="caption" size="12" color="muted">OPORTUNIDADES EM ABERTO</text>
+  <text id="linked-card-value" x="650" y="186" width="190" height="40" font="metric" size="36" color="ink" wrap="false"><strong>58</strong></text>
   <shape id="open-card" type="rect" x="906" y="144" width="302" height="94" fill="#ECFDF5" corner-radius="16"/>
-  <text id="open-card-label" x="928" y="164" width="226" height="18" font="caption" size="12" color="muted">OPORTUNIDADES AINDA ABERTAS</text>
-  <text id="open-card-value" x="928" y="186" width="190" height="40" font="metric" size="36" color="accent" wrap="false"><strong>67</strong></text>
-  <text id="open-card-note" x="1046" y="200" width="114" height="18" font="caption" size="12" color="muted" align="right">58 Ago + 9 Set</text>
+  <text id="open-card-label" x="928" y="164" width="226" height="18" font="caption" size="12" color="muted">NEGÓCIOS GANHOS NO PERÍODO</text>
+  <text id="open-card-value" x="928" y="186" width="190" height="40" font="metric" size="36" color="accent" wrap="false"><strong>34</strong></text>
+  <text id="open-card-note" x="1040" y="200" width="120" height="18" font="caption" size="12" color="muted" align="right">R$ 7,8 mi</text>
   <shape id="august-panel" type="rect" x="72" y="276" width="552" height="288" fill="paper" stroke="hairline" stroke-width="1" corner-radius="18"/>
   <shape id="august-bar" type="rect" x="72" y="276" width="8" height="288" fill="brand" corner-radius="4"/>
-  <text id="august-title" x="104" y="304" width="390" height="30" font="heading" size="24" color="ink" wrap="false">Agosto: 58 oportunidades em aberto</text>
-  <text id="august-description" x="104" y="342" width="428" height="42" font="body" size="16" color="muted">Há 60 oportunidades criadas a partir dos SQLs de agosto; 58 ainda aguardam evolução comercial.</text>
+  <text id="august-title" x="104" y="304" width="420" height="30" font="heading" size="24" color="ink" wrap="false">Agosto: oportunidades para acelerar</text>
+  <text id="august-description" x="104" y="342" width="428" height="42" font="body" size="16" color="muted">Dos SQLs acompanhados no CRM, 60 viraram oportunidade; 58 seguem abertas e pedem cadência comercial.</text>
   <shape id="august-open" type="rect" x="104" y="414" width="196" height="100" fill="#FFF7ED" corner-radius="14"/>
   <text id="august-open-label" x="124" y="433" width="150" height="18" font="caption" size="12" color="muted">EM ABERTO</text>
   <text id="august-open-value" x="124" y="458" width="150" height="38" font="metric" size="34" color="#D97706" wrap="false"><strong>58</strong></text>
   <shape id="august-close" type="rect" x="320" y="414" width="196" height="100" fill="#ECFDF5" corner-radius="14"/>
-  <text id="august-close-label" x="340" y="433" width="150" height="18" font="caption" size="12" color="muted">FECHADOS</text>
+  <text id="august-close-label" x="340" y="433" width="150" height="18" font="caption" size="12" color="muted">ENCERRADAS</text>
   <text id="august-close-value" x="340" y="458" width="150" height="38" font="metric" size="34" color="accent" wrap="false"><strong>2</strong></text>
   <shape id="september-panel" type="rect" x="656" y="276" width="552" height="288" fill="paper" stroke="hairline" stroke-width="1" corner-radius="18"/>
   <shape id="september-bar" type="rect" x="656" y="276" width="8" height="288" fill="accent" corner-radius="4"/>
-  <text id="september-title" x="688" y="304" width="380" height="30" font="heading" size="24" color="ink" wrap="false">Setembro: 9 oportunidades em aberto</text>
-  <text id="september-description" x="688" y="342" width="428" height="42" font="body" size="16" color="muted">Dos leads prontos para vendas no mês, 9 já viraram oportunidade e seguem em acompanhamento.</text>
+  <text id="september-title" x="688" y="304" width="400" height="30" font="heading" size="24" color="ink" wrap="false">Setembro: 50 SQLs nas BUs prioritárias</text>
+  <text id="september-description" x="688" y="342" width="428" height="42" font="body" size="16" color="muted">A nova demanda já conta com nove oportunidades em aberto e deve entrar na mesma rotina de evolução comercial.</text>
   <shape id="september-sql" type="rect" x="688" y="414" width="196" height="100" fill="#EFF6FF" corner-radius="14"/>
   <text id="september-sql-label" x="708" y="433" width="150" height="18" font="caption" size="12" color="muted">SQLS</text>
-  <text id="september-sql-value" x="708" y="458" width="150" height="38" font="metric" size="34" color="brand" wrap="false"><strong>55</strong></text>
+  <text id="september-sql-value" x="708" y="458" width="150" height="38" font="metric" size="34" color="brand" wrap="false"><strong>50</strong></text>
   <shape id="september-open" type="rect" x="904" y="414" width="196" height="100" fill="#FFF7ED" corner-radius="14"/>
   <text id="september-open-label" x="924" y="433" width="150" height="18" font="caption" size="12" color="muted">EM ABERTO</text>
   <text id="september-open-value" x="924" y="458" width="150" height="38" font="metric" size="34" color="#D97706" wrap="false"><strong>9</strong></text>
   <shape id="method-band" type="rect" x="72" y="590" width="1136" height="54" fill="#F8FAFC" corner-radius="14"/>
-  <icon id="method-icon" name="file-text" x="94" y="605" width="24" height="24" color="brand"/>
-  <text id="method-text" x="136" y="600" width="1034" height="36" font="caption" size="12" color="muted" anchor="middle">Os 98 SQLs foram o número reportado no fechamento de agosto. Para acompanhar oportunidades, usamos a base disponível no CRM: 60 negócios criados, 58 abertos, 1 ganho e 1 perdido.</text>
+  <icon id="method-icon" name="handshake" x="94" y="605" width="24" height="24" color="brand"/>
+  <text id="method-text" x="136" y="600" width="1034" height="36" font="caption" size="12" color="muted" anchor="middle">A carteira comercial do período soma 34 ganhos e R$ 7,8 milhões. A rotina de follow-up acompanha as oportunidades abertas para transformar a demanda em resultado.</text>
   <shape id="footer-line" type="line" x="72" y="674" width="1040" height="0" stroke="hairline" stroke-width="1"/>
-  <text id="footer-source" x="72" y="680" width="850" height="18" font="caption" size="11" color="muted">Fonte: acompanhamento comercial no Bitrix24 · agosto e setembro até 10/09/2026</text>
+  <text id="footer-source" x="72" y="680" width="850" height="18" font="caption" size="11" color="muted">Fonte: acompanhamento comercial no Bitrix24 · agosto e setembro até 13/09/2026</text>
   <text id="page-number" x="1146" y="678" width="62" height="20" font="caption" size="12" color="brand" align="right">06</text>
 </slide>

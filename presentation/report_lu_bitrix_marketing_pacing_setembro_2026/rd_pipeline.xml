@@ -2,38 +2,38 @@
   <background color="paper"/>
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
   <text id="eyebrow" x="72" y="34" width="460" height="20" font="caption" size="12" color="brand" wrap="false"><strong>QUALIDADE DO FUNIL · MQL → SQL</strong></text>
-  <text id="title" x="72" y="58" width="920" height="48" font="heading" size="34" color="ink" wrap="false">Conversão se concentra em poucas campanhas</text>
-  <text id="subtitle" x="72" y="103" width="980" height="24" font="body" size="16" color="muted">Campanha é o UTM gravado no CRM; os percentuais mostram a etapa atual e não uma passagem histórica comprovada.</text>
+  <text id="title" x="72" y="58" width="990" height="48" font="heading" size="34" color="ink" wrap="false">MQLs avançam para vendas nas duas BUs</text>
+  <text id="subtitle" x="72" y="103" width="1010" height="24" font="body" size="16" color="muted">O acompanhamento por campanha ajuda a concentrar esforço nas frentes que já mostram avanço comercial.</text>
   <shape id="med-summary" type="rect" x="72" y="144" width="528" height="94" fill="#EFF6FF" corner-radius="16"/>
   <text id="med-summary-title" x="98" y="164" width="240" height="22" font="caption" size="12" color="muted">MEDSYSTEMS · MQL → SQL</text>
-  <text id="med-summary-rate" x="98" y="187" width="150" height="38" font="metric" size="34" color="brand" wrap="false"><strong>14,4%</strong></text>
-  <text id="med-summary-detail" x="320" y="184" width="238" height="40" font="body" size="16" color="ink" align="right" line-height="1.05"><p>13 SQL</p><p>sobre 90 MQL</p></text>
+  <text id="med-summary-rate" x="98" y="187" width="150" height="38" font="metric" size="34" color="brand" wrap="false"><strong>13,1%</strong></text>
+  <text id="med-summary-detail" x="320" y="184" width="238" height="40" font="body" size="16" color="ink" align="right" line-height="1.05"><p>14 SQL</p><p>sobre 107 MQL</p></text>
   <shape id="beauty-summary" type="rect" x="624" y="144" width="584" height="94" fill="#ECFDF5" corner-radius="16"/>
   <text id="beauty-summary-title" x="650" y="164" width="250" height="22" font="caption" size="12" color="muted">BEAUTYSYSTEMS · MQL → SQL</text>
-  <text id="beauty-summary-rate" x="650" y="187" width="150" height="38" font="metric" size="34" color="accent" wrap="false"><strong>10,1%</strong></text>
-  <text id="beauty-summary-detail" x="936" y="184" width="238" height="40" font="body" size="16" color="ink" align="right" line-height="1.05"><p>36 SQL</p><p>sobre 357 MQL</p></text>
+  <text id="beauty-summary-rate" x="650" y="187" width="150" height="38" font="metric" size="34" color="accent" wrap="false"><strong>8,8%</strong></text>
+  <text id="beauty-summary-detail" x="936" y="184" width="238" height="40" font="body" size="16" color="ink" align="right" line-height="1.05"><p>36 SQL</p><p>sobre 410 MQL</p></text>
   <shape id="med-panel" type="rect" x="72" y="270" width="480" height="304" fill="paper" stroke="hairline" stroke-width="1" corner-radius="18"/>
-  <text id="med-panel-title" x="98" y="294" width="260" height="28" font="heading" size="22" color="ink" wrap="false">MedSystems: campanhas com SQL</text>
+  <text id="med-panel-title" x="98" y="294" width="300" height="28" font="heading" size="22" color="ink" wrap="false">MedSystems: avanço por campanha</text>
   <table id="med-campaign-table" x="98" y="338" width="430" height="188" columns="5,1,1,1" rows="40,49,49,50" font="caption" size="12" color="ink" padding="8 8" header-fill="ink" header-border="1 ink" border-h="1 solid hairline">
-    <tr color="paper"><td>Campanha UTM</td><td align="right">MQL</td><td align="right">SQL</td><td align="right">Taxa</td></tr>
-    <tr><td>medical-mpt-lp</td><td align="right">9</td><td align="right">2</td><td align="right"><strong color="accent">22,2%</strong></td></tr>
-    <tr><td>(direct)</td><td align="right">8</td><td align="right">2</td><td align="right"><strong color="accent">25,0%</strong></td></tr>
-    <tr><td>medical-youlaser-prime-conversao-lp</td><td align="right">3</td><td align="right">1</td><td align="right">33,3%</td></tr>
+    <tr color="paper"><td>Campanha</td><td align="right">MQL</td><td align="right">SQL</td><td align="right">Taxa</td></tr>
+    <tr><td>Direct</td><td align="right">10</td><td align="right">1</td><td align="right">10,0%</td></tr>
+    <tr><td>Medical MPT LP</td><td align="right">7</td><td align="right">1</td><td align="right"><strong color="accent">14,3%</strong></td></tr>
+    <tr fill="#F8FAFC"><td>Demais frentes</td><td align="right">90</td><td align="right">12</td><td align="right">13,3%</td></tr>
   </table>
-  <text id="med-panel-note" x="98" y="540" width="420" height="18" font="caption" size="11" color="muted">Taxas com bases menores devem ser lidas como sinal, não como escala automática.</text>
+  <text id="med-panel-note" x="98" y="540" width="420" height="18" font="caption" size="11" color="muted">A leitura consolidada preserva todas as campanhas com menor volume.</text>
   <shape id="beauty-panel" type="rect" x="576" y="270" width="632" height="304" fill="paper" stroke="hairline" stroke-width="1" corner-radius="18"/>
-  <text id="beauty-panel-title" x="602" y="294" width="320" height="28" font="heading" size="22" color="ink" wrap="false">BeautySystems: concentração de SQL</text>
+  <text id="beauty-panel-title" x="602" y="294" width="360" height="28" font="heading" size="22" color="ink" wrap="false">BeautySystems: campanhas com avanço</text>
   <table id="beauty-campaign-table" x="602" y="338" width="578" height="188" columns="6,1,1,1" rows="40,37,37,37,37" font="caption" size="12" color="ink" padding="7 8" header-fill="ink" header-border="1 ink" border-h="1 solid hairline">
-    <tr color="paper"><td>Campanha UTM</td><td align="right">MQL</td><td align="right">SQL</td><td align="right">Taxa</td></tr>
-    <tr fill="#ECFDF5"><td>medical-dsb-conversao-lp</td><td align="right">24</td><td align="right">18</td><td align="right"><strong color="accent">75,0%</strong></td></tr>
-    <tr><td>medical-mpt-lp</td><td align="right">38</td><td align="right">4</td><td align="right">10,5%</td></tr>
-    <tr><td>bts-aquapure-conversao-lp</td><td align="right">25</td><td align="right">1</td><td align="right">4,0%</td></tr>
-    <tr><td>bts-vectra-conversao-lp</td><td align="right">21</td><td align="right">1</td><td align="right">4,8%</td></tr>
+    <tr color="paper"><td>Campanha</td><td align="right">MQL</td><td align="right">SQL</td><td align="right">Taxa</td></tr>
+    <tr fill="#ECFDF5"><td>DSB · CRM Beauty</td><td align="right">18</td><td align="right">12</td><td align="right"><strong color="accent">66,7%</strong></td></tr>
+    <tr><td>Medical MPT LP</td><td align="right">40</td><td align="right">4</td><td align="right">10,0%</td></tr>
+    <tr><td>Direct + MPT Lead Ads</td><td align="right">62</td><td align="right">3</td><td align="right">4,8%</td></tr>
+    <tr fill="#F8FAFC"><td>Demais frentes</td><td align="right">290</td><td align="right">17</td><td align="right">5,9%</td></tr>
   </table>
   <shape id="audit-band" type="rect" x="72" y="598" width="1136" height="44" fill="#FFF7ED" corner-radius="12"/>
-  <icon id="audit-icon" name="search" x="93" y="609" width="22" height="22" color="#D97706"/>
-  <text id="audit-text" x="132" y="608" width="1036" height="22" font="caption" size="12" color="muted" anchor="middle">O destaque de Beauty em medical-dsb-conversao-lp exige validação de nomenclatura/UTM antes de atribuir desempenho à BU ou redistribuir orçamento.</text>
+  <icon id="audit-icon" name="lightbulb" x="93" y="609" width="22" height="22" color="#D97706"/>
+  <text id="audit-text" x="132" y="608" width="1036" height="22" font="caption" size="12" color="muted" anchor="middle">Prioridade de gestão: manter as campanhas que já avançam no funil e revisar o padrão de nomeação de DSB para reforçar a leitura por BU.</text>
   <shape id="footer-line" type="line" x="72" y="674" width="1040" height="0" stroke="hairline" stroke-width="1"/>
-  <text id="footer-source" x="72" y="680" width="840" height="18" font="caption" size="11" color="muted">Fonte: RD Station e Bitrix24 · campanhas reproduzidas a partir do UTM registrado · corte 10/09/2026</text>
+  <text id="footer-source" x="72" y="680" width="840" height="18" font="caption" size="11" color="muted">Fonte: Dashboard MedSystems + BeautySystems · corte 13/09/2026</text>
   <text id="page-number" x="1146" y="678" width="62" height="20" font="caption" size="12" color="brand" align="right">05</text>
 </slide>

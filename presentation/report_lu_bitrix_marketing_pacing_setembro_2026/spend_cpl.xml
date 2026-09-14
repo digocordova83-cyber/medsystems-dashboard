@@ -1,38 +1,38 @@
 <slide id="spend_cpl">
   <background color="paper"/>
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
-  <text id="eyebrow" x="72" y="34" width="520" height="20" font="caption" size="12" color="brand" wrap="false"><strong>INVESTIMENTO EM MÍDIA PAGA · 01–10/09</strong></text>
-  <text id="title" x="72" y="58" width="1000" height="48" font="heading" size="34" color="ink" wrap="false">R$ 36,7 mil investidos em Google e Meta</text>
-  <text id="subtitle" x="72" y="103" width="1000" height="24" font="body" size="16" color="muted">Visão por unidade de negócio: investimento, conversões registradas nas plataformas e custo por conversão.</text>
+  <text id="eyebrow" x="72" y="34" width="520" height="20" font="caption" size="12" color="brand" wrap="false"><strong>INVESTIMENTO EM AQUISIÇÃO · 01–13/09</strong></text>
+  <text id="title" x="72" y="58" width="1040" height="48" font="heading" size="34" color="ink" wrap="false">R$ 48,2 mil investidos em Google e Meta</text>
+  <text id="subtitle" x="72" y="103" width="1050" height="24" font="body" size="16" color="muted">Visão por BU: investimento, conversões registradas nas plataformas e custo médio por conversão.</text>
   <shape id="med-panel" type="rect" x="72" y="172" width="552" height="312" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="18"/>
   <shape id="med-bar" type="rect" x="72" y="172" width="8" height="312" fill="brand" corner-radius="4"/>
   <text id="med-title" x="104" y="200" width="280" height="30" font="heading" size="24" color="ink" wrap="false">MedSystems</text>
   <text id="med-spend-label" x="104" y="252" width="250" height="18" font="caption" size="12" color="muted" wrap="false">INVESTIMENTO GOOGLE + META</text>
-  <text id="med-spend" x="104" y="278" width="370" height="46" font="metric" size="38" color="brand" wrap="false"><strong>R$ 19.859,52</strong></text>
+  <text id="med-spend" x="104" y="278" width="370" height="46" font="metric" size="38" color="brand" wrap="false"><strong>R$ 25.771,19</strong></text>
   <shape id="med-divider" type="line" x="104" y="348" width="456" height="0" stroke="hairline" stroke-width="1"/>
   <text id="med-leads-label" x="104" y="374" width="200" height="18" font="caption" size="12" color="muted" wrap="false">CONVERSÕES NA PLATAFORMA</text>
-  <text id="med-leads" x="104" y="398" width="160" height="34" font="heading" size="30" color="ink" wrap="false"><strong>195,0</strong></text>
+  <text id="med-leads" x="104" y="398" width="160" height="34" font="heading" size="30" color="ink" wrap="false"><strong>237</strong></text>
   <text id="med-cpl-label" x="350" y="374" width="170" height="18" font="caption" size="12" color="muted" align="right" wrap="false">CUSTO POR CONVERSÃO</text>
-  <text id="med-cpl" x="330" y="398" width="190" height="34" font="heading" size="30" color="accent" align="right" wrap="false"><strong>R$ 101,83</strong></text>
+  <text id="med-cpl" x="330" y="398" width="190" height="34" font="heading" size="30" color="accent" align="right" wrap="false"><strong>R$ 108,73</strong></text>
   <shape id="beauty-panel" type="rect" x="656" y="172" width="552" height="312" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="18"/>
   <shape id="beauty-bar" type="rect" x="656" y="172" width="8" height="312" fill="accent" corner-radius="4"/>
   <text id="beauty-title" x="688" y="200" width="280" height="30" font="heading" size="24" color="ink" wrap="false">BeautySystems</text>
   <text id="beauty-spend-label" x="688" y="252" width="250" height="18" font="caption" size="12" color="muted" wrap="false">INVESTIMENTO GOOGLE + META</text>
-  <text id="beauty-spend" x="688" y="278" width="370" height="46" font="metric" size="38" color="accent" wrap="false"><strong>R$ 16.889,82</strong></text>
+  <text id="beauty-spend" x="688" y="278" width="370" height="46" font="metric" size="38" color="accent" wrap="false"><strong>R$ 22.400,96</strong></text>
   <shape id="beauty-divider" type="line" x="688" y="348" width="456" height="0" stroke="hairline" stroke-width="1"/>
   <text id="beauty-leads-label" x="688" y="374" width="200" height="18" font="caption" size="12" color="muted" wrap="false">CONVERSÕES NA PLATAFORMA</text>
-  <text id="beauty-leads" x="688" y="398" width="160" height="34" font="heading" size="30" color="ink" wrap="false"><strong>184,0</strong></text>
+  <text id="beauty-leads" x="688" y="398" width="160" height="34" font="heading" size="30" color="ink" wrap="false"><strong>226</strong></text>
   <text id="beauty-cpl-label" x="936" y="374" width="170" height="18" font="caption" size="12" color="muted" align="right" wrap="false">CUSTO POR CONVERSÃO</text>
-  <text id="beauty-cpl" x="916" y="398" width="190" height="34" font="heading" size="30" color="accent" align="right" wrap="false"><strong>R$ 91,79</strong></text>
+  <text id="beauty-cpl" x="916" y="398" width="190" height="34" font="heading" size="30" color="accent" align="right" wrap="false"><strong>R$ 99,11</strong></text>
   <shape id="total-band" type="rect" x="72" y="510" width="1136" height="60" fill="#ECFDF5" corner-radius="14"/>
   <icon id="total-icon" name="wallet" x="94" y="526" width="28" height="28" color="accent"/>
   <text id="total-label" x="140" y="523" width="260" height="24" font="caption" size="12" color="muted" wrap="false">TOTAL INVESTIDO</text>
-  <text id="total-value" x="140" y="544" width="270" height="26" font="heading" size="25" color="ink" wrap="false"><strong>R$ 36.749,34</strong></text>
-  <text id="total-detail" x="666" y="532" width="480" height="26" font="body" size="16" color="ink" align="right" wrap="false">379,0 conversões na plataforma · custo médio R$ 96,95</text>
+  <text id="total-value" x="140" y="544" width="270" height="26" font="heading" size="25" color="ink" wrap="false"><strong>R$ 48.172,15</strong></text>
+  <text id="total-detail" x="666" y="532" width="480" height="26" font="body" size="16" color="ink" align="right" wrap="false">463 conversões na plataforma · custo médio R$ 104,04</text>
   <shape id="method-band" type="rect" x="72" y="590" width="1136" height="52" fill="#EFF6FF" corner-radius="14"/>
-  <icon id="method-icon" name="circle-check" x="94" y="605" width="24" height="24" color="brand"/>
-  <text id="method-text" x="136" y="600" width="1030" height="32" font="caption" size="13" color="muted" anchor="middle">Programática e Push são acompanhados em frente própria: o período ainda não possui gasto financeiro reportado para somar a este total.</text>
+  <icon id="method-icon" name="sparkles" x="94" y="605" width="24" height="24" color="brand"/>
+  <text id="method-text" x="136" y="600" width="1030" height="32" font="caption" size="13" color="muted" anchor="middle">Google, Meta e Programática formam uma estratégia integrada de aquisição: conversão direta, escala de audiência e geração de demanda.</text>
   <shape id="footer-line" type="line" x="72" y="674" width="1040" height="0" stroke="hairline" stroke-width="1"/>
-  <text id="footer-source" x="72" y="680" width="900" height="18" font="caption" size="11" color="muted">Fonte: Google Ads e Meta Ads · corte 01–10/09/2026</text>
+  <text id="footer-source" x="72" y="680" width="900" height="18" font="caption" size="11" color="muted">Fonte: Google Ads e Meta Ads · corte 01–13/09/2026</text>
   <text id="page-number" x="1146" y="678" width="62" height="20" font="caption" size="12" color="brand" align="right">04</text>
 </slide>

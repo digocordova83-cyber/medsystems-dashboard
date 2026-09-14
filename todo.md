@@ -802,3 +802,6 @@
 - [x] Recalcular snapshots e validar cortes, totais por BU e número de leads do dia 13/09 no Dashboard.
 - [x] Publicar a atualização D-1 e documentar fontes, período e limitações encontradas.
 - [x] Remover duplicidades de chave provisória por nome de campanha quando o Windsor retornar o identificador técnico no mesmo dia e conta.
+- [x] Consolidar os dados do Dashboard até 13/09/2026 para atualizar o Report Executivo.
+- [x] Reposicionar a narrativa de programática como canal estratégico de aquisição, impacto e geração de demanda.
+- [x] Atualizar, validar e apresentar o Report Executivo no padrão Report Lu com o corte de 13/09/2026.

@@ -2,30 +2,30 @@
   <background color="paper"/>
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
   <text id="eyebrow" x="72" y="34" width="500" height="20" font="caption" size="12" color="brand" wrap="false"><strong>PLANO DE AÇÃO · BEAUTYSYSTEMS</strong></text>
-  <text id="title" x="72" y="58" width="1050" height="48" font="heading" size="34" color="ink" wrap="false">Plano de reação: 1.206 leads até 30/09</text>
-  <text id="subtitle" x="72" y="103" width="1010" height="24" font="body" size="16" color="muted">Objetivo: recuperar volume com acompanhamento diário, decisões rápidas e qualidade suficiente para gerar oportunidades.</text>
+  <text id="title" x="72" y="58" width="1050" height="48" font="heading" size="34" color="ink" wrap="false">Plano de aceleração para fechar setembro</text>
+  <text id="subtitle" x="72" y="103" width="1010" height="24" font="body" size="16" color="muted">Objetivo: ampliar aquisição, preservar qualidade e transformar demanda em oportunidades comerciais.</text>
   <shape id="target-card" type="rect" x="72" y="144" width="432" height="102" fill="#FFF7ED" corner-radius="16"/>
   <icon id="target-icon" name="target" x="96" y="171" width="36" height="36" color="#D97706"/>
-  <text id="target-label" x="150" y="162" width="210" height="18" font="caption" size="12" color="muted">OBJETIVO OPERACIONAL</text>
-  <text id="target-value" x="150" y="185" width="210" height="40" font="metric" size="36" color="#D97706" wrap="false"><strong>1.206 leads</strong></text>
+  <text id="target-label" x="150" y="162" width="210" height="18" font="caption" size="12" color="muted">SALDO PARA A META</text>
+  <text id="target-value" x="150" y="185" width="210" height="40" font="metric" size="36" color="#D97706" wrap="false"><strong>881 leads</strong></text>
   <text id="target-note" x="350" y="187" width="126" height="42" font="caption" size="12" color="muted" align="right" line-height="1.05"><p>até</p><p>30/09</p></text>
   <shape id="cadence-card" type="rect" x="528" y="144" width="680" height="102" fill="#ECFDF5" corner-radius="16"/>
   <icon id="cadence-icon" name="calendar-check" x="554" y="171" width="36" height="36" color="accent"/>
-  <text id="cadence-label" x="610" y="162" width="500" height="18" font="caption" size="12" color="muted">CADÊNCIA DE ACOMPANHAMENTO</text>
-  <text id="cadence-value" x="610" y="185" width="244" height="36" font="metric" size="30" color="accent" wrap="false"><strong>60,3 leads por dia</strong></text>
-  <text id="cadence-copy" x="880" y="188" width="280" height="32" font="body" size="14" color="muted" line-height="1.15">Acompanhar diariamente e agir sempre que o acumulado ficar abaixo do ritmo.</text>
-  <text id="table-title" x="72" y="270" width="640" height="28" font="heading" size="22" color="ink" wrap="false">Como vamos executar</text>
+  <text id="cadence-label" x="610" y="162" width="500" height="18" font="caption" size="12" color="muted">RITMO DE EXECUÇÃO</text>
+  <text id="cadence-value" x="610" y="185" width="244" height="36" font="metric" size="30" color="accent" wrap="false"><strong>51,8 leads por dia</strong></text>
+  <text id="cadence-copy" x="880" y="188" width="280" height="32" font="body" size="14" color="muted" line-height="1.15">Acompanhamento diário para manter a entrega no ritmo necessário.</text>
+  <text id="table-title" x="72" y="270" width="700" height="28" font="heading" size="22" color="ink" wrap="false">Como vamos acelerar a aquisição</text>
   <table id="action-plan-table" x="72" y="310" width="1136" height="244" columns="2.2,4,2.2,3.2" rows="46,66,66,66" font="caption" size="13" color="ink" padding="9 11" header-fill="ink" header-border="1 ink" border-h="1 solid hairline">
-    <tr color="paper"><td>Objetivo</td><td>Ação</td><td>Responsável</td><td>Cadência e gatilho</td></tr>
-    <tr><td><strong>Entregar volume</strong></td><td>Distribuir verba para as frentes que mantêm o ritmo diário e pausar rapidamente o que perde tração.</td><td>Mídia e Performance</td><td>Diariamente. Ajustar quando o acumulado ficar abaixo de 60,3 leads/dia.</td></tr>
-    <tr fill="#FFF7ED"><td><strong>Preservar qualidade</strong></td><td>Priorizar campanhas com melhor conversão em MQL e revisar criativo, público ou página nas de baixa resposta.</td><td>Mídia + Marketing</td><td>Duas vezes por semana. Escalar somente o que mantém qualidade.</td></tr>
-    <tr fill="#F8FAFC"><td><strong>Acelerar atendimento</strong></td><td>Garantir que novos leads cheguem com origem identificada e entrem na etapa correta de atendimento.</td><td>CRM + Comercial</td><td>Revisão semanal. Corrigir o fluxo antes de aumentar o investimento.</td></tr>
+    <tr color="paper"><td>Prioridade</td><td>Ação</td><td>Responsável</td><td>Cadência e decisão</td></tr>
+    <tr><td><strong>Escalar aquisição</strong></td><td>Usar programática como frente prioritária para ampliar alcance qualificado e gerar demanda, integrada a Meta e Google.</td><td>Mídia e Performance</td><td>Diariamente. Acompanhar alcance, interesse e novos contatos no funil.</td></tr>
+    <tr fill="#FFF7ED"><td><strong>Converter demanda</strong></td><td>Concentrar verba, criativos e páginas nas frentes que entregam MQL e mostram avanço para SQL.</td><td>Mídia + Marketing</td><td>Duas vezes por semana. Reforçar o que traz qualidade e pausar o que não evolui.</td></tr>
+    <tr fill="#F8FAFC"><td><strong>Avançar oportunidades</strong></td><td>Garantir resposta rápida, origem registrada e próximo passo comercial para cada novo SQL.</td><td>CRM + Comercial</td><td>Revisão semanal. Priorizar oportunidades abertas com maior potencial de avanço.</td></tr>
   </table>
   <shape id="decision-band" type="rect" x="72" y="584" width="1136" height="60" fill="ink" corner-radius="14"/>
   <icon id="decision-icon" name="arrow-right-circle" x="94" y="601" width="28" height="28" color="accent"/>
   <text id="decision-title" x="140" y="595" width="250" height="18" font="caption" size="12" color="#A7F3D0" wrap="false">PONTO DE DECISÃO · 20/09</text>
-  <text id="decision-copy" x="140" y="618" width="1010" height="18" font="body" size="14" color="paper">Se o ritmo estiver abaixo da meta, a gestão decide redistribuição de verba e priorização de campanhas com melhor resposta.</text>
+  <text id="decision-copy" x="140" y="618" width="1010" height="18" font="body" size="14" color="paper">Se o ritmo ficar abaixo de 51,8 leads/dia, a gestão redistribui esforço e prioriza as frentes com maior resposta e qualidade comercial.</text>
   <shape id="footer-line" type="line" x="72" y="674" width="1040" height="0" stroke="hairline" stroke-width="1"/>
-  <text id="footer-source" x="72" y="680" width="930" height="18" font="caption" size="11" color="muted">Fonte: objetivo operacional informado pela gestão · acompanhamento diário no Dashboard · corte 10/09/2026</text>
+  <text id="footer-source" x="72" y="680" width="930" height="18" font="caption" size="11" color="muted">Fonte: metas da operação e Dashboard MedSystems + BeautySystems · corte 13/09/2026</text>
   <text id="page-number" x="1146" y="678" width="62" height="20" font="caption" size="12" color="brand" align="right">07</text>
 </slide>

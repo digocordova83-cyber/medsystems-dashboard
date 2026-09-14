@@ -18,6 +18,6 @@
   </text>
   <shape id="cover-date-card" type="rect" x="116" y="458" width="370" height="54" fill="surface" corner-radius="14"/>
   <shape id="cover-date-strip" type="rect" x="116" y="458" width="6" height="54" fill="accent" corner-radius="3"/>
-  <text id="cover-partial-date" x="142" y="469" width="320" height="30" font="body" size="17" color="muted" anchor="middle" wrap="false"><strong>Dados parciais até 10/09</strong></text>
+  <text id="cover-partial-date" x="142" y="469" width="320" height="30" font="body" size="17" color="muted" anchor="middle" wrap="false"><strong>Dados parciais até 13/09</strong></text>
   <shape id="cover-bottom-hairline" type="rect" x="84" y="650" width="710" height="1" fill="hairline"/>
 </slide>

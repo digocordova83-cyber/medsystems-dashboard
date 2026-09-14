@@ -813,6 +813,6 @@
 - [x] Corrigir o valor de visibilidade que ultrapassa a faixa azul na lâmina de programática.
 - [x] Reposicionar os textos de investimento e conversões para ficarem totalmente contidos no card verde.
 - [x] Revisar as nove lâminas contra vazamentos, cortes e textos fora de seus backgrounds e entregar novo PDF final.
-- [ ] Inspecionar a planilha `LEADS01A14.09.xlsx` e identificar os campos disponíveis para cruzamento com o Bitrix24.
-- [ ] Cruzar os leads da planilha com o Bitrix24 por e-mail, telefone e nome de apoio, classificando pipeline e etapa atual.
-- [ ] Gerar arquivo de auditoria com a localização dos leads no Bitrix24 e resumo de encontrados, múltiplos e não encontrados.
+- [x] Inspecionar a planilha `LEADS01A14.09.xlsx` e identificar os campos disponíveis para cruzamento com o Bitrix24.
+- [x] Cruzar os leads da planilha com o Bitrix24 por e-mail, telefone e nome de apoio, classificando pipeline e etapa atual.
+- [x] Gerar arquivo de auditoria com a localização dos leads no Bitrix24 e resumo de encontrados, múltiplos e não encontrados.

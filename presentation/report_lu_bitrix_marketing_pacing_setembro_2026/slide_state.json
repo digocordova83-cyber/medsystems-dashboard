@@ -2,8 +2,8 @@
   "project_info": {
     "title": "Report executivo — leads de marketing",
     "created": 1788912510.367,
-    "last_updated": 1789391088.733,
-    "total_slides": 8
+    "last_updated": 1789391717.525,
+    "total_slides": 9
   },
   "slides": [
     {
@@ -50,6 +50,11 @@
       "id": "delivery_status",
       "state": "edited",
       "pageNum": 8
+    },
+    {
+      "id": "closing",
+      "state": "edited",
+      "pageNum": 9
     }
   ],
   "outline": [
@@ -100,6 +105,12 @@
       "title": "Cronograma de entregas",
       "summary": "Reconstrói a tabela fornecida pelo usuário com frente, projeto/produto, status atual, próximo marco e previsão de entrega, preservando todos os textos e prazos informados.",
       "image_plan": "Sem imagem; usar tabela editorial com cores de status e agrupamentos por frente."
+    },
+    {
+      "id": "closing",
+      "title": "Encerramento",
+      "summary": "Lâmina final minimalista de agradecimento, sem métricas ou conteúdo adicional, preservando a identidade Report Lu.",
+      "image_plan": "Sem imagem; usar composição abstrata em branco, azul, verde e navy consistente com a capa."
     }
   ]
 }

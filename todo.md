@@ -797,3 +797,8 @@
 - [x] Reduzir explicações técnicas de extração a notas discretas de metodologia, sem ocultar limitações relevantes.
 - [x] Transformar o plano Beauty em uma matriz clara de objetivo, ação, responsável, frequência e gatilho de decisão.
 - [x] Validar a leitura do deck, reapresentar e entregar a versão cliente.
+- [x] Sincronizar RD Station e Bitrix24 até 13/09/2026, preservando as metodologias atuais de leads e funil.
+- [x] Atualizar Google, Meta, programática e Push até 13/09/2026 quando houver dados verificáveis nas fontes oficiais.
+- [x] Recalcular snapshots e validar cortes, totais por BU e número de leads do dia 13/09 no Dashboard.
+- [x] Publicar a atualização D-1 e documentar fontes, período e limitações encontradas.
+- [x] Remover duplicidades de chave provisória por nome de campanha quando o Windsor retornar o identificador técnico no mesmo dia e conta.

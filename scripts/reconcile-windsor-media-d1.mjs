@@ -40,6 +40,17 @@ try {
       const campaignId = row.campaign_id ? String(row.campaign_id) : row.campaign ? `name:${row.campaign}` : null;
       if (!account || !row.date || !campaignId) continue;
       const leads = source.connector === "facebook" ? numeric(row.actions_lead) : numeric(row.conversions);
+      if (row.campaign_id && row.campaign) {
+        await connection.execute(`DELETE FROM mediaDailyPerformance
+          WHERE platform = ? AND recordLevel = 'campaign' AND brand = ? AND reportDate = ?
+            AND accountId = ? AND campaignId = ?`, [
+          account.platform,
+          account.brand,
+          new Date(`${row.date}T12:00:00.000Z`),
+          String(row.account_id),
+          `name:${row.campaign}`,
+        ]);
+      }
       await connection.execute(`INSERT INTO mediaDailyPerformance
         (platform, recordLevel, brand, reportDate, accountId, accountName, campaignId, campaignName, adGroupId, adId, spend, impressions, reach, clicks, platformLeads, platformConversions, rawPayload, syncedAt)
         VALUES (?, 'campaign', ?, ?, ?, ?, ?, ?, '', '', ?, ?, ?, ?, ?, ?, ?, NOW())

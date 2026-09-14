@@ -24,11 +24,11 @@
   <text id="beauty-leads" x="688" y="398" width="160" height="34" font="heading" size="30" color="ink" wrap="false"><strong>226</strong></text>
   <text id="beauty-cpl-label" x="936" y="374" width="170" height="18" font="caption" size="12" color="muted" align="right" wrap="false">CUSTO POR CONVERSÃO</text>
   <text id="beauty-cpl" x="916" y="398" width="190" height="34" font="heading" size="30" color="accent" align="right" wrap="false"><strong>R$ 99,11</strong></text>
-  <shape id="total-band" type="rect" x="72" y="510" width="1136" height="60" fill="#ECFDF5" corner-radius="14"/>
-  <icon id="total-icon" name="wallet" x="94" y="526" width="28" height="28" color="accent"/>
-  <text id="total-label" x="140" y="523" width="260" height="24" font="caption" size="12" color="muted" wrap="false">TOTAL INVESTIDO</text>
-  <text id="total-value" x="140" y="544" width="270" height="26" font="heading" size="25" color="ink" wrap="false"><strong>R$ 48.172,15</strong></text>
-  <text id="total-detail" x="666" y="532" width="480" height="26" font="body" size="16" color="ink" align="right" wrap="false">463 conversões na plataforma · custo médio R$ 104,04</text>
+  <shape id="total-band" type="rect" x="72" y="502" width="1136" height="68" fill="#ECFDF5" corner-radius="14"/>
+  <icon id="total-icon" name="wallet" x="94" y="522" width="28" height="28" color="accent"/>
+  <text id="total-label" x="140" y="514" width="260" height="18" font="caption" size="11" color="muted" wrap="false">TOTAL INVESTIDO</text>
+  <text id="total-value" x="140" y="536" width="270" height="28" font="heading" size="24" color="ink" wrap="false"><strong>R$ 48.172,15</strong></text>
+  <text id="total-detail" x="620" y="522" width="526" height="28" font="body" size="15" color="ink" align="right" anchor="middle" wrap="false">463 conversões na plataforma · custo médio R$ 104,04</text>
   <shape id="method-band" type="rect" x="72" y="590" width="1136" height="52" fill="#EFF6FF" corner-radius="14"/>
   <icon id="method-icon" name="sparkles" x="94" y="605" width="24" height="24" color="brand"/>
   <text id="method-text" x="136" y="600" width="1030" height="32" font="caption" size="13" color="muted" anchor="middle">Google, Meta e Programática formam uma estratégia integrada de aquisição: conversão direta, escala de audiência e geração de demanda.</text>

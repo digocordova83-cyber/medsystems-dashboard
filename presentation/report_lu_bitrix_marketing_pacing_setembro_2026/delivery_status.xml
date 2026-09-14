@@ -14,9 +14,9 @@
   <text id="history-click-value" x="104" y="424" width="150" height="34" font="heading" size="30" color="paper" wrap="false"><strong>1.110</strong></text>
   <text id="history-ctr-label" x="294" y="404" width="112" height="18" font="caption" size="12" color="#BFDBFE" align="right">CTR</text>
   <text id="history-ctr-value" x="274" y="424" width="132" height="34" font="heading" size="30" color="paper" align="right" wrap="false"><strong>0,166%</strong></text>
-  <shape id="history-bottom" type="rect" x="104" y="486" width="298" height="52" fill="#0F5DDB" corner-radius="12"/>
-  <text id="history-view-label" x="124" y="495" width="140" height="16" font="caption" size="11" color="#DBEAFE">VISIBILIDADE</text>
-  <text id="history-view-value" x="124" y="512" width="170" height="22" font="heading" size="22" color="paper" wrap="false"><strong>79,67%</strong></text>
+  <shape id="history-bottom" type="rect" x="104" y="480" width="298" height="64" fill="#0F5DDB" corner-radius="12"/>
+  <text id="history-view-label" x="124" y="489" width="140" height="16" font="caption" size="11" color="#DBEAFE" wrap="false">VISIBILIDADE</text>
+  <text id="history-view-value" x="124" y="508" width="170" height="26" font="heading" size="21" color="paper" wrap="false"><strong>79,67%</strong></text>
   <shape id="criterion-one" type="rect" x="568" y="164" width="640" height="112" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="16"/>
   <icon id="criterion-one-icon" name="radar" x="596" y="202" width="32" height="32" color="brand"/>
   <text id="criterion-one-title" x="650" y="184" width="460" height="24" font="heading" size="21" color="ink" wrap="false">1. Escala presença com qualidade</text>

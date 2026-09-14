@@ -48,3 +48,7 @@ A página final está elegante e resolve o problema de corte seco. Pode receber 
 2. Melhorar equilíbrio visual entre cards e gráficos nas páginas 2 e 3.
 3. Ajustar pequenos alinhamentos de subtítulos nas páginas 1 e 9.
 4. Uniformizar a força visual das barras/resumos inferiores nas páginas 4, 5 e 6.
+
+## Validação final após correção
+
+No PDF `Report_executivo_final_sem_vazamentos_13-09-2026.pdf`, a página 4 foi validada com o valor total, o rótulo e o resumo de conversões integralmente contidos no card verde, com alinhamento vertical e margens internas consistentes. A página 8 foi validada com o rótulo e o valor de visibilidade totalmente contidos na faixa azul, sem corte inferior ou vazamento para o fundo navy.

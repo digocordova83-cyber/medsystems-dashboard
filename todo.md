@@ -810,3 +810,6 @@
 - [x] Auditar visualmente as nove lâminas do Report Executivo quanto a hierarquia, alinhamento, espaçamento e legibilidade.
 - [x] Corrigir inconsistências de layout e padronizar títulos, cards, tabelas, rodapés e densidade de informação.
 - [x] Validar novamente o deck completo e entregar a apresentação final refinada.
+- [x] Corrigir o valor de visibilidade que ultrapassa a faixa azul na lâmina de programática.
+- [x] Reposicionar os textos de investimento e conversões para ficarem totalmente contidos no card verde.
+- [x] Revisar as nove lâminas contra vazamentos, cortes e textos fora de seus backgrounds e entregar novo PDF final.

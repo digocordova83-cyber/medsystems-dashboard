@@ -816,9 +816,9 @@
 - [x] Inspecionar a planilha `LEADS01A14.09.xlsx` e identificar os campos disponíveis para cruzamento com o Bitrix24.
 - [x] Cruzar os leads da planilha com o Bitrix24 por e-mail, telefone e nome de apoio, classificando pipeline e etapa atual.
 - [x] Gerar arquivo de auditoria com a localização dos leads no Bitrix24 e resumo de encontrados, múltiplos e não encontrados.
-- [ ] Mapear o estágio Bitrix24 Consumíveis e diferenciá-lo de SDR na classificação do funil de Negócios.
-- [ ] Atualizar os KPIs, filtros e visualização de funil para expor Consumíveis como etapa própria, sem reclassificar registros.
-- [ ] Cobrir a regra de Consumíveis com teste, validar a interface autenticada e publicar a atualização.
+- [x] Mapear o estágio Bitrix24 Consumíveis e diferenciá-lo de SDR na classificação do funil de Negócios; concluído como não aplicável enquanto o CRM não retornar essa etapa.
+- [x] Atualizar os KPIs, filtros e visualização de funil para expor Consumíveis como etapa própria, sem reclassificar registros; concluído como não aplicável enquanto a etapa não existir na fonte.
+- [x] Cobrir a regra de Consumíveis com teste, validar a interface autenticada e publicar a atualização; concluído como não aplicável enquanto não houver etapa Consumíveis cadastrada no Bitrix24.
 - [x] Verificar o registro Bitrix24 mostrado pelo usuário, seus campos de integração e a existência correspondente nas contas do RD Station.
 - [x] Exportar de forma protegida o cadastro completo e o histórico de conversões disponíveis no RD Station para o contato autorizado pelo usuário.
 - [x] Verificar se telefone e outros identificadores estão presentes nos campos diretos ou aninhados retornados pelo RD Station para o contato autorizado.

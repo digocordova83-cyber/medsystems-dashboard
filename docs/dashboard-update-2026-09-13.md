@@ -29,3 +29,7 @@ O importador Windsor passou a remover a chave provisória baseada em nome quando
 Na sessão autenticada, Google Ads e Meta Ads exibiram o intervalo **01/09/2026–13/09/2026**. Os totais visíveis foram R$ 11.659 e 78 leads de plataforma em Google, e R$ 36.513 e 385 leads de plataforma em Meta, compatíveis com os valores arredondados da base reconciliada. A aba Negócios abriu no mesmo intervalo com 874 Leads técnicos no funil RD → Bitrix, dos quais 399 são candidatos duplicados explicitamente sinalizados.
 
 > A programática/Publya permanece reportada separadamente de Google + Meta. Não se deve somar seus valores aos R$ 48.172,15 sem verificar a janela e a ausência de snapshots duplicados de cada relatório.
+
+## Etapa Consumíveis
+
+Na consulta de metadados de etapas de Lead realizada em **14/09/2026**, o Bitrix24 não retornou uma etapa cadastrada com o rótulo **Consumíveis**. Assim, o Dashboard preserva a classificação oficial atual, **SDR**, sem renomear ou reclassificar registros. Quando a etapa for criada ou renomeada no CRM, o funil poderá exibi-la separadamente, mantendo MQL e SQL condicionados às etapas posteriores já definidas.

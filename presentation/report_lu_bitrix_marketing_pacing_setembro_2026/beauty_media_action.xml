@@ -7,12 +7,12 @@
   <shape id="target-card" type="rect" x="72" y="144" width="432" height="102" fill="#FFF7ED" corner-radius="16"/>
   <icon id="target-icon" name="target" x="96" y="171" width="36" height="36" color="#D97706"/>
   <text id="target-label" x="150" y="162" width="210" height="18" font="caption" size="12" color="muted">SALDO PARA A META</text>
-  <text id="target-value" x="150" y="185" width="210" height="40" font="metric" size="36" color="#D97706" wrap="false"><strong>881 leads</strong></text>
+  <text id="target-value" x="150" y="185" width="210" height="40" font="metric" size="36" color="#D97706" wrap="false"><strong>670 leads</strong></text>
   <text id="target-note" x="350" y="187" width="126" height="42" font="caption" size="12" color="muted" align="right" line-height="1.05"><p>até</p><p>30/09</p></text>
   <shape id="cadence-card" type="rect" x="528" y="144" width="680" height="102" fill="#ECFDF5" corner-radius="16"/>
   <icon id="cadence-icon" name="calendar-check" x="554" y="171" width="36" height="36" color="accent"/>
   <text id="cadence-label" x="610" y="162" width="500" height="18" font="caption" size="12" color="muted">RITMO DE EXECUÇÃO</text>
-  <text id="cadence-value" x="610" y="185" width="244" height="36" font="metric" size="30" color="accent" wrap="false"><strong>51,8 leads por dia</strong></text>
+  <text id="cadence-value" x="610" y="185" width="244" height="36" font="metric" size="30" color="accent" wrap="false"><strong>44,7 leads por dia</strong></text>
   <text id="cadence-copy" x="880" y="188" width="280" height="32" font="body" size="14" color="muted" line-height="1.15">Acompanhamento diário para manter a entrega no ritmo necessário.</text>
   <text id="table-title" x="72" y="270" width="700" height="28" font="heading" size="22" color="ink" wrap="false">Como vamos acelerar a aquisição</text>
   <table id="action-plan-table" x="72" y="308" width="1136" height="228" columns="2.2,4,2.2,3.2" rows="44,61,61,62" font="caption" size="13" color="ink" padding="10 12" header-fill="ink" header-border="1 ink" border-h="1 solid hairline">
@@ -24,8 +24,8 @@
   <shape id="decision-band" type="rect" x="72" y="578" width="1136" height="64" fill="ink" corner-radius="14"/>
   <icon id="decision-icon" name="arrow-right-circle" x="94" y="596" width="28" height="28" color="accent"/>
   <text id="decision-title" x="140" y="590" width="250" height="18" font="caption" size="12" color="#A7F3D0" wrap="false">PONTO DE DECISÃO · 20/09</text>
-  <text id="decision-copy" x="140" y="613" width="1010" height="20" font="body" size="14" color="paper">Abaixo de 51,8 leads/dia, redistribuir verba e esforço para as frentes com maior resposta comercial.</text>
+  <text id="decision-copy" x="140" y="613" width="1010" height="20" font="body" size="14" color="paper">Abaixo de 44,7 leads/dia, redistribuir verba e esforço para as frentes com maior resposta comercial.</text>
   <shape id="footer-line" type="line" x="72" y="674" width="1040" height="0" stroke="hairline" stroke-width="1"/>
-  <text id="footer-source" x="72" y="680" width="930" height="18" font="caption" size="11" color="muted">Fonte: metas da operação e Dashboard MedSystems + BeautySystems · corte 13/09/2026</text>
+  <text id="footer-source" x="72" y="680" width="930" height="18" font="caption" size="11" color="muted">Fonte: metas da operação e Dashboard MedSystems + BeautySystems · corte 15/09/2026</text>
   <text id="page-number" x="1146" y="678" width="62" height="20" font="caption" size="12" color="brand" align="right">07</text>
 </slide>

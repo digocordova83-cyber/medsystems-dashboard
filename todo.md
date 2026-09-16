@@ -829,3 +829,6 @@
 - [x] Recalcular e validar as abas Overview, Google Ads, Meta Ads, Negócios e Programática, incluindo testes, tipagem e revisão visual autenticada.
 - [x] Documentar, salvar e publicar a atualização D-1 com o novo corte e as limitações verificáveis de cada fonte.
 - [x] Atualizar os testes legados de abas, períodos e catálogo Publya para refletirem a configuração atualmente publicada, sem alterar os dados de produção.
+- [x] Atualizar o Report Executivo no padrão Report Lu com dados consolidados até 15/09/2026.
+- [x] Calcular e inserir no Report Executivo a evolução semanal de volume de leads por BU e consolidado, com critérios e período explícitos.
+- [x] Validar visualmente, apresentar e exportar o Report Executivo atualizado.

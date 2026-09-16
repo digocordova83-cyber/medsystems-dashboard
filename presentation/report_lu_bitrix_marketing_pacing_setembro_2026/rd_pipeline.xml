@@ -2,38 +2,40 @@
   <background color="paper"/>
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
   <text id="eyebrow" x="72" y="34" width="460" height="20" font="caption" size="12" color="brand" wrap="false"><strong>QUALIDADE DO FUNIL · MQL → SQL</strong></text>
-  <text id="title" x="72" y="58" width="990" height="48" font="heading" size="34" color="ink" wrap="false">MQLs avançam para vendas nas duas BUs</text>
-  <text id="subtitle" x="72" y="103" width="1010" height="24" font="body" size="16" color="muted">As campanhas com maior avanço orientam a priorização de verba e acompanhamento comercial.</text>
+  <text id="title" x="72" y="58" width="990" height="48" font="heading" size="34" color="ink" wrap="false">O funil tem 650 MQLs e 55 SQLs para priorização</text>
+  <text id="subtitle" x="72" y="103" width="1010" height="24" font="body" size="16" color="muted">Leitura de etapa atual no CRM; MQL e SQL não representam histórico de passagem pelo funil.</text>
   <shape id="med-summary" type="rect" x="72" y="144" width="528" height="94" fill="#EFF6FF" corner-radius="16"/>
   <text id="med-summary-title" x="98" y="164" width="240" height="22" font="caption" size="12" color="muted">MEDSYSTEMS · MQL → SQL</text>
-  <text id="med-summary-rate" x="98" y="187" width="150" height="38" font="metric" size="34" color="brand" wrap="false"><strong>13,1%</strong></text>
-  <text id="med-summary-detail" x="320" y="184" width="238" height="40" font="body" size="16" color="ink" align="right" line-height="1.05"><p>14 SQL</p><p>sobre 107 MQL</p></text>
+  <text id="med-summary-rate" x="98" y="187" width="150" height="38" font="metric" size="34" color="brand" wrap="false"><strong>11,4%</strong></text>
+  <text id="med-summary-detail" x="320" y="184" width="238" height="40" font="body" size="16" color="ink" align="right" line-height="1.05"><p>16 SQL</p><p>sobre 140 MQL</p></text>
   <shape id="beauty-summary" type="rect" x="624" y="144" width="584" height="94" fill="#ECFDF5" corner-radius="16"/>
   <text id="beauty-summary-title" x="650" y="164" width="250" height="22" font="caption" size="12" color="muted">BEAUTYSYSTEMS · MQL → SQL</text>
-  <text id="beauty-summary-rate" x="650" y="187" width="150" height="38" font="metric" size="34" color="accent" wrap="false"><strong>8,8%</strong></text>
-  <text id="beauty-summary-detail" x="936" y="184" width="238" height="40" font="body" size="16" color="ink" align="right" line-height="1.05"><p>36 SQL</p><p>sobre 410 MQL</p></text>
+  <text id="beauty-summary-rate" x="650" y="187" width="150" height="38" font="metric" size="34" color="accent" wrap="false"><strong>7,6%</strong></text>
+  <text id="beauty-summary-detail" x="936" y="184" width="238" height="40" font="body" size="16" color="ink" align="right" line-height="1.05"><p>39 SQL</p><p>sobre 510 MQL</p></text>
   <shape id="med-panel" type="rect" x="72" y="270" width="480" height="304" fill="paper" stroke="hairline" stroke-width="1" corner-radius="18"/>
-  <text id="med-panel-title" x="98" y="294" width="300" height="28" font="heading" size="22" color="ink" wrap="false">MedSystems: avanço por campanha</text>
-  <table id="med-campaign-table" x="98" y="338" width="430" height="188" columns="5,1,1,1" rows="40,49,49,50" font="caption" size="12" color="ink" padding="8 8" header-fill="ink" header-border="1 ink" border-h="1 solid hairline">
-    <tr color="paper"><td>Campanha</td><td align="right">MQL</td><td align="right">SQL</td><td align="right">Taxa</td></tr>
-    <tr><td>Direct</td><td align="right">10</td><td align="right">1</td><td align="right">10,0%</td></tr>
-    <tr><td>Medical MPT LP</td><td align="right">7</td><td align="right">1</td><td align="right"><strong color="accent">14,3%</strong></td></tr>
-    <tr fill="#F8FAFC"><td>Demais frentes</td><td align="right">90</td><td align="right">12</td><td align="right">13,3%</td></tr>
+  <text id="med-panel-title" x="98" y="294" width="330" height="28" font="heading" size="22" color="ink" wrap="false">MedSystems: posição atual</text>
+  <table id="med-stage-table" x="98" y="338" width="430" height="188" columns="5,2,2" rows="40,37,37,37,37" font="caption" size="12" color="ink" padding="7 8" header-fill="ink" header-border="1 ink" border-h="1 solid hairline">
+    <tr color="paper"><td>Etapa atual</td><td align="right">Leads</td><td align="right">Leitura</td></tr>
+    <tr><td>SDR</td><td align="right">82</td><td align="right">Entrada</td></tr>
+    <tr><td>1º a 3º contato</td><td align="right">124</td><td align="right">Cadência</td></tr>
+    <tr fill="#ECFDF5"><td>Relacionamento + convertidos</td><td align="right">16</td><td align="right"><strong color="accent">SQL</strong></td></tr>
+    <tr fill="#F8FAFC"><td>Descartados</td><td align="right">44</td><td align="right">Qualidade</td></tr>
   </table>
-  <text id="med-panel-note" x="98" y="540" width="420" height="18" font="caption" size="11" color="muted">Demais campanhas consolidadas para preservar a leitura executiva.</text>
+  <text id="med-panel-note" x="98" y="540" width="420" height="18" font="caption" size="11" color="muted">271 leads técnicos no funil da BU no corte atual.</text>
   <shape id="beauty-panel" type="rect" x="576" y="270" width="632" height="304" fill="paper" stroke="hairline" stroke-width="1" corner-radius="18"/>
-  <text id="beauty-panel-title" x="602" y="294" width="360" height="28" font="heading" size="22" color="ink" wrap="false">BeautySystems: campanhas com avanço</text>
-  <table id="beauty-campaign-table" x="602" y="338" width="578" height="188" columns="6,1,1,1" rows="40,37,37,37,37" font="caption" size="12" color="ink" padding="7 8" header-fill="ink" header-border="1 ink" border-h="1 solid hairline">
-    <tr color="paper"><td>Campanha</td><td align="right">MQL</td><td align="right">SQL</td><td align="right">Taxa</td></tr>
-    <tr fill="#ECFDF5"><td>DSB · CRM Beauty</td><td align="right">18</td><td align="right">12</td><td align="right"><strong color="accent">66,7%</strong></td></tr>
-    <tr><td>Medical MPT LP</td><td align="right">40</td><td align="right">4</td><td align="right">10,0%</td></tr>
-    <tr><td>Direct + MPT Lead Ads</td><td align="right">62</td><td align="right">3</td><td align="right">4,8%</td></tr>
-    <tr fill="#F8FAFC"><td>Demais frentes</td><td align="right">290</td><td align="right">17</td><td align="right">5,9%</td></tr>
+  <text id="beauty-panel-title" x="602" y="294" width="360" height="28" font="heading" size="22" color="ink" wrap="false">BeautySystems: posição atual</text>
+  <table id="beauty-stage-table" x="602" y="338" width="578" height="188" columns="6,2,2" rows="40,37,37,37,37" font="caption" size="12" color="ink" padding="7 8" header-fill="ink" header-border="1 ink" border-h="1 solid hairline">
+    <tr color="paper"><td>Etapa atual</td><td align="right">Leads</td><td align="right">Leitura</td></tr>
+    <tr><td>SDR</td><td align="right">194</td><td align="right">Entrada</td></tr>
+    <tr><td>1º a 3º contato</td><td align="right">471</td><td align="right">Cadência</td></tr>
+    <tr fill="#ECFDF5"><td>Relacionamento + convertidos</td><td align="right">39</td><td align="right"><strong color="accent">SQL</strong></td></tr>
+    <tr fill="#F8FAFC"><td>Descartados</td><td align="right">74</td><td align="right">Qualidade</td></tr>
   </table>
+  <text id="beauty-panel-note" x="602" y="540" width="550" height="18" font="caption" size="11" color="muted">780 leads técnicos no funil da BU no corte atual.</text>
   <shape id="audit-band" type="rect" x="72" y="598" width="1136" height="44" fill="#FFF7ED" corner-radius="12"/>
   <icon id="audit-icon" name="lightbulb" x="93" y="609" width="22" height="22" color="#D97706"/>
-  <text id="audit-text" x="132" y="608" width="1036" height="22" font="caption" size="12" color="muted" anchor="middle">Decisão: manter as frentes que avançam e padronizar DSB para consolidar a leitura por BU.</text>
+  <text id="audit-text" x="132" y="608" width="1036" height="22" font="caption" size="12" color="muted" anchor="middle">Decisão: concentrar a cadência em SDR e contatos em andamento, com prioridade aos 55 SQLs atuais.</text>
   <shape id="footer-line" type="line" x="72" y="674" width="1040" height="0" stroke="hairline" stroke-width="1"/>
-  <text id="footer-source" x="72" y="680" width="840" height="18" font="caption" size="11" color="muted">Fonte: Dashboard MedSystems + BeautySystems · corte 13/09/2026</text>
+  <text id="footer-source" x="72" y="680" width="840" height="18" font="caption" size="11" color="muted">Fonte: Dashboard MedSystems + BeautySystems · corte 15/09/2026</text>
   <text id="page-number" x="1146" y="678" width="62" height="20" font="caption" size="12" color="brand" align="right">05</text>
 </slide>

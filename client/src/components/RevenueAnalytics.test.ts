@@ -12,12 +12,12 @@ describe("dashboardMath.ratio", () => {
     expect(dashboardMath.ratio(5_000, 0)).toBe(0);
   });
 
-  it("mantém somente as visões públicas solicitadas no painel principal", () => {
-    expect(DASHBOARD_TABS.map(tab => tab.id)).toEqual(["overview", "google", "meta", "bitrix"]);
+  it("mantém as visões públicas solicitadas no painel principal", () => {
+    expect(DASHBOARD_TABS.map(tab => tab.id)).toEqual(["overview", "google", "meta", "programmatic", "bitrix"]);
   });
 
-  it("mantém agosto e julho como períodos explícitos de análise", () => {
-    expect(SUPPORTED_REPORTING_PERIODS).toEqual(["2026-08", "2026-07"]);
+  it("mantém setembro, agosto e julho como períodos explícitos de análise", () => {
+    expect(SUPPORTED_REPORTING_PERIODS).toEqual(["2026-09", "2026-08", "2026-07"]);
   });
 
   it("não calcula conversão por canal quando os leads não têm escopo de marca comprovado", () => {

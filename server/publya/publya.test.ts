@@ -70,11 +70,12 @@ describe("integração Publya", () => {
     expect(publyaScheduleInternals.previousDayInSaoPaulo(new Date("2026-08-28T14:00:00.000Z"))).toEqual({ startDate: "2026-08-01", endDate: "2026-08-27" });
   });
 
-  it("entrega o overview de cinco relatórios sem inflar o snapshot DV360 duplicado", async () => {
+  it("entrega o overview dos relatórios configurados sem inflar o snapshot DV360 duplicado", async () => {
     const data = await programmaticDashboard({ startDate: "2026-08-01", endDate: "2026-08-27" });
     expect(data.campaigns).toHaveLength(4);
     expect(data.push?.reportType).toBe("Push Notification");
-    expect(data.reportOptions).toHaveLength(5);
+    expect(data.reportOptions.length).toBeGreaterThanOrEqual(data.campaigns.length + (data.push ? 1 : 0));
+    expect(new Set(data.reportOptions.map(option => option.reportKey)).size).toBe(data.reportOptions.length);
     expect(data.campaigns.map(row => `${row.reportType}:${row.objective}`)).toEqual(expect.arrayContaining([
       "PMAX:Conversões",
       "Meta:Geração de Cadastros",

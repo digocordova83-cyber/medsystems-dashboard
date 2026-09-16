@@ -824,3 +824,8 @@
 - [x] Verificar se telefone e outros identificadores estão presentes nos campos diretos ou aninhados retornados pelo RD Station para o contato autorizado.
 - [x] Conciliar a base enviada com o universo de leads do dashboard, classificando as diferenças por período, regra de entrada, pipeline e etapa.
 - [x] Gerar e entregar uma auditoria de diferenças sem expor dados pessoais fora do arquivo autorizado.
+- [x] Sincronizar RD Station e Bitrix24 até 15/09/2026, preservando o corte D-1 e as regras de elegibilidade vigentes.
+- [x] Reconciliar Google Ads, Meta Ads, programática e Push até 15/09/2026, sem dupla contagem entre snapshots ou campanhas.
+- [x] Recalcular e validar as abas Overview, Google Ads, Meta Ads, Negócios e Programática, incluindo testes, tipagem e revisão visual autenticada.
+- [x] Documentar, salvar e publicar a atualização D-1 com o novo corte e as limitações verificáveis de cada fonte.
+- [x] Atualizar os testes legados de abas, períodos e catálogo Publya para refletirem a configuração atualmente publicada, sem alterar os dados de produção.

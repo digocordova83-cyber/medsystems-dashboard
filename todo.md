@@ -832,3 +832,7 @@
 - [x] Atualizar o Report Executivo no padrão Report Lu com dados consolidados até 15/09/2026.
 - [x] Calcular e inserir no Report Executivo a evolução semanal de volume de leads por BU e consolidado, com critérios e período explícitos.
 - [x] Validar visualmente, apresentar e exportar o Report Executivo atualizado.
+- [x] Redesenhar a lâmina de evolução semana contra semana para evidenciar volumes, variações e contribuição de cada BU.
+- [x] Remover do Report Executivo a lâmina de plano de ação BeautySystems e a narrativa de Programática.
+- [x] Substituir a lâmina de Programática pela tabela Status das Entregas | Setembro, reproduzindo fielmente os conteúdos enviados pelo usuário.
+- [x] Validar a nova sequência, numeração, legibilidade da tabela e entregar o documento revisado.

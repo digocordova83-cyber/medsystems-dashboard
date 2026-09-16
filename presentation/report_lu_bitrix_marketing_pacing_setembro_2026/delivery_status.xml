@@ -1,39 +1,36 @@
 <slide id="delivery_status">
   <background color="paper"/>
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
-  <text id="eyebrow" x="72" y="34" width="620" height="20" font="caption" size="12" color="brand" wrap="false"><strong>PROGRAMÁTICA · AQUISIÇÃO E ESCALA DE AUDIÊNCIA · FEED ATÉ 15/09</strong></text>
-  <text id="title" x="72" y="58" width="1090" height="48" font="heading" size="34" color="ink" wrap="false">Programática amplia o alcance qualificado da aquisição</text>
-  <text id="subtitle" x="72" y="103" width="1060" height="24" font="body" size="16" color="muted">Como frente primária de geração de demanda, o canal combina escala, interesse e entrada no funil.</text>
-  <shape id="history-panel" type="rect" x="72" y="164" width="458" height="406" fill="#071B46" corner-radius="20"/>
-  <text id="history-label" x="104" y="194" width="320" height="20" font="caption" size="12" color="#A7F3D0" wrap="false">ENTREGA VERIFICADA · B2B GEOLOCALIZAÇÃO</text>
-  <text id="history-title" x="104" y="224" width="330" height="54" font="heading" size="28" color="paper" line-height="1.05"><p>Aquisição em</p><p>contextos relevantes</p></text>
-  <shape id="history-line" type="line" x="104" y="300" width="330" height="0" stroke="#FFFFFF" stroke-width="1" opacity="0.18"/>
-  <text id="history-impr-label" x="104" y="324" width="180" height="18" font="caption" size="12" color="#BFDBFE">IMPACTOS</text>
-  <text id="history-impr-value" x="104" y="344" width="260" height="40" font="metric" size="36" color="paper" wrap="false"><strong>669.098</strong></text>
-  <text id="history-click-label" x="104" y="404" width="130" height="18" font="caption" size="12" color="#BFDBFE">CLIQUES</text>
-  <text id="history-click-value" x="104" y="424" width="150" height="34" font="heading" size="30" color="paper" wrap="false"><strong>1.110</strong></text>
-  <text id="history-ctr-label" x="294" y="404" width="112" height="18" font="caption" size="12" color="#BFDBFE" align="right">CTR</text>
-  <text id="history-ctr-value" x="274" y="424" width="132" height="34" font="heading" size="30" color="paper" align="right" wrap="false"><strong>0,166%</strong></text>
-  <shape id="history-bottom" type="rect" x="104" y="480" width="298" height="64" fill="#0F5DDB" corner-radius="12"/>
-  <text id="history-view-label" x="124" y="489" width="140" height="16" font="caption" size="11" color="#DBEAFE" wrap="false">VISIBILIDADE</text>
-  <text id="history-view-value" x="124" y="508" width="170" height="26" font="heading" size="21" color="paper" wrap="false"><strong>79,67%</strong></text>
-  <shape id="criterion-one" type="rect" x="568" y="164" width="640" height="112" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="16"/>
-  <icon id="criterion-one-icon" name="radar" x="596" y="202" width="32" height="32" color="brand"/>
-  <text id="criterion-one-title" x="650" y="184" width="460" height="24" font="heading" size="21" color="ink" wrap="false">1. Escala presença com qualidade</text>
-  <text id="criterion-one-copy" x="650" y="216" width="510" height="36" font="body" size="14" color="muted">669 mil impactos e 79,67% de visibilidade comprovam escala nos ambientes planejados.</text>
-  <shape id="criterion-two" type="rect" x="568" y="296" width="640" height="112" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="16"/>
-  <icon id="criterion-two-icon" name="mouse-pointer-click" x="596" y="334" width="32" height="32" color="accent"/>
-  <text id="criterion-two-title" x="650" y="316" width="450" height="24" font="heading" size="21" color="ink" wrap="false">2. Transforma atenção em interesse</text>
-  <text id="criterion-two-copy" x="650" y="348" width="510" height="36" font="body" size="14" color="muted">1.110 cliques ampliam o fluxo de audiência qualificada para páginas e campanhas.</text>
-  <shape id="criterion-three" type="rect" x="568" y="428" width="640" height="112" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="16"/>
-  <icon id="criterion-three-icon" name="trending-up" x="596" y="466" width="32" height="32" color="#D97706"/>
-  <text id="criterion-three-title" x="650" y="448" width="430" height="24" font="heading" size="21" color="ink" wrap="false">3. Conecta impacto ao funil</text>
-  <text id="criterion-three-copy" x="650" y="480" width="510" height="36" font="body" size="14" color="muted">UTMs e acompanhamento no CRM ligam alcance, novos contatos e oportunidades comerciais.</text>
-  <shape id="limitation-band" type="rect" x="72" y="590" width="1136" height="56" fill="#FFF7ED" corner-radius="14"/>
-  <icon id="limitation-icon" name="calendar" x="94" y="607" width="25" height="25" color="#D97706"/>
-  <text id="limitation-title" x="136" y="600" width="420" height="18" font="caption" size="12" color="#92400E" wrap="false">PRÓXIMO PONTO DE LEITURA · 30/09</text>
-  <text id="limitation-copy" x="136" y="621" width="1000" height="18" font="body" size="14" color="ink">Consolidar alcance, cliques, visitas identificadas e novos contatos para orientar a próxima onda de aquisição.</text>
+  <text id="eyebrow" x="72" y="34" width="520" height="20" font="caption" size="12" color="brand" wrap="false"><strong>PLANEJAMENTO E PRODUÇÃO · SETEMBRO</strong></text>
+  <text id="title" x="72" y="58" width="1060" height="48" font="heading" size="34" color="ink" wrap="false">Status das Entregas | Setembro</text>
+  <text id="subtitle" x="72" y="103" width="1060" height="22" font="body" size="15" color="muted" wrap="false">Acompanhamento dos projetos, estágio atual e próximo marco informado pela operação.</text>
+  <shape id="legend-finished" type="rect" x="72" y="136" width="174" height="34" fill="paper" stroke="hairline" stroke-width="1" corner-radius="9"/>
+  <text id="legend-finished-text" x="88" y="143" width="146" height="20" font="caption" size="12" color="ink" anchor="middle" wrap="false"><span color="#22C55E">●</span> Finalização</text>
+  <shape id="legend-development" type="rect" x="260" y="136" width="220" height="34" fill="paper" stroke="hairline" stroke-width="1" corner-radius="9"/>
+  <text id="legend-development-text" x="276" y="143" width="192" height="20" font="caption" size="12" color="ink" anchor="middle" wrap="false"><span color="#FACC15">●</span> Em desenvolvimento</text>
+  <shape id="legend-start" type="rect" x="494" y="136" width="154" height="34" fill="paper" stroke="hairline" stroke-width="1" corner-radius="9"/>
+  <text id="legend-start-text" x="510" y="143" width="126" height="20" font="caption" size="12" color="ink" anchor="middle" wrap="false"><span color="#1473E6">●</span> A iniciar</text>
+  <shape id="legend-briefing" type="rect" x="662" y="136" width="220" height="34" fill="paper" stroke="hairline" stroke-width="1" corner-radius="9"/>
+  <text id="legend-briefing-text" x="678" y="143" width="192" height="20" font="caption" size="12" color="ink" anchor="middle" wrap="false"><span color="#64748B">○</span> Aguardando briefing</text>
+  <table id="delivery-status-table" x="44" y="184" width="1192" height="456" columns="2.1,2.8,5.4,3.2" rows="34,auto,auto,auto,auto,auto,auto,auto,auto,auto,auto,auto,auto,auto,auto,auto" font="caption" size="10.5" color="ink" padding="4 8" anchor="middle" header-fill="#071B46" header-border="1 #071B46" border-h="1 solid hairline" border-v="1 solid hairline" border-outer="1 solid #CBD5E1">
+    <tr color="paper"><td align="center"><strong>Frente</strong></td><td align="center"><strong>Projeto / Produto</strong></td><td align="center"><strong>Status atual</strong></td><td align="center"><strong>Próximo marco</strong></td></tr>
+    <tr><td rowspan="5" fill="#EFF6FF" color="#071B46" align="center"><strong>MedSystems</strong></td><td><strong>Ultraformer MPT</strong></td><td><span color="#22C55E">●</span> Finalizado e aprovado</td><td>Concluído</td></tr>
+    <tr><td><strong>Volnewmer</strong></td><td><span color="#22C55E">●</span> Finalizado e aprovado</td><td>Concluído</td></tr>
+    <tr><td><strong>Volformer</strong></td><td><span color="#22C55E">●</span> Finalizado e aprovado</td><td>Concluído</td></tr>
+    <tr><td><strong>Chrome</strong></td><td><span color="#1473E6">●</span> Desenvolvimento ainda não iniciado</td><td>Previsão: 18/09</td></tr>
+    <tr><td><strong>Youlaser Prime</strong></td><td><span color="#22C55E">●</span> Última rodada de ajustes entregue em 15/09</td><td>Aguardando aprovação final</td></tr>
+    <tr><td rowspan="6" fill="#ECFDF5" color="#071B46" align="center"><strong>BeautySystems</strong></td><td><strong>Aquapure</strong></td><td><span color="#22C55E">●</span> Finalizado e aprovado</td><td>Concluído</td></tr>
+    <tr><td><strong>Ultraformer MPT</strong></td><td><span color="#22C55E">●</span> Finalizado e aprovado</td><td>Concluído</td></tr>
+    <tr><td><strong>Youlaser MT</strong></td><td><span color="#FACC15">●</span> Artes em desenvolvimento</td><td>1ª entrega: 18/09</td></tr>
+    <tr><td><strong>Ultraformer III</strong></td><td><span color="#22C55E">●</span> Finalizado e aprovado</td><td>Concluído</td></tr>
+    <tr><td><strong>Secret RF</strong></td><td><span color="#1473E6">●</span> Desenvolvimento ainda não iniciado</td><td>Previsão: 18/09</td></tr>
+    <tr><td><strong>Vectra1</strong></td><td><span color="#1473E6">●</span> Desenvolvimento ainda não iniciado</td><td>Previsão: 18/09</td></tr>
+    <tr><td fill="#F8FAFC" color="#071B46" align="center"><strong>B2C / Awareness</strong></td><td><strong>Media at Home / OOH</strong></td><td><span color="#22C55E">●</span> Finalizado</td><td>Concluído</td></tr>
+    <tr><td fill="#F8FAFC" color="#071B46" align="center"><strong>Antipirataria</strong></td><td><strong>Keep it Real</strong></td><td><span color="#22C55E">●</span> Finalizado</td><td>Concluído</td></tr>
+    <tr><td rowspan="2" fill="#F8FAFC" color="#071B46" align="center"><strong>Novos Protocolos</strong></td><td><strong>Aquaformer</strong></td><td><span color="#64748B">○</span> Aguardando briefing</td><td>Previsão: 2ª quinzena de setembro</td></tr>
+    <tr><td><strong>Aquanewmer</strong></td><td><span color="#64748B">○</span> Aguardando briefing</td><td>Previsão: 2ª quinzena de setembro</td></tr>
+  </table>
   <shape id="footer-line" type="line" x="72" y="674" width="1040" height="0" stroke="hairline" stroke-width="1"/>
-  <text id="footer-source" x="72" y="680" width="980" height="18" font="caption" size="11" color="muted">Fonte: Publya · feed sincronizado até 15/09; métricas consolidadas na última entrega verificável</text>
-  <text id="page-number" x="1146" y="678" width="62" height="20" font="caption" size="12" color="brand" align="right">08</text>
+  <text id="footer-source" x="72" y="680" width="900" height="18" font="caption" size="11" color="muted">Fonte: status operacional fornecido em 16/09/2026</text>
+  <text id="page-number" x="1146" y="678" width="62" height="20" font="caption" size="12" color="brand" align="right">07</text>
 </slide>

@@ -1,58 +1,44 @@
 <slide id="lead_channels">
   <background color="paper"/>
   <shape id="top-rule" type="rect" x="0" y="0" width="1280" height="6" fill="brand"/>
-  <text id="eyebrow" x="72" y="34" width="460" height="20" font="caption" size="12" color="brand" wrap="false"><strong>RESULTADO PARCIAL · 01–15/09</strong></text>
-  <text id="title" x="72" y="58" width="1080" height="48" font="heading" size="34" color="ink" wrap="false">A segunda semana desacelera; Med sustenta o volume</text>
-  <text id="subtitle" x="72" y="103" width="1060" height="24" font="body" size="16" color="muted">As BUs prioritárias somam 1.051 leads técnicos, 650 MQLs e 55 SQLs no corte atual.</text>
-  <shape id="card-total" type="rect" x="72" y="146" width="248" height="104" fill="surface" corner-radius="16"/>
-  <text id="card-total-label" x="94" y="166" width="202" height="18" font="caption" size="12" color="muted" wrap="false">LEADS NAS BUs PRIORITÁRIAS</text>
-  <text id="card-total-value" x="94" y="188" width="190" height="44" font="metric" size="40" color="ink" wrap="false"><strong>1.051</strong></text>
-  <text id="card-total-note" x="186" y="204" width="108" height="20" font="caption" size="12" color="accent" align="right" wrap="false">Med + Beauty</text>
-  <shape id="card-mql" type="rect" x="338" y="146" width="248" height="104" fill="#ECFDF5" corner-radius="16"/>
-  <text id="card-mql-label" x="360" y="166" width="196" height="18" font="caption" size="12" color="muted" wrap="false">LEADS QUALIFICADOS · MQL</text>
-  <text id="card-mql-value" x="360" y="188" width="190" height="44" font="metric" size="40" color="accent" wrap="false"><strong>650</strong></text>
-  <text id="card-mql-note" x="468" y="204" width="92" height="20" font="caption" size="12" color="accent" align="right" wrap="false">61,8% do funil</text>
-  <shape id="card-sql" type="rect" x="604" y="146" width="248" height="104" fill="#EFF6FF" corner-radius="16"/>
-  <text id="card-sql-label" x="626" y="166" width="194" height="18" font="caption" size="12" color="muted" wrap="false">PRONTOS PARA VENDAS · SQL</text>
-  <text id="card-sql-value" x="626" y="188" width="190" height="44" font="metric" size="40" color="brand" wrap="false"><strong>55</strong></text>
-  <text id="card-sql-note" x="710" y="204" width="110" height="20" font="caption" size="12" color="brand" align="right" wrap="false">8,5% dos MQLs</text>
-  <shape id="panel-med" type="rect" x="72" y="282" width="346" height="300" fill="paper" stroke="hairline" stroke-width="1" corner-radius="18"/>
-  <shape id="panel-med-bar" type="rect" x="72" y="282" width="8" height="300" fill="brand" corner-radius="4"/>
-  <text id="med-title" x="104" y="310" width="230" height="30" font="heading" size="24" color="ink" wrap="false">MedSystems</text>
-  <text id="med-leads" x="104" y="352" width="150" height="24" font="body" size="16" color="muted">Leads no funil</text>
-  <text id="med-leads-value" x="270" y="346" width="98" height="32" font="heading" size="28" color="ink" align="right" wrap="false"><strong>271</strong></text>
-  <shape id="med-divider-one" type="line" x="104" y="394" width="250" height="0" stroke="hairline" stroke-width="1"/>
-  <text id="med-mql" x="104" y="414" width="150" height="24" font="body" size="16" color="muted">Qualificados · MQL</text>
-  <text id="med-mql-value" x="270" y="408" width="98" height="32" font="heading" size="28" color="accent" align="right" wrap="false"><strong>140</strong></text>
-  <text id="med-sql" x="104" y="462" width="150" height="24" font="body" size="16" color="muted">Para vendas · SQL</text>
-  <text id="med-sql-value" x="270" y="456" width="98" height="32" font="heading" size="28" color="brand" align="right" wrap="false"><strong>16</strong></text>
-  <shape id="med-divider-two" type="line" x="104" y="504" width="250" height="0" stroke="hairline" stroke-width="1"/>
-  <text id="med-rate" x="104" y="524" width="156" height="24" font="body" size="16" color="muted">MQL → SQL</text>
-  <text id="med-rate-value" x="270" y="520" width="98" height="28" font="heading" size="24" color="accent" align="right" wrap="false"><strong>11,4%</strong></text>
-  <shape id="panel-beauty" type="rect" x="438" y="282" width="346" height="300" fill="paper" stroke="hairline" stroke-width="1" corner-radius="18"/>
-  <shape id="panel-beauty-bar" type="rect" x="438" y="282" width="8" height="300" fill="accent" corner-radius="4"/>
-  <text id="beauty-title" x="470" y="310" width="230" height="30" font="heading" size="24" color="ink" wrap="false">BeautySystems</text>
-  <text id="beauty-leads" x="470" y="352" width="150" height="24" font="body" size="16" color="muted">Leads no funil</text>
-  <text id="beauty-leads-value" x="636" y="346" width="98" height="32" font="heading" size="28" color="ink" align="right" wrap="false"><strong>780</strong></text>
-  <shape id="beauty-divider-one" type="line" x="470" y="394" width="250" height="0" stroke="hairline" stroke-width="1"/>
-  <text id="beauty-mql" x="470" y="414" width="150" height="24" font="body" size="16" color="muted">Qualificados · MQL</text>
-  <text id="beauty-mql-value" x="636" y="408" width="98" height="32" font="heading" size="28" color="accent" align="right" wrap="false"><strong>510</strong></text>
-  <text id="beauty-sql" x="470" y="462" width="150" height="24" font="body" size="16" color="muted">Para vendas · SQL</text>
-  <text id="beauty-sql-value" x="636" y="456" width="98" height="32" font="heading" size="28" color="brand" align="right" wrap="false"><strong>39</strong></text>
-  <shape id="beauty-divider-two" type="line" x="470" y="504" width="250" height="0" stroke="hairline" stroke-width="1"/>
-  <text id="beauty-rate" x="470" y="524" width="156" height="24" font="body" size="16" color="muted">MQL → SQL</text>
-  <text id="beauty-rate-value" x="636" y="520" width="98" height="28" font="heading" size="24" color="accent" align="right" wrap="false"><strong>7,6%</strong></text>
-  <shape id="chart-card" type="rect" x="804" y="282" width="404" height="300" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="18"/>
-  <text id="chart-title" x="828" y="308" width="356" height="28" font="heading" size="19" color="ink" align="center" wrap="false">Leads por semana completa</text>
-  <chart id="weekly-leads-chart" type="column" x="824" y="342" width="364" height="190" font="caption" text-size="11" text-color="muted" categories="Med,Beauty,Total" color="brand,accent" legend="bottom" y-axis="true" x-axis="true" gridlines="h" gap-width="85" data-labels="true">
+  <text id="eyebrow" x="72" y="34" width="520" height="20" font="caption" size="12" color="brand" wrap="false"><strong>EVOLUÇÃO SEMANAL · SEMANAS COMPLETAS</strong></text>
+  <text id="title" x="72" y="58" width="1110" height="48" font="heading" size="34" color="ink" wrap="false">Med cresce 7,6%; Beauty recua 22,9% na 2ª semana</text>
+  <text id="subtitle" x="72" y="103" width="1080" height="24" font="body" size="16" color="muted">Comparação do volume de leads técnicos entre 01–07/09 e 08–14/09, usando o mesmo critério do dashboard.</text>
+  <shape id="total-card" type="rect" x="72" y="144" width="360" height="106" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="16"/>
+  <text id="total-label" x="96" y="163" width="250" height="18" font="caption" size="12" color="muted" wrap="false">CONSOLIDADO</text>
+  <text id="total-flow" x="96" y="186" width="208" height="38" font="metric" size="34" color="ink" wrap="false"><strong>525 → 441</strong></text>
+  <text id="total-change" x="318" y="188" width="88" height="32" font="heading" size="23" color="#D97706" align="right" wrap="false"><strong>-16,0%</strong></text>
+  <text id="total-note" x="96" y="228" width="290" height="16" font="caption" size="11" color="muted" wrap="false">84 leads técnicos a menos na semana</text>
+  <shape id="med-card" type="rect" x="456" y="144" width="360" height="106" fill="#EFF6FF" corner-radius="16"/>
+  <text id="med-label" x="480" y="163" width="250" height="18" font="caption" size="12" color="muted" wrap="false">MEDSYSTEMS</text>
+  <text id="med-flow" x="480" y="186" width="208" height="38" font="metric" size="34" color="brand" wrap="false"><strong>119 → 128</strong></text>
+  <text id="med-change" x="702" y="188" width="88" height="32" font="heading" size="23" color="accent" align="right" wrap="false"><strong>+7,6%</strong></text>
+  <text id="med-note" x="480" y="228" width="290" height="16" font="caption" size="11" color="muted" wrap="false">9 leads técnicos adicionais</text>
+  <shape id="beauty-card" type="rect" x="840" y="144" width="368" height="106" fill="#FFF7ED" corner-radius="16"/>
+  <text id="beauty-label" x="864" y="163" width="250" height="18" font="caption" size="12" color="muted" wrap="false">BEAUTYSYSTEMS</text>
+  <text id="beauty-flow" x="864" y="186" width="210" height="38" font="metric" size="34" color="#D97706" wrap="false"><strong>406 → 313</strong></text>
+  <text id="beauty-change" x="1091" y="188" width="91" height="32" font="heading" size="23" color="#B45309" align="right" wrap="false"><strong>-22,9%</strong></text>
+  <text id="beauty-note" x="864" y="228" width="300" height="16" font="caption" size="11" color="muted" wrap="false">93 leads técnicos a menos</text>
+  <shape id="chart-card" type="rect" x="72" y="278" width="724" height="296" fill="#F8FAFC" stroke="hairline" stroke-width="1" corner-radius="18"/>
+  <text id="chart-title" x="100" y="302" width="480" height="28" font="heading" size="21" color="ink" wrap="false">Volume por BU e consolidado</text>
+  <chart id="weekly-volume-chart" type="column" x="96" y="340" width="672" height="204" font="caption" text-size="12" text-color="muted" categories="MedSystems,BeautySystems,Consolidado" color="brand,accent" legend="bottom" y-axis="true" x-axis="true" gridlines="h" y-max="600" gap-width="80" data-labels="true">
     <series name="01–07/09" values="119,406,525" label-expr="{value:.0f}"/>
     <series name="08–14/09" values="128,313,441" label-expr="{value:.0f}"/>
   </chart>
-  <text id="chart-note" x="826" y="548" width="360" height="18" font="caption" size="11" color="muted" align="center" wrap="false">Total: -16,0% · Med +7,6% · Beauty -22,9%</text>
-  <shape id="method-band" type="rect" x="72" y="612" width="1136" height="42" fill="#F8FAFC" corner-radius="12"/>
-  <icon id="method-icon" name="trending-up" x="91" y="621" width="22" height="22" color="accent"/>
-  <text id="method-text" x="126" y="621" width="1040" height="22" font="caption" size="12" color="muted" anchor="middle">15/09 isolado: 77 contatos qualificados — 24 MedSystems e 53 BeautySystems; não comparado a semanas completas.</text>
+  <shape id="insight-panel" type="rect" x="820" y="278" width="388" height="296" fill="paper" stroke="hairline" stroke-width="1" corner-radius="18"/>
+  <text id="insight-title" x="848" y="302" width="320" height="28" font="heading" size="21" color="ink" wrap="false">O que mudou na semana</text>
+  <shape id="insight-med-marker" type="rect" x="848" y="350" width="6" height="72" fill="brand" corner-radius="3"/>
+  <text id="insight-med-title" x="872" y="346" width="276" height="22" font="body" size="16" color="ink" wrap="false"><strong>Med ganhou tração</strong></text>
+  <text id="insight-med-copy" x="872" y="373" width="292" height="42" font="caption" size="13" color="muted" line-height="1.2"><p>17,0 → 18,3 leads/dia</p><p>crescimento de 9 leads na semana.</p></text>
+  <shape id="insight-beauty-marker" type="rect" x="848" y="442" width="6" height="82" fill="#D97706" corner-radius="3"/>
+  <text id="insight-beauty-title" x="872" y="438" width="276" height="22" font="body" size="16" color="ink" wrap="false"><strong>Beauty concentrou a queda</strong></text>
+  <text id="insight-beauty-copy" x="872" y="465" width="292" height="48" font="caption" size="13" color="muted" line-height="1.2"><p>58,0 → 44,7 leads/dia</p><p>responde por toda a retração consolidada.</p></text>
+  <shape id="daily-band" type="rect" x="72" y="600" width="1136" height="48" fill="#ECFDF5" corner-radius="12"/>
+  <icon id="daily-icon" name="calendar-check" x="94" y="613" width="24" height="24" color="accent"/>
+  <text id="daily-label" x="136" y="607" width="150" height="16" font="caption" size="11" color="muted" wrap="false">RESULTADO DE 15/09</text>
+  <text id="daily-value" x="136" y="625" width="500" height="18" font="body" size="14" color="ink" wrap="false"><strong>77 contatos qualificados: 24 MedSystems e 53 BeautySystems</strong></text>
+  <text id="daily-note" x="694" y="615" width="470" height="20" font="caption" size="12" color="muted" align="right" wrap="false">Dia isolado; não comparado a semanas completas.</text>
   <shape id="footer-line" type="line" x="72" y="674" width="1040" height="0" stroke="hairline" stroke-width="1"/>
-  <text id="footer-source" x="72" y="680" width="780" height="18" font="caption" size="11" color="muted">Fonte: Dashboard MedSystems + BeautySystems · corte 15/09/2026</text>
+  <text id="footer-source" x="72" y="680" width="900" height="18" font="caption" size="11" color="muted">Fonte: Dashboard MedSystems + BeautySystems · corte 15/09/2026</text>
   <text id="page-number" x="1146" y="678" width="62" height="20" font="caption" size="12" color="brand" align="right">02</text>
 </slide>

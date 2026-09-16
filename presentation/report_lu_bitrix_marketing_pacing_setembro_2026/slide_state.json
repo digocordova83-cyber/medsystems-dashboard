@@ -2,8 +2,8 @@
   "project_info": {
     "title": "Report executivo — leads de marketing",
     "created": 1788912510.367,
-    "last_updated": 1789581220.342,
-    "total_slides": 9
+    "last_updated": 1789581561.683,
+    "total_slides": 8
   },
   "slides": [
     {
@@ -43,18 +43,18 @@
     },
     {
       "id": "beauty_media_action",
-      "state": "edited",
-      "pageNum": 7
+      "state": "deleted",
+      "pageNum": -1
     },
     {
       "id": "delivery_status",
       "state": "edited",
-      "pageNum": 8
+      "pageNum": 7
     },
     {
       "id": "closing",
       "state": "edited",
-      "pageNum": 9
+      "pageNum": 8
     }
   ],
   "outline": [
@@ -93,12 +93,6 @@
       "title": "Negócios ganhos no Bitrix24",
       "summary": "Apresenta os negócios ganhos reais fechados entre 01 e 07/09 nos pipelines comerciais de MedSystems e BeautySystems, valores de oportunidade registrados e a limitação de atribuição aos 418 leads RD Station = sim.",
       "image_plan": "Sem imagem; usar cards executivos, comparação por BU e quadro metodológico de atribuição."
-    },
-    {
-      "id": "beauty_media_action",
-      "title": "Plano de ação de mídia — BeautySystems",
-      "summary": "Apresenta o ritmo diário necessário para recuperar a meta de setembro e organiza ações de mídia em eficiência imediata, liberação de oferta/criativos e escala controlada por CPL.",
-      "image_plan": "Sem imagem; usar cards de pacing, três frentes de ação e critérios de decisão visualmente destacados."
     },
     {
       "id": "delivery_status",

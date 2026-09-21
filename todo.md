@@ -856,3 +856,6 @@
 
 - [x] Corrigir o destaque temporal da evolução semanal para acumulado até 20/09.
 - [x] Reapresentar o Report Executivo após a correção de data.
+
+- [x] Reestruturar a lâmina de evolução para incluir o período 15–20/09 e tornar as projeções por marca visíveis.
+- [x] Validar e reapresentar o Report Executivo corrigido.

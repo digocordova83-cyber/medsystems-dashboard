@@ -26,6 +26,9 @@ const PIPELINE_LABELS: Record<string, string> = {
   "21297": "Atendimento WF4",
 };
 
+// Excluídos do universo gerencial a pedido do usuário; os registros brutos permanecem preservados.
+export const EXCLUDED_PIPELINE_IDS = new Set(["15389", "15399", "17287"]);
+
 const STATUS_LABELS: Record<string, string> = {
   UC_VCB8PV: "Tentativa Assistente",
   UC_YF6XA0: "Atendimento Assistente",
@@ -309,6 +312,7 @@ export function buildRdOpportunityManagerDashboard(input: {
     const raw = parsePayload(row.rawPayload);
     if (!row.rdAccountKey && !isRdStationLead(raw)) return [];
     const pipelineId = cleanText(raw.UF_CRM_1739195085, "unknown");
+    if (EXCLUDED_PIPELINE_IDS.has(pipelineId)) return [];
     const responsibleId = cleanText(raw.ASSIGNED_BY_ID, "unknown");
     const stageId = cleanText(raw.STATUS_ID ?? row.stageOrStatus, "unknown");
     const fields = attributionFields(raw);

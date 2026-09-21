@@ -842,3 +842,8 @@
 - [x] Persistir o snapshot diário de Negócios e validar datas máximas, volumes por BU, investimento, conversões e exceções sem expor PII.
 - [x] Executar Vitest, TypeScript, build e revisão visual autenticada das abas publicadas.
 - [x] Documentar a atualização D-1, salvar checkpoint e confirmar a publicação do dashboard.
+
+- [x] Identificar os pipelines exatos correspondentes a Aeskins e Advance Vision e validar os volumes antes da exclusão.
+- [x] Remover esses pipelines do universo analítico do dashboard sem alterar dados brutos nem outras BUs.
+- [x] Atualizar o Report Executivo com o corte até 20/09 e os números recalculados sem esses leads.
+- [x] Validar testes, TypeScript, build, dashboard publicado e apresentação final.

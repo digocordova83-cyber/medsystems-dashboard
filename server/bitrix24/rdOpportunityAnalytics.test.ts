@@ -41,6 +41,21 @@ describe("buildRdOpportunityManagerDashboard", () => {
     ]));
   });
 
+  it("remove Aeskins e Advance do universo gerencial sem apagar dados de outras BUs", () => {
+    const result = buildRdOpportunityManagerDashboard({
+      rows: [
+        row(11, { ...rd, UF_CRM_1739195085: "15399", STATUS_ID: "NEW" }),
+        row(12, { ...rd, UF_CRM_1739195085: "17287", STATUS_ID: "IN_PROCESS" }),
+        row(13, { ...rd, UF_CRM_1739195085: "15389", STATUS_ID: "UC_HZQN9I" }),
+        row(14, { ...rd, UF_CRM_1739195085: "15391", STATUS_ID: "NEW" }),
+      ],
+      filters,
+      period: { start: "2026-09-01", end: "2026-09-08" },
+    });
+    expect(result.totals).toMatchObject({ leads: 1, mql: 0, sql: 0 });
+    expect(result.filterOptions.pipelines).toEqual([expect.objectContaining({ value: "15391", count: 1 })]);
+  });
+
   it("calcula MQL e SQL pelo status atual e negócios ganhos de forma independente", () => {
     const result = buildRdOpportunityManagerDashboard({
       rows,

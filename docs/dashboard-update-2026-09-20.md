@@ -49,3 +49,9 @@ O overview Publya manteve visíveis as cinco fontes lógicas do escopo — PMAX,
 A atualização foi auditada sem PII. Foram conferidas as datas máximas, as quatro contas oficiais de mídia, a chave canônica de campanha e a ausência de linhas provisórias por nome no nível de campanha: **651 linhas armazenadas e 651 chaves canônicas** no período, sem linhas com `name:`. A interface publicada foi revisada autenticada nas abas Overview, Google Ads, Meta Ads, Programática e Negócios. O título público permaneceu `Medsystems - Gerencial`.
 
 Os testes, a checagem TypeScript e o build de produção devem ser executados após esta carga antes de qualquer novo checkpoint. A rotina diária existente permanece sem alteração de horário ou de metodologia.
+
+## Ajuste de escopo posterior ao corte
+
+Em 21/09/2026, foi solicitado retirar do Dashboard e do Report Executivo os leads dos pipelines **Aeskins** e **Advance Vision**. A alteração foi aplicada no agregado da aba Negócios antes de qualquer cálculo gerencial, sem excluir ou modificar os dados brutos no Bitrix24. Os pipelines técnicos excluídos são 15399 (Aeskins), 17287 (Aeskins Venda Recorrente) e 15389 (Advance). No recorte de 01–20/09, essa remoção retirou 101 linhas técnicas do universo geral: 97 de Aeskins e 4 de Advance; não havia linhas no pipeline Aeskins Venda Recorrente no corte.
+
+As BUs reconhecidas não foram alteradas: MedSystems permanece com 380 leads técnicos, 221 MQLs e 25 SQLs; BeautySystems permanece com 1.130 leads técnicos, 844 MQLs e 59 SQLs. O Report Executivo foi atualizado até 20/09 com esses números, os investimentos Google + Meta de R$ 79.497,06 e os 60 negócios ganhos no período. A regressão correspondente foi coberta por teste automatizado.

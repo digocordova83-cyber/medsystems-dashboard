@@ -847,3 +847,6 @@
 - [x] Remover esses pipelines do universo analítico do dashboard sem alterar dados brutos nem outras BUs.
 - [x] Atualizar o Report Executivo com o corte até 20/09 e os números recalculados sem esses leads.
 - [x] Validar testes, TypeScript, build, dashboard publicado e apresentação final.
+
+- [x] Inserir no Report Executivo a projeção linear de leads de MedSystems e BeautySystems até 30/09, com premissa e corte explícitos.
+- [x] Validar e reapresentar o deck atualizado.

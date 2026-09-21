@@ -850,3 +850,6 @@
 
 - [x] Inserir no Report Executivo a projeção linear de leads de MedSystems e BeautySystems até 30/09, com premissa e corte explícitos.
 - [x] Validar e reapresentar o deck atualizado.
+
+- [x] Inserir as projeções lineares por marca diretamente na lâmina de evolução semanal enviada pelo usuário.
+- [x] Validar e reapresentar a lâmina atualizada.

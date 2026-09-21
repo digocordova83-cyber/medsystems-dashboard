@@ -836,3 +836,9 @@
 - [x] Remover do Report Executivo a lâmina de plano de ação BeautySystems e a narrativa de Programática.
 - [x] Substituir a lâmina de Programática pela tabela Status das Entregas | Setembro, reproduzindo fielmente os conteúdos enviados pelo usuário.
 - [x] Validar a nova sequência, numeração, legibilidade da tabela e entregar o documento revisado.
+
+- [x] Sincronizar RD Station e Bitrix24 até 20/09/2026, preservando a metodologia `rd_bitrix_multi_v1` e a definição de BU exclusivamente pelos pipelines 15391/15395.
+- [x] Reconciliar Google Ads, Meta Ads, Publya e Push até 20/09/2026 nas contas oficiais, com chave canônica de campanha, ROAS por canal somente quando auditável e sem dupla contagem.
+- [x] Persistir o snapshot diário de Negócios e validar datas máximas, volumes por BU, investimento, conversões e exceções sem expor PII.
+- [x] Executar Vitest, TypeScript, build e revisão visual autenticada das abas publicadas.
+- [x] Documentar a atualização D-1, salvar checkpoint e confirmar a publicação do dashboard.

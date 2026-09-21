@@ -13,18 +13,18 @@
     },
     {
       "id": "lead_channels",
-      "state": "edited",
-      "pageNum": 2
+      "state": "deleted",
+      "pageNum": -1
     },
     {
       "id": "pacing",
       "state": "edited",
-      "pageNum": 3
+      "pageNum": 2
     },
     {
       "id": "spend_cpl",
       "state": "edited",
-      "pageNum": 4
+      "pageNum": 3
     },
     {
       "id": "status_summary",
@@ -34,12 +34,12 @@
     {
       "id": "rd_pipeline",
       "state": "edited",
-      "pageNum": 5
+      "pageNum": 4
     },
     {
       "id": "won_deals",
       "state": "edited",
-      "pageNum": 6
+      "pageNum": 5
     },
     {
       "id": "beauty_media_action",
@@ -49,12 +49,12 @@
     {
       "id": "delivery_status",
       "state": "edited",
-      "pageNum": 7
+      "pageNum": 6
     },
     {
       "id": "closing",
       "state": "edited",
-      "pageNum": 8
+      "pageNum": 7
     }
   ],
   "outline": [
@@ -62,12 +62,6 @@
       "id": "cover",
       "title": "Report executivo — leads de marketing",
       "summary": "Capa minimalista com o título do relatório, referência a MedSystems + BeautySystems e corte em 07/09/2026.",
-      "image_plan": "Use a suitable image if needed"
-    },
-    {
-      "id": "lead_channels",
-      "title": "Leads de marketing por canal",
-      "summary": "Detalha os 238 IDs de lead de marketing Bitrix24 por BU e por canal, mostrando mídia paga, orgânico, referência e não classificado.",
       "image_plan": "Use a suitable image if needed"
     },
     {

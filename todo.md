@@ -853,3 +853,6 @@
 
 - [x] Inserir as projeções lineares por marca diretamente na lâmina de evolução semanal enviada pelo usuário.
 - [x] Validar e reapresentar a lâmina atualizada.
+
+- [x] Corrigir o destaque temporal da evolução semanal para acumulado até 20/09.
+- [x] Reapresentar o Report Executivo após a correção de data.

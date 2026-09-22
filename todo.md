@@ -859,3 +859,12 @@
 
 - [x] Reestruturar a lâmina de evolução para incluir o período 15–20/09 e tornar as projeções por marca visíveis.
 - [x] Validar e reapresentar o Report Executivo corrigido.
+
+- [x] Sincronizar RD Station, Bitrix24, Publya e Push até 21/09/2026.
+- [x] Atualizar Google Ads e Meta Ads nas quatro contas oficiais até 21/09/2026.
+- [x] Reconciliar snapshot de Negócios e validar exclusões Aeskins/Advance.
+- [x] Auditar máximas de data, investimentos, funil e cobertura das fontes.
+- [x] Rodar testes/check/build, revisar dashboard e salvar checkpoint.
+
+- [x] Diagnosticar e corrigir o carregamento contínuo das métricas no Overview autenticado.
+- [x] Validar o Overview com dados até 21/09 e salvar o checkpoint final.

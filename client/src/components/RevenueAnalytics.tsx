@@ -47,6 +47,10 @@ export const DASHBOARD_TABS: { id: Tab; label: string }[] = [
   { id: "programmatic", label: "Programática" },
   { id: "bitrix", label: "Negócios" },
 ];
+export const dashboardQueryPlan = {
+  mediaEnabled: (tab: Tab) => tab === "overview",
+  crmEnabled: (tab: Tab, mediaReady: boolean) => tab === "overview" && mediaReady,
+};
 function saoPauloPeriod() {
   return new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo", year: "numeric", month: "2-digit" }).format(new Date()) as ReportingPeriod;
 }
@@ -110,14 +114,11 @@ export function RevenueAnalytics() {
     window.addEventListener("hashchange", updateFromHash);
     return () => window.removeEventListener("hashchange", updateFromHash);
   }, []);
-  const overviewEnabled = tab === "overview";
+  const overviewEnabled = dashboardQueryPlan.mediaEnabled(tab);
   const passiveQuery = { enabled: overviewEnabled, retry: 1, staleTime: 5 * 60_000, refetchOnWindowFocus: false } as const;
   const dashboard = trpc.analytics.dashboard.useQuery({ brand, period }, passiveQuery);
-  const bitrixDeals = trpc.bitrix24.medsystemsJulyDealAnalytics.useQuery({ status: dealStatus, brand, period }, passiveQuery);
-  const bitrixChannelFunnel = trpc.bitrix24.medsystemsLeadChannelFunnel.useQuery({ status: dealStatus, brand, period }, passiveQuery);
-  const bitrixCampaignDetail = trpc.bitrix24.medsystemsCampaignAttributionDetail.useQuery({ status: dealStatus, brand, period }, passiveQuery);
-  const utmReceiptCoverage = trpc.bitrix24.medsystemsUtmReceiptCoverage.useQuery({ brand, period }, passiveQuery);
-  const rdStationOperations = trpc.rdstation.operationsDashboard.useQuery({ brand, period }, passiveQuery);
+  const crmQuery = { ...passiveQuery, enabled: dashboardQueryPlan.crmEnabled(tab, Boolean(dashboard.data)) };
+  const bitrixDeals = trpc.bitrix24.medsystemsJulyDealAnalytics.useQuery({ status: dealStatus, brand, period }, crmQuery);
 
   const model = useMemo(() => {
     const data = dashboard.data;

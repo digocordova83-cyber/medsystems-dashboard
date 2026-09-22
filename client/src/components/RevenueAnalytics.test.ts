@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { DASHBOARD_TABS, SUPPORTED_REPORTING_PERIODS, channelFunnelMath, dashboardMath } from "./RevenueAnalytics";
+import { DASHBOARD_TABS, SUPPORTED_REPORTING_PERIODS, channelFunnelMath, dashboardMath, dashboardQueryPlan } from "./RevenueAnalytics";
 
 describe("dashboardMath.ratio", () => {
   it("calcula CPL, custo por venda e ROAS preservando precisão", () => {
@@ -14,6 +14,13 @@ describe("dashboardMath.ratio", () => {
 
   it("mantém as visões públicas solicitadas no painel principal", () => {
     expect(DASHBOARD_TABS.map(tab => tab.id)).toEqual(["overview", "google", "meta", "programmatic", "bitrix"]);
+  });
+
+  it("carrega a mídia primeiro e só inicia CRM depois que a mídia está pronta", () => {
+    expect(dashboardQueryPlan.mediaEnabled("overview")).toBe(true);
+    expect(dashboardQueryPlan.crmEnabled("overview", false)).toBe(false);
+    expect(dashboardQueryPlan.crmEnabled("overview", true)).toBe(true);
+    expect(dashboardQueryPlan.crmEnabled("bitrix", true)).toBe(false);
   });
 
   it("mantém setembro, agosto e julho como períodos explícitos de análise", () => {

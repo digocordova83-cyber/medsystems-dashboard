@@ -10,6 +10,8 @@
     "check": "tsc --noEmit",
     "format": "prettier --write .",
     "test": "vitest run",
+    "test:ci": "vitest run --exclude 'server/publya.integration.test.ts' --exclude 'server/rdstation/segments.integration.test.ts' --exclude 'server/rdstation/*.credentials.test.ts' --exclude 'server/bitrix24/medsystems.crm.test.ts' --exclude 'server/bitrix24/medsystems.webhook.test.ts' --exclude 'server/publya/publya.test.ts'",
+    "verify:repo": "node scripts/verify-repository-hygiene.mjs",
     "db:push": "drizzle-kit generate && drizzle-kit migrate"
   },
   "dependencies": {

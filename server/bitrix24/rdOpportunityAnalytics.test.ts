@@ -41,6 +41,30 @@ describe("buildRdOpportunityManagerDashboard", () => {
     ]));
   });
 
+  it("expõe a visão bruta do CRM por pipeline sem misturá-la ao funil RD", () => {
+    const result = buildRdOpportunityManagerDashboard({
+      rows,
+      crmLeadRows: [
+        row(101, { UF_CRM_1739195085: "15395", STATUS_ID: "NEW" }),
+        row(102, { UF_CRM_1739195085: "15391", STATUS_ID: "NEW" }),
+        row(103, { UF_CRM_1739195085: "20889", STATUS_ID: "NEW" }),
+      ],
+      filters,
+      period: { start: "2026-09-01", end: "2026-09-08" },
+    });
+    expect(result.totals.leads).toBe(3);
+    expect(result.crmLeadUniverse).toMatchObject({
+      totalGeneral: 3,
+      byBu: { medsystems: 1, beautysystems: 1 },
+      otherPipelines: 1,
+    });
+    expect(result.crmLeadUniverse.byPipeline).toEqual(expect.arrayContaining([
+      expect.objectContaining({ label: "BeautySystems · Negócios e Redes", count: 1 }),
+      expect.objectContaining({ label: "Medsystems", count: 1 }),
+      expect.objectContaining({ label: "Não atribuído · pipeline 20889", count: 1 }),
+    ]));
+  });
+
   it("remove Aeskins e Advance do universo gerencial sem apagar dados de outras BUs", () => {
     const result = buildRdOpportunityManagerDashboard({
       rows: [

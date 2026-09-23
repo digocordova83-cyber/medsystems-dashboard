@@ -868,3 +868,16 @@
 
 - [x] Diagnosticar e corrigir o carregamento contínuo das métricas no Overview autenticado.
 - [x] Validar o Overview com dados até 21/09 e salvar o checkpoint final.
+
+- [x] Definir o critério programático e o período de 01/08/2026 a 30/09/2026.
+- [x] Consultar eventos RD Station das duas BUs sem expor PII.
+- [x] Consolidar campanha direta, UTMs ampliadas, leads únicos e conversões.
+- [x] Validar duplicidades, datas em Brasília, cobertura e limitações.
+- [x] Entregar o resumo auditável e o detalhamento pseudonimizado.
+
+- [x] Sincronizar RD Station, Bitrix24, Publya e Push até 22/09/2026.
+- [x] Reconciliar Google Ads e Meta Ads nas quatro contas oficiais do Windsor até 22/09/2026.
+- [x] Adicionar ao agregador a visão bruta de Leads do Bitrix24 por pipeline, separada do funil RD Station → Bitrix24.
+- [x] Exibir no dashboard os totais gerais, MedSystems 15391, BeautySystems 15395 e outras/sem BU conforme a definição da Isa.
+- [x] Validar auditoria, 116 testes, TypeScript e build de produção.
+- [x] Revisar visualmente a aba Negócios publicada e salvar checkpoint final.

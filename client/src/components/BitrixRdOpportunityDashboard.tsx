@@ -109,6 +109,23 @@ export function BitrixRdOpportunityDashboard() {
       </div>
     </section>
 
+    <section className="rounded-2xl border border-amber-200/15 bg-[linear-gradient(135deg,rgba(120,76,14,.18),rgba(15,31,48,.72))] p-4 sm:p-5">
+      <div className="flex flex-col justify-between gap-3 lg:flex-row lg:items-end">
+        <PanelHeader eyebrow="Leitura CRM · referência Isa" title="Leads criados no Bitrix24 por pipeline" detail="Esta é a visão bruta do CRM: todos os Leads técnicos criados no período, agrupados pelo Pipeline de Vendas. Ela é separada do funil RD Station → Bitrix24, que exige qualificação e correspondência de identidade." />
+        <Badge variant="outline" className="w-fit border-amber-200/20 bg-amber-200/[.06] text-amber-100">Sem deduplicar pessoas</Badge>
+      </div>
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <SmallKpi label="Total geral no CRM" value={integer(data.crmLeadUniverse.totalGeneral)} helper="Todos os pipelines no período" accent="amber" />
+        <SmallKpi label="BeautySystems · 15395" value={integer(data.crmLeadUniverse.byBu.beautysystems)} helper="Pipeline oficial Beauty" accent="cyan" />
+        <SmallKpi label="MedSystems · 15391" value={integer(data.crmLeadUniverse.byBu.medsystems)} helper="Pipeline oficial Medical" accent="cyan" />
+        <SmallKpi label="Outras / sem BU" value={integer(data.crmLeadUniverse.otherPipelines)} helper={`${integer(data.crmLeadUniverse.excludedPipelines)} em pipelines excluídos`} accent="amber" />
+      </div>
+      <div className="mt-4 flex flex-wrap gap-2">
+        {data.crmLeadUniverse.byPipeline.map(item => <span key={item.label} className="rounded-full border border-white/10 bg-black/20 px-3 py-1.5 text-xs text-slate-300">{item.label}: <strong className="text-white">{integer(item.count)}</strong></span>)}
+      </div>
+      <p className="mt-3 text-[11px] leading-5 text-amber-50/55">{data.crmLeadUniverse.definition} O total pode diferir do funil reconciliado porque são universos com definições diferentes.</p>
+    </section>
+
     <section className="rounded-2xl border border-white/10 bg-black/20 p-4 sm:p-5">
       <div className="flex flex-col justify-between gap-3 lg:flex-row lg:items-end">
         <PanelHeader eyebrow="Filtro principal · Bitrix24" title="Pipeline / marca no CRM" detail={`O universo contém contatos RD Station qualificados encontrados no CRM por e-mail ou nome. Cada Lead técnico de correspondências múltiplas também é contado; ${integer(data.totals.duplicateBitrixLeadCandidates)} duplicidade(s) técnica(s) estão sinalizadas na auditoria e ${integer(data.totals.unassignedLeads)} lead(s) permanecem sem BU reconhecida.`} />

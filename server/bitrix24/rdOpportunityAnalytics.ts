@@ -289,6 +289,7 @@ export function rdOpportunityCandidateRows(input: {
 export function buildRdOpportunityManagerDashboard(input: {
   rows: RdOpportunityRawLead[];
   dealRows?: RdOpportunityRawDeal[];
+  crmLeadRows?: RdOpportunityRawLead[];
   contactRows?: RdOpportunityRawContact[];
   referenceRows?: RdOpportunityReferenceIdentity[];
   identitySecret?: string;
@@ -507,6 +508,7 @@ export function buildRdOpportunityManagerDashboard(input: {
   return {
     sourceRule: "Contato RD Station qualificado localizado no Bitrix24 por e-mail ou nome; correspondências múltiplas incluem cada Lead candidato como linha técnica distinta",
     period: input.period,
+    crmLeadUniverse: buildCrmLeadUniverse(input.crmLeadRows ?? [], input.period),
     selectedFilters: input.filters,
     filterOptions: Object.fromEntries(Object.entries(optionMaps).map(([key, map]) => [key, optionRows(map)])),
     totals: {
@@ -570,7 +572,43 @@ export function buildRdOpportunityManagerDashboard(input: {
 type RdOpportunityDataset = {
   rows: RdOpportunityRawLead[];
   dealRows: RdOpportunityRawDeal[];
+  crmLeadRows: RdOpportunityRawLead[];
 };
+
+export type CrmLeadUniverse = {
+  totalGeneral: number;
+  byBu: { medsystems: number; beautysystems: number };
+  otherPipelines: number;
+  excludedPipelines: number;
+  byPipeline: CountRow[];
+  definition: string;
+};
+
+function buildCrmLeadUniverse(rows: RdOpportunityRawLead[], period: { start: string; end: string }): CrmLeadUniverse {
+  const pipelineCounts = new Map<string, number>();
+  const byBu = { medsystems: 0, beautysystems: 0 };
+  let totalGeneral = 0;
+  let excludedPipelines = 0;
+  for (const row of rows) {
+    const day = dayKey(row.createdAtBitrix);
+    if (day < period.start || day > period.end) continue;
+    const pipelineId = cleanText(parsePayload(row.rawPayload).UF_CRM_1739195085, "unknown");
+    totalGeneral += 1;
+    addCount(pipelineCounts, pipelineId);
+    if (pipelineId === "15391") byBu.medsystems += 1;
+    else if (pipelineId === "15395") byBu.beautysystems += 1;
+    if (EXCLUDED_PIPELINE_IDS.has(pipelineId)) excludedPipelines += 1;
+  }
+  const recognized = byBu.medsystems + byBu.beautysystems;
+  return {
+    totalGeneral,
+    byBu,
+    otherPipelines: Math.max(0, totalGeneral - recognized),
+    excludedPipelines,
+    byPipeline: countRows(pipelineCounts).map(item => ({ ...item, label: PIPELINE_LABELS[item.label] ?? (item.label === "unknown" ? "Sem pipeline" : `Pipeline #${item.label}`) })),
+    definition: "Todos os Leads técnicos criados no Bitrix24 no período, agrupados pelo Pipeline de Vendas, sem exigir RD Station = sim e sem deduplicar pessoas.",
+  };
+}
 
 const PAGE_SIZE = 250;
 
@@ -683,7 +721,7 @@ async function loadRdOpportunityDataset(input: {
     const closeDay = cleanText(parsePayload(row.rawPayload).CLOSEDATE, "").slice(0, 10);
     return closeDay >= input.startDate && closeDay <= input.endDate;
   });
-  return { rows, dealRows };
+  return { rows, dealRows, crmLeadRows: bitrixLeads as RdOpportunityRawLead[] };
 }
 
 export async function rdOpportunityManagerDashboard(input: {

@@ -5,7 +5,19 @@ import { MediaChannelDashboard } from "@/components/MediaChannelDashboard";
 import { ProgrammaticDashboard } from "@/components/ProgrammaticDashboard";
 import { trpc } from "@/lib/trpc";
 import { dashboardTabFromHash, type DashboardTab } from "@shared/dashboardTab";
-import { ArrowDownRight, ArrowUpRight, BarChart3, ChevronRight, CircleAlert, DollarSign, Filter, Layers3, MousePointerClick, Target, TrendingUp } from "lucide-react";
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  BarChart3,
+  ChevronRight,
+  CircleAlert,
+  DollarSign,
+  Filter,
+  Layers3,
+  MousePointerClick,
+  Target,
+  TrendingUp,
+} from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 type Brand = "all" | "medsystems" | "beautysystems";
@@ -27,18 +39,171 @@ type DealAnalytics = {
   averageWonTicket: number;
   sources: { label: string; count: number; value: number }[];
   utmSources: { label: string; count: number; value: number }[];
-  losses: { label: string; count: number; value: number; withObservation: number }[];
+  losses: {
+    label: string;
+    count: number;
+    value: number;
+    withObservation: number;
+  }[];
   discards: { label: string; count: number; value: number }[];
   discardChannels: { label: string; count: number; value: number }[];
   financialStatuses: { label: string; count: number; value: number }[];
 };
-type CampaignRow = { platform: "google_ads" | "meta_ads"; campaignId: string; campaignName: string; brand: "medsystems" | "beautysystems"; spend: number; impressions: number; clicks: number; leads: number };
-type AdRow = CampaignRow & { adGroupId: string; adGroupName: string; adId: string; adName: string };
-type AttributionRow = { matchStatus: "not_identified" | "channel_signal" | "identified"; matchMethod: "none" | "utm_source" | "utm_campaign" | "identifier"; mediaPlatform: "google_ads" | "meta_ads" | null; count: number; revenueValue: number };
-type LeadChannelFunnel = { leadBrandScopeAvailable: boolean; linkedDeals: number; unlinkedDeals: number; rows: { channel: string; leadsReceived: number | null; deals: number; won: number; lost: number; discards: number }[] };
-type CampaignAttributionDetail = { leadsWithTracking: number; exactCampaignMatches: number; campaigns: { campaignName: string; platform: "google_ads" | "meta_ads"; matchLevel: "campaign" | "ad_group" | "ad"; matchMethod: "exact" | "creative_key" | "url_utm"; leads: number; deals: number; won: number; lost: number; discards: number; discardReasons: { label: string; count: number }[] }[]; tracking: { trackingField: string; trackingValue: string; channel: string; leads: number; deals: number; won: number; lost: number; discards: number }[]; unassigned: { deals: number; won: number; lost: number; discards: number; discardReasons: { label: string; count: number }[] } };
-type UtmReceiptCoverage = { period: ReportingPeriod; bitrix: { available: boolean; reason: string | null; brandScopeAvailable: boolean; total: number; withSource: number; withCampaign: number; withContent: number; withTerm: number; identity: { email: number; phone: number; cpf: number; ambiguous: number; unmatched: number } }; rd: { available: boolean; reason: string | null; total: number; withSource: number; withCampaign: number; withContent: number; withTerm: number }; bitrixRdEnrichment: { available: boolean; reason: string | null; matchedIdentity: number; withRdEvent: number; withUtm: number; withoutRdEvent: number; utm: { total: number; withSource: number; withCampaign: number; withContent: number; withTerm: number }; origins: { label: string; count: number }[] }; rdCampaigns: { campaign: string; brand: "medsystems" | "beautysystems"; rdEvents: number; mediaCampaignFound: boolean }[] };
-type RdStationOperationsDashboard = { period: { key: ReportingPeriod; start: string; end: string }; totals: { convertedContacts: number; utmLeads: number }; byBrand: { medsystems: { convertedContacts: number; utmLeads: number }; beautysystems: { convertedContacts: number; utmLeads: number } }; coverage: { withSource: number; withMedium: number; withCampaign: number; withContent: number; withTerm: number }; byDay: { date: string; brand: "medsystems" | "beautysystems"; count: number }[]; sources: { label: string; count: number }[]; mediums: { label: string; count: number }[]; campaigns: { campaign: string; channel: string; count: number }[]; campaignConflicts: { campaign: string; channel: string; count: number; expectedBrand: "medsystems" | "beautysystems" }[]; conversionEvents: { label: string; count: number }[]; eventConflicts: { label: string; count: number; expectedBrand: "medsystems" | "beautysystems" }[] };
+type CampaignRow = {
+  platform: "google_ads" | "meta_ads";
+  campaignId: string;
+  campaignName: string;
+  brand: "medsystems" | "beautysystems";
+  spend: number;
+  impressions: number;
+  clicks: number;
+  leads: number;
+};
+type AdRow = CampaignRow & {
+  adGroupId: string;
+  adGroupName: string;
+  adId: string;
+  adName: string;
+};
+type AttributionRow = {
+  matchStatus: "not_identified" | "channel_signal" | "identified";
+  matchMethod: "none" | "utm_source" | "utm_campaign" | "identifier";
+  mediaPlatform: "google_ads" | "meta_ads" | null;
+  count: number;
+  revenueValue: number;
+};
+type LeadChannelFunnel = {
+  leadBrandScopeAvailable: boolean;
+  linkedDeals: number;
+  unlinkedDeals: number;
+  rows: {
+    channel: string;
+    leadsReceived: number | null;
+    deals: number;
+    won: number;
+    lost: number;
+    discards: number;
+  }[];
+};
+type CampaignAttributionDetail = {
+  leadsWithTracking: number;
+  exactCampaignMatches: number;
+  campaigns: {
+    campaignName: string;
+    platform: "google_ads" | "meta_ads";
+    matchLevel: "campaign" | "ad_group" | "ad";
+    matchMethod: "exact" | "creative_key" | "url_utm";
+    leads: number;
+    deals: number;
+    won: number;
+    lost: number;
+    discards: number;
+    discardReasons: { label: string; count: number }[];
+  }[];
+  tracking: {
+    trackingField: string;
+    trackingValue: string;
+    channel: string;
+    leads: number;
+    deals: number;
+    won: number;
+    lost: number;
+    discards: number;
+  }[];
+  unassigned: {
+    deals: number;
+    won: number;
+    lost: number;
+    discards: number;
+    discardReasons: { label: string; count: number }[];
+  };
+};
+type UtmReceiptCoverage = {
+  period: ReportingPeriod;
+  bitrix: {
+    available: boolean;
+    reason: string | null;
+    brandScopeAvailable: boolean;
+    total: number;
+    withSource: number;
+    withCampaign: number;
+    withContent: number;
+    withTerm: number;
+    identity: {
+      email: number;
+      phone: number;
+      cpf: number;
+      ambiguous: number;
+      unmatched: number;
+    };
+  };
+  rd: {
+    available: boolean;
+    reason: string | null;
+    total: number;
+    withSource: number;
+    withCampaign: number;
+    withContent: number;
+    withTerm: number;
+  };
+  bitrixRdEnrichment: {
+    available: boolean;
+    reason: string | null;
+    matchedIdentity: number;
+    withRdEvent: number;
+    withUtm: number;
+    withoutRdEvent: number;
+    utm: {
+      total: number;
+      withSource: number;
+      withCampaign: number;
+      withContent: number;
+      withTerm: number;
+    };
+    origins: { label: string; count: number }[];
+  };
+  rdCampaigns: {
+    campaign: string;
+    brand: "medsystems" | "beautysystems";
+    rdEvents: number;
+    mediaCampaignFound: boolean;
+  }[];
+};
+type RdStationOperationsDashboard = {
+  period: { key: ReportingPeriod; start: string; end: string };
+  totals: { convertedContacts: number; utmLeads: number };
+  byBrand: {
+    medsystems: { convertedContacts: number; utmLeads: number };
+    beautysystems: { convertedContacts: number; utmLeads: number };
+  };
+  coverage: {
+    withSource: number;
+    withMedium: number;
+    withCampaign: number;
+    withContent: number;
+    withTerm: number;
+  };
+  byDay: {
+    date: string;
+    brand: "medsystems" | "beautysystems";
+    count: number;
+  }[];
+  sources: { label: string; count: number }[];
+  mediums: { label: string; count: number }[];
+  campaigns: { campaign: string; channel: string; count: number }[];
+  campaignConflicts: {
+    campaign: string;
+    channel: string;
+    count: number;
+    expectedBrand: "medsystems" | "beautysystems";
+  }[];
+  conversionEvents: { label: string; count: number }[];
+  eventConflicts: {
+    label: string;
+    count: number;
+    expectedBrand: "medsystems" | "beautysystems";
+  }[];
+};
 
 export const DASHBOARD_TABS: { id: Tab; label: string }[] = [
   { id: "overview", label: "Overview" },
@@ -49,25 +214,46 @@ export const DASHBOARD_TABS: { id: Tab; label: string }[] = [
 ];
 export const dashboardQueryPlan = {
   mediaEnabled: (tab: Tab) => tab === "overview",
-  crmEnabled: (tab: Tab, mediaReady: boolean) => tab === "overview" && mediaReady,
+  crmEnabled: (tab: Tab, mediaReady: boolean) =>
+    tab === "overview" && mediaReady,
 };
 function saoPauloPeriod() {
-  return new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo", year: "numeric", month: "2-digit" }).format(new Date()) as ReportingPeriod;
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Sao_Paulo",
+    year: "numeric",
+    month: "2-digit",
+  }).format(new Date()) as ReportingPeriod;
 }
 
 function periodLabel(period: ReportingPeriod) {
   const [year, month] = period.split("-").map(Number);
-  return new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric" }).format(new Date(Date.UTC(year, month - 1, 1)));
+  return new Intl.DateTimeFormat("pt-BR", {
+    month: "long",
+    year: "numeric",
+  }).format(new Date(Date.UTC(year, month - 1, 1)));
 }
 
 const CURRENT_REPORTING_PERIOD = saoPauloPeriod();
-export const SUPPORTED_REPORTING_PERIODS = Array.from(new Set([CURRENT_REPORTING_PERIOD, "2026-08", "2026-07"])) as ReportingPeriod[];
+export const SUPPORTED_REPORTING_PERIODS = Array.from(
+  new Set([CURRENT_REPORTING_PERIOD, "2026-08", "2026-07"])
+) as ReportingPeriod[];
 
-const BRAND_LABEL: Record<Brand, string> = { all: "Todas as marcas", medsystems: "Medsystems", beautysystems: "BeautySystems" };
-const PLATFORM_LABEL = { google_ads: "Google Ads", meta_ads: "Meta Ads" } as const;
+const BRAND_LABEL: Record<Brand, string> = {
+  all: "Todas as marcas",
+  medsystems: "Medsystems",
+  beautysystems: "BeautySystems",
+};
+const PLATFORM_LABEL = {
+  google_ads: "Google Ads",
+  meta_ads: "Meta Ads",
+} as const;
 
 function brl(value: number) {
-  return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).format(value || 0);
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    maximumFractionDigits: 0,
+  }).format(value || 0);
 }
 
 function integer(value: number) {
@@ -79,32 +265,120 @@ function ratio(numerator: number, denominator: number) {
 }
 
 export const dashboardMath = { ratio };
-export const channelFunnelMath = { conversionRate: (leadsReceived: number | null, deals: number) => leadsReceived === null ? null : ratio(deals, leadsReceived) };
+export const channelFunnelMath = {
+  conversionRate: (leadsReceived: number | null, deals: number) =>
+    leadsReceived === null ? null : ratio(deals, leadsReceived),
+};
 
-function StatusPill({ available, children }: { available: boolean; children: React.ReactNode }) {
-  return <Badge variant="outline" className={available ? "border-emerald-300/20 bg-emerald-300/10 text-emerald-100" : "border-amber-200/20 bg-amber-200/10 text-amber-100"}>{children}</Badge>;
+function StatusPill({
+  available,
+  children,
+}: {
+  available: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <Badge
+      variant="outline"
+      className={
+        available
+          ? "border-emerald-300/20 bg-emerald-300/10 text-emerald-100"
+          : "border-amber-200/20 bg-amber-200/10 text-amber-100"
+      }
+    >
+      {children}
+    </Badge>
+  );
 }
 
-function QuickFilter({ label, children }: { label: string; children: React.ReactNode }) {
-  return <div><p className="font-mono-ui text-[9px] uppercase tracking-[.14em] text-slate-500">{label}</p><div className="mt-2 flex flex-wrap gap-2">{children}</div></div>;
+function QuickFilter({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <p className="font-mono-ui text-[9px] uppercase tracking-[.14em] text-slate-500">
+        {label}
+      </p>
+      <div className="mt-2 flex flex-wrap gap-2">{children}</div>
+    </div>
+  );
 }
 
-function QuickPill({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
-  return <button type="button" onClick={onClick} className={`rounded-full border px-3 py-1.5 text-xs transition-all duration-200 active:scale-[.97] ${active ? "border-cyan-200/40 bg-cyan-200/15 text-cyan-50 shadow-[0_0_22px_rgba(34,211,238,.1)]" : "border-white/10 bg-white/[.025] text-slate-400 hover:border-white/20 hover:text-white"}`}>{children}</button>;
+function QuickPill({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`rounded-full border px-3 py-1.5 text-xs transition-all duration-200 active:scale-[.97] ${active ? "border-cyan-200/40 bg-cyan-200/15 text-cyan-50 shadow-[0_0_22px_rgba(34,211,238,.1)]" : "border-white/10 bg-white/[.025] text-slate-400 hover:border-white/20 hover:text-white"}`}
+    >
+      {children}
+    </button>
+  );
 }
 
-function KpiCard({ label, value, helper, icon: Icon, accent = "cyan" }: { label: string; value: string; helper: string; icon: typeof DollarSign; accent?: "cyan" | "green" | "orange" }) {
-  const colors = { cyan: "text-cyan-200 bg-cyan-200/10", green: "text-emerald-200 bg-emerald-200/10", orange: "text-orange-200 bg-orange-200/10" };
+function KpiCard({
+  label,
+  value,
+  helper,
+  icon: Icon,
+  accent = "cyan",
+}: {
+  label: string;
+  value: string;
+  helper: string;
+  icon: typeof DollarSign;
+  accent?: "cyan" | "green" | "orange";
+}) {
+  const colors = {
+    cyan: "text-cyan-200 bg-cyan-200/10",
+    green: "text-emerald-200 bg-emerald-200/10",
+    orange: "text-orange-200 bg-orange-200/10",
+  };
   const displayValue = value === "—" ? "Indisponível" : value;
-  return <div className="rounded-2xl border border-white/10 bg-black/15 p-5"><div className="flex items-start justify-between gap-3"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">{label}</p><p className="mt-2 text-2xl font-bold tracking-tight">{displayValue}</p></div><span className={`grid h-9 w-9 place-items-center rounded-xl ${colors[accent]}`}><Icon className="h-4 w-4" /></span></div><p className="mt-3 text-xs text-muted-foreground">{helper}</p></div>;
+  return (
+    <div className="rounded-2xl border border-white/10 bg-black/15 p-5">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">
+            {label}
+          </p>
+          <p className="mt-2 text-2xl font-bold tracking-tight">
+            {displayValue}
+          </p>
+        </div>
+        <span
+          className={`grid h-9 w-9 place-items-center rounded-xl ${colors[accent]}`}
+        >
+          <Icon className="h-4 w-4" />
+        </span>
+      </div>
+      <p className="mt-3 text-xs text-muted-foreground">{helper}</p>
+    </div>
+  );
 }
 
 export function RevenueAnalytics() {
   const [brand, setBrand] = useState<Brand>("all");
   const [channel, setChannel] = useState<Channel>("all");
   const [dealStatus, setDealStatus] = useState<DealStatus>("all");
-  const [period, setPeriod] = useState<ReportingPeriod>(CURRENT_REPORTING_PERIOD);
-  const [tab, setTab] = useState<Tab>(() => dashboardTabFromHash(window.location.hash));
+  const [period, setPeriod] = useState<ReportingPeriod>(
+    CURRENT_REPORTING_PERIOD
+  );
+  const [tab, setTab] = useState<Tab>(() =>
+    dashboardTabFromHash(window.location.hash)
+  );
   useEffect(() => {
     const updateFromHash = () => {
       const requested = window.location.hash.replace("#", "") as Tab;
@@ -115,209 +389,2493 @@ export function RevenueAnalytics() {
     return () => window.removeEventListener("hashchange", updateFromHash);
   }, []);
   const overviewEnabled = dashboardQueryPlan.mediaEnabled(tab);
-  const passiveQuery = { enabled: overviewEnabled, retry: 1, staleTime: 5 * 60_000, refetchOnWindowFocus: false } as const;
-  const dashboard = trpc.analytics.dashboard.useQuery({ brand, period }, passiveQuery);
-  const crmQuery = { ...passiveQuery, enabled: dashboardQueryPlan.crmEnabled(tab, Boolean(dashboard.data)) };
-  const bitrixDeals = trpc.bitrix24.medsystemsJulyDealAnalytics.useQuery({ status: dealStatus, brand, period }, crmQuery);
+  const passiveQuery = {
+    enabled: overviewEnabled,
+    retry: 1,
+    staleTime: 5 * 60_000,
+    refetchOnWindowFocus: false,
+  } as const;
+  const dashboard = trpc.analytics.dashboard.useQuery(
+    { brand, period },
+    passiveQuery
+  );
+  const crmQuery = {
+    ...passiveQuery,
+    enabled: dashboardQueryPlan.crmEnabled(tab, Boolean(dashboard.data)),
+  };
+  const bitrixDeals = trpc.bitrix24.medsystemsJulyDealAnalytics.useQuery(
+    { status: dealStatus, brand, period },
+    crmQuery
+  );
 
   const model = useMemo(() => {
     const data = dashboard.data;
     if (!data) return null;
-    const platforms = data.platforms.filter(row => channel === "all" || row.platform === channel);
+    const platforms = data.platforms.filter(
+      row => channel === "all" || row.platform === channel
+    );
     const spend = platforms.reduce((sum, row) => sum + row.spend, 0);
-    const impressions = platforms.reduce((sum, row) => sum + row.impressions, 0);
+    const impressions = platforms.reduce(
+      (sum, row) => sum + row.impressions,
+      0
+    );
     const clicks = platforms.reduce((sum, row) => sum + row.clicks, 0);
     const platformLeads = platforms.reduce((sum, row) => sum + row.leads, 0);
-    const campaigns = data.campaigns.filter(row => channel === "all" || row.platform === channel);
-    const ads = data.ads.filter(row => channel === "all" || row.platform === channel);
+    const campaigns = data.campaigns.filter(
+      row => channel === "all" || row.platform === channel
+    );
+    const ads = data.ads.filter(
+      row => channel === "all" || row.platform === channel
+    );
     const attribution = data.attribution as AttributionRow[];
     const rdLeadsAvailable = data.sourceAvailability.rdLeads;
-    const qualifiedLeads = Object.values(data.rdUtmLeads).reduce((sum, value) => sum + Number(value), 0);
-    const bitrixArrivals = Object.values(data.bitrixArrivals).reduce((sum, value) => sum + Number(value), 0);
-    const commercialRows = data.brandPlatforms.filter(row => (brand === "all" || row.brand === brand) && (channel === "all" || row.platform === channel));
-    const commercialSpend = commercialRows.reduce((sum, row) => sum + row.spend, 0);
-    const commercialPlatformLeads = commercialRows.reduce((sum, row) => sum + row.leads, 0);
-    const commercialQualifiedLeads = brand === "all" ? Object.values(data.rdUtmLeads).reduce((sum, value) => sum + Number(value), 0) : Number(data.rdUtmLeads[brand] ?? 0);
-    const commercialBitrixArrivals = brand === "all" ? Object.values(data.bitrixArrivals).reduce((sum, value) => sum + Number(value), 0) : Number(data.bitrixArrivals[brand] ?? 0);
-    const selectedComponents = brand === "all"
-      ? Object.values(data.paidMediaLeadComponents).reduce((sum, item) => ({ instantForms: sum.instantForms + item.instantForms, messagingConversations: sum.messagingConversations + item.messagingConversations, messagingFirstReplies: sum.messagingFirstReplies + item.messagingFirstReplies, messagingConnections: sum.messagingConnections + item.messagingConnections }), { instantForms: 0, messagingConversations: 0, messagingFirstReplies: 0, messagingConnections: 0 })
-      : data.paidMediaLeadComponents[brand];
-    return { platforms, spend, impressions, clicks, platformLeads, campaigns, ads, attribution, qualifiedLeads, bitrixArrivals, commercialSpend, commercialPlatformLeads, commercialQualifiedLeads, commercialBitrixArrivals, rdLeadsAvailable, paidLeadComponents: selectedComponents, periodEnd: data.period.end };
+    const qualifiedLeads = Object.values(data.rdUtmLeads).reduce(
+      (sum, value) => sum + Number(value),
+      0
+    );
+    const bitrixArrivals = Object.values(data.bitrixArrivals).reduce(
+      (sum, value) => sum + Number(value),
+      0
+    );
+    const commercialRows = data.brandPlatforms.filter(
+      row =>
+        (brand === "all" || row.brand === brand) &&
+        (channel === "all" || row.platform === channel)
+    );
+    const commercialSpend = commercialRows.reduce(
+      (sum, row) => sum + row.spend,
+      0
+    );
+    const commercialPlatformLeads = commercialRows.reduce(
+      (sum, row) => sum + row.leads,
+      0
+    );
+    const commercialQualifiedLeads =
+      brand === "all"
+        ? Object.values(data.rdUtmLeads).reduce(
+            (sum, value) => sum + Number(value),
+            0
+          )
+        : Number(data.rdUtmLeads[brand] ?? 0);
+    const commercialBitrixArrivals =
+      brand === "all"
+        ? Object.values(data.bitrixArrivals).reduce(
+            (sum, value) => sum + Number(value),
+            0
+          )
+        : Number(data.bitrixArrivals[brand] ?? 0);
+    const selectedComponents =
+      brand === "all"
+        ? Object.values(data.paidMediaLeadComponents).reduce(
+            (sum, item) => ({
+              instantForms: sum.instantForms + item.instantForms,
+              messagingConversations:
+                sum.messagingConversations + item.messagingConversations,
+              messagingFirstReplies:
+                sum.messagingFirstReplies + item.messagingFirstReplies,
+              messagingConnections:
+                sum.messagingConnections + item.messagingConnections,
+            }),
+            {
+              instantForms: 0,
+              messagingConversations: 0,
+              messagingFirstReplies: 0,
+              messagingConnections: 0,
+            }
+          )
+        : data.paidMediaLeadComponents[brand];
+    return {
+      platforms,
+      spend,
+      impressions,
+      clicks,
+      platformLeads,
+      campaigns,
+      ads,
+      attribution,
+      qualifiedLeads,
+      bitrixArrivals,
+      commercialSpend,
+      commercialPlatformLeads,
+      commercialQualifiedLeads,
+      commercialBitrixArrivals,
+      rdLeadsAvailable,
+      paidLeadComponents: selectedComponents,
+      periodEnd: data.period.end,
+    };
   }, [brand, channel, dashboard.data]);
 
   const commercialAvailable = Boolean(bitrixDeals.data);
-  const dealData: DealAnalytics | null = commercialAvailable ? ((bitrixDeals.data as DealAnalytics | undefined) ?? null) : null;
-  const maxCampaignSpend = Math.max(1, ...(model?.campaigns.map(item => item.spend) ?? [1]));
+  const dealData: DealAnalytics | null = commercialAvailable
+    ? ((bitrixDeals.data as DealAnalytics | undefined) ?? null)
+    : null;
+  const maxCampaignSpend = Math.max(
+    1,
+    ...(model?.campaigns.map(item => item.spend) ?? [1])
+  );
 
-  return <section className="overflow-hidden rounded-3xl border border-cyan-100/10 bg-[linear-gradient(135deg,rgba(12,35,55,.92),rgba(12,20,35,.88))] shadow-[0_30px_90px_rgba(0,0,0,.22)]">
-    <div className="border-b border-white/10 px-5 py-6 lg:px-7">
-      <div className="flex flex-col justify-between gap-6 xl:flex-row xl:items-end">
-        <div><div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_14px_rgb(103,232,249)]" /><p className="font-mono-ui text-[10px] uppercase tracking-[.2em] text-cyan-100/65">{tab === "bitrix" ? "RD Station → Bitrix24 · dados auditáveis" : tab === "programmatic" ? "Publya · cinco relatórios B2B" : tab === "overview" ? "Mídia → Negócios · dados auditáveis" : "Aquisição paga · leitura gerencial"}</p></div><h2 className="mt-3 text-2xl font-extrabold tracking-[-.04em] text-white sm:text-3xl">{tab === "bitrix" ? <>Gestão de <span className="text-cyan-200">Negócios</span></> : tab === "google" ? <>Performance de <span className="text-cyan-200">Google Ads</span></> : tab === "meta" ? <>Performance de <span className="text-violet-200">Meta Ads</span></> : tab === "programmatic" ? <>Relatórios <span className="text-fuchsia-200">Publya B2B</span></> : <>Performance de aquisição <span className="text-cyan-200">e negócios</span></>}</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">{tab === "bitrix" ? "Contatos qualificados no RD Station localizados no Bitrix24 por e-mail ou nome. Cada Lead técnico de uma correspondência múltipla entra no funil e permanece sinalizado na auditoria; a BU vem do Pipeline de Vendas." : tab === "programmatic" ? "Push, PMAX, Meta e duas campanhas de Programática Display, com overview geral, filtro individual e atualização D-1." : tab === "overview" ? "Visão consolidada de mídia e CRM, mantendo indisponibilidades e limites de atribuição explícitos." : "Selecione datas, marca e campanha para atualizar gráficos, distribuição de verba e indicadores."}</p></div>
-        <div className="flex flex-wrap items-center gap-2"><StatusPill available>{tab === "bitrix" ? "Bitrix24 auditável" : tab === "programmatic" ? "API Publya" : "Dados de mídia conectados"}</StatusPill></div>
+  return (
+    <section className="overflow-hidden rounded-3xl border border-cyan-100/10 bg-[linear-gradient(135deg,rgba(12,35,55,.92),rgba(12,20,35,.88))] shadow-[0_30px_90px_rgba(0,0,0,.22)]">
+      <div className="border-b border-white/10 px-5 py-6 lg:px-7">
+        <div className="flex flex-col justify-between gap-6 xl:flex-row xl:items-end">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_14px_rgb(103,232,249)]" />
+              <p className="font-mono-ui text-[10px] uppercase tracking-[.2em] text-cyan-100/65">
+                {tab === "bitrix"
+                  ? "RD Station → Bitrix24 · dados auditáveis"
+                  : tab === "programmatic"
+                    ? "Publya · sete reports B2B + Push"
+                    : tab === "overview"
+                      ? "Mídia → Negócios · dados auditáveis"
+                      : "Aquisição paga · leitura gerencial"}
+              </p>
+            </div>
+            <h2 className="mt-3 text-2xl font-extrabold tracking-[-.04em] text-white sm:text-3xl">
+              {tab === "bitrix" ? (
+                <>
+                  Gestão de <span className="text-cyan-200">Negócios</span>
+                </>
+              ) : tab === "google" ? (
+                <>
+                  Performance de{" "}
+                  <span className="text-cyan-200">Google Ads</span>
+                </>
+              ) : tab === "meta" ? (
+                <>
+                  Performance de{" "}
+                  <span className="text-violet-200">Meta Ads</span>
+                </>
+              ) : tab === "programmatic" ? (
+                <>
+                  Relatórios{" "}
+                  <span className="text-fuchsia-200">Publya B2B</span>
+                </>
+              ) : (
+                <>
+                  Performance de aquisição{" "}
+                  <span className="text-cyan-200">e negócios</span>
+                </>
+              )}
+            </h2>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
+              {tab === "bitrix"
+                ? "Contatos qualificados no RD Station localizados no Bitrix24 por e-mail ou nome. Cada Lead técnico de uma correspondência múltipla entra no funil e permanece sinalizado na auditoria; a BU vem do Pipeline de Vendas."
+                : tab === "programmatic"
+                  ? "Dois PMAX, dois Meta e três campanhas de Programática Display, além do Push, com overview geral, filtro individual e atualização D-1."
+                  : tab === "overview"
+                    ? "Visão consolidada de mídia e CRM, mantendo indisponibilidades e limites de atribuição explícitos."
+                    : "Selecione datas, marca e campanha para atualizar gráficos, distribuição de verba e indicadores."}
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <StatusPill available>
+              {tab === "bitrix"
+                ? "Bitrix24 auditável"
+                : tab === "programmatic"
+                  ? "API Publya"
+                  : "Dados de mídia conectados"}
+            </StatusPill>
+          </div>
+        </div>
       </div>
+
+      {tab === "bitrix" ? (
+        <div className="p-5 lg:p-7">
+          <BitrixRdOpportunityDashboard />
+        </div>
+      ) : tab === "programmatic" ? (
+        <div className="p-5 lg:p-7">
+          <ProgrammaticDashboard />
+        </div>
+      ) : tab === "google" || tab === "meta" ? (
+        <div className="p-5 lg:p-7">
+          <MediaChannelDashboard
+            platform={tab === "google" ? "google_ads" : "meta_ads"}
+            brand={brand}
+            onBrandChange={setBrand}
+          />
+        </div>
+      ) : dashboard.isLoading ? (
+        <div className="grid min-h-80 place-items-center">
+          <div className="text-center">
+            <BarChart3 className="mx-auto h-6 w-6 animate-pulse text-cyan-200" />
+            <p className="mt-3 text-sm text-muted-foreground">
+              Carregando métricas de mídia…
+            </p>
+          </div>
+        </div>
+      ) : dashboard.isError ? (
+        <DataState
+          title="Não foi possível carregar as métricas"
+          detail={
+            dashboard.error.message ||
+            "Tente atualizar a página. Os dados de origem não foram alterados."
+          }
+        />
+      ) : !model || model.platforms.length === 0 ? (
+        <DataState
+          title="Não há mídia para este recorte"
+          detail="Não foram encontrados registros de Google Ads ou Meta Ads para a marca e canal selecionados."
+        />
+      ) : (
+        <div className="p-5 lg:p-7">
+          {tab === "overview" ? (
+            <Overview
+              brand={brand}
+              setBrand={setBrand}
+              channel={channel}
+              setChannel={setChannel}
+              dealStatus={dealStatus}
+              setDealStatus={setDealStatus}
+              period={period}
+              setPeriod={setPeriod}
+              model={model}
+              dealData={dealData}
+              maxCampaignSpend={maxCampaignSpend}
+              attribution={model.attribution}
+            />
+          ) : null}
+        </div>
+      )}
+    </section>
+  );
+}
+
+function Overview({
+  brand,
+  setBrand,
+  channel,
+  setChannel,
+  dealStatus,
+  setDealStatus,
+  period,
+  setPeriod,
+  model,
+  dealData,
+  maxCampaignSpend,
+  attribution,
+}: {
+  brand: Brand;
+  setBrand: (value: Brand) => void;
+  channel: Channel;
+  setChannel: (value: Channel) => void;
+  dealStatus: DealStatus;
+  setDealStatus: (value: DealStatus) => void;
+  period: ReportingPeriod;
+  setPeriod: (value: ReportingPeriod) => void;
+  model: {
+    spend: number;
+    impressions: number;
+    clicks: number;
+    platformLeads: number;
+    qualifiedLeads: number;
+    bitrixArrivals: number;
+    commercialSpend: number;
+    commercialPlatformLeads: number;
+    commercialQualifiedLeads: number;
+    commercialBitrixArrivals: number;
+    rdLeadsAvailable: boolean;
+    periodEnd: string;
+    platforms: {
+      platform: "google_ads" | "meta_ads";
+      spend: number;
+      impressions: number;
+      clicks: number;
+      leads: number;
+    }[];
+    campaigns: {
+      platform: "google_ads" | "meta_ads";
+      campaignId: string;
+      campaignName: string;
+      brand: "medsystems" | "beautysystems";
+      spend: number;
+      impressions: number;
+      clicks: number;
+      leads: number;
+    }[];
+  };
+  dealData: DealAnalytics | null;
+  maxCampaignSpend: number;
+  attribution: AttributionRow[];
+}) {
+  const revenue = dealData?.wonValue ?? 0;
+  const commercialLabel =
+    brand === "all" ? "Medsystems + BeautySystems" : BRAND_LABEL[brand];
+  return (
+    <div className="space-y-6">
+      <section className="overflow-hidden rounded-[28px] border border-cyan-200/15 bg-[radial-gradient(circle_at_88%_10%,rgba(34,211,238,.16),transparent_32%),radial-gradient(circle_at_8%_90%,rgba(139,92,246,.12),transparent_30%),linear-gradient(135deg,#071421,#091a2b_52%,#06111c)] p-5 shadow-2xl shadow-cyan-950/20 sm:p-6">
+        <div className="flex flex-col justify-between gap-5 xl:flex-row xl:items-end">
+          <div className="max-w-3xl">
+            <div className="flex flex-wrap gap-2">
+              <Badge
+                variant="outline"
+                className="border-cyan-200/25 bg-cyan-200/[.07] text-cyan-100"
+              >
+                Revenue command center
+              </Badge>
+              <Badge
+                variant="outline"
+                className="border-emerald-200/20 bg-emerald-200/[.06] text-emerald-100"
+              >
+                Mídia + CRM auditável
+              </Badge>
+            </div>
+            <h3 className="mt-4 text-3xl font-black tracking-[-.045em] text-white sm:text-4xl">
+              Visão executiva de aquisição e receita
+            </h3>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
+              Investimento, leads, passagem ao CRM, negócios e receita em uma
+              leitura única, preservando os limites reais de atribuição.
+            </p>
+          </div>
+          <label className="w-full xl:max-w-xs">
+            <span className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-white/55">
+              Período
+            </span>
+            <select
+              aria-label="Período do relatório"
+              value={period}
+              onChange={event =>
+                setPeriod(event.target.value as ReportingPeriod)
+              }
+              className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#08131f] px-3 text-sm text-white outline-none focus:ring-2 focus:ring-cyan-200/35"
+            >
+              {SUPPORTED_REPORTING_PERIODS.map(option => (
+                <option key={option} value={option}>
+                  {periodLabel(option)}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div className="mt-6 grid gap-4 rounded-2xl border border-white/10 bg-black/15 p-4 xl:grid-cols-3">
+          <QuickFilter label="Marca">
+            {(["all", "medsystems", "beautysystems"] as Brand[]).map(option => (
+              <QuickPill
+                key={option}
+                active={brand === option}
+                onClick={() => setBrand(option)}
+              >
+                {BRAND_LABEL[option]}
+              </QuickPill>
+            ))}
+          </QuickFilter>
+          <QuickFilter label="Canal">
+            {(["all", "google_ads", "meta_ads"] as Channel[]).map(option => (
+              <QuickPill
+                key={option}
+                active={channel === option}
+                onClick={() => setChannel(option)}
+              >
+                {option === "all" ? "Todos" : PLATFORM_LABEL[option]}
+              </QuickPill>
+            ))}
+          </QuickFilter>
+          <QuickFilter label="Status comercial">
+            {(["all", "open", "won", "lost"] as DealStatus[]).map(option => (
+              <QuickPill
+                key={option}
+                active={dealStatus === option}
+                onClick={() => setDealStatus(option)}
+              >
+                {
+                  (
+                    {
+                      all: "Todos",
+                      open: "Abertos",
+                      won: "Ganhos",
+                      lost: "Perdidos",
+                    } as Record<DealStatus, string>
+                  )[option]
+                }
+              </QuickPill>
+            ))}
+          </QuickFilter>
+        </div>
+        <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <KpiCard
+            label="Investimento"
+            value={brl(model.spend)}
+            helper={`${integer(model.impressions)} impressões`}
+            icon={DollarSign}
+          />
+          <KpiCard
+            label="Conversões de plataforma"
+            value={integer(model.platformLeads)}
+            helper="Google Ads + Meta Ads"
+            icon={Target}
+          />
+          <KpiCard
+            label="Leads RD com UTM"
+            value={model.rdLeadsAvailable ? integer(model.qualifiedLeads) : "—"}
+            helper="Evento RD com atribuição"
+            icon={Filter}
+            accent="green"
+          />
+          <KpiCard
+            label="Chegaram no Bitrix24"
+            value={model.rdLeadsAvailable ? integer(model.bitrixArrivals) : "—"}
+            helper="Match por e-mail único"
+            icon={Layers3}
+            accent="green"
+          />
+          <KpiCard
+            label="Negócios"
+            value={dealData ? integer(dealData.total) : "—"}
+            helper={
+              dealData ? `Bitrix24 · ${commercialLabel}` : "CRM indisponível"
+            }
+            icon={Layers3}
+          />
+          <KpiCard
+            label="Vendas"
+            value={dealData ? integer(dealData.won) : "—"}
+            helper={
+              dealData
+                ? `${dealData.wonRateOfClosed.toFixed(1)}% dos fechados`
+                : "CRM indisponível"
+            }
+            icon={TrendingUp}
+            accent="green"
+          />
+          <KpiCard
+            label="Receita ganha"
+            value={dealData ? brl(revenue) : "—"}
+            helper="Receita sem atribuição por canal"
+            icon={DollarSign}
+            accent="green"
+          />
+        </div>
+      </section>
+      <div className="grid gap-5 xl:grid-cols-[1.05fr_.95fr]">
+        <div className="rounded-2xl border border-white/10 bg-black/15 p-5">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">
+                Comparativo de canais
+              </p>
+              <h3 className="mt-1 font-semibold">Google Ads × Meta Ads</h3>
+            </div>
+            <Badge
+              variant="outline"
+              className="border-white/10 text-muted-foreground"
+            >{`${periodLabel(period)} · até ${model.periodEnd.split("-").reverse().join("/")}`}</Badge>
+          </div>
+          <div className="mt-5 space-y-4">
+            {model.platforms.map(item => (
+              <div key={item.platform}>
+                <div className="mb-2 flex items-center justify-between text-sm">
+                  <span>{PLATFORM_LABEL[item.platform]}</span>
+                  <span className="font-mono-ui text-cyan-100">
+                    {brl(item.spend)}
+                  </span>
+                </div>
+                <div className="h-2 overflow-hidden rounded-full bg-white/5">
+                  <div
+                    className={`h-full rounded-full ${item.platform === "google_ads" ? "bg-cyan-300" : "bg-violet-300"}`}
+                    style={{
+                      width: `${Math.max(2, (item.spend / Math.max(...model.platforms.map(row => row.spend), 1)) * 100)}%`,
+                    }}
+                  />
+                </div>
+                <div className="mt-2 flex justify-between text-xs text-muted-foreground">
+                  <span>{integer(item.leads)} leads</span>
+                  <span>
+                    {integer(item.clicks)} cliques · CPL{" "}
+                    {brl(ratio(item.spend, item.leads))}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="rounded-2xl border border-white/10 bg-black/15 p-5">
+          <p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">
+            Funil mensurável
+          </p>
+          <h3 className="mt-1 font-semibold">Do investimento à receita</h3>
+          <div className="mt-5 grid grid-cols-2 gap-3">
+            <FunnelStep
+              label={`Investimento · ${commercialLabel}`}
+              value={dealData ? brl(model.commercialSpend) : brl(model.spend)}
+            />
+            <FunnelStep
+              label="Leads RD com UTM"
+              value={integer(model.commercialQualifiedLeads)}
+            />
+            <FunnelStep
+              label="Chegaram no Bitrix"
+              value={integer(model.commercialBitrixArrivals)}
+            />
+            <FunnelStep
+              label="Negócios"
+              value={dealData ? integer(dealData.total) : "—"}
+            />
+            <FunnelStep
+              label="Vendas"
+              value={dealData ? integer(dealData.won) : "—"}
+            />
+            <FunnelStep
+              label="Receita"
+              value={dealData ? brl(dealData.wonValue) : "—"}
+            />
+          </div>
+          <p className="mt-4 text-xs leading-5 text-muted-foreground">
+            Chegada no Bitrix24 exige e-mail único e lead criado após o evento
+            RD com UTM. ROAS só será exibido após o vínculo auditável entre
+            mídia, lead, negócio e venda.
+          </p>
+        </div>
+      </div>
+      <CampaignTable
+        campaigns={model.campaigns.slice(0, 8)}
+        maxSpend={maxCampaignSpend}
+      />
+      <AttributionAudit rows={attribution} />
     </div>
-
-    {tab === "bitrix" ? <div className="p-5 lg:p-7"><BitrixRdOpportunityDashboard /></div> : tab === "programmatic" ? <div className="p-5 lg:p-7"><ProgrammaticDashboard /></div> : tab === "google" || tab === "meta" ? <div className="p-5 lg:p-7"><MediaChannelDashboard platform={tab === "google" ? "google_ads" : "meta_ads"} brand={brand} onBrandChange={setBrand} /></div> : dashboard.isLoading ? <div className="grid min-h-80 place-items-center"><div className="text-center"><BarChart3 className="mx-auto h-6 w-6 animate-pulse text-cyan-200" /><p className="mt-3 text-sm text-muted-foreground">Carregando métricas de mídia…</p></div></div> : dashboard.isError ? <DataState title="Não foi possível carregar as métricas" detail={dashboard.error.message || "Tente atualizar a página. Os dados de origem não foram alterados."} /> : !model || model.platforms.length === 0 ? <DataState title="Não há mídia para este recorte" detail="Não foram encontrados registros de Google Ads ou Meta Ads para a marca e canal selecionados." /> : <div className="p-5 lg:p-7">
-      {tab === "overview" ? <Overview brand={brand} setBrand={setBrand} channel={channel} setChannel={setChannel} dealStatus={dealStatus} setDealStatus={setDealStatus} period={period} setPeriod={setPeriod} model={model} dealData={dealData} maxCampaignSpend={maxCampaignSpend} attribution={model.attribution} /> : null}
-    </div>}
-  </section>;
+  );
 }
 
-function Overview({ brand, setBrand, channel, setChannel, dealStatus, setDealStatus, period, setPeriod, model, dealData, maxCampaignSpend, attribution }: { brand: Brand; setBrand: (value: Brand) => void; channel: Channel; setChannel: (value: Channel) => void; dealStatus: DealStatus; setDealStatus: (value: DealStatus) => void; period: ReportingPeriod; setPeriod: (value: ReportingPeriod) => void; model: { spend: number; impressions: number; clicks: number; platformLeads: number; qualifiedLeads: number; bitrixArrivals: number; commercialSpend: number; commercialPlatformLeads: number; commercialQualifiedLeads: number; commercialBitrixArrivals: number; rdLeadsAvailable: boolean; periodEnd: string; platforms: { platform: "google_ads" | "meta_ads"; spend: number; impressions: number; clicks: number; leads: number }[]; campaigns: { platform: "google_ads" | "meta_ads"; campaignId: string; campaignName: string; brand: "medsystems" | "beautysystems"; spend: number; impressions: number; clicks: number; leads: number }[] }; dealData: DealAnalytics | null; maxCampaignSpend: number; attribution: AttributionRow[] }) {
+function CampaignView({
+  period,
+  title,
+  campaigns,
+  ads,
+  maxSpend,
+}: {
+  period: ReportingPeriod;
+  title: string;
+  campaigns: CampaignRow[];
+  ads: AdRow[];
+  maxSpend: number;
+}) {
+  const periodLabel =
+    period === "2026-08" ? "agosto de 2026 até 17/08" : "julho de 2026";
+  return (
+    <div className="space-y-5">
+      <div>
+        <p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">
+          Drill-down disponível
+        </p>
+        <h3 className="mt-1 text-xl font-bold">{title} · Campanhas</h3>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Dados de {periodLabel} por marca e campanha. O detalhe de
+          conjunto/grupo e anúncio é exibido apenas quando estiver disponível.
+        </p>
+      </div>
+      <CampaignTable campaigns={campaigns} maxSpend={maxSpend} />
+      <AdDrilldownTable
+        ads={ads}
+        campaignSpend={campaigns.reduce((sum, row) => sum + row.spend, 0)}
+      />
+    </div>
+  );
+}
+
+function RevenueViewPanel({
+  view,
+  setView,
+  dealData,
+  model,
+}: {
+  view: RevenueView;
+  setView: (view: RevenueView) => void;
+  dealData: DealAnalytics | null;
+  model: {
+    spend: number;
+    platformLeads: number;
+    qualifiedLeads: number;
+    commercialSpend: number;
+    commercialPlatformLeads: number;
+    commercialQualifiedLeads: number;
+  };
+}) {
+  const views: { id: RevenueView; label: string }[] = [
+    { id: "pipeline", label: "Pipeline" },
+    { id: "origin", label: "Origem" },
+    { id: "sales", label: "Vendas" },
+    { id: "lost", label: "Perdidos" },
+    { id: "discard", label: "Descartes" },
+  ];
+  const discardRows =
+    dealData?.discards.map(item => ({
+      label: item.label,
+      primary: `${integer(item.count)} descartes`,
+      secondary: brl(item.value),
+    })) ?? [];
+  return (
+    <div className="space-y-5">
+      <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+        <div>
+          <p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">
+            Revenue
+          </p>
+          <h3 className="mt-1 text-xl font-bold">
+            Pipeline comercial por marca
+          </h3>
+        </div>
+        <div className="flex flex-wrap gap-1">
+          {views.map(item => (
+            <Button
+              key={item.id}
+              size="sm"
+              variant={item.id === view ? "secondary" : "outline"}
+              className={
+                item.id === view
+                  ? "bg-cyan-200/10 text-cyan-100"
+                  : "border-white/10 bg-black/10 text-muted-foreground"
+              }
+              onClick={() => setView(item.id)}
+            >
+              {item.label}
+            </Button>
+          ))}
+        </div>
+      </div>
+      {!dealData ? (
+        <UnavailableCommercial />
+      ) : (
+        <>
+          {view === "pipeline" ? (
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+              <FunnelStep
+                label="Leads mídia"
+                value={integer(model.commercialPlatformLeads)}
+              />
+              <FunnelStep
+                label="Qualificados RD"
+                value={integer(model.commercialQualifiedLeads)}
+              />
+              <FunnelStep label="Negócios" value={integer(dealData.total)} />
+              <FunnelStep label="Ganhos" value={integer(dealData.won)} />
+              <FunnelStep label="Receita" value={brl(dealData.wonValue)} />
+            </div>
+          ) : null}
+          {view === "origin" ? (
+            <div className="grid gap-5 xl:grid-cols-2">
+              <Breakdown
+                title="Negócios por origem"
+                rows={dealData.sources.map(item => ({
+                  label: item.label,
+                  primary: `${integer(item.count)} negócios`,
+                  secondary: brl(item.value),
+                }))}
+              />
+              <div className="space-y-3">
+                <Breakdown
+                  title="Sinal UTM por canal"
+                  rows={dealData.utmSources.map(item => ({
+                    label: item.label,
+                    primary: `${integer(item.count)} negócios`,
+                    secondary: brl(item.value),
+                  }))}
+                />
+                <p className="rounded-xl border border-amber-200/15 bg-amber-100/5 p-3 text-xs leading-5 text-amber-50/70">
+                  UTM identifica somente o canal informado no negócio. Receita
+                  atribuída, ROAS e custo por venda continuam bloqueados até o
+                  vínculo verificável entre mídia, lead, negócio e venda.
+                </p>
+              </div>
+            </div>
+          ) : null}
+          {view === "sales" ? (
+            <div className="grid gap-4 sm:grid-cols-3">
+              <KpiCard
+                label="Vendas"
+                value={integer(dealData.won)}
+                helper={`${dealData.wonRateOfClosed.toFixed(1)}% dos fechados`}
+                icon={TrendingUp}
+                accent="green"
+              />
+              <KpiCard
+                label="Receita"
+                value={brl(dealData.wonValue)}
+                helper="Negócios ganhos em julho"
+                icon={DollarSign}
+                accent="green"
+              />
+              <KpiCard
+                label="Custo por venda atribuído"
+                value="—"
+                helper="Matching UTM mídia → venda pendente"
+                icon={MousePointerClick}
+              />
+            </div>
+          ) : null}
+          {view === "lost" ? (
+            <Breakdown
+              title="Negócios perdidos por pipeline"
+              rows={dealData.losses.map(item => ({
+                label: item.label,
+                primary: `${integer(item.count)} perdas`,
+                secondary: brl(item.value),
+              }))}
+            />
+          ) : null}
+          {view === "discard" ? (
+            discardRows.length ? (
+              <Breakdown title="Descartes por motivo" rows={discardRows} />
+            ) : (
+              <DataState
+                title="Não há motivos de descarte preenchidos"
+                detail="O campo de motivo de descarte existe no Bitrix24, mas não há valores para a marca e o status selecionados."
+              />
+            )
+          ) : null}
+        </>
+      )}
+    </div>
+  );
+}
+
+function RdStationOperationsHub({
+  brand,
+  period,
+  data,
+  loading,
+  error,
+}: {
+  brand: Brand;
+  period: ReportingPeriod;
+  data?: RdStationOperationsDashboard;
+  loading: boolean;
+  error: string | null;
+}) {
+  if (loading)
+    return (
+      <section className="rounded-2xl border border-white/10 bg-black/15 p-8 text-center text-sm text-muted-foreground">
+        Carregando análise de leads RD Station…
+      </section>
+    );
+  if (error)
+    return (
+      <DataState
+        title="Não foi possível carregar a análise RD Station"
+        detail={error}
+      />
+    );
+  if (!data)
+    return (
+      <DataState
+        title="Análise RD Station indisponível"
+        detail="Não houve retorno de dados para os filtros selecionados."
+      />
+    );
+  const percentage = (value: number, total: number) =>
+    total
+      ? `${((value / total) * 100).toFixed(1).replace(".", ",")}%`
+      : "Indisponível";
+  const perBrand =
+    brand === "all" ? (["medsystems", "beautysystems"] as const) : [brand];
+  const emptyRows = (label: string) => [
+    { label, primary: "0", secondary: "Não informado" },
+  ];
+  return (
+    <div className="space-y-6">
+      <section className="rounded-2xl border border-violet-200/15 bg-violet-300/[.035] p-5">
+        <div className="flex flex-col justify-between gap-3 md:flex-row md:items-end">
+          <div>
+            <p className="font-mono-ui text-[10px] uppercase tracking-[.16em] text-violet-100/75">
+              RD Station · webhook e eventos
+            </p>
+            <h3 className="mt-1 text-xl font-bold">
+              Leads de mídia com UTM comprovada
+            </h3>
+            <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
+              O padrão documentado considera apenas contatos que converteram com
+              UTM. Cada contato entra uma vez, pelo primeiro evento com UTM;
+              tráfego direto e orgânico não infla a leitura de mídia paga.
+            </p>
+          </div>
+          <Badge
+            variant="outline"
+            className="w-fit border-violet-200/20 text-violet-100"
+          >
+            Dados coletados até {data.period.end.split("-").reverse().join("/")}
+          </Badge>
+        </div>
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+          <KpiCard
+            label="Contatos com conversão"
+            value={integer(data.totals.convertedContacts)}
+            helper="Contatos distintos com evento"
+            icon={Target}
+          />
+          <KpiCard
+            label="Leads com UTM"
+            value={integer(data.totals.utmLeads)}
+            helper="Critério de mídia paga RD"
+            icon={MousePointerClick}
+            accent="green"
+          />
+          <KpiCard
+            label="UTM source"
+            value={integer(data.coverage.withSource)}
+            helper={`${percentage(data.coverage.withSource, data.totals.utmLeads)} dos leads UTM`}
+            icon={Filter}
+            accent="green"
+          />
+          <KpiCard
+            label="UTM campaign"
+            value={integer(data.coverage.withCampaign)}
+            helper={`${percentage(data.coverage.withCampaign, data.totals.utmLeads)} com campanha`}
+            icon={Layers3}
+          />
+          <KpiCard
+            label="UTM content"
+            value={integer(data.coverage.withContent)}
+            helper="Base para atribuição ao anúncio"
+            icon={BarChart3}
+          />
+        </div>
+      </section>
+      <section className="grid gap-5 xl:grid-cols-[1.05fr_.95fr]">
+        <div className="rounded-2xl border border-white/10 bg-black/15 p-5">
+          <p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">
+            Leads por dia e marca
+          </p>
+          <h3 className="mt-1 font-semibold">
+            Primeiro evento com UTM por contato
+          </h3>
+          <div className="mt-4 max-h-80 overflow-auto">
+            <table className="w-full text-left text-sm">
+              <thead className="sticky top-0 bg-[#0c1620] text-[10px] uppercase tracking-[.12em] text-muted-foreground">
+                <tr>
+                  <th className="px-3 py-2">Data</th>
+                  <th className="px-3 py-2">Marca</th>
+                  <th className="px-3 py-2 text-right">Leads</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.byDay
+                  .filter(item => brand === "all" || item.brand === brand)
+                  .map(item => (
+                    <tr
+                      key={`${item.date}:${item.brand}`}
+                      className="border-t border-white/5"
+                    >
+                      <td className="px-3 py-2">
+                        {item.date.split("-").reverse().join("/")}
+                      </td>
+                      <td className="px-3 py-2">{BRAND_LABEL[item.brand]}</td>
+                      <td className="px-3 py-2 text-right font-mono-ui text-violet-100">
+                        {integer(item.count)}
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <Breakdown
+          title="UTM source"
+          rows={
+            data.sources.length
+              ? data.sources.map(item => ({
+                  label: item.label,
+                  primary: `${integer(item.count)} leads`,
+                  secondary: `${percentage(item.count, data.totals.utmLeads)} do total`,
+                }))
+              : emptyRows("Sem UTM source")
+          }
+        />
+      </section>
+      <section className="grid gap-5 xl:grid-cols-3">
+        <Breakdown
+          title="UTM medium"
+          rows={
+            data.mediums.length
+              ? data.mediums.map(item => ({
+                  label: item.label,
+                  primary: `${integer(item.count)} leads`,
+                  secondary: `${percentage(item.count, data.totals.utmLeads)} do total`,
+                }))
+              : emptyRows("Sem UTM medium")
+          }
+        />
+        <Breakdown
+          title="Campanhas com UTM"
+          rows={
+            data.campaigns.length
+              ? data.campaigns
+                  .slice(0, 10)
+                  .map(item => ({
+                    label: item.campaign,
+                    primary: `${integer(item.count)} leads`,
+                    secondary: item.channel,
+                  }))
+              : emptyRows("Sem campanha preenchida")
+          }
+        />
+        <Breakdown
+          title="Evento de conversão"
+          rows={
+            data.conversionEvents.length
+              ? data.conversionEvents.map(item => ({
+                  label: item.label,
+                  primary: `${integer(item.count)} contatos`,
+                  secondary: "Primeiro evento com UTM",
+                }))
+              : emptyRows("Sem evento identificável")
+          }
+        />
+      </section>
+      {brand !== "all" &&
+      (data.campaignConflicts.length || data.eventConflicts.length) ? (
+        <section className="rounded-2xl border border-amber-200/15 bg-amber-100/5 p-5">
+          <p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-amber-100/75">
+            Sinais divergentes da conta
+          </p>
+          <h3 className="mt-1 font-semibold">
+            UTMs e eventos retidos da leitura principal
+          </h3>
+          <p className="mt-1 text-sm leading-6 text-amber-50/75">
+            Esses contatos pertencem à conta {BRAND_LABEL[brand]}, mas a
+            campanha ou o evento cita explicitamente a outra marca. Eles
+            permanecem fora dos rankings principais para não misturar as marcas.
+          </p>
+          <div className="mt-4 grid gap-5 xl:grid-cols-2">
+            {data.campaignConflicts.length ? (
+              <Breakdown
+                title="Divergências de campanha"
+                rows={data.campaignConflicts
+                  .slice(0, 8)
+                  .map(item => ({
+                    label: item.campaign,
+                    primary: `${integer(item.count)} leads`,
+                    secondary: `UTM indica ${BRAND_LABEL[item.expectedBrand]} · ${item.channel}`,
+                  }))}
+              />
+            ) : null}
+            {data.eventConflicts.length ? (
+              <Breakdown
+                title="Divergências de evento"
+                rows={data.eventConflicts
+                  .slice(0, 8)
+                  .map(item => ({
+                    label: item.label,
+                    primary: `${integer(item.count)} contatos`,
+                    secondary: `Evento indica ${BRAND_LABEL[item.expectedBrand]}`,
+                  }))}
+              />
+            ) : null}
+          </div>
+        </section>
+      ) : null}
+      <section className="rounded-2xl border border-amber-200/15 bg-amber-100/5 p-5">
+        <p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-amber-100/75">
+          Limites de evidência
+        </p>
+        <div className="mt-2 grid gap-4 md:grid-cols-2">
+          <p className="text-sm leading-6 text-amber-50/80">
+            O RD Station foi coletado por segmentação BRRO e eventos disponíveis
+            até {data.period.end.split("-").reverse().join("/")}. O painel não
+            presume filtros internos de origem nem exclusão de Importação quando
+            a API não os expõe.
+          </p>
+          <div className="grid grid-cols-2 gap-3">
+            {perBrand.map(item => (
+              <MetricCell
+                key={item}
+                label={`${BRAND_LABEL[item]} · UTM`}
+                value={integer(data.byBrand[item].utmLeads)}
+              />
+            ))}
+            <MetricCell
+              label="UTM term"
+              value={integer(data.coverage.withTerm)}
+            />
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function BusinessHub({
+  brand,
+  channel,
+  period,
+  model,
+  dealData,
+  channelFunnel,
+  channelFunnelLoading,
+  channelFunnelError,
+  campaignDetail,
+  campaignDetailLoading,
+  campaignDetailError,
+  utmCoverage,
+  utmCoverageLoading,
+  utmCoverageError,
+}: {
+  brand: Brand;
+  channel: Channel;
+  period: ReportingPeriod;
+  model: {
+    spend: number;
+    platformLeads: number;
+    qualifiedLeads: number;
+    commercialSpend: number;
+    commercialPlatformLeads: number;
+    commercialQualifiedLeads: number;
+    rdLeadsAvailable: boolean;
+    paidLeadComponents: {
+      instantForms: number;
+      messagingConversations: number;
+      messagingFirstReplies: number;
+      messagingConnections: number;
+    };
+  };
+  dealData: DealAnalytics | null;
+  channelFunnel?: LeadChannelFunnel;
+  channelFunnelLoading: boolean;
+  channelFunnelError: string | null;
+  campaignDetail?: CampaignAttributionDetail;
+  campaignDetailLoading: boolean;
+  campaignDetailError: string | null;
+  utmCoverage?: UtmReceiptCoverage;
+  utmCoverageLoading: boolean;
+  utmCoverageError: string | null;
+}) {
   const revenue = dealData?.wonValue ?? 0;
-  const commercialLabel = brand === "all" ? "Medsystems + BeautySystems" : BRAND_LABEL[brand];
-  return <div className="space-y-6"><section className="overflow-hidden rounded-[28px] border border-cyan-200/15 bg-[radial-gradient(circle_at_88%_10%,rgba(34,211,238,.16),transparent_32%),radial-gradient(circle_at_8%_90%,rgba(139,92,246,.12),transparent_30%),linear-gradient(135deg,#071421,#091a2b_52%,#06111c)] p-5 shadow-2xl shadow-cyan-950/20 sm:p-6"><div className="flex flex-col justify-between gap-5 xl:flex-row xl:items-end"><div className="max-w-3xl"><div className="flex flex-wrap gap-2"><Badge variant="outline" className="border-cyan-200/25 bg-cyan-200/[.07] text-cyan-100">Revenue command center</Badge><Badge variant="outline" className="border-emerald-200/20 bg-emerald-200/[.06] text-emerald-100">Mídia + CRM auditável</Badge></div><h3 className="mt-4 text-3xl font-black tracking-[-.045em] text-white sm:text-4xl">Visão executiva de aquisição e receita</h3><p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">Investimento, leads, passagem ao CRM, negócios e receita em uma leitura única, preservando os limites reais de atribuição.</p></div><label className="w-full xl:max-w-xs"><span className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-white/55">Período</span><select aria-label="Período do relatório" value={period} onChange={event => setPeriod(event.target.value as ReportingPeriod)} className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#08131f] px-3 text-sm text-white outline-none focus:ring-2 focus:ring-cyan-200/35">{SUPPORTED_REPORTING_PERIODS.map(option => <option key={option} value={option}>{periodLabel(option)}</option>)}</select></label></div><div className="mt-6 grid gap-4 rounded-2xl border border-white/10 bg-black/15 p-4 xl:grid-cols-3"><QuickFilter label="Marca">{(["all", "medsystems", "beautysystems"] as Brand[]).map(option => <QuickPill key={option} active={brand === option} onClick={() => setBrand(option)}>{BRAND_LABEL[option]}</QuickPill>)}</QuickFilter><QuickFilter label="Canal">{(["all", "google_ads", "meta_ads"] as Channel[]).map(option => <QuickPill key={option} active={channel === option} onClick={() => setChannel(option)}>{option === "all" ? "Todos" : PLATFORM_LABEL[option]}</QuickPill>)}</QuickFilter><QuickFilter label="Status comercial">{(["all", "open", "won", "lost"] as DealStatus[]).map(option => <QuickPill key={option} active={dealStatus === option} onClick={() => setDealStatus(option)}>{({ all: "Todos", open: "Abertos", won: "Ganhos", lost: "Perdidos" } as Record<DealStatus, string>)[option]}</QuickPill>)}</QuickFilter></div><div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4"><KpiCard label="Investimento" value={brl(model.spend)} helper={`${integer(model.impressions)} impressões`} icon={DollarSign} /><KpiCard label="Conversões de plataforma" value={integer(model.platformLeads)} helper="Google Ads + Meta Ads" icon={Target} /><KpiCard label="Leads RD com UTM" value={model.rdLeadsAvailable ? integer(model.qualifiedLeads) : "—"} helper="Evento RD com atribuição" icon={Filter} accent="green" /><KpiCard label="Chegaram no Bitrix24" value={model.rdLeadsAvailable ? integer(model.bitrixArrivals) : "—"} helper="Match por e-mail único" icon={Layers3} accent="green" /><KpiCard label="Negócios" value={dealData ? integer(dealData.total) : "—"} helper={dealData ? `Bitrix24 · ${commercialLabel}` : "CRM indisponível"} icon={Layers3} /><KpiCard label="Vendas" value={dealData ? integer(dealData.won) : "—"} helper={dealData ? `${dealData.wonRateOfClosed.toFixed(1)}% dos fechados` : "CRM indisponível"} icon={TrendingUp} accent="green" /><KpiCard label="Receita ganha" value={dealData ? brl(revenue) : "—"} helper="Receita sem atribuição por canal" icon={DollarSign} accent="green" /></div></section>
-    <div className="grid gap-5 xl:grid-cols-[1.05fr_.95fr]"><div className="rounded-2xl border border-white/10 bg-black/15 p-5"><div className="flex items-center justify-between"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">Comparativo de canais</p><h3 className="mt-1 font-semibold">Google Ads × Meta Ads</h3></div><Badge variant="outline" className="border-white/10 text-muted-foreground">{`${periodLabel(period)} · até ${model.periodEnd.split("-").reverse().join("/")}`}</Badge></div><div className="mt-5 space-y-4">{model.platforms.map(item => <div key={item.platform}><div className="mb-2 flex items-center justify-between text-sm"><span>{PLATFORM_LABEL[item.platform]}</span><span className="font-mono-ui text-cyan-100">{brl(item.spend)}</span></div><div className="h-2 overflow-hidden rounded-full bg-white/5"><div className={`h-full rounded-full ${item.platform === "google_ads" ? "bg-cyan-300" : "bg-violet-300"}`} style={{ width: `${Math.max(2, (item.spend / Math.max(...model.platforms.map(row => row.spend), 1)) * 100)}%` }} /></div><div className="mt-2 flex justify-between text-xs text-muted-foreground"><span>{integer(item.leads)} leads</span><span>{integer(item.clicks)} cliques · CPL {brl(ratio(item.spend, item.leads))}</span></div></div>)}</div></div>
-      <div className="rounded-2xl border border-white/10 bg-black/15 p-5"><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">Funil mensurável</p><h3 className="mt-1 font-semibold">Do investimento à receita</h3><div className="mt-5 grid grid-cols-2 gap-3"><FunnelStep label={`Investimento · ${commercialLabel}`} value={dealData ? brl(model.commercialSpend) : brl(model.spend)} /><FunnelStep label="Leads RD com UTM" value={integer(model.commercialQualifiedLeads)} /><FunnelStep label="Chegaram no Bitrix" value={integer(model.commercialBitrixArrivals)} /><FunnelStep label="Negócios" value={dealData ? integer(dealData.total) : "—"} /><FunnelStep label="Vendas" value={dealData ? integer(dealData.won) : "—"} /><FunnelStep label="Receita" value={dealData ? brl(dealData.wonValue) : "—"} /></div><p className="mt-4 text-xs leading-5 text-muted-foreground">Chegada no Bitrix24 exige e-mail único e lead criado após o evento RD com UTM. ROAS só será exibido após o vínculo auditável entre mídia, lead, negócio e venda.</p></div></div>
-    <CampaignTable campaigns={model.campaigns.slice(0, 8)} maxSpend={maxCampaignSpend} />
-    <AttributionAudit rows={attribution} />
-  </div>;
+  return (
+    <div className="space-y-6">
+      <section className="rounded-2xl border border-cyan-200/15 bg-cyan-300/[.035] p-5">
+        <div className="flex flex-col justify-between gap-3 md:flex-row md:items-end">
+          <div>
+            <p className="font-mono-ui text-[10px] uppercase tracking-[.16em] text-cyan-100/70">
+              Deck único de negócio
+            </p>
+            <h3 className="mt-1 text-xl font-bold">
+              Do investimento ao resultado comercial
+            </h3>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Pipeline, vendas, origens, descartes, perdas e status financeiro
+              em uma leitura contínua.
+            </p>
+          </div>
+          <Badge
+            variant="outline"
+            className="w-fit border-amber-200/20 text-amber-100"
+          >
+            ROAS por canal bloqueado
+          </Badge>
+        </div>
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-6">
+          <FunnelStep label="Investimento" value={brl(model.commercialSpend)} />
+          <FunnelStep
+            label="Leads"
+            value={integer(model.commercialPlatformLeads)}
+          />
+          <FunnelStep
+            label="Qualificados RD"
+            value={
+              model.rdLeadsAvailable
+                ? integer(model.commercialQualifiedLeads)
+                : "Indisponível"
+            }
+          />
+          <FunnelStep
+            label="Negócios"
+            value={dealData ? integer(dealData.total) : "Indisponível"}
+          />
+          <FunnelStep
+            label="Vendas"
+            value={dealData ? integer(dealData.won) : "Indisponível"}
+          />
+          <FunnelStep
+            label="Receita"
+            value={dealData ? brl(revenue) : "Indisponível"}
+          />
+        </div>
+      </section>
+      <PaidMediaLeadMethodologyPanel model={model} period={period} />
+      <ChannelConversionPanel
+        brand={brand}
+        channel={channel}
+        data={channelFunnel}
+        loading={channelFunnelLoading}
+        error={channelFunnelError}
+      />
+      <CampaignAttributionPanel
+        channel={channel}
+        data={campaignDetail}
+        loading={campaignDetailLoading}
+        error={campaignDetailError}
+      />
+      <UtmReceiptCoveragePanel
+        data={utmCoverage}
+        loading={utmCoverageLoading}
+        error={utmCoverageError}
+      />
+      <BitrixRdEnrichmentPanel
+        data={utmCoverage}
+        loading={utmCoverageLoading}
+        error={utmCoverageError}
+      />
+      <ContinuousRevenueDeck
+        brand={brand}
+        period={period}
+        model={model}
+        dealData={dealData}
+      />
+    </div>
+  );
 }
 
-function CampaignView({ period, title, campaigns, ads, maxSpend }: { period: ReportingPeriod; title: string; campaigns: CampaignRow[]; ads: AdRow[]; maxSpend: number }) {
-  const periodLabel = period === "2026-08" ? "agosto de 2026 até 17/08" : "julho de 2026";
-  return <div className="space-y-5"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">Drill-down disponível</p><h3 className="mt-1 text-xl font-bold">{title} · Campanhas</h3><p className="mt-1 text-sm text-muted-foreground">Dados de {periodLabel} por marca e campanha. O detalhe de conjunto/grupo e anúncio é exibido apenas quando estiver disponível.</p></div><CampaignTable campaigns={campaigns} maxSpend={maxSpend} /><AdDrilldownTable ads={ads} campaignSpend={campaigns.reduce((sum, row) => sum + row.spend, 0)} /></div>;
+function PaidMediaLeadMethodologyPanel({
+  model,
+  period,
+}: {
+  model: {
+    commercialQualifiedLeads: number;
+    paidLeadComponents: {
+      instantForms: number;
+      messagingConversations: number;
+      messagingFirstReplies: number;
+      messagingConnections: number;
+    };
+  };
+  period: ReportingPeriod;
+}) {
+  const periodLabel =
+    period === "2026-08" ? "Meta até 23/08 · RD até 21/08" : "Julho · 2026";
+  return (
+    <section className="rounded-2xl border border-violet-200/15 bg-violet-300/[.035] p-5">
+      <div className="flex flex-col justify-between gap-3 md:flex-row md:items-end">
+        <div>
+          <p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-violet-100/80">
+            Leads de mídia · método documentado
+          </p>
+          <h3 className="mt-1 text-xl font-bold">
+            Componentes que entram no relatório do gestor
+          </h3>
+          <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
+            Os componentes são exibidos separadamente. O painel não soma
+            conversas de WhatsApp como leads enquanto o opt-in de sincronização
+            não estiver comprovado.
+          </p>
+        </div>
+        <Badge
+          variant="outline"
+          className="w-fit border-violet-200/20 text-violet-100"
+        >
+          {periodLabel}
+        </Badge>
+      </div>
+      <div className="mt-5 grid gap-3 md:grid-cols-3">
+        <FunnelStep
+          label="RD Station · UTM comprovada · até 21/08"
+          value={integer(model.commercialQualifiedLeads)}
+        />
+        <FunnelStep
+          label="Meta · Instant Forms · até 23/08"
+          value={integer(model.paidLeadComponents.instantForms)}
+        />
+        <FunnelStep label="Click-to-WhatsApp" value="Não somado" />
+      </div>
+      <div className="mt-4 grid gap-3 lg:grid-cols-3">
+        <MetricCell
+          label="Conversas iniciadas (sinal Meta)"
+          value={integer(model.paidLeadComponents.messagingConversations)}
+        />
+        <MetricCell
+          label="Primeiras respostas (sinal Meta)"
+          value={integer(model.paidLeadComponents.messagingFirstReplies)}
+        />
+        <MetricCell
+          label="Novas conexões (sinal Meta)"
+          value={integer(model.paidLeadComponents.messagingConnections)}
+        />
+      </div>
+      <p className="mt-4 rounded-xl border border-amber-200/15 bg-amber-100/5 p-3 text-xs leading-5 text-amber-50/75">
+        O total consolidado de leads de mídia permanece indisponível até existir
+        evidência de quais conversas foram transformadas em leads sintéticos
+        pelo processo com opt-in de WhatsApp. Assim, evitamos dupla contagem
+        entre conversa iniciada, primeira resposta e nova conexão.
+      </p>
+    </section>
+  );
 }
 
-function RevenueViewPanel({ view, setView, dealData, model }: { view: RevenueView; setView: (view: RevenueView) => void; dealData: DealAnalytics | null; model: { spend: number; platformLeads: number; qualifiedLeads: number; commercialSpend: number; commercialPlatformLeads: number; commercialQualifiedLeads: number } }) {
-  const views: { id: RevenueView; label: string }[] = [{ id: "pipeline", label: "Pipeline" }, { id: "origin", label: "Origem" }, { id: "sales", label: "Vendas" }, { id: "lost", label: "Perdidos" }, { id: "discard", label: "Descartes" }];
-  const discardRows = dealData?.discards.map(item => ({ label: item.label, primary: `${integer(item.count)} descartes`, secondary: brl(item.value) })) ?? [];
-  return <div className="space-y-5"><div className="flex flex-col justify-between gap-4 md:flex-row md:items-center"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">Revenue</p><h3 className="mt-1 text-xl font-bold">Pipeline comercial por marca</h3></div><div className="flex flex-wrap gap-1">{views.map(item => <Button key={item.id} size="sm" variant={item.id === view ? "secondary" : "outline"} className={item.id === view ? "bg-cyan-200/10 text-cyan-100" : "border-white/10 bg-black/10 text-muted-foreground"} onClick={() => setView(item.id)}>{item.label}</Button>)}</div></div>{!dealData ? <UnavailableCommercial /> : <>{view === "pipeline" ? <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5"><FunnelStep label="Leads mídia" value={integer(model.commercialPlatformLeads)} /><FunnelStep label="Qualificados RD" value={integer(model.commercialQualifiedLeads)} /><FunnelStep label="Negócios" value={integer(dealData.total)} /><FunnelStep label="Ganhos" value={integer(dealData.won)} /><FunnelStep label="Receita" value={brl(dealData.wonValue)} /></div> : null}{view === "origin" ? <div className="grid gap-5 xl:grid-cols-2"><Breakdown title="Negócios por origem" rows={dealData.sources.map(item => ({ label: item.label, primary: `${integer(item.count)} negócios`, secondary: brl(item.value) }))} /><div className="space-y-3"><Breakdown title="Sinal UTM por canal" rows={dealData.utmSources.map(item => ({ label: item.label, primary: `${integer(item.count)} negócios`, secondary: brl(item.value) }))} /><p className="rounded-xl border border-amber-200/15 bg-amber-100/5 p-3 text-xs leading-5 text-amber-50/70">UTM identifica somente o canal informado no negócio. Receita atribuída, ROAS e custo por venda continuam bloqueados até o vínculo verificável entre mídia, lead, negócio e venda.</p></div></div> : null}{view === "sales" ? <div className="grid gap-4 sm:grid-cols-3"><KpiCard label="Vendas" value={integer(dealData.won)} helper={`${dealData.wonRateOfClosed.toFixed(1)}% dos fechados`} icon={TrendingUp} accent="green" /><KpiCard label="Receita" value={brl(dealData.wonValue)} helper="Negócios ganhos em julho" icon={DollarSign} accent="green" /><KpiCard label="Custo por venda atribuído" value="—" helper="Matching UTM mídia → venda pendente" icon={MousePointerClick} /></div> : null}{view === "lost" ? <Breakdown title="Negócios perdidos por pipeline" rows={dealData.losses.map(item => ({ label: item.label, primary: `${integer(item.count)} perdas`, secondary: brl(item.value) }))} /> : null}{view === "discard" ? discardRows.length ? <Breakdown title="Descartes por motivo" rows={discardRows} /> : <DataState title="Não há motivos de descarte preenchidos" detail="O campo de motivo de descarte existe no Bitrix24, mas não há valores para a marca e o status selecionados." /> : null}</>}</div>;
-}
-
-function RdStationOperationsHub({ brand, period, data, loading, error }: { brand: Brand; period: ReportingPeriod; data?: RdStationOperationsDashboard; loading: boolean; error: string | null }) {
-  if (loading) return <section className="rounded-2xl border border-white/10 bg-black/15 p-8 text-center text-sm text-muted-foreground">Carregando análise de leads RD Station…</section>;
-  if (error) return <DataState title="Não foi possível carregar a análise RD Station" detail={error} />;
-  if (!data) return <DataState title="Análise RD Station indisponível" detail="Não houve retorno de dados para os filtros selecionados." />;
-  const percentage = (value: number, total: number) => total ? `${((value / total) * 100).toFixed(1).replace(".", ",")}%` : "Indisponível";
-  const perBrand = brand === "all" ? ["medsystems", "beautysystems"] as const : [brand];
-  const emptyRows = (label: string) => [{ label, primary: "0", secondary: "Não informado" }];
-  return <div className="space-y-6">
-    <section className="rounded-2xl border border-violet-200/15 bg-violet-300/[.035] p-5"><div className="flex flex-col justify-between gap-3 md:flex-row md:items-end"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.16em] text-violet-100/75">RD Station · webhook e eventos</p><h3 className="mt-1 text-xl font-bold">Leads de mídia com UTM comprovada</h3><p className="mt-1 max-w-3xl text-sm text-muted-foreground">O padrão documentado considera apenas contatos que converteram com UTM. Cada contato entra uma vez, pelo primeiro evento com UTM; tráfego direto e orgânico não infla a leitura de mídia paga.</p></div><Badge variant="outline" className="w-fit border-violet-200/20 text-violet-100">Dados coletados até {data.period.end.split("-").reverse().join("/")}</Badge></div><div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-5"><KpiCard label="Contatos com conversão" value={integer(data.totals.convertedContacts)} helper="Contatos distintos com evento" icon={Target} /><KpiCard label="Leads com UTM" value={integer(data.totals.utmLeads)} helper="Critério de mídia paga RD" icon={MousePointerClick} accent="green" /><KpiCard label="UTM source" value={integer(data.coverage.withSource)} helper={`${percentage(data.coverage.withSource, data.totals.utmLeads)} dos leads UTM`} icon={Filter} accent="green" /><KpiCard label="UTM campaign" value={integer(data.coverage.withCampaign)} helper={`${percentage(data.coverage.withCampaign, data.totals.utmLeads)} com campanha`} icon={Layers3} /><KpiCard label="UTM content" value={integer(data.coverage.withContent)} helper="Base para atribuição ao anúncio" icon={BarChart3} /></div></section>
-    <section className="grid gap-5 xl:grid-cols-[1.05fr_.95fr]"><div className="rounded-2xl border border-white/10 bg-black/15 p-5"><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">Leads por dia e marca</p><h3 className="mt-1 font-semibold">Primeiro evento com UTM por contato</h3><div className="mt-4 max-h-80 overflow-auto"><table className="w-full text-left text-sm"><thead className="sticky top-0 bg-[#0c1620] text-[10px] uppercase tracking-[.12em] text-muted-foreground"><tr><th className="px-3 py-2">Data</th><th className="px-3 py-2">Marca</th><th className="px-3 py-2 text-right">Leads</th></tr></thead><tbody>{data.byDay.filter(item => brand === "all" || item.brand === brand).map(item => <tr key={`${item.date}:${item.brand}`} className="border-t border-white/5"><td className="px-3 py-2">{item.date.split("-").reverse().join("/")}</td><td className="px-3 py-2">{BRAND_LABEL[item.brand]}</td><td className="px-3 py-2 text-right font-mono-ui text-violet-100">{integer(item.count)}</td></tr>)}</tbody></table></div></div><Breakdown title="UTM source" rows={(data.sources.length ? data.sources.map(item => ({ label: item.label, primary: `${integer(item.count)} leads`, secondary: `${percentage(item.count, data.totals.utmLeads)} do total` })) : emptyRows("Sem UTM source"))} /></section>
-    <section className="grid gap-5 xl:grid-cols-3"><Breakdown title="UTM medium" rows={(data.mediums.length ? data.mediums.map(item => ({ label: item.label, primary: `${integer(item.count)} leads`, secondary: `${percentage(item.count, data.totals.utmLeads)} do total` })) : emptyRows("Sem UTM medium"))} /><Breakdown title="Campanhas com UTM" rows={(data.campaigns.length ? data.campaigns.slice(0, 10).map(item => ({ label: item.campaign, primary: `${integer(item.count)} leads`, secondary: item.channel })) : emptyRows("Sem campanha preenchida"))} /><Breakdown title="Evento de conversão" rows={(data.conversionEvents.length ? data.conversionEvents.map(item => ({ label: item.label, primary: `${integer(item.count)} contatos`, secondary: "Primeiro evento com UTM" })) : emptyRows("Sem evento identificável"))} /></section>
-    {brand !== "all" && (data.campaignConflicts.length || data.eventConflicts.length) ? <section className="rounded-2xl border border-amber-200/15 bg-amber-100/5 p-5"><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-amber-100/75">Sinais divergentes da conta</p><h3 className="mt-1 font-semibold">UTMs e eventos retidos da leitura principal</h3><p className="mt-1 text-sm leading-6 text-amber-50/75">Esses contatos pertencem à conta {BRAND_LABEL[brand]}, mas a campanha ou o evento cita explicitamente a outra marca. Eles permanecem fora dos rankings principais para não misturar as marcas.</p><div className="mt-4 grid gap-5 xl:grid-cols-2">{data.campaignConflicts.length ? <Breakdown title="Divergências de campanha" rows={data.campaignConflicts.slice(0, 8).map(item => ({ label: item.campaign, primary: `${integer(item.count)} leads`, secondary: `UTM indica ${BRAND_LABEL[item.expectedBrand]} · ${item.channel}` }))} /> : null}{data.eventConflicts.length ? <Breakdown title="Divergências de evento" rows={data.eventConflicts.slice(0, 8).map(item => ({ label: item.label, primary: `${integer(item.count)} contatos`, secondary: `Evento indica ${BRAND_LABEL[item.expectedBrand]}` }))} /> : null}</div></section> : null}
-    <section className="rounded-2xl border border-amber-200/15 bg-amber-100/5 p-5"><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-amber-100/75">Limites de evidência</p><div className="mt-2 grid gap-4 md:grid-cols-2"><p className="text-sm leading-6 text-amber-50/80">O RD Station foi coletado por segmentação BRRO e eventos disponíveis até {data.period.end.split("-").reverse().join("/")}. O painel não presume filtros internos de origem nem exclusão de Importação quando a API não os expõe.</p><div className="grid grid-cols-2 gap-3">{perBrand.map(item => <MetricCell key={item} label={`${BRAND_LABEL[item]} · UTM`} value={integer(data.byBrand[item].utmLeads)} />)}<MetricCell label="UTM term" value={integer(data.coverage.withTerm)} /></div></div></section>
-  </div>;
-}
-
-function BusinessHub({ brand, channel, period, model, dealData, channelFunnel, channelFunnelLoading, channelFunnelError, campaignDetail, campaignDetailLoading, campaignDetailError, utmCoverage, utmCoverageLoading, utmCoverageError }: { brand: Brand; channel: Channel; period: ReportingPeriod; model: { spend: number; platformLeads: number; qualifiedLeads: number; commercialSpend: number; commercialPlatformLeads: number; commercialQualifiedLeads: number; rdLeadsAvailable: boolean; paidLeadComponents: { instantForms: number; messagingConversations: number; messagingFirstReplies: number; messagingConnections: number } }; dealData: DealAnalytics | null; channelFunnel?: LeadChannelFunnel; channelFunnelLoading: boolean; channelFunnelError: string | null; campaignDetail?: CampaignAttributionDetail; campaignDetailLoading: boolean; campaignDetailError: string | null; utmCoverage?: UtmReceiptCoverage; utmCoverageLoading: boolean; utmCoverageError: string | null }) {
-  const revenue = dealData?.wonValue ?? 0;
-  return <div className="space-y-6"><section className="rounded-2xl border border-cyan-200/15 bg-cyan-300/[.035] p-5"><div className="flex flex-col justify-between gap-3 md:flex-row md:items-end"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.16em] text-cyan-100/70">Deck único de negócio</p><h3 className="mt-1 text-xl font-bold">Do investimento ao resultado comercial</h3><p className="mt-1 text-sm text-muted-foreground">Pipeline, vendas, origens, descartes, perdas e status financeiro em uma leitura contínua.</p></div><Badge variant="outline" className="w-fit border-amber-200/20 text-amber-100">ROAS por canal bloqueado</Badge></div><div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-6"><FunnelStep label="Investimento" value={brl(model.commercialSpend)} /><FunnelStep label="Leads" value={integer(model.commercialPlatformLeads)} /><FunnelStep label="Qualificados RD" value={model.rdLeadsAvailable ? integer(model.commercialQualifiedLeads) : "Indisponível"} /><FunnelStep label="Negócios" value={dealData ? integer(dealData.total) : "Indisponível"} /><FunnelStep label="Vendas" value={dealData ? integer(dealData.won) : "Indisponível"} /><FunnelStep label="Receita" value={dealData ? brl(revenue) : "Indisponível"} /></div></section><PaidMediaLeadMethodologyPanel model={model} period={period} /><ChannelConversionPanel brand={brand} channel={channel} data={channelFunnel} loading={channelFunnelLoading} error={channelFunnelError} /><CampaignAttributionPanel channel={channel} data={campaignDetail} loading={campaignDetailLoading} error={campaignDetailError} /><UtmReceiptCoveragePanel data={utmCoverage} loading={utmCoverageLoading} error={utmCoverageError} /><BitrixRdEnrichmentPanel data={utmCoverage} loading={utmCoverageLoading} error={utmCoverageError} /><ContinuousRevenueDeck brand={brand} period={period} model={model} dealData={dealData} /></div>;
-}
-
-function PaidMediaLeadMethodologyPanel({ model, period }: { model: { commercialQualifiedLeads: number; paidLeadComponents: { instantForms: number; messagingConversations: number; messagingFirstReplies: number; messagingConnections: number } }; period: ReportingPeriod }) {
-  const periodLabel = period === "2026-08" ? "Meta até 23/08 · RD até 21/08" : "Julho · 2026";
-  return <section className="rounded-2xl border border-violet-200/15 bg-violet-300/[.035] p-5"><div className="flex flex-col justify-between gap-3 md:flex-row md:items-end"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-violet-100/80">Leads de mídia · método documentado</p><h3 className="mt-1 text-xl font-bold">Componentes que entram no relatório do gestor</h3><p className="mt-1 max-w-3xl text-sm text-muted-foreground">Os componentes são exibidos separadamente. O painel não soma conversas de WhatsApp como leads enquanto o opt-in de sincronização não estiver comprovado.</p></div><Badge variant="outline" className="w-fit border-violet-200/20 text-violet-100">{periodLabel}</Badge></div><div className="mt-5 grid gap-3 md:grid-cols-3"><FunnelStep label="RD Station · UTM comprovada · até 21/08" value={integer(model.commercialQualifiedLeads)} /><FunnelStep label="Meta · Instant Forms · até 23/08" value={integer(model.paidLeadComponents.instantForms)} /><FunnelStep label="Click-to-WhatsApp" value="Não somado" /></div><div className="mt-4 grid gap-3 lg:grid-cols-3"><MetricCell label="Conversas iniciadas (sinal Meta)" value={integer(model.paidLeadComponents.messagingConversations)} /><MetricCell label="Primeiras respostas (sinal Meta)" value={integer(model.paidLeadComponents.messagingFirstReplies)} /><MetricCell label="Novas conexões (sinal Meta)" value={integer(model.paidLeadComponents.messagingConnections)} /></div><p className="mt-4 rounded-xl border border-amber-200/15 bg-amber-100/5 p-3 text-xs leading-5 text-amber-50/75">O total consolidado de leads de mídia permanece indisponível até existir evidência de quais conversas foram transformadas em leads sintéticos pelo processo com opt-in de WhatsApp. Assim, evitamos dupla contagem entre conversa iniciada, primeira resposta e nova conexão.</p></section>;
-}
-
-function UtmReceiptCoveragePanel({ data, loading, error }: { data?: UtmReceiptCoverage; loading: boolean; error: string | null }) {
-  if (loading) return <section className="rounded-2xl border border-white/10 bg-black/15 p-5"><p className="text-sm text-muted-foreground">Verificando as UTMs recebidas no Bitrix24 e no RD Station…</p></section>;
-  if (error) return <DataState title="Não foi possível carregar a cobertura de UTM" detail={error} />;
-  if (!data) return <DataState title="Cobertura de UTM indisponível" detail="Não houve retorno para a comparação entre Bitrix24 e RD Station." />;
-  const percentage = (value: number, total: number) => total ? `${((value / total) * 100).toFixed(1).replace(".", ",")}%` : "Indisponível";
-  return <section className="rounded-2xl border border-white/10 bg-black/15 p-5"><div className="flex flex-col justify-between gap-3 md:flex-row md:items-end"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">03 · UTM recebida nas plataformas</p><h3 className="mt-1 text-xl font-bold">O que chega no Bitrix24 e no RD Station</h3><p className="mt-1 text-sm text-muted-foreground">Cobertura calculada com os campos UTM efetivamente armazenados; não representa atribuição de receita.</p></div><Badge variant="outline" className="w-fit border-cyan-200/20 text-cyan-100">{data.period === "2026-07" ? "Julho 2026" : "Agosto · RD até 21/08"}</Badge></div><div className="mt-5 grid gap-5 xl:grid-cols-2"><div className="rounded-xl border border-white/8 bg-black/10 p-4"><p className="font-mono-ui text-[10px] uppercase tracking-[.12em] text-muted-foreground">Bitrix24 · leads</p>{data.bitrix.available ? <><p className="mt-1 text-2xl font-bold text-cyan-100">{integer(data.bitrix.total)}</p><p className="mt-1 text-xs text-muted-foreground">Leads recebidos no recorte; {integer(data.bitrix.identity.email)} vinculados por e-mail único com RD Station.</p><div className="mt-4 grid grid-cols-2 gap-2 text-xs"><MetricCell label="Source" value={percentage(data.bitrix.withSource, data.bitrix.total)} /><MetricCell label="Campaign" value={percentage(data.bitrix.withCampaign, data.bitrix.total)} /><MetricCell label="Content" value={percentage(data.bitrix.withContent, data.bitrix.total)} /><MetricCell label="Term" value={percentage(data.bitrix.withTerm, data.bitrix.total)} /></div><p className="mt-3 text-[11px] leading-4 text-muted-foreground">Método de de-para: contato Bitrix24 → e-mail normalizado RD Station. Telefone e CPF não têm chave utilizável nas duas fontes neste recorte.</p></> : <DataState title="Bitrix24 indisponível por marca" detail={data.bitrix.reason ?? "A origem de marca dos leads não está estruturada."} />}</div><div className="rounded-xl border border-white/8 bg-black/10 p-4"><p className="font-mono-ui text-[10px] uppercase tracking-[.12em] text-muted-foreground">RD Station · eventos</p>{data.rd.available ? <><p className="mt-1 text-2xl font-bold text-emerald-100">{integer(data.rd.total)}</p><p className="mt-1 text-xs text-muted-foreground">Eventos de conversão; contatos sincronizados não carregam UTM utilizável</p><div className="mt-4 grid grid-cols-2 gap-2 text-xs"><MetricCell label="Source" value={percentage(data.rd.withSource, data.rd.total)} /><MetricCell label="Campaign" value={percentage(data.rd.withCampaign, data.rd.total)} /><MetricCell label="Content" value={percentage(data.rd.withContent, data.rd.total)} /><MetricCell label="Term" value={percentage(data.rd.withTerm, data.rd.total)} /></div></> : <DataState title="RD Station indisponível neste período" detail={data.rd.reason ?? "Não há coleta real de eventos RD Station neste recorte."} />}</div></div>{data.rd.available ? <div className="mt-5 overflow-x-auto"><table className="w-full min-w-[680px] text-left text-sm"><thead className="bg-white/[.03] text-[10px] uppercase tracking-[.12em] text-muted-foreground"><tr><th className="px-4 py-3">Campanha recebida no RD</th><th className="px-4 py-3">Marca</th><th className="px-4 py-3">Eventos</th><th className="px-4 py-3">Encontrada na mídia</th></tr></thead><tbody>{data.rdCampaigns.slice(0, 12).map(item => <tr key={`${item.brand}-${item.campaign}`} className="border-t border-white/5"><td className="px-4 py-3 font-medium">{item.campaign}</td><td className="px-4 py-3">{BRAND_LABEL[item.brand]}</td><td className="px-4 py-3 text-emerald-100">{integer(item.rdEvents)}</td><td className="px-4 py-3">{item.mediaCampaignFound ? <span className="text-emerald-100">Sim</span> : <span className="text-amber-100">Não identificado</span>}</td></tr>)}</tbody></table></div> : null}</section>;
+function UtmReceiptCoveragePanel({
+  data,
+  loading,
+  error,
+}: {
+  data?: UtmReceiptCoverage;
+  loading: boolean;
+  error: string | null;
+}) {
+  if (loading)
+    return (
+      <section className="rounded-2xl border border-white/10 bg-black/15 p-5">
+        <p className="text-sm text-muted-foreground">
+          Verificando as UTMs recebidas no Bitrix24 e no RD Station…
+        </p>
+      </section>
+    );
+  if (error)
+    return (
+      <DataState
+        title="Não foi possível carregar a cobertura de UTM"
+        detail={error}
+      />
+    );
+  if (!data)
+    return (
+      <DataState
+        title="Cobertura de UTM indisponível"
+        detail="Não houve retorno para a comparação entre Bitrix24 e RD Station."
+      />
+    );
+  const percentage = (value: number, total: number) =>
+    total
+      ? `${((value / total) * 100).toFixed(1).replace(".", ",")}%`
+      : "Indisponível";
+  return (
+    <section className="rounded-2xl border border-white/10 bg-black/15 p-5">
+      <div className="flex flex-col justify-between gap-3 md:flex-row md:items-end">
+        <div>
+          <p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">
+            03 · UTM recebida nas plataformas
+          </p>
+          <h3 className="mt-1 text-xl font-bold">
+            O que chega no Bitrix24 e no RD Station
+          </h3>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Cobertura calculada com os campos UTM efetivamente armazenados; não
+            representa atribuição de receita.
+          </p>
+        </div>
+        <Badge
+          variant="outline"
+          className="w-fit border-cyan-200/20 text-cyan-100"
+        >
+          {data.period === "2026-07" ? "Julho 2026" : "Agosto · RD até 21/08"}
+        </Badge>
+      </div>
+      <div className="mt-5 grid gap-5 xl:grid-cols-2">
+        <div className="rounded-xl border border-white/8 bg-black/10 p-4">
+          <p className="font-mono-ui text-[10px] uppercase tracking-[.12em] text-muted-foreground">
+            Bitrix24 · leads
+          </p>
+          {data.bitrix.available ? (
+            <>
+              <p className="mt-1 text-2xl font-bold text-cyan-100">
+                {integer(data.bitrix.total)}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Leads recebidos no recorte;{" "}
+                {integer(data.bitrix.identity.email)} vinculados por e-mail
+                único com RD Station.
+              </p>
+              <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
+                <MetricCell
+                  label="Source"
+                  value={percentage(data.bitrix.withSource, data.bitrix.total)}
+                />
+                <MetricCell
+                  label="Campaign"
+                  value={percentage(
+                    data.bitrix.withCampaign,
+                    data.bitrix.total
+                  )}
+                />
+                <MetricCell
+                  label="Content"
+                  value={percentage(data.bitrix.withContent, data.bitrix.total)}
+                />
+                <MetricCell
+                  label="Term"
+                  value={percentage(data.bitrix.withTerm, data.bitrix.total)}
+                />
+              </div>
+              <p className="mt-3 text-[11px] leading-4 text-muted-foreground">
+                Método de de-para: contato Bitrix24 → e-mail normalizado RD
+                Station. Telefone e CPF não têm chave utilizável nas duas fontes
+                neste recorte.
+              </p>
+            </>
+          ) : (
+            <DataState
+              title="Bitrix24 indisponível por marca"
+              detail={
+                data.bitrix.reason ??
+                "A origem de marca dos leads não está estruturada."
+              }
+            />
+          )}
+        </div>
+        <div className="rounded-xl border border-white/8 bg-black/10 p-4">
+          <p className="font-mono-ui text-[10px] uppercase tracking-[.12em] text-muted-foreground">
+            RD Station · eventos
+          </p>
+          {data.rd.available ? (
+            <>
+              <p className="mt-1 text-2xl font-bold text-emerald-100">
+                {integer(data.rd.total)}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Eventos de conversão; contatos sincronizados não carregam UTM
+                utilizável
+              </p>
+              <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
+                <MetricCell
+                  label="Source"
+                  value={percentage(data.rd.withSource, data.rd.total)}
+                />
+                <MetricCell
+                  label="Campaign"
+                  value={percentage(data.rd.withCampaign, data.rd.total)}
+                />
+                <MetricCell
+                  label="Content"
+                  value={percentage(data.rd.withContent, data.rd.total)}
+                />
+                <MetricCell
+                  label="Term"
+                  value={percentage(data.rd.withTerm, data.rd.total)}
+                />
+              </div>
+            </>
+          ) : (
+            <DataState
+              title="RD Station indisponível neste período"
+              detail={
+                data.rd.reason ??
+                "Não há coleta real de eventos RD Station neste recorte."
+              }
+            />
+          )}
+        </div>
+      </div>
+      {data.rd.available ? (
+        <div className="mt-5 overflow-x-auto">
+          <table className="w-full min-w-[680px] text-left text-sm">
+            <thead className="bg-white/[.03] text-[10px] uppercase tracking-[.12em] text-muted-foreground">
+              <tr>
+                <th className="px-4 py-3">Campanha recebida no RD</th>
+                <th className="px-4 py-3">Marca</th>
+                <th className="px-4 py-3">Eventos</th>
+                <th className="px-4 py-3">Encontrada na mídia</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.rdCampaigns.slice(0, 12).map(item => (
+                <tr
+                  key={`${item.brand}-${item.campaign}`}
+                  className="border-t border-white/5"
+                >
+                  <td className="px-4 py-3 font-medium">{item.campaign}</td>
+                  <td className="px-4 py-3">{BRAND_LABEL[item.brand]}</td>
+                  <td className="px-4 py-3 text-emerald-100">
+                    {integer(item.rdEvents)}
+                  </td>
+                  <td className="px-4 py-3">
+                    {item.mediaCampaignFound ? (
+                      <span className="text-emerald-100">Sim</span>
+                    ) : (
+                      <span className="text-amber-100">Não identificado</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : null}
+    </section>
+  );
 }
 
 function MetricCell({ label, value }: { label: string; value: string }) {
-  return <div className="rounded-lg border border-white/5 bg-white/[.02] px-3 py-2"><p className="font-mono-ui text-[9px] uppercase tracking-[.1em] text-muted-foreground">{label}</p><p className="mt-1 font-medium text-foreground">{value}</p></div>;
+  return (
+    <div className="rounded-lg border border-white/5 bg-white/[.02] px-3 py-2">
+      <p className="font-mono-ui text-[9px] uppercase tracking-[.1em] text-muted-foreground">
+        {label}
+      </p>
+      <p className="mt-1 font-medium text-foreground">{value}</p>
+    </div>
+  );
 }
 
-function BitrixRdEnrichmentPanel({ data, loading, error }: { data?: UtmReceiptCoverage; loading: boolean; error: string | null }) {
+function BitrixRdEnrichmentPanel({
+  data,
+  loading,
+  error,
+}: {
+  data?: UtmReceiptCoverage;
+  loading: boolean;
+  error: string | null;
+}) {
   if (loading || error || !data) return null;
   const enrichment = data.bitrixRdEnrichment;
-  const percentage = (value: number, total: number) => total ? `${((value / total) * 100).toFixed(1).replace(".", ",")}%` : "Indisponível";
-  return <section className="rounded-2xl border border-emerald-200/15 bg-emerald-200/[.025] p-5"><div className="flex flex-col justify-between gap-3 md:flex-row md:items-end"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-emerald-100/70">04 · Enriquecimento Bitrix24 → RD Station</p><h3 className="mt-1 text-xl font-bold">O que o RD Station acrescenta aos leads do Bitrix24</h3><p className="mt-1 max-w-3xl text-sm text-muted-foreground">O de-para usa contato Bitrix24 → e-mail normalizado → contato RD Station. Somente correspondências únicas entram na cobertura; dados pessoais não são exibidos.</p></div><Badge variant="outline" className={enrichment.available ? "w-fit border-emerald-200/20 text-emerald-100" : "w-fit border-amber-200/20 text-amber-100"}>{enrichment.available ? "E-mail único" : "Indisponível"}</Badge></div>{enrichment.available ? <><div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4"><MetricCell label="Leads ligados por e-mail" value={integer(enrichment.matchedIdentity)} /><MetricCell label="Com evento RD" value={integer(enrichment.withRdEvent)} /><MetricCell label="Com ao menos uma UTM" value={integer(enrichment.withUtm)} /><MetricCell label="Sem evento RD no recorte" value={integer(enrichment.withoutRdEvent)} /></div><div className="mt-5 grid gap-5 xl:grid-cols-[1fr_.9fr]"><div className="rounded-xl border border-white/8 bg-black/10 p-4"><p className="font-mono-ui text-[10px] uppercase tracking-[.12em] text-muted-foreground">UTMs recuperadas do evento RD</p><div className="mt-4 grid grid-cols-2 gap-2 text-xs"><MetricCell label="Source" value={percentage(enrichment.utm.withSource, enrichment.utm.total)} /><MetricCell label="Campaign" value={percentage(enrichment.utm.withCampaign, enrichment.utm.total)} /><MetricCell label="Content" value={percentage(enrichment.utm.withContent, enrichment.utm.total)} /><MetricCell label="Term" value={percentage(enrichment.utm.withTerm, enrichment.utm.total)} /></div></div><div className="rounded-xl border border-white/8 bg-black/10 p-4"><p className="font-mono-ui text-[10px] uppercase tracking-[.12em] text-muted-foreground">Origem RD dos leads enriquecidos</p><div className="mt-3 space-y-2">{enrichment.origins.length ? enrichment.origins.slice(0, 5).map(origin => <div key={origin.label} className="flex items-center justify-between gap-3 text-sm"><span className="truncate text-slate-300">{origin.label}</span><span className="font-mono-ui text-emerald-100">{integer(origin.count)}</span></div>) : <p className="text-xs leading-5 text-muted-foreground">Nenhuma origem foi preenchida nos eventos ligados por e-mail neste recorte.</p>}</div></div></div></> : <DataState title="Enriquecimento RD indisponível neste período" detail={enrichment.reason ?? "Não há eventos RD Station coletados para recuperar fonte e UTM."} />}</section>;
+  const percentage = (value: number, total: number) =>
+    total
+      ? `${((value / total) * 100).toFixed(1).replace(".", ",")}%`
+      : "Indisponível";
+  return (
+    <section className="rounded-2xl border border-emerald-200/15 bg-emerald-200/[.025] p-5">
+      <div className="flex flex-col justify-between gap-3 md:flex-row md:items-end">
+        <div>
+          <p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-emerald-100/70">
+            04 · Enriquecimento Bitrix24 → RD Station
+          </p>
+          <h3 className="mt-1 text-xl font-bold">
+            O que o RD Station acrescenta aos leads do Bitrix24
+          </h3>
+          <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
+            O de-para usa contato Bitrix24 → e-mail normalizado → contato RD
+            Station. Somente correspondências únicas entram na cobertura; dados
+            pessoais não são exibidos.
+          </p>
+        </div>
+        <Badge
+          variant="outline"
+          className={
+            enrichment.available
+              ? "w-fit border-emerald-200/20 text-emerald-100"
+              : "w-fit border-amber-200/20 text-amber-100"
+          }
+        >
+          {enrichment.available ? "E-mail único" : "Indisponível"}
+        </Badge>
+      </div>
+      {enrichment.available ? (
+        <>
+          <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <MetricCell
+              label="Leads ligados por e-mail"
+              value={integer(enrichment.matchedIdentity)}
+            />
+            <MetricCell
+              label="Com evento RD"
+              value={integer(enrichment.withRdEvent)}
+            />
+            <MetricCell
+              label="Com ao menos uma UTM"
+              value={integer(enrichment.withUtm)}
+            />
+            <MetricCell
+              label="Sem evento RD no recorte"
+              value={integer(enrichment.withoutRdEvent)}
+            />
+          </div>
+          <div className="mt-5 grid gap-5 xl:grid-cols-[1fr_.9fr]">
+            <div className="rounded-xl border border-white/8 bg-black/10 p-4">
+              <p className="font-mono-ui text-[10px] uppercase tracking-[.12em] text-muted-foreground">
+                UTMs recuperadas do evento RD
+              </p>
+              <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
+                <MetricCell
+                  label="Source"
+                  value={percentage(
+                    enrichment.utm.withSource,
+                    enrichment.utm.total
+                  )}
+                />
+                <MetricCell
+                  label="Campaign"
+                  value={percentage(
+                    enrichment.utm.withCampaign,
+                    enrichment.utm.total
+                  )}
+                />
+                <MetricCell
+                  label="Content"
+                  value={percentage(
+                    enrichment.utm.withContent,
+                    enrichment.utm.total
+                  )}
+                />
+                <MetricCell
+                  label="Term"
+                  value={percentage(
+                    enrichment.utm.withTerm,
+                    enrichment.utm.total
+                  )}
+                />
+              </div>
+            </div>
+            <div className="rounded-xl border border-white/8 bg-black/10 p-4">
+              <p className="font-mono-ui text-[10px] uppercase tracking-[.12em] text-muted-foreground">
+                Origem RD dos leads enriquecidos
+              </p>
+              <div className="mt-3 space-y-2">
+                {enrichment.origins.length ? (
+                  enrichment.origins.slice(0, 5).map(origin => (
+                    <div
+                      key={origin.label}
+                      className="flex items-center justify-between gap-3 text-sm"
+                    >
+                      <span className="truncate text-slate-300">
+                        {origin.label}
+                      </span>
+                      <span className="font-mono-ui text-emerald-100">
+                        {integer(origin.count)}
+                      </span>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-xs leading-5 text-muted-foreground">
+                    Nenhuma origem foi preenchida nos eventos ligados por e-mail
+                    neste recorte.
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        </>
+      ) : (
+        <DataState
+          title="Enriquecimento RD indisponível neste período"
+          detail={
+            enrichment.reason ??
+            "Não há eventos RD Station coletados para recuperar fonte e UTM."
+          }
+        />
+      )}
+    </section>
+  );
 }
 
-function ChannelConversionPanel({ brand, channel, data, loading, error }: { brand: Brand; channel: Channel; data?: LeadChannelFunnel; loading: boolean; error: string | null }) {
-  if (loading) return <section className="rounded-2xl border border-white/10 bg-black/15 p-5"><p className="text-sm text-muted-foreground">Carregando a conversão auditável de leads Bitrix24 por canal…</p></section>;
-  if (error) return <DataState title="Não foi possível carregar a conversão por canal" detail={error} />;
-  if (!data) return <DataState title="Funil por canal indisponível" detail="Não houve retorno da consulta Bitrix24 para este período." />;
+function ChannelConversionPanel({
+  brand,
+  channel,
+  data,
+  loading,
+  error,
+}: {
+  brand: Brand;
+  channel: Channel;
+  data?: LeadChannelFunnel;
+  loading: boolean;
+  error: string | null;
+}) {
+  if (loading)
+    return (
+      <section className="rounded-2xl border border-white/10 bg-black/15 p-5">
+        <p className="text-sm text-muted-foreground">
+          Carregando a conversão auditável de leads Bitrix24 por canal…
+        </p>
+      </section>
+    );
+  if (error)
+    return (
+      <DataState
+        title="Não foi possível carregar a conversão por canal"
+        detail={error}
+      />
+    );
+  if (!data)
+    return (
+      <DataState
+        title="Funil por canal indisponível"
+        detail="Não houve retorno da consulta Bitrix24 para este período."
+      />
+    );
   const selectedChannel = channel === "all" ? null : PLATFORM_LABEL[channel];
-  const rows = data.rows.filter(row => !selectedChannel || row.channel === selectedChannel);
-  return <section className="rounded-2xl border border-white/10 bg-black/15 p-5">
-    <div className="flex flex-col justify-between gap-3 md:flex-row md:items-end"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">01 · leads Bitrix por canal</p><h3 className="mt-1 text-xl font-bold">Chegada → negócio → descarte</h3><p className="mt-1 text-sm text-muted-foreground">O vínculo exige `LEAD_ID` no negócio e UTM de canal no lead correspondente.</p></div><Badge variant="outline" className="w-fit border-cyan-200/20 text-cyan-100">{integer(data.linkedDeals)} negócios vinculados</Badge></div>
-    {!data.leadBrandScopeAvailable ? <p className="mt-4 rounded-xl border border-amber-200/15 bg-amber-100/5 p-3 text-xs leading-5 text-amber-50/70">Os leads recebidos não carregam o campo de marca no Bitrix24. Para preservar a evidência, o total de leads fica indisponível ao filtrar uma marca; os negócios permanecem filtrados pela marca estruturada.</p> : null}
-    <div className="mt-5 overflow-x-auto"><table className="w-full min-w-[880px] text-left text-sm"><thead className="bg-white/[.03] text-[10px] uppercase tracking-[.12em] text-muted-foreground"><tr><th className="px-4 py-3 font-medium">Canal do lead</th><th className="px-4 py-3 font-medium">Leads recebidos</th><th className="px-4 py-3 font-medium">Viraram negócio</th><th className="px-4 py-3 font-medium">Conversão</th><th className="px-4 py-3 font-medium">Ganhos</th><th className="px-4 py-3 font-medium">Perdidos</th><th className="px-4 py-3 font-medium">Descartes</th></tr></thead><tbody>{rows.map(row => {
-      const conversion = channelFunnelMath.conversionRate(row.leadsReceived, row.deals);
-      return <tr key={row.channel} className="border-t border-white/5"><td className="px-4 py-4 font-medium text-foreground">{row.channel}</td><td className="px-4 py-4">{row.leadsReceived === null ? "Indisponível" : integer(row.leadsReceived)}</td><td className="px-4 py-4 text-cyan-100">{integer(row.deals)}</td><td className="px-4 py-4">{conversion === null ? "Indisponível" : `${(conversion * 100).toFixed(1).replace('.', ',')}%`}</td><td className="px-4 py-4 text-emerald-100">{integer(row.won)}</td><td className="px-4 py-4 text-orange-100">{integer(row.lost)}</td><td className="px-4 py-4">{integer(row.discards)}</td></tr>;
-    })}</tbody></table></div>
-    {data.unlinkedDeals ? <p className="mt-4 text-xs leading-5 text-muted-foreground">{integer(data.unlinkedDeals)} negócios sem `LEAD_ID` vinculável aparecem na linha “Não identificado”, com conversão indisponível para não forçar uma relação de canal.</p> : null}
-    {brand === "all" && !rows.length ? <p className="mt-4 text-sm text-muted-foreground">Não há leads Bitrix24 com UTM de canal para este recorte.</p> : null}
-  </section>;
+  const rows = data.rows.filter(
+    row => !selectedChannel || row.channel === selectedChannel
+  );
+  return (
+    <section className="rounded-2xl border border-white/10 bg-black/15 p-5">
+      <div className="flex flex-col justify-between gap-3 md:flex-row md:items-end">
+        <div>
+          <p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">
+            01 · leads Bitrix por canal
+          </p>
+          <h3 className="mt-1 text-xl font-bold">
+            Chegada → negócio → descarte
+          </h3>
+          <p className="mt-1 text-sm text-muted-foreground">
+            O vínculo exige `LEAD_ID` no negócio e UTM de canal no lead
+            correspondente.
+          </p>
+        </div>
+        <Badge
+          variant="outline"
+          className="w-fit border-cyan-200/20 text-cyan-100"
+        >
+          {integer(data.linkedDeals)} negócios vinculados
+        </Badge>
+      </div>
+      {!data.leadBrandScopeAvailable ? (
+        <p className="mt-4 rounded-xl border border-amber-200/15 bg-amber-100/5 p-3 text-xs leading-5 text-amber-50/70">
+          Os leads recebidos não carregam o campo de marca no Bitrix24. Para
+          preservar a evidência, o total de leads fica indisponível ao filtrar
+          uma marca; os negócios permanecem filtrados pela marca estruturada.
+        </p>
+      ) : null}
+      <div className="mt-5 overflow-x-auto">
+        <table className="w-full min-w-[880px] text-left text-sm">
+          <thead className="bg-white/[.03] text-[10px] uppercase tracking-[.12em] text-muted-foreground">
+            <tr>
+              <th className="px-4 py-3 font-medium">Canal do lead</th>
+              <th className="px-4 py-3 font-medium">Leads recebidos</th>
+              <th className="px-4 py-3 font-medium">Viraram negócio</th>
+              <th className="px-4 py-3 font-medium">Conversão</th>
+              <th className="px-4 py-3 font-medium">Ganhos</th>
+              <th className="px-4 py-3 font-medium">Perdidos</th>
+              <th className="px-4 py-3 font-medium">Descartes</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map(row => {
+              const conversion = channelFunnelMath.conversionRate(
+                row.leadsReceived,
+                row.deals
+              );
+              return (
+                <tr key={row.channel} className="border-t border-white/5">
+                  <td className="px-4 py-4 font-medium text-foreground">
+                    {row.channel}
+                  </td>
+                  <td className="px-4 py-4">
+                    {row.leadsReceived === null
+                      ? "Indisponível"
+                      : integer(row.leadsReceived)}
+                  </td>
+                  <td className="px-4 py-4 text-cyan-100">
+                    {integer(row.deals)}
+                  </td>
+                  <td className="px-4 py-4">
+                    {conversion === null
+                      ? "Indisponível"
+                      : `${(conversion * 100).toFixed(1).replace(".", ",")}%`}
+                  </td>
+                  <td className="px-4 py-4 text-emerald-100">
+                    {integer(row.won)}
+                  </td>
+                  <td className="px-4 py-4 text-orange-100">
+                    {integer(row.lost)}
+                  </td>
+                  <td className="px-4 py-4">{integer(row.discards)}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      {data.unlinkedDeals ? (
+        <p className="mt-4 text-xs leading-5 text-muted-foreground">
+          {integer(data.unlinkedDeals)} negócios sem `LEAD_ID` vinculável
+          aparecem na linha “Não identificado”, com conversão indisponível para
+          não forçar uma relação de canal.
+        </p>
+      ) : null}
+      {brand === "all" && !rows.length ? (
+        <p className="mt-4 text-sm text-muted-foreground">
+          Não há leads Bitrix24 com UTM de canal para este recorte.
+        </p>
+      ) : null}
+    </section>
+  );
 }
 
-function CampaignAttributionPanel({ channel, data, loading, error }: { channel: Channel; data?: CampaignAttributionDetail; loading: boolean; error: string | null }) {
-  if (loading) return <section className="rounded-2xl border border-white/10 bg-black/15 p-5"><p className="text-sm text-muted-foreground">Auditando os vínculos entre campanha, lead e negócio…</p></section>;
-  if (error) return <DataState title="Não foi possível carregar o detalhamento de campanhas" detail={error} />;
-  if (!data) return <DataState title="Detalhamento de campanhas indisponível" detail="Não houve retorno da auditoria de campanhas para este recorte." />;
+function CampaignAttributionPanel({
+  channel,
+  data,
+  loading,
+  error,
+}: {
+  channel: Channel;
+  data?: CampaignAttributionDetail;
+  loading: boolean;
+  error: string | null;
+}) {
+  if (loading)
+    return (
+      <section className="rounded-2xl border border-white/10 bg-black/15 p-5">
+        <p className="text-sm text-muted-foreground">
+          Auditando os vínculos entre campanha, lead e negócio…
+        </p>
+      </section>
+    );
+  if (error)
+    return (
+      <DataState
+        title="Não foi possível carregar o detalhamento de campanhas"
+        detail={error}
+      />
+    );
+  if (!data)
+    return (
+      <DataState
+        title="Detalhamento de campanhas indisponível"
+        detail="Não houve retorno da auditoria de campanhas para este recorte."
+      />
+    );
   const selectedLabel = channel === "all" ? null : PLATFORM_LABEL[channel];
-  const campaigns = data.campaigns.filter(item => channel === "all" || item.platform === channel);
-  const tracking = data.tracking.filter(item => !selectedLabel || item.channel === selectedLabel);
-  const discardReasons = data.unassigned.discardReasons.map(item => ({ label: item.label, primary: `${integer(item.count)} descartes`, secondary: "Sem campanha comprovada" }));
-  return <section className="rounded-2xl border border-white/10 bg-black/15 p-5">
-    <div className="flex flex-col justify-between gap-3 md:flex-row md:items-end"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">02 · campanhas e descartes</p><h3 className="mt-1 text-xl font-bold">Campanhas que geraram negócios</h3><p className="mt-1 text-sm text-muted-foreground">O ranking aceita match exato ou chave criativa normalizada, apenas quando a chave aponta para uma única campanha da mesma marca.</p></div><Badge variant="outline" className="w-fit border-cyan-200/20 text-cyan-100">{integer(data.exactCampaignMatches)} leads conciliados</Badge></div>
-    {campaigns.length ? <div className="mt-5 overflow-x-auto"><table className="w-full min-w-[980px] text-left text-sm"><thead className="bg-white/[.03] text-[10px] uppercase tracking-[.12em] text-muted-foreground"><tr><th className="px-4 py-3">Campanha confirmada</th><th className="px-4 py-3">Método</th><th className="px-4 py-3">Leads</th><th className="px-4 py-3">Negócios</th><th className="px-4 py-3">Ganhos</th><th className="px-4 py-3">Perdidos</th><th className="px-4 py-3">Descartes e motivo</th></tr></thead><tbody>{campaigns.map(item => <tr key={`${item.platform}-${item.campaignName}-${item.matchLevel}-${item.matchMethod}`} className="border-t border-white/5"><td className="px-4 py-4"><p className="font-medium">{item.campaignName}</p><p className="mt-1 text-[10px] uppercase tracking-[.12em] text-muted-foreground">{PLATFORM_LABEL[item.platform]} · {({ campaign: "campanha", ad_group: "grupo/conjunto", ad: "anúncio" } as Record<typeof item.matchLevel, string>)[item.matchLevel]}</p></td><td className="px-4 py-4 text-xs text-muted-foreground">{item.matchMethod === "exact" ? "UTM exata" : item.matchMethod === "url_utm" ? "URL configurada" : "Chave criativa"}</td><td className="px-4 py-4">{integer(item.leads)}</td><td className="px-4 py-4 text-cyan-100">{integer(item.deals)}</td><td className="px-4 py-4 text-emerald-100">{integer(item.won)}</td><td className="px-4 py-4 text-orange-100">{integer(item.lost)}</td><td className="px-4 py-4">{item.discards ? <><p>{integer(item.discards)}</p><p className="mt-1 max-w-44 text-xs text-muted-foreground">{item.discardReasons.map(reason => reason.label).join(", ")}</p></> : "0"}</td></tr>)}</tbody></table></div> : <DataState title="Nenhuma campanha foi conciliada" detail={`${integer(data.leadsWithTracking)} leads têm identificador UTM, mas nenhum passou pelas regras de correspondência exata, URL configurada ou chave criativa única. Eles permanecem separados para validação.`} />}
-    <div className="mt-5 grid gap-5 xl:grid-cols-2"><div className="rounded-xl border border-white/8 bg-black/10 p-4"><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">Tracking ainda não reconciliado</p>{tracking.length ? <div className="mt-3 space-y-2">{tracking.slice(0, 8).map(item => <div key={`${item.trackingField}-${item.trackingValue}`} className="flex items-start justify-between gap-3 border-t border-white/5 py-2 first:border-t-0 first:pt-0"><div><p className="max-w-80 break-words text-sm font-medium">{item.trackingValue}</p><p className="mt-1 text-xs text-muted-foreground">{item.trackingField} · {item.channel}</p></div><p className="shrink-0 text-sm text-cyan-100">{integer(item.deals)} negócios</p></div>)}</div> : <p className="mt-3 text-sm text-muted-foreground">Sem identificadores UTM com negócios neste filtro.</p>}</div>{discardReasons.length ? <Breakdown title="Descartes sem campanha identificada" rows={discardReasons} /> : <DataState title="Sem descarte vinculado a campanha" detail="Não há negócio descartado com campanha comprovada neste recorte." />}</div>
-  </section>;
+  const campaigns = data.campaigns.filter(
+    item => channel === "all" || item.platform === channel
+  );
+  const tracking = data.tracking.filter(
+    item => !selectedLabel || item.channel === selectedLabel
+  );
+  const discardReasons = data.unassigned.discardReasons.map(item => ({
+    label: item.label,
+    primary: `${integer(item.count)} descartes`,
+    secondary: "Sem campanha comprovada",
+  }));
+  return (
+    <section className="rounded-2xl border border-white/10 bg-black/15 p-5">
+      <div className="flex flex-col justify-between gap-3 md:flex-row md:items-end">
+        <div>
+          <p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">
+            02 · campanhas e descartes
+          </p>
+          <h3 className="mt-1 text-xl font-bold">
+            Campanhas que geraram negócios
+          </h3>
+          <p className="mt-1 text-sm text-muted-foreground">
+            O ranking aceita match exato ou chave criativa normalizada, apenas
+            quando a chave aponta para uma única campanha da mesma marca.
+          </p>
+        </div>
+        <Badge
+          variant="outline"
+          className="w-fit border-cyan-200/20 text-cyan-100"
+        >
+          {integer(data.exactCampaignMatches)} leads conciliados
+        </Badge>
+      </div>
+      {campaigns.length ? (
+        <div className="mt-5 overflow-x-auto">
+          <table className="w-full min-w-[980px] text-left text-sm">
+            <thead className="bg-white/[.03] text-[10px] uppercase tracking-[.12em] text-muted-foreground">
+              <tr>
+                <th className="px-4 py-3">Campanha confirmada</th>
+                <th className="px-4 py-3">Método</th>
+                <th className="px-4 py-3">Leads</th>
+                <th className="px-4 py-3">Negócios</th>
+                <th className="px-4 py-3">Ganhos</th>
+                <th className="px-4 py-3">Perdidos</th>
+                <th className="px-4 py-3">Descartes e motivo</th>
+              </tr>
+            </thead>
+            <tbody>
+              {campaigns.map(item => (
+                <tr
+                  key={`${item.platform}-${item.campaignName}-${item.matchLevel}-${item.matchMethod}`}
+                  className="border-t border-white/5"
+                >
+                  <td className="px-4 py-4">
+                    <p className="font-medium">{item.campaignName}</p>
+                    <p className="mt-1 text-[10px] uppercase tracking-[.12em] text-muted-foreground">
+                      {PLATFORM_LABEL[item.platform]} ·{" "}
+                      {
+                        (
+                          {
+                            campaign: "campanha",
+                            ad_group: "grupo/conjunto",
+                            ad: "anúncio",
+                          } as Record<typeof item.matchLevel, string>
+                        )[item.matchLevel]
+                      }
+                    </p>
+                  </td>
+                  <td className="px-4 py-4 text-xs text-muted-foreground">
+                    {item.matchMethod === "exact"
+                      ? "UTM exata"
+                      : item.matchMethod === "url_utm"
+                        ? "URL configurada"
+                        : "Chave criativa"}
+                  </td>
+                  <td className="px-4 py-4">{integer(item.leads)}</td>
+                  <td className="px-4 py-4 text-cyan-100">
+                    {integer(item.deals)}
+                  </td>
+                  <td className="px-4 py-4 text-emerald-100">
+                    {integer(item.won)}
+                  </td>
+                  <td className="px-4 py-4 text-orange-100">
+                    {integer(item.lost)}
+                  </td>
+                  <td className="px-4 py-4">
+                    {item.discards ? (
+                      <>
+                        <p>{integer(item.discards)}</p>
+                        <p className="mt-1 max-w-44 text-xs text-muted-foreground">
+                          {item.discardReasons
+                            .map(reason => reason.label)
+                            .join(", ")}
+                        </p>
+                      </>
+                    ) : (
+                      "0"
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <DataState
+          title="Nenhuma campanha foi conciliada"
+          detail={`${integer(data.leadsWithTracking)} leads têm identificador UTM, mas nenhum passou pelas regras de correspondência exata, URL configurada ou chave criativa única. Eles permanecem separados para validação.`}
+        />
+      )}
+      <div className="mt-5 grid gap-5 xl:grid-cols-2">
+        <div className="rounded-xl border border-white/8 bg-black/10 p-4">
+          <p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">
+            Tracking ainda não reconciliado
+          </p>
+          {tracking.length ? (
+            <div className="mt-3 space-y-2">
+              {tracking.slice(0, 8).map(item => (
+                <div
+                  key={`${item.trackingField}-${item.trackingValue}`}
+                  className="flex items-start justify-between gap-3 border-t border-white/5 py-2 first:border-t-0 first:pt-0"
+                >
+                  <div>
+                    <p className="max-w-80 break-words text-sm font-medium">
+                      {item.trackingValue}
+                    </p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {item.trackingField} · {item.channel}
+                    </p>
+                  </div>
+                  <p className="shrink-0 text-sm text-cyan-100">
+                    {integer(item.deals)} negócios
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="mt-3 text-sm text-muted-foreground">
+              Sem identificadores UTM com negócios neste filtro.
+            </p>
+          )}
+        </div>
+        {discardReasons.length ? (
+          <Breakdown
+            title="Descartes sem campanha identificada"
+            rows={discardReasons}
+          />
+        ) : (
+          <DataState
+            title="Sem descarte vinculado a campanha"
+            detail="Não há negócio descartado com campanha comprovada neste recorte."
+          />
+        )}
+      </div>
+    </section>
+  );
 }
 
-function ContinuousRevenueDeck({ brand, period, model, dealData }: { brand: Brand; period: ReportingPeriod; model: { commercialSpend: number; commercialPlatformLeads: number; commercialQualifiedLeads: number; rdLeadsAvailable: boolean }; dealData: DealAnalytics | null }) {
-  const periodLabel = period === "2026-08" ? "Agosto · RD até 21/08" : "Julho · 2026";
-  const discardReasons = dealData?.discards.map(item => ({ label: item.label, primary: `${integer(item.count)} descartes`, secondary: brl(item.value) })) ?? [];
-  const discardChannels = dealData?.discardChannels.map(item => ({ label: item.label, primary: `${integer(item.count)} descartes com UTM`, secondary: brl(item.value) })) ?? [];
-  const financial = dealData?.financialStatuses.map(item => ({ label: item.label, primary: `${integer(item.count)} negócios`, secondary: brl(item.value) })) ?? [];
-  return <div className="space-y-6"><section className="grid gap-5 xl:grid-cols-[.9fr_1.1fr]"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">01 · pipeline</p><h3 className="mt-1 text-xl font-bold">Conversão do período</h3><div className="mt-4 grid gap-3 sm:grid-cols-2"><FunnelStep label="Investimento" value={brl(model.commercialSpend)} /><FunnelStep label="Leads de mídia" value={integer(model.commercialPlatformLeads)} /><FunnelStep label="Qualificados RD" value={model.rdLeadsAvailable ? integer(model.commercialQualifiedLeads) : "Indisponível"} /><FunnelStep label="Negócios Bitrix" value={dealData ? integer(dealData.total) : "Indisponível"} /><FunnelStep label="Vendas ganhas" value={dealData ? integer(dealData.won) : "Indisponível"} /><FunnelStep label="Receita ganha" value={dealData ? brl(dealData.wonValue) : "Indisponível"} /></div>{!model.rdLeadsAvailable ? <p className="mt-3 rounded-xl border border-amber-200/15 bg-amber-100/5 p-3 text-xs leading-5 text-amber-50/70">Leads qualificados do RD Station ainda não foram coletados em {periodLabel}. O funil preserva essa etapa como indisponível.</p> : null}</div>{dealData ? <Breakdown title="Origem × valor de negócio" rows={dealData.sources.map(item => ({ label: item.label, primary: `${integer(item.count)} negócios`, secondary: brl(item.value) }))} /> : <UnavailableCommercial />}</section><section><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">02 · mídia e descarte</p><h3 className="mt-1 text-xl font-bold">Onde os descartes aparecem</h3><p className="mt-1 text-sm text-muted-foreground">A leitura por canal abaixo usa somente negócios descartados que carregam UTM de canal no Bitrix24; não é uma atribuição de campanha.</p><div className="mt-4 grid gap-5 xl:grid-cols-2">{discardChannels.length ? <Breakdown title="Descartes por canal UTM" rows={discardChannels} /> : <DataState title="Canal de descarte não identificado" detail="Não há UTMs de canal preenchidas nos negócios descartados deste recorte." />}{discardReasons.length ? <Breakdown title="Motivos de descarte" rows={discardReasons} /> : <DataState title="Sem motivo de descarte preenchido" detail="O campo estruturado existe no Bitrix24, mas não retornou valores para este recorte." />}</div></section><section className="grid gap-5 xl:grid-cols-3"><div className="xl:col-span-2">{dealData ? <Breakdown title="Perdas por pipeline" rows={dealData.losses.map(item => ({ label: item.label, primary: `${integer(item.count)} perdas`, secondary: `${integer(item.withObservation)} com observação` }))} /> : <UnavailableCommercial />}</div>{financial.length ? <Breakdown title="Status financeiro" rows={financial} /> : <DataState title="Status financeiro indisponível" detail="Não há valores estruturados deste campo para o recorte." />}</section><section className="rounded-2xl border border-white/10 bg-black/15 p-5"><div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">03 · integridade de atribuição</p><h3 className="mt-1 font-semibold">Receita por canal e ROAS permanecem bloqueados</h3></div><Badge variant="outline" className="w-fit border-amber-200/20 text-amber-100">{periodLabel}</Badge></div><p className="mt-3 text-sm leading-6 text-muted-foreground">O painel só relaciona mídia, lead, negócio e venda quando há evidência armazenada de identificadores ou UTMs. Sem essa evidência, o registro continua como “Não identificado”.</p></section></div>;
+function ContinuousRevenueDeck({
+  brand,
+  period,
+  model,
+  dealData,
+}: {
+  brand: Brand;
+  period: ReportingPeriod;
+  model: {
+    commercialSpend: number;
+    commercialPlatformLeads: number;
+    commercialQualifiedLeads: number;
+    rdLeadsAvailable: boolean;
+  };
+  dealData: DealAnalytics | null;
+}) {
+  const periodLabel =
+    period === "2026-08" ? "Agosto · RD até 21/08" : "Julho · 2026";
+  const discardReasons =
+    dealData?.discards.map(item => ({
+      label: item.label,
+      primary: `${integer(item.count)} descartes`,
+      secondary: brl(item.value),
+    })) ?? [];
+  const discardChannels =
+    dealData?.discardChannels.map(item => ({
+      label: item.label,
+      primary: `${integer(item.count)} descartes com UTM`,
+      secondary: brl(item.value),
+    })) ?? [];
+  const financial =
+    dealData?.financialStatuses.map(item => ({
+      label: item.label,
+      primary: `${integer(item.count)} negócios`,
+      secondary: brl(item.value),
+    })) ?? [];
+  return (
+    <div className="space-y-6">
+      <section className="grid gap-5 xl:grid-cols-[.9fr_1.1fr]">
+        <div>
+          <p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">
+            01 · pipeline
+          </p>
+          <h3 className="mt-1 text-xl font-bold">Conversão do período</h3>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <FunnelStep
+              label="Investimento"
+              value={brl(model.commercialSpend)}
+            />
+            <FunnelStep
+              label="Leads de mídia"
+              value={integer(model.commercialPlatformLeads)}
+            />
+            <FunnelStep
+              label="Qualificados RD"
+              value={
+                model.rdLeadsAvailable
+                  ? integer(model.commercialQualifiedLeads)
+                  : "Indisponível"
+              }
+            />
+            <FunnelStep
+              label="Negócios Bitrix"
+              value={dealData ? integer(dealData.total) : "Indisponível"}
+            />
+            <FunnelStep
+              label="Vendas ganhas"
+              value={dealData ? integer(dealData.won) : "Indisponível"}
+            />
+            <FunnelStep
+              label="Receita ganha"
+              value={dealData ? brl(dealData.wonValue) : "Indisponível"}
+            />
+          </div>
+          {!model.rdLeadsAvailable ? (
+            <p className="mt-3 rounded-xl border border-amber-200/15 bg-amber-100/5 p-3 text-xs leading-5 text-amber-50/70">
+              Leads qualificados do RD Station ainda não foram coletados em{" "}
+              {periodLabel}. O funil preserva essa etapa como indisponível.
+            </p>
+          ) : null}
+        </div>
+        {dealData ? (
+          <Breakdown
+            title="Origem × valor de negócio"
+            rows={dealData.sources.map(item => ({
+              label: item.label,
+              primary: `${integer(item.count)} negócios`,
+              secondary: brl(item.value),
+            }))}
+          />
+        ) : (
+          <UnavailableCommercial />
+        )}
+      </section>
+      <section>
+        <p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">
+          02 · mídia e descarte
+        </p>
+        <h3 className="mt-1 text-xl font-bold">Onde os descartes aparecem</h3>
+        <p className="mt-1 text-sm text-muted-foreground">
+          A leitura por canal abaixo usa somente negócios descartados que
+          carregam UTM de canal no Bitrix24; não é uma atribuição de campanha.
+        </p>
+        <div className="mt-4 grid gap-5 xl:grid-cols-2">
+          {discardChannels.length ? (
+            <Breakdown title="Descartes por canal UTM" rows={discardChannels} />
+          ) : (
+            <DataState
+              title="Canal de descarte não identificado"
+              detail="Não há UTMs de canal preenchidas nos negócios descartados deste recorte."
+            />
+          )}
+          {discardReasons.length ? (
+            <Breakdown title="Motivos de descarte" rows={discardReasons} />
+          ) : (
+            <DataState
+              title="Sem motivo de descarte preenchido"
+              detail="O campo estruturado existe no Bitrix24, mas não retornou valores para este recorte."
+            />
+          )}
+        </div>
+      </section>
+      <section className="grid gap-5 xl:grid-cols-3">
+        <div className="xl:col-span-2">
+          {dealData ? (
+            <Breakdown
+              title="Perdas por pipeline"
+              rows={dealData.losses.map(item => ({
+                label: item.label,
+                primary: `${integer(item.count)} perdas`,
+                secondary: `${integer(item.withObservation)} com observação`,
+              }))}
+            />
+          ) : (
+            <UnavailableCommercial />
+          )}
+        </div>
+        {financial.length ? (
+          <Breakdown title="Status financeiro" rows={financial} />
+        ) : (
+          <DataState
+            title="Status financeiro indisponível"
+            detail="Não há valores estruturados deste campo para o recorte."
+          />
+        )}
+      </section>
+      <section className="rounded-2xl border border-white/10 bg-black/15 p-5">
+        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">
+              03 · integridade de atribuição
+            </p>
+            <h3 className="mt-1 font-semibold">
+              Receita por canal e ROAS permanecem bloqueados
+            </h3>
+          </div>
+          <Badge
+            variant="outline"
+            className="w-fit border-amber-200/20 text-amber-100"
+          >
+            {periodLabel}
+          </Badge>
+        </div>
+        <p className="mt-3 text-sm leading-6 text-muted-foreground">
+          O painel só relaciona mídia, lead, negócio e venda quando há evidência
+          armazenada de identificadores ou UTMs. Sem essa evidência, o registro
+          continua como “Não identificado”.
+        </p>
+      </section>
+    </div>
+  );
 }
 
-function OriginFunnel({ brand, model, dealData }: { brand: Brand; model: { spend: number; platformLeads: number; qualifiedLeads: number; commercialSpend: number; commercialPlatformLeads: number; commercialQualifiedLeads: number }; dealData: DealAnalytics | null }) {
-  const mediaLeads = dealData ? model.commercialPlatformLeads : model.platformLeads;
-  const qualifiedLeads = dealData ? model.commercialQualifiedLeads : model.qualifiedLeads;
+function OriginFunnel({
+  brand,
+  model,
+  dealData,
+}: {
+  brand: Brand;
+  model: {
+    spend: number;
+    platformLeads: number;
+    qualifiedLeads: number;
+    commercialSpend: number;
+    commercialPlatformLeads: number;
+    commercialQualifiedLeads: number;
+  };
+  dealData: DealAnalytics | null;
+}) {
+  const mediaLeads = dealData
+    ? model.commercialPlatformLeads
+    : model.platformLeads;
+  const qualifiedLeads = dealData
+    ? model.commercialQualifiedLeads
+    : model.qualifiedLeads;
   const label = brand === "all" ? "Todas as marcas" : BRAND_LABEL[brand];
-  return <div className="grid gap-5 xl:grid-cols-[.9fr_1.1fr]"><div className="rounded-2xl border border-white/10 bg-black/15 p-5"><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">Funil de qualidade</p><div className="mt-5 space-y-3"><FunnelBar label={`Leads de plataforma · ${label}`} value={mediaLeads} max={mediaLeads} color="bg-cyan-300" /><FunnelBar label={`Leads qualificados RD · ${label}`} value={qualifiedLeads} max={mediaLeads} color="bg-emerald-300" /><FunnelBar label="Negócios Bitrix" value={dealData?.total ?? 0} max={mediaLeads} color="bg-violet-300" /><FunnelBar label="Vendas ganhas" value={dealData?.won ?? 0} max={mediaLeads} color="bg-orange-300" /></div></div>{dealData ? <Breakdown title="Origem × valor de negócio" rows={dealData.sources.map(item => ({ label: item.label, primary: `${integer(item.count)} negócios`, secondary: brl(item.value) }))} /> : <UnavailableCommercial />}</div>;
+  return (
+    <div className="grid gap-5 xl:grid-cols-[.9fr_1.1fr]">
+      <div className="rounded-2xl border border-white/10 bg-black/15 p-5">
+        <p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">
+          Funil de qualidade
+        </p>
+        <div className="mt-5 space-y-3">
+          <FunnelBar
+            label={`Leads de plataforma · ${label}`}
+            value={mediaLeads}
+            max={mediaLeads}
+            color="bg-cyan-300"
+          />
+          <FunnelBar
+            label={`Leads qualificados RD · ${label}`}
+            value={qualifiedLeads}
+            max={mediaLeads}
+            color="bg-emerald-300"
+          />
+          <FunnelBar
+            label="Negócios Bitrix"
+            value={dealData?.total ?? 0}
+            max={mediaLeads}
+            color="bg-violet-300"
+          />
+          <FunnelBar
+            label="Vendas ganhas"
+            value={dealData?.won ?? 0}
+            max={mediaLeads}
+            color="bg-orange-300"
+          />
+        </div>
+      </div>
+      {dealData ? (
+        <Breakdown
+          title="Origem × valor de negócio"
+          rows={dealData.sources.map(item => ({
+            label: item.label,
+            primary: `${integer(item.count)} negócios`,
+            secondary: brl(item.value),
+          }))}
+        />
+      ) : (
+        <UnavailableCommercial />
+      )}
+    </div>
+  );
 }
 
 function LossView({ dealData }: { dealData: DealAnalytics | null }) {
-  const discardRows = dealData?.discards.map(item => ({ label: item.label, primary: `${integer(item.count)} descartes`, secondary: brl(item.value) })) ?? [];
-  const financialRows = dealData?.financialStatuses.map(item => ({ label: item.label, primary: `${integer(item.count)} negócios`, secondary: brl(item.value) })) ?? [];
-  return <div className="grid gap-5 2xl:grid-cols-3">{dealData ? <Breakdown title="Perdidos por pipeline" rows={dealData.losses.map(item => ({ label: item.label, primary: `${integer(item.count)} negócios`, secondary: `${integer(item.withObservation)} com observação` }))} /> : <UnavailableCommercial />}{dealData ? discardRows.length ? <Breakdown title="Descartes por motivo" rows={discardRows} /> : <DataState title="Não há motivos de descarte preenchidos" detail="O campo de descarte existe, mas não há valores para este recorte." /> : <UnavailableCommercial />}{dealData ? financialRows.length ? <Breakdown title="Status financeiro" rows={financialRows} /> : <DataState title="Status financeiro indisponível" detail="O campo existe no Bitrix24, mas não há valores para este recorte." /> : <UnavailableCommercial />}</div>;
+  const discardRows =
+    dealData?.discards.map(item => ({
+      label: item.label,
+      primary: `${integer(item.count)} descartes`,
+      secondary: brl(item.value),
+    })) ?? [];
+  const financialRows =
+    dealData?.financialStatuses.map(item => ({
+      label: item.label,
+      primary: `${integer(item.count)} negócios`,
+      secondary: brl(item.value),
+    })) ?? [];
+  return (
+    <div className="grid gap-5 2xl:grid-cols-3">
+      {dealData ? (
+        <Breakdown
+          title="Perdidos por pipeline"
+          rows={dealData.losses.map(item => ({
+            label: item.label,
+            primary: `${integer(item.count)} negócios`,
+            secondary: `${integer(item.withObservation)} com observação`,
+          }))}
+        />
+      ) : (
+        <UnavailableCommercial />
+      )}
+      {dealData ? (
+        discardRows.length ? (
+          <Breakdown title="Descartes por motivo" rows={discardRows} />
+        ) : (
+          <DataState
+            title="Não há motivos de descarte preenchidos"
+            detail="O campo de descarte existe, mas não há valores para este recorte."
+          />
+        )
+      ) : (
+        <UnavailableCommercial />
+      )}
+      {dealData ? (
+        financialRows.length ? (
+          <Breakdown title="Status financeiro" rows={financialRows} />
+        ) : (
+          <DataState
+            title="Status financeiro indisponível"
+            detail="O campo existe no Bitrix24, mas não há valores para este recorte."
+          />
+        )
+      ) : (
+        <UnavailableCommercial />
+      )}
+    </div>
+  );
 }
 
-function CampaignTable({ campaigns, maxSpend }: { campaigns: CampaignRow[]; maxSpend: number }) {
-  return <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/15"><div className="flex items-center justify-between border-b border-white/10 px-5 py-4"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">Campanhas</p><h3 className="mt-1 font-semibold">Eficiência por investimento</h3></div><Layers3 className="h-5 w-5 text-cyan-200" /></div><div className="overflow-x-auto"><table className="w-full min-w-[720px] text-left text-sm"><thead className="bg-white/[.03] text-[10px] uppercase tracking-[.12em] text-muted-foreground"><tr><th className="px-5 py-3 font-medium">Campanha</th><th className="px-4 py-3 font-medium">Canal</th><th className="px-4 py-3 font-medium">Investimento</th><th className="px-4 py-3 font-medium">Leads</th><th className="px-4 py-3 font-medium">CPL</th><th className="px-4 py-3 font-medium">Escala</th></tr></thead><tbody>{campaigns.map(item => <tr key={`${item.platform}-${item.campaignId}-${item.brand}`} className="border-t border-white/5"><td className="max-w-72 px-5 py-4"><p className="truncate font-medium text-foreground">{item.campaignName}</p><p className="mt-1 font-mono-ui text-[10px] text-muted-foreground">{item.brand}</p></td><td className="px-4 py-4"><Badge variant="outline" className="border-white/10 text-muted-foreground">{PLATFORM_LABEL[item.platform]}</Badge></td><td className="px-4 py-4 text-cyan-100">{brl(item.spend)}</td><td className="px-4 py-4">{integer(item.leads)}</td><td className="px-4 py-4">{brl(ratio(item.spend, item.leads))}</td><td className="px-4 py-4"><div className="h-1.5 w-24 overflow-hidden rounded-full bg-white/5"><div className="h-full rounded-full bg-cyan-300" style={{ width: `${Math.max(3, (item.spend / maxSpend) * 100)}%` }} /></div></td></tr>)}</tbody></table></div></div>;
+function CampaignTable({
+  campaigns,
+  maxSpend,
+}: {
+  campaigns: CampaignRow[];
+  maxSpend: number;
+}) {
+  return (
+    <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/15">
+      <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
+        <div>
+          <p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">
+            Campanhas
+          </p>
+          <h3 className="mt-1 font-semibold">Eficiência por investimento</h3>
+        </div>
+        <Layers3 className="h-5 w-5 text-cyan-200" />
+      </div>
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[720px] text-left text-sm">
+          <thead className="bg-white/[.03] text-[10px] uppercase tracking-[.12em] text-muted-foreground">
+            <tr>
+              <th className="px-5 py-3 font-medium">Campanha</th>
+              <th className="px-4 py-3 font-medium">Canal</th>
+              <th className="px-4 py-3 font-medium">Investimento</th>
+              <th className="px-4 py-3 font-medium">Leads</th>
+              <th className="px-4 py-3 font-medium">CPL</th>
+              <th className="px-4 py-3 font-medium">Escala</th>
+            </tr>
+          </thead>
+          <tbody>
+            {campaigns.map(item => (
+              <tr
+                key={`${item.platform}-${item.campaignId}-${item.brand}`}
+                className="border-t border-white/5"
+              >
+                <td className="max-w-72 px-5 py-4">
+                  <p className="truncate font-medium text-foreground">
+                    {item.campaignName}
+                  </p>
+                  <p className="mt-1 font-mono-ui text-[10px] text-muted-foreground">
+                    {item.brand}
+                  </p>
+                </td>
+                <td className="px-4 py-4">
+                  <Badge
+                    variant="outline"
+                    className="border-white/10 text-muted-foreground"
+                  >
+                    {PLATFORM_LABEL[item.platform]}
+                  </Badge>
+                </td>
+                <td className="px-4 py-4 text-cyan-100">{brl(item.spend)}</td>
+                <td className="px-4 py-4">{integer(item.leads)}</td>
+                <td className="px-4 py-4">
+                  {brl(ratio(item.spend, item.leads))}
+                </td>
+                <td className="px-4 py-4">
+                  <div className="h-1.5 w-24 overflow-hidden rounded-full bg-white/5">
+                    <div
+                      className="h-full rounded-full bg-cyan-300"
+                      style={{
+                        width: `${Math.max(3, (item.spend / maxSpend) * 100)}%`,
+                      }}
+                    />
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
 }
 
-function AdDrilldownTable({ ads, campaignSpend }: { ads: AdRow[]; campaignSpend: number }) {
+function AdDrilldownTable({
+  ads,
+  campaignSpend,
+}: {
+  ads: AdRow[];
+  campaignSpend: number;
+}) {
   const adSpend = ads.reduce((sum, row) => sum + row.spend, 0);
   const coverage = ratio(adSpend, campaignSpend);
-  return <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/15"><div className="flex flex-col justify-between gap-3 border-b border-white/10 px-5 py-4 sm:flex-row sm:items-center"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">Grupos e anúncios</p><h3 className="mt-1 font-semibold">Detalhe por criativo</h3></div><Badge variant="outline" className={coverage >= .98 ? "border-emerald-300/20 text-emerald-100" : "border-amber-200/20 text-amber-100"}>{coverage >= .98 ? "Cobertura granular completa" : `Cobertura granular ${Math.round(coverage * 100)}%`}</Badge></div>{ads.length === 0 ? <div className="p-5 text-sm text-muted-foreground">Não há registros granulares de anúncio para este recorte.</div> : <><div className="overflow-x-auto"><table className="w-full min-w-[980px] text-left text-sm"><thead className="bg-white/[.03] text-[10px] uppercase tracking-[.12em] text-muted-foreground"><tr><th className="px-5 py-3 font-medium">Campanha</th><th className="px-4 py-3 font-medium">Grupo / conjunto</th><th className="px-4 py-3 font-medium">Anúncio</th><th className="px-4 py-3 font-medium">Investimento</th><th className="px-4 py-3 font-medium">Leads</th><th className="px-4 py-3 font-medium">CPL</th></tr></thead><tbody>{ads.slice(0, 30).map(row => <tr key={`${row.platform}-${row.brand}-${row.adId}`} className="border-t border-white/5"><td className="max-w-52 px-5 py-4"><p className="truncate text-foreground">{row.campaignName}</p><p className="mt-1 font-mono-ui text-[10px] text-muted-foreground">{row.brand}</p></td><td className="max-w-52 px-4 py-4"><p className="truncate text-foreground">{row.adGroupName}</p></td><td className="max-w-64 px-4 py-4"><p className="line-clamp-2 text-foreground">{row.adName}</p></td><td className="px-4 py-4 text-cyan-100">{brl(row.spend)}</td><td className="px-4 py-4">{integer(row.leads)}</td><td className="px-4 py-4">{brl(ratio(row.spend, row.leads))}</td></tr>)}</tbody></table></div>{coverage < .98 ? <p className="border-t border-amber-200/10 bg-amber-100/5 px-5 py-3 text-xs leading-5 text-amber-50/70">A granularidade por anúncio não cobre integralmente o total consolidado deste canal. Os KPIs, comparativos e CPL executivo usam exclusivamente os registros completos por campanha.</p> : null}</>}</div>;
+  return (
+    <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/15">
+      <div className="flex flex-col justify-between gap-3 border-b border-white/10 px-5 py-4 sm:flex-row sm:items-center">
+        <div>
+          <p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">
+            Grupos e anúncios
+          </p>
+          <h3 className="mt-1 font-semibold">Detalhe por criativo</h3>
+        </div>
+        <Badge
+          variant="outline"
+          className={
+            coverage >= 0.98
+              ? "border-emerald-300/20 text-emerald-100"
+              : "border-amber-200/20 text-amber-100"
+          }
+        >
+          {coverage >= 0.98
+            ? "Cobertura granular completa"
+            : `Cobertura granular ${Math.round(coverage * 100)}%`}
+        </Badge>
+      </div>
+      {ads.length === 0 ? (
+        <div className="p-5 text-sm text-muted-foreground">
+          Não há registros granulares de anúncio para este recorte.
+        </div>
+      ) : (
+        <>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[980px] text-left text-sm">
+              <thead className="bg-white/[.03] text-[10px] uppercase tracking-[.12em] text-muted-foreground">
+                <tr>
+                  <th className="px-5 py-3 font-medium">Campanha</th>
+                  <th className="px-4 py-3 font-medium">Grupo / conjunto</th>
+                  <th className="px-4 py-3 font-medium">Anúncio</th>
+                  <th className="px-4 py-3 font-medium">Investimento</th>
+                  <th className="px-4 py-3 font-medium">Leads</th>
+                  <th className="px-4 py-3 font-medium">CPL</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ads.slice(0, 30).map(row => (
+                  <tr
+                    key={`${row.platform}-${row.brand}-${row.adId}`}
+                    className="border-t border-white/5"
+                  >
+                    <td className="max-w-52 px-5 py-4">
+                      <p className="truncate text-foreground">
+                        {row.campaignName}
+                      </p>
+                      <p className="mt-1 font-mono-ui text-[10px] text-muted-foreground">
+                        {row.brand}
+                      </p>
+                    </td>
+                    <td className="max-w-52 px-4 py-4">
+                      <p className="truncate text-foreground">
+                        {row.adGroupName}
+                      </p>
+                    </td>
+                    <td className="max-w-64 px-4 py-4">
+                      <p className="line-clamp-2 text-foreground">
+                        {row.adName}
+                      </p>
+                    </td>
+                    <td className="px-4 py-4 text-cyan-100">
+                      {brl(row.spend)}
+                    </td>
+                    <td className="px-4 py-4">{integer(row.leads)}</td>
+                    <td className="px-4 py-4">
+                      {brl(ratio(row.spend, row.leads))}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {coverage < 0.98 ? (
+            <p className="border-t border-amber-200/10 bg-amber-100/5 px-5 py-3 text-xs leading-5 text-amber-50/70">
+              A granularidade por anúncio não cobre integralmente o total
+              consolidado deste canal. Os KPIs, comparativos e CPL executivo
+              usam exclusivamente os registros completos por campanha.
+            </p>
+          ) : null}
+        </>
+      )}
+    </div>
+  );
 }
 
 function AttributionAudit({ rows }: { rows: AttributionRow[] }) {
-  const identified = rows.filter(row => row.matchStatus === "identified").reduce((sum, row) => sum + row.count, 0);
-  const signals = rows.filter(row => row.matchStatus === "channel_signal").reduce((sum, row) => sum + row.count, 0);
-  const unidentified = rows.filter(row => row.matchStatus === "not_identified").reduce((sum, row) => sum + row.count, 0);
-  return <div className="rounded-2xl border border-white/10 bg-black/15 p-5"><div className="flex items-start justify-between gap-4"><div><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">Trilha de atribuição</p><h3 className="mt-1 font-semibold">Cobertura auditável</h3></div><Badge variant="outline" className="border-amber-200/20 text-amber-100">ROAS bloqueado</Badge></div><div className="mt-5 grid gap-3 sm:grid-cols-3"><FunnelStep label="Vínculos completos" value={integer(identified)} /><FunnelStep label="Sinais UTM de canal" value={integer(signals)} /><FunnelStep label="Não identificados" value={integer(unidentified)} /></div><p className="mt-4 text-xs leading-5 text-muted-foreground">O painel registra o sinal de UTM presente no negócio, mas só calcula receita por canal após encontrar identificadores que vinculem mídia, lead, negócio e venda de forma verificável.</p></div>;
+  const identified = rows
+    .filter(row => row.matchStatus === "identified")
+    .reduce((sum, row) => sum + row.count, 0);
+  const signals = rows
+    .filter(row => row.matchStatus === "channel_signal")
+    .reduce((sum, row) => sum + row.count, 0);
+  const unidentified = rows
+    .filter(row => row.matchStatus === "not_identified")
+    .reduce((sum, row) => sum + row.count, 0);
+  return (
+    <div className="rounded-2xl border border-white/10 bg-black/15 p-5">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">
+            Trilha de atribuição
+          </p>
+          <h3 className="mt-1 font-semibold">Cobertura auditável</h3>
+        </div>
+        <Badge variant="outline" className="border-amber-200/20 text-amber-100">
+          ROAS bloqueado
+        </Badge>
+      </div>
+      <div className="mt-5 grid gap-3 sm:grid-cols-3">
+        <FunnelStep label="Vínculos completos" value={integer(identified)} />
+        <FunnelStep label="Sinais UTM de canal" value={integer(signals)} />
+        <FunnelStep label="Não identificados" value={integer(unidentified)} />
+      </div>
+      <p className="mt-4 text-xs leading-5 text-muted-foreground">
+        O painel registra o sinal de UTM presente no negócio, mas só calcula
+        receita por canal após encontrar identificadores que vinculem mídia,
+        lead, negócio e venda de forma verificável.
+      </p>
+    </div>
+  );
 }
 
-function Breakdown({ title, rows }: { title: string; rows: { label: string; primary: string; secondary: string }[] }) {
-  return <div className="rounded-2xl border border-white/10 bg-black/15 p-5"><p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">Análise de origem</p><h3 className="mt-1 font-semibold">{title}</h3><div className="mt-5 space-y-3">{rows.map(row => <div key={row.label} className="flex items-center justify-between gap-4 border-b border-white/5 pb-3 last:border-0 last:pb-0"><p className="text-sm text-foreground">{row.label}</p><div className="text-right"><p className="text-sm text-cyan-100">{row.primary}</p><p className="mt-1 text-xs text-muted-foreground">{row.secondary}</p></div></div>)}</div></div>;
+function Breakdown({
+  title,
+  rows,
+}: {
+  title: string;
+  rows: { label: string; primary: string; secondary: string }[];
+}) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-black/15 p-5">
+      <p className="font-mono-ui text-[10px] uppercase tracking-[.14em] text-muted-foreground">
+        Análise de origem
+      </p>
+      <h3 className="mt-1 font-semibold">{title}</h3>
+      <div className="mt-5 space-y-3">
+        {rows.map(row => (
+          <div
+            key={row.label}
+            className="flex items-center justify-between gap-4 border-b border-white/5 pb-3 last:border-0 last:pb-0"
+          >
+            <p className="text-sm text-foreground">{row.label}</p>
+            <div className="text-right">
+              <p className="text-sm text-cyan-100">{row.primary}</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {row.secondary}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 function FunnelStep({ label, value }: { label: string; value: string }) {
   const displayValue = value === "—" ? "Indisponível" : value;
-  return <div className="rounded-xl border border-white/10 bg-white/[.025] p-3"><p className="font-mono-ui text-[9px] uppercase tracking-[.11em] text-muted-foreground">{label}</p><p className="mt-1 text-lg font-bold">{displayValue}</p></div>;
+  return (
+    <div className="rounded-xl border border-white/10 bg-white/[.025] p-3">
+      <p className="font-mono-ui text-[9px] uppercase tracking-[.11em] text-muted-foreground">
+        {label}
+      </p>
+      <p className="mt-1 text-lg font-bold">{displayValue}</p>
+    </div>
+  );
 }
 
-function FunnelBar({ label, value, max, color }: { label: string; value: number; max: number; color: string }) {
-  return <div><div className="flex items-center justify-between text-sm"><span>{label}</span><span className="font-mono-ui text-cyan-100">{integer(value)}</span></div><div className="mt-2 h-2 overflow-hidden rounded-full bg-white/5"><div className={`h-full rounded-full ${color}`} style={{ width: `${Math.max(value > 0 ? 2 : 0, Math.min(100, ratio(value, max) * 100))}%` }} /></div></div>;
+function FunnelBar({
+  label,
+  value,
+  max,
+  color,
+}: {
+  label: string;
+  value: number;
+  max: number;
+  color: string;
+}) {
+  return (
+    <div>
+      <div className="flex items-center justify-between text-sm">
+        <span>{label}</span>
+        <span className="font-mono-ui text-cyan-100">{integer(value)}</span>
+      </div>
+      <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/5">
+        <div
+          className={`h-full rounded-full ${color}`}
+          style={{
+            width: `${Math.max(value > 0 ? 2 : 0, Math.min(100, ratio(value, max) * 100))}%`,
+          }}
+        />
+      </div>
+    </div>
+  );
 }
 
 function UnavailableCommercial() {
-  return <div className="rounded-2xl border border-amber-200/15 bg-amber-100/5 p-5"><CircleAlert className="h-5 w-5 text-amber-200" /><h3 className="mt-3 font-semibold text-amber-50">Camada comercial indisponível para esta marca</h3><p className="mt-2 text-sm leading-6 text-amber-50/70">A integração Bitrix24 está conectada somente à Medsystems. O painel mantém os dados de mídia da BeautySystems separados e não inventa negócios, receita ou ROAS comercial onde não há CRM conectado.</p></div>;
+  return (
+    <div className="rounded-2xl border border-amber-200/15 bg-amber-100/5 p-5">
+      <CircleAlert className="h-5 w-5 text-amber-200" />
+      <h3 className="mt-3 font-semibold text-amber-50">
+        Camada comercial indisponível para esta marca
+      </h3>
+      <p className="mt-2 text-sm leading-6 text-amber-50/70">
+        A integração Bitrix24 está conectada somente à Medsystems. O painel
+        mantém os dados de mídia da BeautySystems separados e não inventa
+        negócios, receita ou ROAS comercial onde não há CRM conectado.
+      </p>
+    </div>
+  );
 }
 
 function DataState({ title, detail }: { title: string; detail: string }) {
-  return <div className="grid min-h-80 place-items-center px-5 text-center"><div className="max-w-md rounded-2xl border border-amber-200/15 bg-amber-100/5 p-6"><CircleAlert className="mx-auto h-5 w-5 text-amber-200" /><h3 className="mt-3 font-semibold text-amber-50">{title}</h3><p className="mt-2 text-sm leading-6 text-amber-50/70">{detail}</p></div></div>;
+  return (
+    <div className="grid min-h-80 place-items-center px-5 text-center">
+      <div className="max-w-md rounded-2xl border border-amber-200/15 bg-amber-100/5 p-6">
+        <CircleAlert className="mx-auto h-5 w-5 text-amber-200" />
+        <h3 className="mt-3 font-semibold text-amber-50">{title}</h3>
+        <p className="mt-2 text-sm leading-6 text-amber-50/70">{detail}</p>
+      </div>
+    </div>
+  );
 }

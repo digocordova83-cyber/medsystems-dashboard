@@ -885,3 +885,8 @@
 - [x] Cruzar os contatos programáticos RD com Leads e negócios Bitrix24 sem atribuir vendas por aproximação.
 - [x] Separar conversão de Lead de negócio ganho e incorporar alcance, impressões, cliques e investimento Publya/Push.
 - [x] Entregar Auditoria RD Station — origem programática | Agosto–Setembro de 2026 em versão final anonimizada.
+
+- [x] Abrir o relatório consolidado Publya e inventariar todos os sub-relatórios.
+- [x] Reconciliar métricas por relatório, período e tipo de entrega, removendo duplicidades.
+- [x] Atualizar a base/agregador da aba Programática com os dados auditáveis.
+- [x] Validar a interface, testes, build e salvar checkpoint.

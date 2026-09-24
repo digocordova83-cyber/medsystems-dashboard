@@ -881,3 +881,7 @@
 - [x] Exibir no dashboard os totais gerais, MedSystems 15391, BeautySystems 15395 e outras/sem BU conforme a definição da Isa.
 - [x] Validar auditoria, 116 testes, TypeScript e build de produção.
 - [x] Revisar visualmente a aba Negócios publicada e salvar checkpoint final.
+
+- [x] Cruzar os contatos programáticos RD com Leads e negócios Bitrix24 sem atribuir vendas por aproximação.
+- [x] Separar conversão de Lead de negócio ganho e incorporar alcance, impressões, cliques e investimento Publya/Push.
+- [x] Entregar Auditoria RD Station — origem programática | Agosto–Setembro de 2026 em versão final anonimizada.

@@ -900,10 +900,10 @@
 - [x] Redigir relatório completo com big numbers, funil, valor de negócios ganhos, alcance/frequência, programática e benchmark competitivo.
 - [x] Atualizar e reapresentar o deck executivo com números corrigidos e limitações ao lado de cada leitura.
 
-- [ ] Calcular frequência por Meta e Programática Display com dados reportados.
-- [ ] Medir o impacto da frequência sobre cobertura, repetição e eficiência, sem extrapolar causalidade.
-- [ ] Definir um denominador público/proxy para estimar a cobertura do mercado potencial.
-- [ ] Incorporar a análise ao estudo executivo e validar os números.
+- [x] Calcular frequência por Meta e Programática Display com dados reportados.
+- [x] Medir o impacto da frequência sobre cobertura, repetição e eficiência, sem extrapolar causalidade.
+- [x] Definir um denominador público/proxy para estimar a cobertura do mercado potencial.
+- [x] Incorporar a análise ao estudo executivo e validar os números.
 
 - [x] Reconstruir a lâmina de alcance/frequência com evolução temporal clara, investimento e causalidade operacional.
 - [x] Atualizar o estudo textual para explicar alcance crescente, frequência decrescente e limitação de verba.

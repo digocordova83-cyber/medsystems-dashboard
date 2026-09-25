@@ -908,3 +908,7 @@
 - [x] Reconstruir a lâmina de alcance/frequência com evolução temporal clara, investimento e causalidade operacional.
 - [x] Atualizar o estudo textual para explicar alcance crescente, frequência decrescente e limitação de verba.
 - [x] Validar visualmente e reapresentar o deck executivo.
+
+- [x] Auditar as 50 páginas do controle de aprovação e separar peças, capas e páginas de copy.
+- [x] Montar moodboard com todas as execuções visuais e consolidar volumetria por BU e formato.
+- [x] Adicionar a lâmina final ao Report Executivo, validar e reapresentar o deck.

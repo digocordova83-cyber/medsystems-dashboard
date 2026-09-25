@@ -890,3 +890,12 @@
 - [x] Reconciliar métricas por relatório, período e tipo de entrega, removendo duplicidades.
 - [x] Atualizar a base/agregador da aba Programática com os dados auditáveis.
 - [x] Validar a interface, testes, build e salvar checkpoint.
+
+- [ ] Sincronizar RD Station, Bitrix24, Publya e Push até 24/09/2026.
+- [ ] Buscar Google Ads e Meta Ads nas quatro contas oficiais Windsor e importar a mídia.
+- [ ] Reconciliar snapshot de Negócios e auditar datas, investimentos e cobertura.
+- [ ] Validar testes, TypeScript, build, interface e salvar checkpoint.
+
+- [x] Validar internamente o estudo de defesa BBRO com corte explícito em 23/09/2026.
+- [x] Redigir relatório completo com big numbers, funil, valor de negócios ganhos, alcance/frequência, programática e benchmark competitivo.
+- [x] Atualizar e reapresentar o deck executivo com números corrigidos e limitações ao lado de cada leitura.

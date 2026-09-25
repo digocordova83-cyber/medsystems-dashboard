@@ -912,3 +912,8 @@
 - [x] Auditar as 50 páginas do controle de aprovação e separar peças, capas e páginas de copy.
 - [x] Montar moodboard com todas as execuções visuais e consolidar volumetria por BU e formato.
 - [x] Adicionar a lâmina final ao Report Executivo, validar e reapresentar o deck.
+
+- [ ] Reauditar os 21 conjuntos criativos considerando todos os frames, dimensões, derivações de formato e páginas de continuidade do PPTX.
+- [ ] Atualizar a lâmina de moodboard com conjuntos-base, desdobramentos adicionais e total de entregáveis, com regra de contagem explícita.
+- [ ] Reescrever o plano de 90 dias com ações operacionais para abrir argumentos de mercado, testar mensagens competitivas e gerar pipeline mensurável.
+- [ ] Reapresentar, exportar, revisar visualmente e salvar checkpoint do deck atualizado.

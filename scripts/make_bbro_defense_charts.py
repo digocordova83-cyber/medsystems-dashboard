@@ -100,37 +100,49 @@ fig.tight_layout()
 fig.savefig(OUT/'03_valor_negocios_ganhos.png', bbox_inches='tight')
 plt.close(fig)
 
-# 4. Reach and frequency proxy
-fig, ax1 = plt.subplots(figsize=(10, 4.8), dpi=160)
+# 4. Reach and frequency evolution
+# This view uses the same consolidated Meta + Google series as the scale chart.
+# Frequency is impressions / reported reach, not deduplicated cross-platform frequency.
+spend = [m['spend']/1000 for m in media]
+reach = [m['reach']/1e6 for m in media]
+imps = [m['impressions']/1e6 for m in media]
+freq = [m['impressions']/m['reach'] for m in media]
+fig, axs = plt.subplots(1, 3, figsize=(14, 4.8), dpi=160)
 fig.patch.set_facecolor('white')
-imp=[m['impressions']/1e6 for m in media]
-reach=[m['reach']/1e6 for m in media]
-freq=[m['impressions']/m['reach'] if m['reach'] else 0 for m in media]
-x=np.arange(3)
-ax1.bar(x-0.18,imp,0.36,label='Impressões (M)',color=BLUE)
-ax1.bar(x+0.18,reach,0.36,label='Alcance reportado (M)',color=ORANGE)
-ax1.set_xticks(x,labels); ax1.set_ylabel('Milhões'); ax1.set_title('Alcance e frequência proxy', color=NAVY, loc='left', pad=14, fontsize=16)
-ax1.spines[['top','right','left']].set_visible(False); ax1.spines['bottom'].set_color(LIGHT); ax1.grid(axis='y',color=LIGHT,linewidth=.8); ax1.set_axisbelow(True); ax1.tick_params(axis='both',colors=NAVY,length=0)
-ax2=ax1.twinx(); ax2.plot(x,freq,color=GREEN,marker='o',linewidth=2.5,label='Frequência proxy'); ax2.set_ylabel('Impressões / alcance', color=GREEN); ax2.set_ylim(1.0,1.48); ax2.tick_params(axis='y',colors=GREEN,length=0); ax2.spines[['top','left']].set_visible(False)
-for i,v in enumerate(freq): ax2.text(i,v-0.055,f'{v:.2f}x',ha='center',color=GREEN,fontweight='bold')
-lines, labs = ax1.get_legend_handles_labels(); lines2,labs2=ax2.get_legend_handles_labels(); ax1.legend(lines+lines2,labs+labs2,frameon=False,loc='upper left',fontsize=9)
-fig.text(0.05,0.01,'Proxy = impressões / alcance reportado. Não é alcance único cross-platform; Google não expôs reach no catálogo usado.',fontsize=9,color='#6B7280')
-fig.tight_layout(rect=[0,0.06,1,1])
+series = [(axs[0], 'Investimento disponível (R$ mil)', spend, 'R$ {:.1f}k', BLUE), (axs[1], 'Alcance reportado (M)', reach, '{:.2f}M', GREEN), (axs[2], 'Frequência média (x)', freq, '{:.2f}x', ORANGE)]
+for ax, title, vals, fmt, color in series:
+    bars = ax.bar(labels, vals, color=[GREY, BLUE, GREEN], width=.62)
+    ax.set_title(title, color=NAVY, loc='left', pad=12, fontsize=13)
+    ax.spines[['top','right','left']].set_visible(False); ax.spines['bottom'].set_color(LIGHT)
+    ax.grid(axis='y', color=LIGHT, linewidth=.8); ax.set_axisbelow(True); ax.tick_params(axis='both', colors=NAVY, length=0)
+    for bar, val in zip(bars, vals):
+        ax.text(bar.get_x()+bar.get_width()/2, bar.get_height()+max(vals)*.035, fmt.format(val), ha='center', va='bottom', fontsize=10, color=NAVY, fontweight='bold')
+    ax.margins(y=.22)
+fig.suptitle('Mais cobertura com verba limitada: o trade-off foi reduzir repetição', x=.05, ha='left', fontsize=16, color=NAVY, fontweight='bold')
+fig.text(.05, .01, 'Julho e agosto fechados; setembro = 01–23/09. Frequência = impressões / alcance reportado. O alcance não é pessoa única cross-platform.', fontsize=9, color='#6B7280')
+fig.tight_layout(rect=[0, .06, 1, .92])
 fig.savefig(OUT/'04_alcance_frequencia_proxy.png', bbox_inches='tight')
 plt.close(fig)
 
 # 5. Programmatic Display / Push
-fig, axs = plt.subplots(1, 2, figsize=(12, 4.8), dpi=160)
+fig, axs = plt.subplots(2, 2, figsize=(13.5, 6.0), dpi=160)
 fig.patch.set_facecolor('white')
 months=['Ago/26','Set/26\n01–22']
 disp=prog['2026-08']['programmaticOnly']['display']; disp2=prog['2026-09']['programmaticOnly']['display']
-spend=[disp['spend']/1000,disp2['spend']/1000]; imps=[disp['impressions']/1e6,disp2['impressions']/1e6]; clicks=[disp['clicks'],disp2['clicks']]
-for ax,title,vals,fmt in [ (axs[0],'Display — investimento (R$ mil)',spend,'R$ {:.1f}k'), (axs[1],'Display — impressões (M)',imps,'{:.2f}M') ]:
-    bars=ax.bar(months,vals,color=[ORANGE,BLUE],width=.6); ax.set_title(title,color=NAVY,loc='left',pad=12,fontsize=13); ax.spines[['top','right','left']].set_visible(False); ax.spines['bottom'].set_color(LIGHT); ax.grid(axis='y',color=LIGHT,linewidth=.8); ax.set_axisbelow(True); ax.tick_params(axis='both',colors=NAVY,length=0)
+spend=[disp['spend']/1000,disp2['spend']/1000]
+imps=[disp['impressions']/1e6,disp2['impressions']/1e6]
+reach=[disp['reach']/1e3,disp2['reach']/1e3]
+freq=[disp['impressions']/disp['reach'],disp2['impressions']/disp2['reach']]
+series=[(axs[0,0],'Investimento (R$ mil)',spend,'R$ {:.1f}k'),(axs[0,1],'Impressões (M)',imps,'{:.2f}M'),(axs[1,0],'Alcance reportado (mil)',reach,'{:.0f}k'),(axs[1,1],'Frequência média',freq,'{:.2f}x')]
+for ax,title,vals,fmt in series:
+    bars=ax.bar(months,vals,color=[ORANGE,BLUE],width=.6)
+    ax.set_title(title,color=NAVY,loc='left',pad=10,fontsize=13)
+    ax.spines[['top','right','left']].set_visible(False); ax.spines['bottom'].set_color(LIGHT)
+    ax.grid(axis='y',color=LIGHT,linewidth=.8); ax.set_axisbelow(True); ax.tick_params(axis='both',colors=NAVY,length=0)
     for bar,val in zip(bars,vals): ax.text(bar.get_x()+bar.get_width()/2,bar.get_height()+max(vals)*.04,fmt.format(val),ha='center',color=NAVY,fontweight='bold')
     ax.margins(y=.2)
-fig.suptitle('Programática Display: cobertura comprovada; venda direta não atribuída',x=.05,ha='left',fontsize=16,color=NAVY,fontweight='bold')
-fig.text(.05,.01,'Push em agosto: 6.768 disparos e 28 cliques; Display: 1.500 cliques no bimestre. Auditoria RD→Bitrix: 31 contatos programáticos, 0 negócios vinculados.',fontsize=9,color='#6B7280')
+fig.suptitle('Programática Display: geolocalização abre cobertura com verba controlada',x=.05,ha='left',fontsize=16,color=NAVY,fontweight='bold')
+fig.text(.05,.01,'Ago → Set parcial: verba -33%, alcance +110%, impressões +54% e frequência 3,95x → 2,90x. Push em agosto: 6.768 disparos e 28 cliques.',fontsize=9,color='#6B7280')
 fig.tight_layout(rect=[0,.06,1,.92]); fig.savefig(OUT/'05_programatica_display_push.png',bbox_inches='tight'); plt.close(fig)
 
 # CSV summary
